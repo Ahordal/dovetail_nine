@@ -13,7 +13,7 @@ related:
 
 # The Mistral
 
-![The Mistral](images/mistral.png)
+*Image pending. The original Keep image was removed because it showed two salvage arms; a replacement must show only one.*
 
 **Independent Salvage & Retrieval Vessel (ISRV).** Owned and operated by Tobias Quell.
 
@@ -55,8 +55,7 @@ Lived-in. Weathered, patched, and unmistakably Quell's: tools stowed in odd corn
 ## Reconciliation notes
 
 - The original note credited the drive as "Ravel HFSD-3A (Valdez Systems)". Canon: **Ravel alone** built it.
-- The Keep image shows **two** salvage arms. Canon has **one**, the DMRA-5. Treat the image as approximate.
-- The image shows the hull marking **"GW-21"**. Not canon yet; could serve as a registry number.
+- The Keep image was removed: it showed **two** salvage arms. Canon has **one**, the DMRA-5, ventral midship. Any new image must match.
 
 ## Open
 

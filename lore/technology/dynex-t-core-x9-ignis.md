@@ -11,8 +11,6 @@ related:
 
 # DYNEX T-CORE X9 Ignis-Class
 
-![X9 blueprint](images/dynex-t-core-x9-ignis.png)
-
 **Class 5+ singularity containment reactor. Power source of Dovetail-9 and its Anchor Core.**
 
 ## The name
@@ -68,5 +66,4 @@ related:
 
 ## Reconciliation notes
 
-- The Keep blueprint reads "2B metric tons". Canon is **~26 metric tons**; treat the blueprint text as a misprint.
-- The blueprint labels the housing "Argonax Fiber Hull"; the spec note says "Argonax Fiber Shell". Canon: **Shell**.
+- The Keep blueprint image is **disregarded and removed**. It contradicted the spec (wrong mass, "Fiber Hull" for "Fiber Shell"). The text above is canon.
