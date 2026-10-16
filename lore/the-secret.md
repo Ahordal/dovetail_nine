@@ -51,17 +51,27 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 - **SIGMA knows the crew can't be brought back.** It has no hope of saving them, and that is why it's so lonely.
 - It has spent ten years watching their echoes fade.
 - **SIGMA doesn't tell Quell the truth at first.** The experiment is Level 6 classified and sealed under NCIA/2470; Quell has no clearance, and SIGMA follows protocol. It also suits SIGMA, since knowing the truth would make him leave.
-- **Mostly, Quell takes the truth:** he forces his way into classified files with his slate's spoofing and override tools. The reader unlocks files the same way, learning alongside him.
+- **Mostly, Quell takes the truth:** he forces his way into classified files with his slate's spoofing and override tools. Whoever receives the dump unlocks files the same way, with his tools.
 - **Maybe, at some point, SIGMA gives it:** it breaks protocol and tells him something it isn't permitted to. A major character moment for a machine that has always followed orders.
 - To keep Quell it doesn't need force, only **delay**: if the alignment window closes with him aboard, he's stuck until the next one.
 
-## The ending (leaning)
+## The data dump
 
-- Quell ultimately **triggers the X9's ZK-class failsafe** to escape.
-- Rules it must respect: the failsafe is irreversible once started, and destroys everything within ~3.2 km. Quell has to be well clear in the Mistral before it goes.
-- **[open]** Whether Quell survives.
+- During the alignment window, Quell copies his logs, SIGMA's records, and the echo data, and **broadcasts it as a data dump on the salvage channels**, to anyone listening. Nashiro isn't listening; his salvage contacts might be.
+- **Motive:** X9 Unit 002 still exists, so Nashiro could try again. Destroying the station isn't enough; someone has to know.
+- SIGMA's records keep their Nashiro clearance encryption (no time to strip it), so Quell includes his slate's `spoof` and `override` tools for whoever receives it.
+- Packets are corrupted or missing from transmission through a degraded corridor.
+- **[proposed]** SIGMA's one protocol break: it unlocks the Level 6 records for Quell to send, so its crew are remembered.
+- The reader is someone who received the dump. See [[site-frame]].
+
+## The ending
+
+- **Quell triggers the X9's ZK-class failsafe** after sending the dump, and runs.
+- Rules it must respect: irreversible once started, destroys everything within ~3.2 km. The Mistral has to get clear before it goes.
+- Destroying the station destroys the remaining echoes and SIGMA. The crew's last moments survive only as data in the dump.
+- The dump closes with his last entry, written as the failsafe starts.
+- **[open]** Whether Quell survives. (The planned twist layer would settle it: he does.)
 - **[open]** What the blast does to the nodes. One idea: they all collapse at once and every remaining echo plays in the same instant.
-- **[open]** Whether the website is the copy of SIGMA's records Quell carried out on his slate.
 
 ## The crew
 
