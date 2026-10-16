@@ -1,6 +1,8 @@
 ---
 status: draft
-related: [[phase-mechanics]], [[the-accident]]
+related:
+  - "[[phase-mechanics]]"
+  - "[[the-accident]]"
 ---
 
 # The Secret

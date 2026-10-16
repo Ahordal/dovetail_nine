@@ -1,6 +1,8 @@
 ---
 status: draft
-related: [[the-secret]], [[canon]]
+related:
+  - "[[the-secret]]"
+  - "[[canon]]"
 ---
 
 # Phase Mechanics

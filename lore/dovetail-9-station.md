@@ -1,6 +1,9 @@
 ---
 status: draft
-related: [[the-accident]], [[phase-mechanics]], [[canon]]
+related:
+  - "[[the-accident]]"
+  - "[[phase-mechanics]]"
+  - "[[canon]]"
 ---
 
 # Dovetail-9 Station

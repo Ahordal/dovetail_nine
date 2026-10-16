@@ -20,6 +20,13 @@ Physics is pseudo-science with consistent rules: invented is fine, inconsistent 
 
 When developing lore with the user, ask **one question at a time**, yes/no where possible. Offer a recommendation when asked "what do you think".
 
+## Frontmatter
+
+Wiki links in YAML frontmatter must be quoted, one per line, or GitHub fails to parse it:
+
+    related:
+      - "[[phase-mechanics]]"
+
 ## Writing
 
 - Use plain language when explaining.

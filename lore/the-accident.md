@@ -1,6 +1,9 @@
 ---
 status: draft
-related: [[the-secret]], [[phase-mechanics]], [[canon]]
+related:
+  - "[[the-secret]]"
+  - "[[phase-mechanics]]"
+  - "[[canon]]"
 ---
 
 # The Accident

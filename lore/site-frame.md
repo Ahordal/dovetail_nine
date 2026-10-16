@@ -1,6 +1,7 @@
 ---
 status: draft
-related: [[the-secret]]
+related:
+  - "[[the-secret]]"
 ---
 
 # Site Frame
