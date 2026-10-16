@@ -68,13 +68,18 @@ DYNEX and "Dynex Heavy Systems" are the same company. Canonical name: **DYNEX In
 Independent propulsion R&D company with ex-military roots. Not a Nashiro subsidiary. A rival to Ravel in high-frequency slipstream technology, with its own HFSD lines. Took part in the Dovetail Program as an outside contractor, supplying prototype adaptive harmonic stabilizers.
 
 ### Ravel Industries **[settled: built the HFSD-3A]**
-Boutique propulsion manufacturer. Sole designer and builder of the **HFSD-3A** high-frequency slip drive installed on the Mistral. Valdez had no part in it. Fix the Valdez and Mistral notes accordingly.
+Boutique propulsion manufacturer. Sole designer and builder of the **HFSD-3A** high-frequency slip drive installed on the Mistral. Valdez had no part in it. "HFSD" is the general term for a high-frequency slip drive; Valdez makes its own HFSD lines, and HFSD-3A is Ravel's model.
 
 ### Kessler-Orion Drive Yards **[settled]**
 The dependable workhorse of FTL propulsion. Mass-produced, standardized, safety-certified drives. Not a villain. The site pitch should name Nashiro and DYNEX as the companies that "turned the frontier into a cage", not Kessler-Orion.
 
 ### Stratovan Heavyworks, Stratovan Systems, Duradyne, Blackline
-No conflicts. Profiles stand as written.
+Profiles stand as written, with two small fixes **[settled]**:
+- Blackline's contract with Stratovan Heavyworks is **electronics and comms**. Navigation belongs to Stratovan Systems (Navien).
+- Duradyne is an **industrial specialist**, not an "industrial titan".
+
+### Full profiles
+One file per company in `lore/corporations/`, each with its logo, its role in the Dovetail Program, and notes on what was reconciled from the original Keep notes.
 
 ---
 
