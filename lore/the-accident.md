@@ -65,7 +65,7 @@ To the crew, the whole thing felt like a single instant: a flash.
 ## After
 
 - SIGMA logs thousands of alarms in the first second. There is nobody left to read them.
-- The station is pinned and drifts out of phase with normal space. Nashiro loses signal.
+- The station is phase-locked and drifts out of phase with normal space. Nashiro loses signal.
 - Nashiro issues a blackout order. Records are later sealed under NCIA/2470.
 
 ## Real-world parallels

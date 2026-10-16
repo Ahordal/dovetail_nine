@@ -41,7 +41,7 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 
 - **SIGMA did not lure him.** Quell homed in on an **emergency signal**.
 - **[proposed]** The station's automated distress beacon has run on protocol since 2467. It can only reach normal space during an **alignment window**, so it was silent for years, then suddenly detectable.
-- **Where:** Quell finds the station exactly where it vanished, at **K-17 "Sable", deep in the Trillium Arc**. It is pinned and has never moved.
+- **Where:** Quell finds the station exactly where it vanished, at **K-17 "Sable", deep in the Trillium Arc**. It is phase-locked and has never moved.
 - He was already salvaging in the Trillium Arc. His **Ravel HFSD-3A** is one of the few drives that can survive that stretch of degraded corridor.
 - **[proposed]** K-17 "Sable" is a dim, dying star. The Trillium Arc lies in the outer Perseus Arm, near the Thrennal Expanse.
 - Quell is **seemingly** the only one who picked it up. To the reader this stays uncertain, but **in truth nobody else did**.

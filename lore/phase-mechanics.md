@@ -7,7 +7,7 @@ related:
 
 # Phase Mechanics
 
-The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Every document that touches the physics should obey these rules. Invented physics is fine; inconsistent physics is not.
+The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Every document that touches the physics should obey these rules. Invented physics is fine; inconsistent physics is not. Terms are defined in [[glossary]].
 
 ## In plain terms
 
@@ -106,7 +106,7 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 
 ## Alignment windows
 
-- A pinned station does not move with its corridor, but the corridor keeps drifting. The station sits **out of phase** with normal space most of the time.
+- A phase-locked station does not move with its corridor, but the corridor keeps drifting. The station sits **out of phase** with normal space most of the time.
 - Periodically the drift brings it back into alignment: a **phase beat**, like two slightly mismatched tones pulsing in and out of harmony.
 - **Time passes normally aboard.** Out of phase means unreachable, not slowed. The station has aged in real time since 2467: dust, wear, failing systems, and SIGMA's logs run continuously.
 - Fading began at the accident and has continued at the same pace ever since. It neither starts nor stops for Quell.
