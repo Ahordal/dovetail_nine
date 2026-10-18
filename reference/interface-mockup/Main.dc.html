@@ -129,20 +129,19 @@ button{font:inherit}
 </div>
 </sc-if>
 <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto;">
+<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
 <span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">SIGMA MESSAGES</span>
-<button type="button" onClick="{{closeHist}}" aria-label="Close message history" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
 </div>
 <sc-for list="{{history}}" as="h" hint-placeholder-count="2">
 <div style="display: flex; gap: 12px; font-size: 13px;">
 <span style="flex-shrink: 0; color: #6F6C64;">{{h.t}}</span>
-<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="color: #E8E4DA;">{{h.text}}</span></span>
+<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="{{h.style}}">{{h.text}}</span></span>
 </div>
 </sc-for>
 </div>
 </sc-if>
-<sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{showOutLine}}" hint-placeholder-val="{{false}}">
 <div style="font-size: 12px; white-space: pre-line; padding-top: 3px;"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></div>
 </sc-if>
 <div style="display: flex; align-items: center; gap: 10px;">
@@ -361,12 +360,12 @@ class Component extends DCLogic {
       cmd: this.state.cmd,
       termOut: this.state.out,
       hasOut: !!this.state.out,
-      history: (this.state.history || []).map((h) => ({ t: h.t, text: h.text })),
+      showOutLine: !!this.state.out && !this.state.histOpen,
+      history: (this.state.history || []).map((h, i, list) => ({ t: h.t, text: h.text, style: i === list.length - 1 ? 'color: #E8E4DA;' : 'color: #A8A49A;' })),
       hasHistory: (this.state.history || []).length > 0,
       histOpen: !!this.state.histOpen,
       histClosed: !this.state.histOpen,
       toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
-      closeHist: () => { this.setState({ histOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
       outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
       outText: (this.state.out || '').replace(/^SIGMA:\s/, ''),
       outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',

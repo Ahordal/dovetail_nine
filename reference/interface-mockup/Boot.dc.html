@@ -155,20 +155,19 @@ sc-if,sc-for{display:contents}
 </div>
 </sc-if>
 <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto;">
+<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
 <span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">SIGMA MESSAGES</span>
-<button type="button" onClick="{{closeHist}}" aria-label="Close message history" style="margin-right: -8px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
 </div>
 <sc-for list="{{history}}" as="h" hint-placeholder-count="2">
 <div style="display: flex; gap: 12px; font-size: 13px;">
 <span style="flex-shrink: 0; color: #6F6C64;">{{h.t}}</span>
-<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="color: #E8E4DA;">{{h.text}}</span></span>
+<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="{{h.style}}">{{h.text}}</span></span>
 </div>
 </sc-for>
 </div>
 </sc-if>
-<sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{showOutLine}}" hint-placeholder-val="{{false}}">
 <div style="font-size: 13px; white-space: pre-line; padding-top: 3px;"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></div>
 </sc-if>
 <div style="display: flex; align-items: center; gap: 10px;">
@@ -222,21 +221,20 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{showBlankBar}}" hint-placeholder-val="{{true}}">
 <div style="flex-shrink: 0; min-height: 41px; box-sizing: border-box; border-top: 1px solid #2A2D30; background: #0F1112; border-radius: 0 0 8px 8px; padding: 5px 20px; display: flex; flex-direction: column; justify-content: center; gap: 2px;">
 <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto;">
+<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
 <span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">SIGMA MESSAGES</span>
-<button type="button" onClick="{{closeHist}}" aria-label="Close message history" style="margin-right: -8px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
 </div>
 <sc-for list="{{history}}" as="h" hint-placeholder-count="2">
 <div style="display: flex; gap: 12px; font-size: 13px;">
 <span style="flex-shrink: 0; color: #6F6C64;">{{h.t}}</span>
-<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="color: #E8E4DA;">{{h.text}}</span></span>
+<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="{{h.style}}">{{h.text}}</span></span>
 </div>
 </sc-for>
 </div>
 </sc-if>
 <div style="display: flex; align-items: center; gap: 10px; min-height: 30px;">
-<div style="flex: 1 1 auto; min-width: 0; font-size: 13px; white-space: pre-line;"><sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></sc-if></div>
+<div style="flex: 1 1 auto; min-width: 0; font-size: 13px; white-space: pre-line;"><sc-if value="{{showOutLine}}" hint-placeholder-val="{{false}}"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></sc-if></div>
 <sc-if value="{{hasHistory}}" hint-placeholder-val="{{false}}">
 <button type="button" onClick="{{toggleHist}}" aria-label="SIGMA message history" aria-expanded="{{histOpen}}" style="margin-right: -8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer;">
 <sc-if value="{{histClosed}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg></sc-if>
@@ -561,12 +559,12 @@ class Component extends DCLogic {
       cmd: this.state.cmd,
       out: this.state.out,
       hasOut: !!this.state.out,
-      history: (this.state.history || []).map((h) => ({ t: h.t, text: h.text })),
+      showOutLine: !!this.state.out && !this.state.histOpen,
+      history: (this.state.history || []).map((h, i, list) => ({ t: h.t, text: h.text, style: i === list.length - 1 ? 'color: #E8E4DA;' : 'color: #A8A49A;' })),
       hasHistory: (this.state.history || []).length > 0,
       histOpen: !!this.state.histOpen,
       histClosed: !this.state.histOpen,
       toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
-      closeHist: () => { this.setState({ histOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
       bootComplete: typeof this.state.bootTime === 'number',
       bootTimeText: (this.state.bootTime || 0).toFixed(1) + ' s',
       outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),

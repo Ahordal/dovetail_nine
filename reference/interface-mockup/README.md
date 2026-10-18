@@ -93,7 +93,7 @@ Every screen sits between a matching **top bar** and **bottom bar**, both in the
 
 ## SIGMA's voice
 
-**SIGMA has one dedicated spot: the message line in the bottom bar.** Its latest message always appears there, on every screen, including screens with no input (standby, logging in, the welcome screen). A button at the right of the bar, or the `messages` command, expands the bar upwards to show SIGMA's earlier messages with their station times ("SIGMA MESSAGES", newest last, ✕ or `close` to fold it away). Help and history share that space, so opening one closes the other. Neither clears the latest message.
+**SIGMA has one dedicated spot: the message line in the bottom bar.** Its latest message always appears there, on every screen, including screens with no input (standby, logging in, the welcome screen). A button at the right of the bar, or the `messages` command, expands the bar upwards to show SIGMA's earlier messages with their station times ("SIGMA MESSAGES", newest last and brightest; the same button or `close` folds it away). While the history is open the separate message line hides, since the list already ends with the latest message. Help and history share that space, so opening one closes the other. Neither clears the latest message.
 
 Whenever SIGMA speaks, its name appears in SIGMA red and the message in off-white: on the response line ("SIGMA: General access session open."), and in the boot and welcome greetings. Plain system output, such as `ls` results and access errors, stays teal.
 
