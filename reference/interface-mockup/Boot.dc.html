@@ -154,6 +154,20 @@ sc-if,sc-for{display:contents}
 </sc-for>
 </div>
 </sc-if>
+<sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">SIGMA MESSAGES</span>
+<button type="button" onClick="{{closeHist}}" aria-label="Close message history" style="margin-right: -8px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
+</div>
+<sc-for list="{{history}}" as="h" hint-placeholder-count="2">
+<div style="display: flex; gap: 12px; font-size: 13px;">
+<span style="flex-shrink: 0; color: #6F6C64;">{{h.t}}</span>
+<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="color: #E8E4DA;">{{h.text}}</span></span>
+</div>
+</sc-for>
+</div>
+</sc-if>
 <sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}">
 <div style="font-size: 13px; white-space: pre-line; padding-top: 3px;"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></div>
 </sc-if>
@@ -163,6 +177,12 @@ sc-if,sc-for{display:contents}
 <input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 13px; min-height: 30px;">
 <span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>
 </div>
+<sc-if value="{{hasHistory}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{toggleHist}}" aria-label="SIGMA message history" aria-expanded="{{histOpen}}" style="margin-right: -8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer;">
+<sc-if value="{{histClosed}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg></sc-if>
+<sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+</button>
+</sc-if>
 </div>
 </div>
 </sc-if>
@@ -195,15 +215,36 @@ sc-if,sc-for{display:contents}
 <span style="font-size: 13px; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Session</span><span style="color: #9FC7C2;">GENERAL USER</span></div>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Access</span><span style="color: #9FC7C2;">GENERAL</span></div>
-<div style="margin-top: 14px; display: flex; flex-direction: column; gap: 4px;">
-<span style="font-size: 13px;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> Welcome to Dovetail-9.</span>
-</div>
 <a ref="{{dirRef}}" onClick="{{enterDir}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
 </div>
 </sc-if>
 <sc-if value="{{showBlankBar}}" hint-placeholder-val="{{true}}">
-<div aria-hidden="true" style="flex-shrink: 0; height: 41px; box-sizing: border-box; border-top: 1px solid #2A2D30; background: #0F1112; border-radius: 0 0 8px 8px;"></div>
+<div style="flex-shrink: 0; min-height: 41px; box-sizing: border-box; border-top: 1px solid #2A2D30; background: #0F1112; border-radius: 0 0 8px 8px; padding: 5px 20px; display: flex; flex-direction: column; justify-content: center; gap: 2px;">
+<sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+<div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">SIGMA MESSAGES</span>
+<button type="button" onClick="{{closeHist}}" aria-label="Close message history" style="margin-right: -8px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
+</div>
+<sc-for list="{{history}}" as="h" hint-placeholder-count="2">
+<div style="display: flex; gap: 12px; font-size: 13px;">
+<span style="flex-shrink: 0; color: #6F6C64;">{{h.t}}</span>
+<span style="min-width: 0;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> <span style="color: #E8E4DA;">{{h.text}}</span></span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<div style="display: flex; align-items: center; gap: 10px; min-height: 30px;">
+<div style="flex: 1 1 auto; min-width: 0; font-size: 13px; white-space: pre-line;"><sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></sc-if></div>
+<sc-if value="{{hasHistory}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{toggleHist}}" aria-label="SIGMA message history" aria-expanded="{{histOpen}}" style="margin-right: -8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer;">
+<sc-if value="{{histClosed}}" hint-placeholder-val="{{true}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg></sc-if>
+<sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+</button>
+</sc-if>
+</div>
+</div>
 </sc-if>
 
 </div>
@@ -248,6 +289,7 @@ class Component extends DCLogic {
     this.COMMANDS = [
       { cmd: 'login', desc: 'Open a general user session.' },
       { cmd: 'help', desc: 'Show or hide this list.' },
+      { cmd: 'messages', desc: 'Show SIGMA message history.' },
       { cmd: 'close', desc: 'Close this list.' }
     ];
     this.state = { started: false, chattering: false, spin: 0, shown: 0, helpOpen: false, cmd: '', out: '', screen: 'boot', muted: false };
@@ -388,7 +430,19 @@ class Component extends DCLogic {
     return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
   }
 
+
+  // Every SIGMA message goes into the history as it appears on the command line.
+  recordSigma() {
+    const out = this.state.out || '';
+    if (out === this.lastRecorded) return;
+    this.lastRecorded = out;
+    if (!/^SIGMA:\s/.test(out)) return;
+    const text = out.replace(/^SIGMA:\s/, '');
+    this.setState({ history: (this.state.history || []).concat([{ t: '03:58', text }]) });
+  }
+
   componentDidUpdate() {
+    this.recordSigma();
     // Focus the prompt once it appears, so the reader can type straight away (not on phones,
     // where focusing would pop the keyboard unasked).
     if (this.inputEl && !this.autoFocused && !this.isTouch()) {
@@ -427,8 +481,10 @@ class Component extends DCLogic {
     if (!input) return;
     const v = input.split(/\s+/)[0].toLowerCase();
     // Help expands the prompt itself; any other command folds it away.
-    if (v === 'help') return this.setState({ helpOpen: !this.state.helpOpen, out: '' });
-    if (v === 'close') return this.setState({ helpOpen: false, out: '' });
+    // Help and history share the space above the prompt, so one closes the other.
+    if (v === 'help') return this.setState({ helpOpen: !this.state.helpOpen, histOpen: false });
+    if (v === 'messages') return this.setState({ histOpen: !this.state.histOpen, helpOpen: false });
+    if (v === 'close') return this.setState({ helpOpen: false, histOpen: false });
     this.setState({ helpOpen: false });
     if (v === 'login') {
       if (this.state.shown < this.BOOT.length) return this.setState({ out: 'SIGMA: Station systems still initializing.' });
@@ -438,7 +494,7 @@ class Component extends DCLogic {
         clearInterval(this.loginSpin);
         this.accessBeep();
         this.setState({ loginStage: 'matched' });
-        this.welcomeTimer = setTimeout(() => this.setState({ screen: 'welcome' }), 1100);
+        this.welcomeTimer = setTimeout(() => this.setState({ screen: 'welcome', out: 'SIGMA: Welcome to Dovetail-9.' }), 1100);
       }, 1800);
       return;
     }
@@ -505,6 +561,12 @@ class Component extends DCLogic {
       cmd: this.state.cmd,
       out: this.state.out,
       hasOut: !!this.state.out,
+      history: (this.state.history || []).map((h) => ({ t: h.t, text: h.text })),
+      hasHistory: (this.state.history || []).length > 0,
+      histOpen: !!this.state.histOpen,
+      histClosed: !this.state.histOpen,
+      toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
+      closeHist: () => { this.setState({ histOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
       bootComplete: typeof this.state.bootTime === 'number',
       bootTimeText: (this.state.bootTime || 0).toFixed(1) + ' s',
       outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
