@@ -116,7 +116,7 @@ button{font:inherit}
 <div style="font-size: 12px; color: #9FC7C2; min-height: 18px; white-space: pre-line;">{{termOut}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="cmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
-<input id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command: ls, cd galley, cd .., open RPE-0217.env, help" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 36px;">
+<input id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command: ls, cd deck 02, cd galley, cd .., open RPE-0217.env, help" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 36px;">
 </div>
 </div>
 
@@ -131,18 +131,18 @@ class Component extends DCLogic {
     this.state = { loc: 'root', file: null, cmd: '', out: 'SIGMA: Welcome aboard, Mr. Quell. Type help for commands.', collapsed: { d1: true, d2: true, dev: true } };
     this.NODES = [
       { id: 'root', label: 'DOVETAIL-9', depth: 0, parent: null },
-      { id: 'd1', label: 'deck-01_docking-ring', depth: 1, parent: 'root' },
-      { id: 'd1a', label: 'airlock-A', depth: 2, parent: 'd1' },
-      { id: 'd1b', label: 'docking-control', depth: 2, parent: 'd1', lock: 'NO POWER' },
-      { id: 'd2', label: 'deck-02_habitation', depth: 1, parent: 'root' },
-      { id: 'd2a', label: 'corridor-2A', depth: 2, parent: 'd2' },
-      { id: 'd2b', label: 'galley', depth: 2, parent: 'd2' },
-      { id: 'd2c', label: 'crew-quarters', depth: 2, parent: 'd2' },
-      { id: 'd2d', label: 'hydroponics', depth: 2, parent: 'd2', lock: 'SEALED' },
-      { id: 'd3', label: 'deck-03', depth: 1, parent: 'root' },
-      { id: 'd4', label: 'deck-04', depth: 1, parent: 'root' },
-      { id: 'd5', label: 'deck-05_research', depth: 1, parent: 'root', lock: 'CLEARANCE 3' },
-      { id: 'd6', label: 'deck-06 to deck-12', depth: 1, parent: 'root' },
+      { id: 'd1', label: 'Deck 01', depth: 1, parent: 'root' },
+      { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1' },
+      { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER' },
+      { id: 'd2', label: 'Deck 02', depth: 1, parent: 'root' },
+      { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2' },
+      { id: 'd2b', label: 'Galley', depth: 2, parent: 'd2' },
+      { id: 'd2c', label: 'Crew Quarters', depth: 2, parent: 'd2' },
+      { id: 'd2d', label: 'Hydroponics', depth: 2, parent: 'd2', lock: 'SEALED' },
+      { id: 'd3', label: 'Deck 03', depth: 1, parent: 'root' },
+      { id: 'd4', label: 'Deck 04', depth: 1, parent: 'root' },
+      { id: 'd5', label: 'Deck 05', depth: 1, parent: 'root', lock: 'CLEARANCE 3' },
+      { id: 'd6', label: 'Deck 06 to Deck 12', depth: 1, parent: 'root' },
       { id: 'dev', label: 'devices', depth: 1, parent: 'root' },
       { id: 'q', label: 'BLDS-X_QUELL', depth: 2, parent: 'dev' },
       { id: 'ql', label: 'logs', depth: 3, parent: 'q' },

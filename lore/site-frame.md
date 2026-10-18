@@ -24,19 +24,22 @@ The whole experience works as a file tree:
 
 - **Folders are places** (decks, then rooms). **Files are what's in them** (terminal contents, records, logs).
 - **Opening a folder is Quell going there.**
+- **Decks are named by number [settled]:** Deck 01, Deck 02, up to Deck 12. Each deck's rooms sit in a sub-tree beneath it.
 - **The station tree holds only places [settled].** `DOVETAIL-9/` at the top is the station overview, the starting screen.
 - **Quell's slate lives under TOOLS, outside the station tree [settled].** It's what he carries, so using it never moves him. The slate is one tool among several, and **each tool has one or more actions**.
 - A map, if added later, is a picture of the same folders.
 
 ```
 DOVETAIL-9/                ← places only
-├── deck-01_docking-ring/
-├── deck-02_habitation/
-│   ├── galley/
+├── Deck 01/
+│   ├── Airlock A/
+│   └── ...
+├── Deck 02/
+│   ├── Galley/
 │   │   ├── GAL-02_crew-messages/
 │   │   └── ...
 │   └── ...
-└── ...
+└── ... Deck 12/
 
 TOOLS                      ← carried; usable anywhere
 ├── slate        (logs, ...)

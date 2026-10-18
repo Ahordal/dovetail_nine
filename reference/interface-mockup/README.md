@@ -40,9 +40,9 @@ Tried and removed:
 ## Station directory (`Main.dc.html`)
 
 - **Slate frame:** Blackline shell (BLDS-X, UDC link, battery, station time) around SIGMA's screen.
-- **Current location flag:** "◉ QUELL ▸ DECK-02_HABITATION / GALLEY" in the status bar, and a red YOU tag on his folder in the tree.
+- **Current location flag:** "◉ QUELL ▸ DECK 02 / GALLEY" in the status bar, and a red YOU tag on his folder in the tree.
 - *Out of date:* the mockup still shows the slate under `devices/`. Canon now puts it under TOOLS, outside the station tree.
-- **File tree** with `DOVETAIL-9` as the master folder: decks, rooms, and Quell's slate under `devices/`. Folders are collapsible; all decks start collapsed. Opens on the station overview.
+- **File tree** with `DOVETAIL-9` as the master folder: Deck 01 to Deck 12, each with its rooms beneath, and Quell's slate under `devices/`. Folders are collapsible; all decks start collapsed. Opens on the station overview.
 - **Location panel:** what Quell sees, his scanner reading, the files and sub-folders there. Files open in a viewer.
 - **Terminal line:** `ls`, `cd <name>`, `cd ..`, `cd /`, `open <file>`, `help`, alongside clicking.
 
