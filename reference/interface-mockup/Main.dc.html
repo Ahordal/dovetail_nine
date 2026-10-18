@@ -304,7 +304,14 @@ class Component extends DCLogic {
       helpOpen: this.state.helpOpen,
       commands: this.COMMANDS,
       onCmd: (e) => this.setState({ cmd: e.target.value }),
-      onKey: (e) => { if (e.key === 'Enter') { const v = this.state.cmd; this.setState({ cmd: '' }); this.run(v); } }
+      onKey: (e) => {
+        if (e.key !== 'Enter') return;
+        const v = this.state.cmd;
+        // Dismiss the phone keyboard so it doesn't cover the help list.
+        if (v.trim().toLowerCase() === 'help') e.target.blur();
+        this.setState({ cmd: '' });
+        this.run(v);
+      }
     };
   }
 }

@@ -418,7 +418,14 @@ class Component extends DCLogic {
       loginMatched: this.state.loginStage === 'matched',
       onWelcome: this.state.screen === 'welcome',
       onCmd: (e) => this.setState({ cmd: e.target.value }),
-      onKey: (e) => { if (e.key === 'Enter') { const val = this.state.cmd; this.setState({ cmd: '' }); this.run(val); } }
+      onKey: (e) => {
+        if (e.key !== 'Enter') return;
+        const val = this.state.cmd;
+        // Dismiss the phone keyboard so it doesn't cover the help list.
+        if (val.trim().toLowerCase() === 'help') e.target.blur();
+        this.setState({ cmd: '' });
+        this.run(val);
+      }
     };
   }
 }
