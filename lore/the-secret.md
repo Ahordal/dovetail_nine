@@ -55,6 +55,10 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 - **SIGMA doesn't tell Quell the truth at first.** The experiment is Level 6 classified and sealed under NCIA/2470; Quell has no clearance, and SIGMA follows protocol. It also suits SIGMA, since knowing the truth would make him leave.
 - **Mostly, Quell takes the truth:** he forces his way into classified files with his slate's spoofing and override tools. Whoever receives the dump unlocks files the same way, with his tools.
 - **Maybe, at some point, SIGMA gives it:** it breaks protocol and tells him something it isn't permitted to. A major character moment for a machine that has always followed orders.
+- **Quell cannot leave the station. [settled]** Once aboard, he can't get back to the Mistral. He explores the station freely, but the way out is closed to him.
+- **The story spans about 24 hours [settled],** like Alien: Isolation. The trap closes gradually over that time rather than all at once. Exact beats **[open]**.
+- **[proposed]** The alignment window lasts about a day. Quell boards near its start; it closes at the end of the 24 hours with him aboard.
+- Over one day, exposure causes only the early effects in [[phase-mechanics]]: heightened perception, growing doubt about what he senses. Exhaustion from a day without sleep adds to it. Not the full Dovetail-5 decline.
 - To keep Quell it doesn't need force, only **delay**: if the alignment window closes with him aboard, he's stuck until the next one.
 
 ## The data dump

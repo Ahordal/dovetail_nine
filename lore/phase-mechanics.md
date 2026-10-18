@@ -125,5 +125,5 @@ The **one minor glitch** that drew attention: a shielding power dip during a tes
 
 ## Open choices
 
-1. **How long is an alignment window,** and how often does one open?
+1. **How often does an alignment window open?** **[proposed]** Each lasts about a day, the span of Quell's story.
 2. **Can Quell's own moments get caught?** A possible late payoff: an RPE of himself.

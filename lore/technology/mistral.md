@@ -47,7 +47,7 @@ Lived-in. Weathered, patched, and unmistakably Quell's: tools stowed in odd corn
 
 - Quell's lifeline and his prison: it carries him into hostile, lawless zones, but its confined spaces underscore his isolation.
 - The panoramic cockpit reinforces exposure: he sees everything, and the emptiness stares back.
-- His only tether to safety while aboard Dovetail-9. Docking and power routing through the ship are his fallback when the station turns hostile.
+- **Docked but out of reach.** The original note made the Mistral his fallback if the station turned hostile. Canon: once Quell is aboard Dovetail-9, he **can't get back to it**. It sits at the docking bay, visible, unreachable.
 - It embodies his independence: high-grade industrial engineering, customized and maintained by him alone.
 - Part home, part workshop, part survival pod. One man's entire world between jobs.
 - **Its fate:** still docked at Dovetail-9 when the alignment window closes. It goes out of phase with the station, and with Quell.

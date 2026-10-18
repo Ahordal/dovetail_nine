@@ -99,7 +99,7 @@ Modeled on Mark Watney in *The Martian*, with Quell's temperament:
 - **Doesn't panic.** Something goes wrong, he logs it, finds the next step, does it.
 - **Gallows humor under pressure,** but terse: one dry line, never a riff. Unlike Watney he isn't chatty or performing for an audience.
 
-> *D007. Docking clamp 2 jammed. SIGMA says "fault under review". Bypassed via aux panel, 40 min. Clamp 3 next. Then 4.*
+> *1615 / DOCKING RING. Clamp 2 jammed. SIGMA says "fault under review". Bypassed via aux panel, 40 min. Clamp 3 next. Then 4.*
 > *At this rate I'll own the station by the time I leave.*
 
 **The tragedy it sets up:** a man who can solve anything one piece at a time finally meets the one problem with no next step.
@@ -111,11 +111,13 @@ Two registers, kept distinct:
 - **Observations: pure shorthand.** Clipped, technical, numbers first. No adjectives he doesn't need.
 - **Feelings: short, dry asides.** One line, usually at the end of an observation. Understated, often deflected with humor. He never writes a paragraph about how he feels.
 
-> *D004. Deck 2 galley. Thermal drop 3 K, 1.4 s. Condensation on panel. Vents clean. Rechecked twice.*
+> *0412 / DECK 2 / GALLEY. Thermal drop 3 K, 1.4 s. Condensation on panel. Vents clean. Rechecked twice.*
 > *Don't like this room.*
 
-> *D006. R&D lock still sealed. Override would work. Not using it yet.*
+> *0930 / DECK 5 / R&D. Lock still sealed. Override would work. Not using it yet.*
 > *Whoever ran this place knew what they were doing. That's the problem.*
+
+- **Entries are tied to places,** timestamped by station time: what he finds in each area, as he finds it.
 
 - Feelings show up more often as the station gets to him, but the shorthand never fully breaks down.
 - His later logs, written for whoever receives the dump, keep the same voice. They're addressed to a stranger, but still terse.

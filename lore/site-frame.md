@@ -10,7 +10,46 @@ Who the reader is and what interface they use.
 
 ## Decision
 
-- **Build option 6, the data dump.** The reader is someone who received the dump Quell broadcast on salvage channels during the alignment window, before the window closed with him aboard.
+- **The reader is Quell, on the station, in 2477 (option 1). [settled]** They discover the station's secrets through its terminals, Alien: Isolation style.
+- **Navigation:** type commands or click (option 3) as the base. A **deck map** added once the station layout exists. With the reader as Quell, the map doubles as his body: choosing a deck is Quell going there.
+- **The data dump stays in the story**, as something Quell does, not as the frame.
+- **Timeframe: about 24 hours aboard [settled].** No day-by-day structure; the story moves by hours.
+- **Logs are tied to places [settled]:** each entry records what Quell finds in a particular area, timestamped by station time.
+
+## The file-tree model **[settled]**
+
+The whole experience works as a file tree:
+
+- **Folders are places** (decks, then rooms). **Files are what's in them** (terminal contents, records, logs).
+- **Opening a folder is Quell going there.**
+- Quell's own material (logs, tools) sits in its own branch, separate from the station's.
+- A map, if added later, is a picture of the same folders.
+
+```
+DOVETAIL-9/
+├── deck-01_docking-ring/
+├── deck-02_habitation/
+│   ├── galley/
+│   │   ├── GAL-02_crew-messages/
+│   │   └── ...
+│   └── ...
+└── ...
+SLATE/
+├── logs/
+└── tools/
+```
+
+### Mechanisms: **not yet committed**
+
+Candidates discussed, still to be decided:
+
+- a description shown on entering each folder (what Quell sees and senses)
+- sealed, unpowered, and clearance-locked folders, and how each is opened
+- `spoof` and `override`, and their cost
+- station time advancing with each move and action
+- echoes as files in the rooms where they happen
+- how far the reader can jump between distant folders
+- *Superseded:* option 6, where the reader received the dump.
 - **Option 7's twist no longer works as written.** It needed Quell to escape and read his own dump, but canon now says he doesn't escape. Kept below for reference; any revival would need rethinking (for example, a version where the reader is Quell still aboard, re-reading, close to Gemini's purgatory idea).
 
 ### Twist layer notes (archived)
