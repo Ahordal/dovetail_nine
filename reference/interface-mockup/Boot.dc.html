@@ -123,12 +123,6 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{booting}}" hint-placeholder-val="{{true}}">
 <span style="color: #6F6C64; font-size: 13px;">▌</span>
 </sc-if>
-<sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
-<div style="margin-top: 16px; display: flex; flex-direction: column; gap: 4px; white-space: pre-line;">
-<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.1em;">SIGMA</span>
-<span>Terminal ready.</span>
-</div>
-</sc-if>
 </div>
 </div>
 <sc-if value="{{canScroll}}" hint-placeholder-val="{{false}}">
@@ -323,7 +317,7 @@ class Component extends DCLogic {
     this.tone(980, 0.05, 0.18, 'square', 0.12);
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
+    if (reduce) { this.setState({ shown: this.BOOT.length, out: 'SIGMA: Terminal ready. Type help for commands.' }); this.chime(0.4); return; }
     this.setState({ chattering: true });
     this.spinTimer = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
     // Hold on the initializing message before the self-check starts listing.
@@ -331,7 +325,7 @@ class Component extends DCLogic {
       clearInterval(this.spinTimer);
       this.setState({ chattering: false });
       this.timer = setInterval(() => {
-        if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
+        if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); this.setState({ out: 'SIGMA: Terminal ready. Type help for commands.' }); return; }
         if (!this.BOOT[this.state.shown].stage) this.printChatter();
         this.setState({ shown: this.state.shown + 1 });
       }, 160);
