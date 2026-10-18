@@ -78,7 +78,7 @@ button{font:inherit}
 
 <sc-if value="{{onBootScreen}}" hint-placeholder-val="{{true}}">
 <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
-<div ref="{{logRef}}" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
+<div ref="{{logRef}}" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px max(24px, calc((100% - 960px) / 2)); display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 12px 0;">
 <span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.1em;">TERMINAL DT9-T01A · STANDBY</span>
@@ -99,7 +99,7 @@ button{font:inherit}
 <sc-if value="{{line.isCheck}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
 <span class="boot-ts" style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
-<span style="flex: 1 1 140px; min-width: 0; color: #D6D2C8;">{{line.label}}</span>
+<span style="flex: 0 1 28ch; min-width: 14ch; color: #D6D2C8;">{{line.label}}</span>
 <span style="{{line.valStyle}}">{{line.value}}</span>
 </div>
 </sc-if>
@@ -116,7 +116,7 @@ button{font:inherit}
 </div>
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
-<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 8px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
+<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 8px max(20px, calc((100% - 960px) / 2)); display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
 <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
 <span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">AVAILABLE COMMANDS</span>
@@ -139,7 +139,7 @@ button{font:inherit}
 </sc-if>
 
 <sc-if value="{{onLoggingIn}}" hint-placeholder-val="{{false}}">
-<div role="status" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
+<div role="status" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 32px max(24px, calc((100% - 960px) / 2)); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
 <sc-if value="{{loginVerifying}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
 <div style="display: flex; gap: 12px; font-size: 15px; letter-spacing: 0.1em; color: #E8E4DA;">
@@ -160,7 +160,7 @@ button{font:inherit}
 
 <sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
 <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
-<div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; font-size: 13px;">
+<div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px max(24px, calc((100% - 960px) / 2)); box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; font-size: 13px;">
 <span style="color: #9FC7C2; letter-spacing: 0.06em;">[ OK ] ACCESS GRANTED</span>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Session</span><span style="color: #9FC7C2;">GENERAL USER</span></div>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Access</span><span style="color: #9FC7C2;">GENERAL</span></div>
