@@ -10,10 +10,11 @@ A clickable prototype of the site's interface, kept as development reference. No
 1. **Connect.** The screen waits on "BLDS-X READY · UDC PORT 1 · NO LINK" with a CONNECT SLATE button. Browsers need a click before playing sound; in-story, it's Quell plugging in.
 2. **SIGMA logo:** the Σ in a broken circle with a red arc, the public designation, and "Nashiro Dynamics · Dovetail-9 Research Station".
 3. **Boot sequence:** station systems come online one line at a time (teal for normal, amber for warnings). Shows everything at once under reduced-motion settings.
-4. **SIGMA's greeting:** "Welcome aboard Dovetail-9. External device detected on UDC port 1. Identify yourself to continue."
-5. **Command prompt:** only `help` and `login` (no name needed). `login` before the systems check finishes gets "Station systems still initializing."
-6. **Welcome screen:** `login` replaces the boot log with a new screen: "SIGMA // IDENTITY VERIFIED", the bioelectric match to the slate, "Welcome aboard, Mr. Quell. Clearance: GUEST.", and an ENTER STATION DIRECTORY button.
-7. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
+4. **SIGMA's greeting:** "Welcome aboard Dovetail-9. External device detected on UDC port 1."
+5. **Command prompt:** only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the systems check finishes gets "Station systems still initializing."
+6. **Logging-in screen:** `login` replaces the boot log with "LOGGING IN" and the spinning cursor, over "Verifying bioelectric signature", for ~1.8 s. A beep marks success.
+7. **Welcome screen:** then a new screen: "SIGMA // IDENTITY VERIFIED", the bioelectric match to the slate, "Welcome aboard, Mr. Quell. Clearance: GUEST.", and an ENTER STATION DIRECTORY button.
+8. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
 
 ### Sound design
 
