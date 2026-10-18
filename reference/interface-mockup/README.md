@@ -21,18 +21,19 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Sound | Detail |
 |---|---|
 | POST beep | Square wave, 980 Hz, 0.18 s |
-| Link clicks (Geiger) | ~1.75 s after the beep, sounding like a Geiger counter: random (Poisson-timed) clicks, each a 4 to 7 ms broadband noise burst high-passed at 1500 Hz. The rate swells from ~10 to ~44 per second and back, with occasional bursts of 3 to 7 rapid clicks. On screen: "ESTABLISHING LINK TO SIGMA CORE" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), replaced by "SIGMA core link: ESTABLISHED" as the first boot line. |
+| Link beeps | Startup beeps for the ~1.75 s link phase: two rising square-wave beeps on connect (1320 Hz, 0.09 s; then 1760 Hz, 0.12 s), and one at 1568 Hz (0.14 s) when the link is established. Otherwise quiet. On screen: "ESTABLISHING LINK TO SIGMA CORE" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), replaced by "SIGMA core link: ESTABLISHED" as the first boot line. |
 | Fan | Soft low-passed noise, continues quietly after boot |
 | Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 
-Timing: beep, then ~1.75 s of Geiger clicks, then boot lines every 0.22 s with clicks, then the chime.
+Timing: POST beep, then the link phase (two startup beeps, ~1.75 s of the loading cursor, a beep as the link is established), then boot lines every 0.22 s with clicks, then the chime.
 
 Tried and removed:
 - a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out)
 - a whoosh layer
 - rhythmic *Aliens*-style drive chatter (steady ticks every ~55 ms, alternating two pitches, plus seek clicks)
 - continuous chatter running through the whole systems check
+- Geiger-counter clicks during the link phase (random-timed broadband clicks with bursts)
 
 ## Station directory (`Main.dc.html`)
 
