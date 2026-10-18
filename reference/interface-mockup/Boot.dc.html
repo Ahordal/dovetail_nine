@@ -306,12 +306,8 @@ class Component extends DCLogic {
     }
   }
 
-  // Startup beeps: one as the terminal wakes, one as initialization completes.
-  linkBeeps() {
-    this.tone(1760, 0.62, 0.12, 'square', 0.08);
-  }
-
-  linkEstablished() {
+  // Login confirmation beep.
+  accessBeep() {
     this.tone(1568, 0, 0.14, 'square', 0.08);
   }
 
@@ -320,7 +316,6 @@ class Component extends DCLogic {
     this.initAudio();
     if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
     this.tone(980, 0.05, 0.18, 'square', 0.12);
-    this.linkBeeps();
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
@@ -329,7 +324,6 @@ class Component extends DCLogic {
     // Hold on the initializing message before the self-check starts listing.
     this.delay = setTimeout(() => {
       clearInterval(this.spinTimer);
-      this.linkEstablished();
       this.setState({ chattering: false });
       this.timer = setInterval(() => {
         if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
@@ -400,7 +394,7 @@ class Component extends DCLogic {
       this.loginSpin = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
       this.loginTimer = setTimeout(() => {
         clearInterval(this.loginSpin);
-        this.linkEstablished();
+        this.accessBeep();
         this.setState({ loginStage: 'matched' });
         this.welcomeTimer = setTimeout(() => this.setState({ screen: 'welcome' }), 1100);
       }, 1800);
