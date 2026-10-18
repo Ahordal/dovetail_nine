@@ -57,6 +57,7 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Print blips | As each boot line prints, a rapid run of 7 to 12 single electronic blips, in the spirit of the Nostromo's terminals in *Alien*: 6 ms square-wave blips about 12 ms apart, each at a random one of 2100, 2400 or 2800 Hz. None on stage headings. |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 | Login beep | 1568 Hz square wave when access is granted |
+| Directory beep | 1320 Hz square wave, 0.12 s, on clicking ENTER STATION DIRECTORY; the link follows ~170 ms later so the tone is heard |
 
 Timing: POST beep, then the initializing phase (one startup beep, ~1.75 s of the loading cursor, a beep as it completes), then boot lines every 0.16 s, each with a run of print blips (none on stage headings), then the chime.
 

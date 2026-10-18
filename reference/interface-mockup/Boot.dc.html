@@ -196,7 +196,7 @@ sc-if,sc-for{display:contents}
 <span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.1em;">SIGMA</span>
 <span>Welcome to Dovetail-9.</span>
 </div>
-<a href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
+<a ref="{{dirRef}}" onClick="{{enterDir}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
 </div>
 </sc-if>
@@ -421,6 +421,16 @@ class Component extends DCLogic {
       ringLayers,
       glyphLayers,
       logRef: (el) => { this.logEl = el; },
+      dirRef: (el) => { this.dirEl = el; },
+      // Beep first, then follow the link once the tone has played; leaving the
+      // screen at once would close the audio before it's heard.
+      enterDir: (e) => {
+        if (this.leaving) return;
+        e.preventDefault();
+        this.leaving = true;
+        this.tone(1320, 0, 0.12, 'square', 0.08);
+        setTimeout(() => { if (this.dirEl) this.dirEl.click(); }, 170);
+      },
       canScroll: !!this.state.canScroll,
       scrollUp: () => this.scrollLog(-1),
       scrollDown: () => this.scrollLog(1),
