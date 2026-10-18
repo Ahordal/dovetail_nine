@@ -131,7 +131,10 @@ button{font:inherit}
 <div style="font-size: 12px; color: #9FC7C2; min-height: 12px; white-space: pre-line;">{{termOut}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="cmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
-<div style="position: relative; flex-grow: 1; min-width: 0; display: flex; align-items: center;">\n<input ref="{{inputRef}}" id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command: ls, cd deck 02, cd galley, cd .., open RPE-0217.env, help" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">\n<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>\n</div>
+<div style="position: relative; flex-grow: 1; min-width: 0; display: flex; align-items: center;">
+<input ref="{{inputRef}}" id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command: ls, cd deck 02, cd galley, cd .., open RPE-0217.env, help" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
+<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>
+</div>
 </div>
 </div>
 
