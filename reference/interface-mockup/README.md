@@ -79,6 +79,14 @@ Tried and removed:
 - **Terminal line:** `ls`, `cd <name>`, `cd ..`, `cd /`, `open <file>`, `help`, alongside clicking. `help` expands the prompt box to list this screen's commands, the same way as on the boot screen.
 - **Not yet mocked up:** the TOOLS area (slate and its abilities), and Quell's own logs, which were removed with the old `devices/` folder.
 
+## Frame
+
+Every screen sits between a matching **top bar** and **bottom bar**, both in the command line's style: 41 px tall, darker fill `#0F1112`, a 1 px divider toward the content, and 8 px rounded outer corners (top corners on the top bar, bottom corners on the bottom bar). A 20 px gap separates each from the window edge (more where a phone has a notch or home bar).
+
+- **Top bar:** terminal ID and time on the boot screen (with the mute button); location flag and station time on the directory.
+- **Bottom bar:** a working command line only where the reader can type (the boot screen once it's ready, and the directory). On standby, during the boot, logging in and the welcome screen, it's the same shape, empty.
+- The directory's command line stays pinned to the bottom of the window even when the content above is short.
+
 ## Look
 
 - Ground `#0B0C0D`, panels `#0F1112` / `#121416`, borders `#2A2D30`.

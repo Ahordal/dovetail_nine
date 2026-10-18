@@ -19,12 +19,12 @@ button{font:inherit}
 @media (prefers-reduced-motion: reduce){.term-cursor{animation:none}}
 </style>
 </helmet>
-<div style="min-height: 100vh; box-sizing: border-box; padding: 0 0 max(20px, env(safe-area-inset-bottom)); background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
+<div style="min-height: 100vh; box-sizing: border-box; padding: max(20px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom)); background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
 <div style="box-sizing: border-box; max-width: 1280px; margin: 0 auto;">
 
-<div style="min-height: 100vh; background: #0B0C0D; overflow: hidden;">
+<div style="min-height: calc(100vh - 40px); min-height: calc(100dvh - 40px); display: flex; flex-direction: column; background: #0B0C0D; overflow: hidden;">
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 20px; padding: 8px 20px; border-bottom: 1px solid #2A2D30; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 20px; min-height: 41px; box-sizing: border-box; padding: 6px 20px; background: #0F1112; border-bottom: 1px solid #2A2D30; border-radius: 8px 8px 0 0; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">
 <span style="color: #E8E4DA;"><span style="color: {{accent}};">◉</span> QUELL ▸ {{hereLabel}}</span>
 <span>STATION TIME 16:20</span>
 </div>
@@ -42,7 +42,7 @@ button{font:inherit}
 <span style="font-size: 12px; letter-spacing: 0.08em; padding: 4px 10px; border: 1px solid {{accent}}; color: {{accent}}; border-radius: 4px;">ACCESS: GENERAL</span>
 </div>
 
-<div style="display: flex; flex-wrap: wrap;">
+<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap;">
 
 <nav aria-label="Station directory" style="flex: 1 1 260px; box-sizing: border-box; padding: 14px 8px; border-right: 1px solid #2A2D30; background: #0F1112;">
 <div style="padding: 0 10px 8px 10px; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">DIRECTORY</div>
