@@ -14,7 +14,7 @@
 body{margin:0;background:#0B0C0D}
 a{color:#E0504A}a:hover{color:#F07A74}
 button{font:inherit}
-@keyframes sigma-spin{to{transform:rotate(360deg)}}
+@keyframes sigma-spin{from{transform:perspective(500px) rotateX(0deg)}to{transform:perspective(500px) rotateX(360deg)}}
 .sigma-logo{transform-origin:50% 50%;animation:sigma-spin 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-logo{animation:none}}
 </style>
