@@ -21,20 +21,16 @@ button{font:inherit}
 .sigma-ring{animation:sigma-spin 8s linear infinite}
 .sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-ring,.sigma-glyph{animation:none}}
+@media (max-width: 560px){.boot-ts{display:none}}
 </style>
 </helmet>
 <div style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
-<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; background: #17191B; border: 1px solid #2E3236; border-radius: 18px; padding: 12px;">
-
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding: 4px 10px 12px 10px; font-family: 'Chakra Petch', sans-serif; font-size: 13px; letter-spacing: 0.08em; color: #A8A49A;">
-<span style="color: #E8E4DA; font-weight: 600;">BLACKLINE // BLDS-X</span>
-<span>UDC LINK ▸ ESTABLISHING</span>
-<span style="color: #D9A441;">PWR 23% · STATION TIME 03:58</span>
-</div>
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box;">
 
 <div style="position: relative; background: #0B0C0D; border: 1px solid #2A2D30; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
 
-<div style="display: flex; justify-content: flex-end; gap: 8px; padding: 10px 12px 0 12px;">
+<div style="display: flex; align-items: center; gap: 8px; padding: 10px 12px 0 16px;">
+<span style="flex-grow: 1; min-width: 0; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">TERMINAL DT9-T01A · 03:58</span>
 <button type="button" onClick="{{toggleMute}}" aria-label="{{muteLabel}}" aria-pressed="{{muted}}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 1px solid #2E3236; border-radius: 50%; color: #E8E4DA; cursor: pointer;">
 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
 <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"></path>
@@ -99,8 +95,8 @@ button{font:inherit}
 <div style="border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; min-height: 380px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px 0;">
-<span style="color: #A8A49A; font-size: 13px; letter-spacing: 0.08em;">BLDS-X READY · UDC PORT 1 · NO LINK</span>
-<button type="button" onClick="{{begin}}" style="min-height: 52px; padding: 0 28px; background: none; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em; cursor: pointer;">CONNECT SLATE</button>
+<span style="color: #A8A49A; font-size: 13px; letter-spacing: 0.08em;">TERMINAL DT9-T01A · STANDBY</span>
+<button type="button" onClick="{{begin}}" style="min-height: 52px; padding: 0 28px; background: none; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em; cursor: pointer;">WAKE TERMINAL</button>
 <span style="color: #6F6C64; font-size: 12px;">Sound on. Use the speaker button to mute.</span>
 </div>
 </sc-if>
@@ -112,8 +108,8 @@ button{font:inherit}
 </sc-if>
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
-<span style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
-<span style="flex: 1 1 260px; min-width: 0; color: #D6D2C8;">{{line.label}}</span>
+<span class="boot-ts" style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
+<span style="flex: 1 1 140px; min-width: 0; color: #D6D2C8;">{{line.label}}</span>
 <span style="{{line.valStyle}}">{{line.value}}</span>
 </div>
 </sc-for>
@@ -123,8 +119,7 @@ button{font:inherit}
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
 <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 4px; white-space: pre-line;">
 <span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.1em;">SIGMA</span>
-<span>Welcome aboard Dovetail-9.
-External device detected on UDC port 1.</span>
+<span>Terminal ready.</span>
 </div>
 </sc-if>
 </div>
@@ -147,13 +142,13 @@ External device detected on UDC port 1.</span>
 <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
 <span>LOGGING IN</span>
 </div>
-<span style="font-size: 13px; color: #A8A49A;">Verifying bioelectric signature</span>
+<span style="font-size: 13px; color: #A8A49A;">Authenticating general user</span>
 </div>
 </sc-if>
 <sc-if value="{{loginMatched}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-<span style="font-size: 15px; letter-spacing: 0.1em; color: #9FC7C2;">[ OK ] SIGNATURE MATCH</span>
-<span style="font-size: 13px; color: #E8E4DA;">Bioelectric signature matches device BLDS-X.</span>
+<span style="font-size: 15px; letter-spacing: 0.1em; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
+<span style="font-size: 13px; color: #E8E4DA;">General user session opened.</span>
 </div>
 </sc-if>
 </div>
@@ -161,9 +156,10 @@ External device detected on UDC port 1.</span>
 
 <sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
 <div style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
-<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.14em;">SIGMA // IDENTITY VERIFIED</span>
-<p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Welcome aboard, Mr. Quell.
-Clearance: GUEST.</p>
+<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.14em;">SIGMA // GENERAL ACCESS</span>
+<p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Welcome to Dovetail-9.
+Access level: GENERAL.
+Restricted areas and files require higher clearance.</p>
 <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
 </sc-if>
@@ -177,20 +173,18 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.BOOT = [
+      // The terminal's own self-check; station systems belong on a separate status screen.
       { label: 'SIGMA core link', value: 'ESTABLISHED', tone: 'ok' },
-      { label: 'UDC hardlink', value: 'DEVICE BLDS-X, PORT 1', tone: 'ok' },
-      { label: 'Protocol emulation', value: 'NASHIRO ENVIRONMENT', tone: 'ok' },
-      { label: 'DYNEX T-CORE X9', value: 'CONTAINMENT HOLDING · 1.3 EW', tone: 'ok' },
-      { label: 'Power distribution', value: 'PARTIAL · 7 OF 12 DECKS', tone: 'warn' },
-      { label: 'Life support', value: 'NOMINAL', tone: 'ok' },
-      { label: 'Atmosphere', value: '11 °C · 98 kPa', tone: 'ok' },
-      { label: 'Harmonic shielding', value: 'ONLINE', tone: 'ok' },
-      { label: 'Anchor Core', value: 'PHASE-LOCKED', tone: 'warn' },
-      { label: 'Alignment', value: 'WINDOW OPEN', tone: 'ok' },
-      { label: 'Distress beacon', value: 'TRANSMITTING · 3,652 DAYS', tone: 'warn' },
-      { label: 'Docking bay A', value: 'VESSEL DOCKED · ISRV MISTRAL', tone: 'ok' },
-      { label: 'Environmental faults', value: '214 ACTIVE', tone: 'warn' },
-      { label: 'Crew aboard', value: '0 OF 97', tone: 'warn' }
+      { label: 'Terminal', value: 'DT9-T01A · DECK 01', tone: 'ok' },
+      { label: 'Firmware', value: 'SIGMA TERMINAL OS 4.12', tone: 'ok' },
+      { label: 'ROM checksum', value: 'OK', tone: 'ok' },
+      { label: 'Memory test', value: '65,536 K · OK', tone: 'ok' },
+      { label: 'Display', value: 'OK', tone: 'ok' },
+      { label: 'Input', value: 'KEYBOARD · OK', tone: 'ok' },
+      { label: 'Local storage', value: '3 FAULTED SECTORS', tone: 'warn' },
+      { label: 'Clock sync', value: 'STATION TIME 03:58', tone: 'ok' },
+      { label: 'Security module', value: 'ACTIVE', tone: 'ok' },
+      { label: 'Last session', value: '3,652 DAYS AGO', tone: 'warn' }
     ];
     this.COMMANDS = [
       { cmd: 'login', desc: 'Identify yourself to SIGMA.' },
