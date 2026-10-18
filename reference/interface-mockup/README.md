@@ -17,6 +17,7 @@ A clickable prototype of the site's interface, kept as development reference. No
 6. **Logging-in screen:** "LOGGING IN" with the spinning cursor, over "Authenticating general user", for ~1.8 s. Then a beep, and "[ OK ] ACCESS GRANTED / General user session opened." for ~1.1 s.
 7. **Welcome screen:** "SIGMA // GENERAL ACCESS", "Welcome to Dovetail-9. Access level: GENERAL. Restricted areas and files require higher clearance.", and an ENTER STATION DIRECTORY button.
 8. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
+9. **Fits one screen:** the terminal fills exactly the window height (100dvh on phones). Logo at the top, prompt pinned at the bottom, and the boot log scrolls in between, following each new line. On phones the emblem shrinks to two-thirds and the title and subtitles get smaller.
 
 Station systems (reactor, power, life support, shielding, beacon, crew aboard) belong on a separate station status screen, not in the boot. Not yet mocked up.
 

@@ -21,13 +21,20 @@ button{font:inherit}
 .sigma-ring{animation:sigma-spin 8s linear infinite}
 .sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-ring,.sigma-glyph{animation:none}}
-@media (max-width: 560px){.boot-ts{display:none}}
+.boot-root{height:100vh;height:100dvh}
+@media (max-width: 560px){
+.boot-ts{display:none}
+.boot-root{padding:12px 10px !important}
+.boot-emblem{transform:scale(0.66);margin:-16px 0}
+.boot-title{font-size:24px !important}
+.boot-sub{font-size:10px !important}
+}
 </style>
 </helmet>
-<div style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
-<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box;">
+<div class="boot-root" style="box-sizing: border-box; padding: 24px 16px; background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
+<div style="max-width: 1280px; height: 100%; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column;">
 
-<div style="position: relative; background: #0B0C0D; border: 1px solid #2A2D30; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+<div style="position: relative; flex: 1 1 auto; min-height: 0; background: #0B0C0D; border: 1px solid #2A2D30; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
 
 <div style="display: flex; align-items: center; gap: 8px; padding: 10px 12px 0 16px;">
 <span style="flex-grow: 1; min-width: 0; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">TERMINAL DT9-T01A · 03:58</span>
@@ -67,7 +74,8 @@ button{font:inherit}
 </div>
 </sc-if>
 
-<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 24px 20px; text-align: center;">
+<div style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 20px 20px; text-align: center;">
+<div class="boot-emblem">
 <div role="img" aria-label="SIGMA logo" style="position: relative; width: 96px; height: 96px; perspective: 500px;">
 <div class="sigma-ring">
 <sc-for list="{{ringLayers}}" as="l" hint-placeholder-count="25">
@@ -85,14 +93,15 @@ button{font:inherit}
 </sc-for>
 </div>
 </div>
-<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 34px; letter-spacing: 0.22em; margin-left: 0.22em;">SIGMA</span>
-<span style="font-size: 12px; letter-spacing: 0.14em; color: #A8A49A; max-width: 44ch;">SYNTHETIC INTELLIGENCE FOR GOVERNANCE, MONITORING, AND ADAPTATION</span>
-<span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">NASHIRO DYNAMICS · DOVETAIL-9 RESEARCH STATION</span>
+</div>
+<span class="boot-title" style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 34px; letter-spacing: 0.22em; margin-left: 0.22em;">SIGMA</span>
+<span class="boot-sub" style="font-size: 12px; letter-spacing: 0.14em; color: #A8A49A; max-width: 44ch;">SYNTHETIC INTELLIGENCE FOR GOVERNANCE, MONITORING, AND ADAPTATION</span>
+<span class="boot-sub" style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">NASHIRO DYNAMICS · DOVETAIL-9 RESEARCH STATION</span>
 </div>
 
 <sc-if value="{{onBootScreen}}" hint-placeholder-val="{{true}}">
-<div style="display: flex; flex-direction: column;">
-<div style="border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; min-height: 380px; box-sizing: border-box;">
+<div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
+<div ref="{{logRef}}" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px 0;">
 <span style="color: #A8A49A; font-size: 13px; letter-spacing: 0.08em;">TERMINAL DT9-T01A · STANDBY</span>
@@ -124,7 +133,7 @@ button{font:inherit}
 </sc-if>
 </div>
 
-<div style="border-top: 1px solid #2A2D30; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; background: #0F1112;">
+<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; background: #0F1112;">
 <div style="font-size: 13px; color: #9FC7C2; min-height: 18px; white-space: pre-line;">{{out}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
@@ -135,7 +144,7 @@ button{font:inherit}
 </sc-if>
 
 <sc-if value="{{onLoggingIn}}" hint-placeholder-val="{{false}}">
-<div role="status" style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
+<div role="status" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
 <sc-if value="{{loginVerifying}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
 <div style="display: flex; gap: 12px; font-size: 15px; letter-spacing: 0.1em; color: #E8E4DA;">
@@ -155,7 +164,7 @@ button{font:inherit}
 </sc-if>
 
 <sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
-<div style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
+<div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
 <span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.14em;">SIGMA // GENERAL ACCESS</span>
 <p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Welcome to Dovetail-9.
 Access level: GENERAL.
@@ -302,6 +311,11 @@ class Component extends DCLogic {
     this.setState({ muted });
   }
 
+  // Keep the newest boot line in view as the log grows.
+  componentDidUpdate() {
+    if (this.logEl) this.logEl.scrollTop = this.logEl.scrollHeight;
+  }
+
   componentWillUnmount() {
     clearInterval(this.loginSpin);
     clearTimeout(this.loginTimer);
@@ -358,6 +372,7 @@ class Component extends DCLogic {
       accent,
       ringLayers,
       glyphLayers,
+      logRef: (el) => { this.logEl = el; },
       lines,
       notStarted: !this.state.started,
       chattering: this.state.chattering,
