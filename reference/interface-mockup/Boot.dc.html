@@ -216,44 +216,40 @@ class Component extends DCLogic {
     this.audio.loops = [fan];
   }
 
-  // Rapid, rhythmic drive chatter, in the spirit of the terminals in Aliens.
-  tick(start, freq, vol) {
+  // A Geiger-counter click: very short and broadband, no pitch to speak of.
+  geiger(start, vol) {
     if (!this.audio) return;
     const { ctx, master, noise } = this.audio;
     const t = ctx.currentTime + start;
     const src = ctx.createBufferSource();
     src.buffer = noise;
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 6;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass'; hp.frequency.value = 1500;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.002);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.014);
-    src.connect(bp); bp.connect(g); g.connect(master);
-    src.start(t, Math.random()); src.stop(t + 0.03);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.0008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.004 + Math.random() * 0.003);
+    src.connect(hp); hp.connect(g); g.connect(master);
+    src.start(t, Math.random()); src.stop(t + 0.02);
   }
 
+  // Random (Poisson) clicks whose rate swells and fades, with occasional bursts, like a Geiger counter.
   chatter(start, dur) {
-    const step = 0.055;
     let t = start;
-    let i = 0;
     while (t < start + dur) {
-      // Alternate two pitches in a steady pulse, with slight jitter so it reads as mechanical, not synthetic.
-      const freq = i % 2 === 0 ? 3400 : 2600;
-      const vol = (i % 4 === 0 ? 0.3 : 0.18) * (0.85 + Math.random() * 0.3);
-      this.tick(t + (Math.random() - 0.5) * 0.006, freq, vol);
-      if (i % 9 === 8) t += step * 2;
-      t += step;
-      i++;
-    }
-    // Irregular extra clicks over the pulse, some doubled, so it sounds like a drive seeking.
-    const extras = Math.round(dur * 9);
-    for (let k = 0; k < extras; k++) {
-      const at = start + Math.random() * dur;
-      const freq = 1200 + Math.random() * 2800;
-      const vol = 0.12 + Math.random() * 0.25;
-      this.tick(at, freq, vol);
-      if (Math.random() < 0.3) this.tick(at + 0.018 + Math.random() * 0.012, freq * 0.9, vol * 0.8);
+      const p = (t - start) / dur;
+      const rate = 10 + 34 * Math.sin(Math.PI * p);
+      t += -Math.log(1 - Math.random()) / rate;
+      if (t >= start + dur) break;
+      this.geiger(t, 0.22 + Math.random() * 0.2);
+      if (Math.random() < 0.05) {
+        const burst = 3 + Math.floor(Math.random() * 5);
+        let b = t;
+        for (let k = 0; k < burst; k++) {
+          b += 0.006 + Math.random() * 0.018;
+          this.geiger(b, 0.18 + Math.random() * 0.2);
+        }
+      }
     }
   }
 
