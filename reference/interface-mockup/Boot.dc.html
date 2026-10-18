@@ -216,9 +216,8 @@ class Component extends DCLogic {
     this.audio.loops = [fan];
   }
 
-  // Startup beeps for the link phase: two rising on connect, one when the link is established.
+  // Startup beeps for the link phase: one on connect, one when the link is established.
   linkBeeps() {
-    this.tone(1320, 0.5, 0.09, 'square', 0.08);
     this.tone(1760, 0.62, 0.12, 'square', 0.08);
   }
 
