@@ -21,7 +21,7 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Sound | Detail |
 |---|---|
 | POST beep | Square wave, 980 Hz, 0.18 s |
-| Drive chatter | Rapid rhythmic ticks after the beep, in the spirit of the terminals in *Aliens*: band-passed noise bursts every ~55 ms for ~1.75 s, alternating 3400 and 2600 Hz, every fourth tick accented, a short pause every nine. Slight random jitter in timing and volume. |
+| Drive chatter | Rapid rhythmic ticks after the beep, in the spirit of the terminals in *Aliens*: band-passed noise bursts every ~55 ms for ~1.75 s, alternating 3400 and 2600 Hz, every fourth tick accented, a short pause every nine. Slight random jitter in timing and volume, plus ~9 irregular extra clicks per second (some doubled), like a drive seeking. On screen: "ESTABLISHING LINK TO SIGMA CORE" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), replaced by "SIGMA core link: ESTABLISHED" as the first boot line. |
 | Fan | Soft low-passed noise, continues quietly after boot |
 | Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
 | Ready chime | Two sine notes, 660 then 880 Hz |

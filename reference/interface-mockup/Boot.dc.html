@@ -83,6 +83,12 @@ button{font:inherit}
 <span style="color: #6F6C64; font-size: 12px;">Sound on. Use the speaker button to mute.</span>
 </div>
 </sc-if>
+<sc-if value="{{chattering}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 12px; font-size: 13px; color: #D6D2C8;">
+<span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
+<span>ESTABLISHING LINK TO SIGMA CORE</span>
+</div>
+</sc-if>
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
 <span style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
@@ -123,6 +129,7 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.BOOT = [
+      { label: 'SIGMA core link', value: 'ESTABLISHED', tone: 'ok' },
       { label: 'UDC hardlink', value: 'DEVICE BLDS-X, PORT 1', tone: 'ok' },
       { label: 'Protocol emulation', value: 'NASHIRO ENVIRONMENT', tone: 'ok' },
       { label: 'DYNEX T-CORE X9', value: 'CONTAINMENT HOLDING · 1.3 EW', tone: 'ok' },
@@ -143,7 +150,7 @@ class Component extends DCLogic {
       { cmd: 'clear', desc: 'Clear the response line.' },
       { cmd: 'help', desc: 'List these commands.' }
     ];
-    this.state = { started: false, shown: 0, helpOpen: false, cmd: '', out: '', loggedIn: false, muted: false };
+    this.state = { started: false, chattering: false, spin: 0, shown: 0, helpOpen: false, cmd: '', out: '', loggedIn: false, muted: false };
   }
 
   // Synthesized with Web Audio so there are no audio files to license.
@@ -239,6 +246,15 @@ class Component extends DCLogic {
       t += step;
       i++;
     }
+    // Irregular extra clicks over the pulse, some doubled, so it sounds like a drive seeking.
+    const extras = Math.round(dur * 9);
+    for (let k = 0; k < extras; k++) {
+      const at = start + Math.random() * dur;
+      const freq = 1200 + Math.random() * 2800;
+      const vol = 0.12 + Math.random() * 0.25;
+      this.tick(at, freq, vol);
+      if (Math.random() < 0.3) this.tick(at + 0.018 + Math.random() * 0.012, freq * 0.9, vol * 0.8);
+    }
   }
 
   begin() {
@@ -251,8 +267,12 @@ class Component extends DCLogic {
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
+    this.setState({ chattering: true });
+    this.spinTimer = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
     // Let the drive chatter play before the systems start listing.
     this.delay = setTimeout(() => {
+      clearInterval(this.spinTimer);
+      this.setState({ chattering: false });
       this.timer = setInterval(() => {
         if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
         const n = 1 + Math.floor(Math.random() * 3);
@@ -274,6 +294,7 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    clearInterval(this.spinTimer);
     clearTimeout(this.delay);
     clearInterval(this.timer);
     if (this.audio) this.audio.ctx.close();
@@ -314,6 +335,8 @@ class Component extends DCLogic {
       accent,
       lines,
       notStarted: !this.state.started,
+      chattering: this.state.chattering,
+      spinChar: ['|', '/', '-', '\\'][this.state.spin % 4],
       booting: this.state.started && shown < this.BOOT.length,
       booted: this.state.started && shown >= this.BOOT.length,
       begin: () => this.begin(),
