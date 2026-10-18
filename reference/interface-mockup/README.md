@@ -54,7 +54,6 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 |---|---|
 | POST beep | Square wave, 980 Hz, 0.18 s |
 | Startup beeps | For the ~1.75 s initializing phase: one square-wave beep as the terminal wakes (1760 Hz, 0.12 s), and one at 1568 Hz (0.14 s) as initialization completes. Otherwise quiet. On screen: "INITIALIZING TERMINAL" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), then the self-check begins. |
-| Fan | Soft low-passed noise, continues quietly after boot |
 | Print blips | As each boot line prints, a rapid run of 7 to 12 single electronic blips, in the spirit of the Nostromo's terminals in *Alien*: 6 ms square-wave blips about 12 ms apart, each at a random one of 2100, 2400 or 2800 Hz. None on stage headings. |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 | Login beep | 1568 Hz square wave when access is granted |
@@ -64,6 +63,7 @@ Timing: POST beep, then the initializing phase (one startup beep, ~1.75 s of the
 Tried and removed:
 - a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out)
 - a whoosh layer
+- a soft background fan hiss that ran continuously after boot
 - rhythmic *Aliens*-style drive chatter (steady ticks every ~55 ms, alternating two pitches, plus seek clicks)
 - continuous chatter running through the whole systems check
 - Geiger-counter clicks during the link phase (random-timed broadband clicks with bursts)

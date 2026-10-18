@@ -228,11 +228,7 @@ class Component extends DCLogic {
     const master = ctx.createGain();
     master.gain.value = this.state.muted ? 0 : 0.5;
     master.connect(ctx.destination);
-    const len = ctx.sampleRate * 2;
-    const noise = ctx.createBuffer(1, len, ctx.sampleRate);
-    const data = noise.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
-    this.audio = { ctx, master, noise };
+    this.audio = { ctx, master };
   }
 
   tone(freq, start, dur, type, vol) {
@@ -249,22 +245,6 @@ class Component extends DCLogic {
     g.gain.linearRampToValueAtTime(0, t + dur);
     o.connect(g); g.connect(master);
     o.start(t); o.stop(t + dur + 0.05);
-  }
-
-  hum() {
-    if (!this.audio) return;
-    const { ctx, master, noise } = this.audio;
-    const t = ctx.currentTime;
-    const fan = ctx.createBufferSource();
-    fan.buffer = noise; fan.loop = true;
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 500;
-    const fanG = ctx.createGain();
-    fanG.gain.setValueAtTime(0, t);
-    fanG.gain.linearRampToValueAtTime(0.06, t + 1.5);
-    fan.connect(lp); lp.connect(fanG); fanG.connect(master);
-    fan.start(t);
-    this.audio.loops = [fan];
   }
 
   // One tiny electronic blip, like a single printed character on the Nostromo's terminals.
@@ -306,7 +286,6 @@ class Component extends DCLogic {
     this.initAudio();
     if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
     this.tone(980, 0.05, 0.18, 'square', 0.12);
-    this.hum();
     this.linkBeeps();
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
