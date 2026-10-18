@@ -129,7 +129,7 @@ button{font:inherit}
 </div>
 </sc-if>
 <sc-if value="{{hasOut}}" hint-placeholder-val="{{false}}">
-<div style="font-size: 12px; color: #9FC7C2; white-space: pre-line; padding-top: 3px;">{{termOut}}</div>
+<div style="font-size: 12px; white-space: pre-line; padding-top: 3px;"><sc-if value="{{outFromSigma}}" hint-placeholder-val="{{false}}"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> </sc-if><span style="{{outStyle}}">{{outText}}</span></div>
 </sc-if>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="cmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
@@ -324,6 +324,9 @@ class Component extends DCLogic {
       cmd: this.state.cmd,
       termOut: this.state.out,
       hasOut: !!this.state.out,
+      outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
+      outText: (this.state.out || '').replace(/^SIGMA:\s/, ''),
+      outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
       inputRef: (el) => { this.inputEl = el; },
       helpOpen: this.state.helpOpen,
       closeHelp: () => { this.setState({ helpOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },

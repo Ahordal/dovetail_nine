@@ -87,6 +87,10 @@ Every screen sits between a matching **top bar** and **bottom bar**, both in the
 - **Bottom bar:** a working command line only where the reader can type (the boot screen once it's ready, and the directory). On standby, during the boot, logging in and the welcome screen, it's the same shape, empty.
 - The directory's command line stays pinned to the bottom of the window even when the content above is short.
 
+## SIGMA's voice
+
+Whenever SIGMA speaks, its name appears in SIGMA red and the message in off-white: on the response line ("SIGMA: General access session open."), and in the boot and welcome greetings. Plain system output, such as `ls` results and access errors, stays teal.
+
 ## Look
 
 - Ground `#0B0C0D`, panels `#0F1112` / `#121416`, borders `#2A2D30`.
