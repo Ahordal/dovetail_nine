@@ -278,7 +278,7 @@ class Component extends DCLogic {
         const n = 1 + Math.floor(Math.random() * 3);
         for (let i = 0; i < n; i++) this.click(i * 0.045);
         this.setState({ shown: this.state.shown + 1 });
-      }, 300);
+      }, 220);
     }, 2200);
   }
 
@@ -323,7 +323,7 @@ class Component extends DCLogic {
     const accent = this.props.accent ?? '#E0504A';
     const shown = Math.min(this.state.shown, this.BOOT.length);
     const lines = this.BOOT.slice(0, shown).map((b, i) => {
-      const s = 0.4 + i * 0.3;
+      const s = 2.2 + i * 0.22;
       return {
         t: '[' + s.toFixed(1).padStart(4, ' ') + 's]',
         label: b.label,

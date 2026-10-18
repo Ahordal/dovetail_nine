@@ -26,7 +26,7 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 
-Timing: beep, then ~1.75 s of drive chatter, then boot lines every 0.3 s with clicks, then the chime.
+Timing: beep, then ~1.75 s of drive chatter, then boot lines every 0.22 s with clicks, then the chime.
 
 Tried and removed: a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out), and a whoosh layer.
 
