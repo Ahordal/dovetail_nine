@@ -8,7 +8,7 @@ A clickable prototype of the site's interface, kept as development reference. No
 ## Boot and login (`Boot.dc.html`)
 
 1. **Connect.** The screen waits on "BLDS-X READY · UDC PORT 1 · NO LINK" with a CONNECT SLATE button. Browsers need a click before playing sound; in-story, it's Quell plugging in.
-2. **SIGMA logo:** the Σ in a broken circle with a red arc; the whole emblem spins slowly like a coin spun on a table, staying upright and turning around its vertical axis (3D, one turn per 8 s, still under reduced-motion settings); the public designation, and "Nashiro Dynamics · Dovetail-9 Research Station".
+2. **SIGMA logo:** the Σ in a broken circle with a red arc; the circle spins like a coin spun on a table, upright and turning around its vertical axis, while the Σ inside spins the opposite way (3D, one turn per 8 s each, both still under reduced-motion settings); the public designation, and "Nashiro Dynamics · Dovetail-9 Research Station".
 3. **Boot sequence:** station systems come online one line at a time (teal for normal, amber for warnings). Shows everything at once under reduced-motion settings.
 4. **SIGMA's greeting:** "Welcome aboard Dovetail-9. External device detected on UDC port 1."
 5. **Command prompt:** only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the systems check finishes gets "Station systems still initializing."
