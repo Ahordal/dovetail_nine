@@ -113,6 +113,8 @@ The original notes put Dovetail-1 in 2439, decades before SIGMA (2460s) or Navie
 
 This fits SIGMA's "first deployed 2460s" and Nashiro's "SIGMA aboard the Dovetail stations" (plural).
 
+Full program file: `lore/dovetail-program.md`.
+
 ### Station record
 
 | Station | Year | Location | Outcome | Fatalities |

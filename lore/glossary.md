@@ -48,7 +48,8 @@ One meaning per term. Use these consistently in lore and documents.
 | **Secondary node** | One of the small nodes the cascade left across the decks. Each holds a sliver of time. |
 | **Temporal arrest** | Time stopped inside a node. |
 | **Phase-displaced** | What happened to the crew: knocked out of normal time. |
-| **Phase-locked** | The station's state since the accident: caught by its own pin, out of step with normal space. Not "pinned". |
+| **Phase-lock** | Locking the array to a corridor's phase, the step before pinning. Dovetail-8 failed at it. |
+| **Phase-locked** | The station's state since the accident: Dovetail-9 phase-locked so completely that the station itself was caught, out of step with normal space. Not "pinned". |
 | **Alignment window** | A period when the corridor's drift brings the phase-locked station back in step with normal space. It is reachable, and signals get out. |
 | **Echo** | Plain word for a trapped moment replaying. What crew and Quell would say. |
 | **RPE** (residual phase event) | SIGMA's technical term for an echo, as logged. |
