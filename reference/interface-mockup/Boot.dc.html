@@ -21,6 +21,9 @@ button{font:inherit}
 .sigma-ring{animation:sigma-spin 8s linear infinite}
 .sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-ring,.sigma-glyph{animation:none}}
+@keyframes term-blink{50%{opacity:0}}
+.term-cursor{animation:term-blink 1.06s step-end infinite}
+@media (prefers-reduced-motion: reduce){.term-cursor{animation:none}}
 .boot-root{height:100vh;height:100dvh}
 /* The boot log is a three-column table (time, check, result) shrink-wrapped and centred under the logo. */
 sc-if,sc-for{display:contents}
@@ -159,7 +162,7 @@ sc-if,sc-for{display:contents}
 <div style="font-size: 13px; color: #9FC7C2; min-height: 12px; white-space: pre-line;">{{out}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
-<input id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
+<div style="position: relative; flex-grow: 1; min-width: 0; display: flex; align-items: center;">\n<input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">\n<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>\n</div>
 </div>
 </div>
 </sc-if>
@@ -345,7 +348,17 @@ class Component extends DCLogic {
   }
 
   // Keep the newest boot line in view as the log grows.
+  isTouch() {
+    return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  }
+
   componentDidUpdate() {
+    // Focus the prompt once it appears, so the reader can type straight away (not on phones,
+    // where focusing would pop the keyboard unasked).
+    if (this.inputEl && !this.autoFocused && !this.isTouch()) {
+      this.autoFocused = true;
+      this.inputEl.focus();
+    }
     if (!this.logEl) return;
     // Only follow new lines; jumping on every update would undo the reader scrolling up.
     if (this.state.shown !== this.lastShown) {
@@ -421,6 +434,7 @@ class Component extends DCLogic {
       ringLayers,
       glyphLayers,
       logRef: (el) => { this.logEl = el; },
+      inputRef: (el) => { this.inputEl = el; },
       dirRef: (el) => { this.dirEl = el; },
       // Beep first, then follow the link once the tone has played; leaving the
       // screen at once would close the audio before it's heard.
@@ -446,7 +460,7 @@ class Component extends DCLogic {
       muteLabel: this.state.muted ? 'Unmute sound' : 'Mute sound',
       toggleMute: () => this.toggleMute(),
       helpOpen: this.state.helpOpen,
-      closeHelp: () => this.setState({ helpOpen: false }),
+      closeHelp: () => { this.setState({ helpOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
       commands: this.COMMANDS,
       cmd: this.state.cmd,
       out: this.state.out,
@@ -459,8 +473,8 @@ class Component extends DCLogic {
       onKey: (e) => {
         if (e.key !== 'Enter') return;
         const val = this.state.cmd;
-        // Dismiss the phone keyboard so it doesn't cover the help list.
-        if (['help', 'close'].includes(val.trim().toLowerCase())) e.target.blur();
+        // On phones, dismiss the keyboard so it doesn't cover the help list; on desktop keep typing.
+        if (this.isTouch() && ['help', 'close'].includes(val.trim().toLowerCase())) e.target.blur();
         this.setState({ cmd: '' });
         this.run(val);
       }
