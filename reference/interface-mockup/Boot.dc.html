@@ -75,6 +75,8 @@ button{font:inherit}
 <span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">NASHIRO DYNAMICS · DOVETAIL-9 RESEARCH STATION</span>
 </div>
 
+<sc-if value="{{onBootScreen}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column;">
 <div style="border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; min-height: 380px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px 0;">
@@ -111,14 +113,23 @@ Identify yourself to continue.</span>
 
 <div style="border-top: 1px solid #2A2D30; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; background: #0F1112;">
 <div style="font-size: 13px; color: #9FC7C2; min-height: 18px; white-space: pre-line;">{{out}}</div>
-<sc-if value="{{loggedIn}}" hint-placeholder-val="{{false}}">
-<a href="Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; letter-spacing: 0.08em; font-size: 13px;">ENTER STATION DIRECTORY ▸</a>
-</sc-if>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
-<input id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command, e.g. login quell (help lists them all)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 36px;">
+<input id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 36px;">
 </div>
 </div>
+</div>
+</sc-if>
+
+<sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
+<div style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
+<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.14em;">SIGMA // IDENTITY VERIFIED</span>
+<p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Bioelectric signature matches device BLDS-X.
+Welcome aboard, Mr. Quell.
+Clearance: GUEST.</p>
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
+</div>
+</sc-if>
 
 </div>
 </div>
@@ -145,12 +156,10 @@ class Component extends DCLogic {
       { label: 'Crew aboard', value: '0 OF 97', tone: 'warn' }
     ];
     this.COMMANDS = [
-      { cmd: 'login <name>', desc: 'Identify yourself to SIGMA.' },
-      { cmd: 'status', desc: 'Repeat the station status summary.' },
-      { cmd: 'clear', desc: 'Clear the response line.' },
+      { cmd: 'login', desc: 'Identify yourself to SIGMA.' },
       { cmd: 'help', desc: 'List these commands.' }
     ];
-    this.state = { started: false, chattering: false, spin: 0, shown: 0, helpOpen: false, cmd: '', out: '', loggedIn: false, muted: false };
+    this.state = { started: false, chattering: false, spin: 0, shown: 0, helpOpen: false, cmd: '', out: '', screen: 'boot', muted: false };
   }
 
   // Synthesized with Web Audio so there are no audio files to license.
@@ -272,18 +281,11 @@ class Component extends DCLogic {
   run(raw) {
     const input = raw.trim();
     if (!input) return;
-    const [verb, ...rest] = input.split(/\s+/);
-    const arg = rest.join(' ').toLowerCase();
-    const v = verb.toLowerCase();
+    const v = input.split(/\s+/)[0].toLowerCase();
     if (v === 'help') return this.setState({ helpOpen: true, out: '' });
-    if (v === 'clear') return this.setState({ out: '' });
-    if (v === 'status') return this.setState({ out: 'Crew aboard: 0 of 97. Power: 7 of 12 decks. Alignment window open.' });
     if (v === 'login') {
-      if (!arg) return this.setState({ out: 'SIGMA: Please provide a name.' });
-      if (arg === 'quell' || arg === 'tobias' || arg === 'tobias quell') {
-        return this.setState({ loggedIn: true, out: 'SIGMA: Bioelectric signature matches device BLDS-X.\nWelcome, Mr. Quell. Clearance: GUEST.' });
-      }
-      return this.setState({ out: 'SIGMA: No record of "' + rest.join(' ') + '" aboard this station.' });
+      if (this.state.shown < this.BOOT.length) return this.setState({ out: 'SIGMA: Station systems still initializing.' });
+      return this.setState({ screen: 'welcome', helpOpen: false, out: '' });
     }
     this.setState({ out: 'SIGMA: Command not recognized. Type help.' });
   }
@@ -318,7 +320,8 @@ class Component extends DCLogic {
       commands: this.COMMANDS,
       cmd: this.state.cmd,
       out: this.state.out,
-      loggedIn: this.state.loggedIn,
+      onBootScreen: this.state.screen === 'boot',
+      onWelcome: this.state.screen === 'welcome',
       onCmd: (e) => this.setState({ cmd: e.target.value }),
       onKey: (e) => { if (e.key === 'Enter') { const val = this.state.cmd; this.setState({ cmd: '' }); this.run(val); } }
     };
