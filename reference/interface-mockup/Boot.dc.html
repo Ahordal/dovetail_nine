@@ -74,7 +74,7 @@ button{font:inherit}
 <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 24px 20px; text-align: center;">
 <div role="img" aria-label="SIGMA logo" style="position: relative; width: 96px; height: 96px; perspective: 500px;">
 <div class="sigma-ring">
-<sc-for list="{{ringLayers}}" as="l" hint-placeholder-count="7">
+<sc-for list="{{ringLayers}}" as="l" hint-placeholder-count="25">
 <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true" style="{{l.style}}">
 <path d="M48 6 A42 42 0 1 0 88.6 37.2" fill="none" stroke="{{l.ring}}" stroke-width="4"></path>
 <path d="M57 7 A42 42 0 0 1 87.4 31" fill="none" stroke="{{l.arc}}" stroke-width="4"></path>
@@ -82,7 +82,7 @@ button{font:inherit}
 </sc-for>
 </div>
 <div class="sigma-glyph">
-<sc-for list="{{glyphLayers}}" as="l" hint-placeholder-count="7">
+<sc-for list="{{glyphLayers}}" as="l" hint-placeholder-count="25">
 <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true" style="{{l.style}}">
 <path d="M31 27 H65 V35 H58 V33 H43 L56 48 L43 63 H58 V61 H65 V69 H31 V65 L45 48 L31 31 Z" fill="{{l.fill}}"></path>
 </svg>
@@ -353,7 +353,9 @@ class Component extends DCLogic {
       };
     });
     // Thin layers stacked in depth give the emblem a solid edge when it turns side-on.
-    const depths = [3, 2, 1, 0, -1, -2, -3];
+    // Layers 0.25 px apart: sparser stacks show gaps, and read as see-through, when edge-on.
+    const depths = [];
+    for (let z = 3; z >= -3; z -= 0.25) depths.push(z);
     const layerStyle = (z) => 'position: absolute; left: 0; top: 0; transform: translateZ(' + z + 'px);';
     // Each edge matches its face: off-white ring and glyph, red arc.
     const ringLayers = depths.map((z) => ({ style: layerStyle(z), ring: '#E8E4DA', arc: accent }));
