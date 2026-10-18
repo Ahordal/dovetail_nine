@@ -24,6 +24,9 @@ button{font:inherit}
 .boot-root{height:100vh;height:100dvh}
 /* The boot log is a three-column table (time, check, result) shrink-wrapped and centred under the logo. */
 sc-if,sc-for{display:contents}
+/* Native scrollbar hidden; the up and down buttons replace it. Still scrolls by wheel and touch. */
+.boot-log{scrollbar-width:none;-ms-overflow-style:none;padding-right:60px !important}
+.boot-log::-webkit-scrollbar{display:none}
 .boot-block{width:fit-content;max-width:100%;margin:0 auto;display:flex;flex-direction:column;gap:2px}
 .boot-grid{display:grid;grid-template-columns:auto auto auto;column-gap:40px;row-gap:2px;align-items:baseline}
 @media (max-width: 560px){
@@ -84,7 +87,8 @@ sc-if,sc-for{display:contents}
 
 <sc-if value="{{onBootScreen}}" hint-placeholder-val="{{true}}">
 <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
-<div ref="{{logRef}}" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
+<div style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
+<div ref="{{logRef}}" class="boot-log" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 32px 0;">
 <span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.1em;">TERMINAL DT9-T01A · STANDBY</span>
@@ -123,6 +127,17 @@ sc-if,sc-for{display:contents}
 </div>
 </sc-if>
 </div>
+</div>
+<sc-if value="{{canScroll}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 12px; top: 12px; bottom: 12px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;">
+<button type="button" onClick="{{scrollUp}}" aria-label="Scroll up" style="pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; background: #121416; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer;">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg>
+</button>
+<button type="button" onClick="{{scrollDown}}" aria-label="Scroll down" style="pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; background: #121416; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer;">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+</div>
+</sc-if>
 </div>
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
@@ -331,7 +346,18 @@ class Component extends DCLogic {
 
   // Keep the newest boot line in view as the log grows.
   componentDidUpdate() {
-    if (this.logEl) this.logEl.scrollTop = this.logEl.scrollHeight;
+    if (!this.logEl) return;
+    // Only follow new lines; jumping on every update would undo the reader scrolling up.
+    if (this.state.shown !== this.lastShown) {
+      this.lastShown = this.state.shown;
+      this.logEl.scrollTop = this.logEl.scrollHeight;
+    }
+    const canScroll = this.logEl.scrollHeight > this.logEl.clientHeight + 2;
+    if (canScroll !== this.state.canScroll) this.setState({ canScroll });
+  }
+
+  scrollLog(dir) {
+    if (this.logEl) this.logEl.scrollBy({ top: dir * this.logEl.clientHeight * 0.6, behavior: 'smooth' });
   }
 
   componentWillUnmount() {
@@ -395,6 +421,9 @@ class Component extends DCLogic {
       ringLayers,
       glyphLayers,
       logRef: (el) => { this.logEl = el; },
+      canScroll: !!this.state.canScroll,
+      scrollUp: () => this.scrollLog(-1),
+      scrollDown: () => this.scrollLog(1),
       lines,
       notStarted: !this.state.started,
       chattering: this.state.chattering,
