@@ -22,8 +22,14 @@ button{font:inherit}
 .sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-ring,.sigma-glyph{animation:none}}
 .boot-root{height:100vh;height:100dvh}
+/* The boot log is a three-column table (time, check, result) shrink-wrapped and centred under the logo. */
+sc-if,sc-for{display:contents}
+.boot-block{width:fit-content;max-width:100%;margin:0 auto;display:flex;flex-direction:column;gap:2px}
+.boot-grid{display:grid;grid-template-columns:auto auto auto;column-gap:40px;row-gap:2px;align-items:baseline}
 @media (max-width: 560px){
 .boot-ts{display:none}
+.boot-block{width:100%}
+.boot-grid{grid-template-columns:auto minmax(0,1fr);column-gap:16px}
 .boot-emblem{transform:scale(0.7);margin:-20px 0}
 .boot-title{font-size:32px !important}
 .boot-sub{font-size:10px !important}
@@ -86,24 +92,27 @@ button{font:inherit}
 <span style="color: #6F6C64; font-size: 11px;">Sound on. Use the speaker button to mute.</span>
 </div>
 </sc-if>
+<div class="boot-block">
 <sc-if value="{{chattering}}" hint-placeholder-val="{{false}}">
 <div role="status" style="display: flex; gap: 12px; font-size: 13px; color: #D6D2C8;">
 <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
 <span>INITIALIZING TERMINAL</span>
 </div>
 </sc-if>
+<div class="boot-grid">
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
 <sc-if value="{{line.isStage}}" hint-placeholder-val="{{false}}">
-<div style="margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; color: #6F6C64;">── {{line.label}}</div>
+<div style="grid-column: 1 / -1; margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; color: #6F6C64;">── {{line.label}}</div>
 </sc-if>
 <sc-if value="{{line.isCheck}}" hint-placeholder-val="{{true}}">
-<div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
-<span class="boot-ts" style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
-<span style="flex: 0 1 28ch; min-width: 14ch; color: #D6D2C8;">{{line.label}}</span>
+<div style="display: contents; font-size: 13px;">
+<span class="boot-ts" style="color: #6F6C64; font-size: 13px; white-space: nowrap;">{{line.t}}</span>
+<span style="color: #D6D2C8; font-size: 13px;">{{line.label}}</span>
 <span style="{{line.valStyle}}">{{line.value}}</span>
 </div>
 </sc-if>
 </sc-for>
+</div>
 <sc-if value="{{booting}}" hint-placeholder-val="{{true}}">
 <span style="color: #6F6C64; font-size: 13px;">▌</span>
 </sc-if>
@@ -113,6 +122,7 @@ button{font:inherit}
 <span>Terminal ready.</span>
 </div>
 </sc-if>
+</div>
 </div>
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
@@ -369,7 +379,7 @@ class Component extends DCLogic {
         t: '[' + s.toFixed(1).padStart(4, ' ') + 's]',
         label: b.label,
         value: b.value,
-        valStyle: 'flex-shrink: 0; color: ' + (b.tone === 'warn' ? '#D9A441' : '#9FC7C2') + ';'
+        valStyle: 'font-size: 13px; min-width: 0; color: ' + (b.tone === 'warn' ? '#D9A441' : '#9FC7C2') + ';'
       };
     });
     // Thin layers stacked in depth give the emblem a solid edge when it turns side-on.
