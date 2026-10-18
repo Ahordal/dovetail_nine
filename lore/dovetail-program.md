@@ -54,7 +54,7 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 | **Dovetail-4** | 2449 | Corvex Spindle, Drayenne Verge | 94-minute stable lock; destabilization spread to the local sector | 0 (full evacuation) | Site sealed and interdicted |
 | **Dovetail-5** | 2452 | The Sieve (classified) | Temporary anchor; severe local time dilation and feedback loop | 7 | Crew suffered cognitive degradation and recursive memory events. Led to Valdez's shielding being designed against prolonged exposure. |
 | **Dovetail-6** | 2455 | Grim Fault, Outer Midrim | Signal loss during ignition; never recovered | 22 (entire crew) | Presumed lost to phase collapse |
-| **Dovetail-7** | 2458 | Halo Verge, Expansion Belt | Full anchor achieved; abandoned after a jurisdictional dispute | 0 | The only documented success. Now used covertly by sliprunners. |
+| **Dovetail-7** | 2458 | Halo Verge, Expansion Belt | Full anchor achieved; abandoned after a jurisdictional dispute | 0 (experiment phase only) | The only documented success. Skeleton crew driven out by sliprunner raids; now a pirate station run by organized crime. |
 | **Dovetail-8** | 2461 | Mireon-5, Trillium Arc periphery | DAC collapse during phase-lock attempt; corridor fragment lost | 11 | First SIGMA deployment, as a prototype. **[proposed]** |
 | **Dovetail-9** | 2467 | K-17 "Sable", deep Trillium Arc | Station vanished during full-scale harmonic stabilization | 97 (all crew presumed phase-displaced) | Final deployment; program terminated under Nashiro blackout order |
 
@@ -80,9 +80,44 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 - **"Phase-lock":** Dovetail-8's log uses this term. It now matches the [[glossary]]: phase-lock means locking the array to a corridor's phase. Dovetail-8 failed at it. Dovetail-9 succeeded so completely that the station itself became phase-locked.
 - **Total fatalities (172)** is the sum of the station record; it wasn't in the original note.
 
+## Anchors need constant power **[settled]**
+
+- A pin only holds while it's powered. If an anchor stops, its corridor drifts again. This is why the X9 has no shutdown option.
+
+## Why Dovetail-7 was abandoned **[settled]**
+
+- **It was a test site, not the prize.** The Halo Verge corridor was a minor, low-value route, chosen because it was degraded but safe to experiment on. The anchor's real value was the data: proof the method worked and how to repeat it.
+- **The jurisdictional dispute was an excuse.** A local authority claimed the region. Nashiro could have crushed the claim, but fighting it meant drawing attention to a secret program over a corridor it no longer needed. It chose to withdraw and cited jurisdiction in the official record.
+- **A skeleton crew was left to run it,** and **sliprunners (pirates)** attacked it again and again. Worthless to Nashiro but valuable to pirates: constant raids explain why Nashiro abandoned it, and its low value explains why it could afford to.
+- **Dovetail stations have no external defenses. [settled]** Station security carries small arms, enough for internal incidents but not to turn back sustained pirate attacks.
+- **Nashiro's support faded over time.** Early raids brought reinforcements; as the site's value dropped, the reinforcements came less often, then stopped.
+- **People died** in the attacks and in the final escape. **[settled]**
+- **[proposed]** The station record still lists **0** fatalities for Dovetail-7, because the program only counted deaths during the experiment itself. The skeleton crew's deaths were logged elsewhere as security incidents. A reader who finds both can catch the discrepancy.
+- **Its power couldn't be shut down,** so it was left running.
+- **[proposed] Why it wasn't scuttled:** destroying a working anchor releases its pin all at once. Dovetail-4 showed what that does: "destabilization spread to the local sector", still interdicted. Scuttling Dovetail-7 risked a disaster in territory another authority claims, and an investigation. Leaving it running was the only quiet option.
+- **Now a pirate station run by organized crime.** **[settled]** They keep the anchor alive, patching and refueling it, because a working anchor is a fortune: a private route through the Halo Verge. When it finally fails, the corridor will drift again.
+- Document pair: the official record ("abandoned following a jurisdictional dispute") against an internal Level 6 memo (low value, data harvested, not worth contesting).
+
+## Why the Trillium Arc **[settled]**
+
+- **It used to be a major route:** the main corridor between the Perseus Arm's Mid-Rim and the outer Perseus frontier, including the Thrennal Expanse. When it degraded, the outer frontier was cut off. Trade slowed, colonies withered, and only drives like Ravel's could still get through.
+- **Whoever anchors it controls the frontier:** the only reliable way in or out of a whole region. The cage from the pitch, made literal.
+- **Nobody can claim it.** The lesson of Dovetail-7: the deep Arc is lawless and empty, with no authority to argue jurisdiction.
+- **The hardest test.** Dovetail-8 failed at the edge of the Arc; Dovetail-9 went deep with the X9 and SIGMA.
+- It explains why the Arc is full of wrecks for Quell to salvage, why Ravel drives matter there, and why X9 Unit 002 is still a threat.
+
+| | Dovetail-7 (Halo Verge) | Dovetail-9 (Trillium Arc) |
+|---|---|---|
+| Corridor value | Low: a minor route | Very high: the gateway to the outer Perseus frontier |
+| Purpose | Prove the method | Take control |
+| Jurisdiction | Claimed by a local authority | Nobody's |
+
 ## Open
 
-- **What happens to an anchor's corridor if the anchor stops?** Dovetail-7 is still being used, which suggests a successful anchor keeps working. Does it still draw power, or does a pin hold on its own once set?
+- Who claimed jurisdiction over the Halo Verge.
+- The organized crime group that runs Dovetail-7 now.
+- ~~What destroying Dovetail-9 would do to the Trillium Arc~~ **Settled:** it would degrade the corridor beyond any chance of stabilization and permanently destabilize the region. The station is never destroyed. See [[the-secret]].
+- When the Trillium Arc degraded, and how many colonies it stranded.
 - **What powered Dovetail-1 to 8?** The X9 was installed only on Dovetail-9. Earlier DYNEX T-Core models are the obvious answer.
 - **Dovetail-6** lost signal at ignition and was never recovered. Could it be phase-locked too, the way Dovetail-9 is? Not canon; a possible thread.
 - The name of the pre-SIGMA governance system.

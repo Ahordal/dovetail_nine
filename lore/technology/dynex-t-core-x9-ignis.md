@@ -60,7 +60,7 @@ related:
 - **Why it can't stop:** a pinned corridor has to stay pinned, so its power source can never shut down. The failsafe is the only way to end it.
 - **The accident:** harmonic feedback from the Anchor Core made it surge toward its 7.8 EW threshold. The containment-priority protocol pulled every reserve, backups included, to hold containment, and the shielding dropped for two seconds. See [[the-accident]].
 - **Why containment outranks everything:** losing containment means an uncontrolled singularity with no known limit. The ZK-Class failsafe is the *good* outcome.
-- **The ending:** Quell triggers the ZK-Class failsafe after sending his data dump.
+- **The ending:** the failsafe is **never triggered**. The alignment window closes with Quell aboard. Had it been triggered, it would have permanently destabilized the Trillium Arc.
 - **Unit 002** is Quell's motive for the dump: Nashiro could try again.
 - The exception to DYNEX Heavy Systems' analog, no-AI ethos: built under Nashiro contract and wired directly into SIGMA.
 

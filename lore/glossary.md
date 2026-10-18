@@ -19,6 +19,7 @@ One meaning per term. Use these consistently in lore and documents.
 | **Slipstream** | Industry word for FTL travel through a corridor. "Slipstream drive" and "slip drive" mean the engine. |
 | **HFSD** | High-frequency slip drive: a drive built for unstable corridors. A type, made by Ravel and Valdez. The **HFSD-3A** is Ravel's model. |
 | **Flow state** | The balance of frequency, trajectory, and velocity a ship must hold to travel a corridor safely. Navien manages it. |
+| **Sliprunner** | A pirate or smuggler who runs corridors outside the law. Organized sliprunners hold Dovetail-7. |
 | **Degraded corridor** | A corridor that has started to drift and become unstable. Ends in collapse. The Trillium Arc is one. |
 
 ## Corridor physics

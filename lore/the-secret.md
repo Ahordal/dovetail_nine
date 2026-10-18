@@ -60,7 +60,7 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 ## The data dump
 
 - During the alignment window, Quell copies his logs, SIGMA's records, and the echo data, and **broadcasts it as a data dump on the salvage channels**, to anyone listening. Nashiro isn't listening; his salvage contacts might be.
-- **Motive:** X9 Unit 002 still exists, so Nashiro could try again. Destroying the station isn't enough; someone has to know.
+- **Motive:** X9 Unit 002 still exists, so Nashiro could try again. Someone has to know.
 - SIGMA's records keep their Nashiro clearance encryption (no time to strip it), so Quell includes his slate's `spoof` and `override` tools for whoever receives it.
 - Packets are corrupted or missing from transmission through a degraded corridor.
 - **[proposed]** SIGMA's one protocol break: it unlocks the Level 6 records for Quell to send, so its crew are remembered.
@@ -68,12 +68,18 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 
 ## The ending
 
-- **Quell triggers the X9's ZK-class failsafe** after sending the dump, and runs.
-- Rules it must respect: irreversible once started, destroys everything within ~3.2 km. The Mistral has to get clear before it goes.
-- Destroying the station destroys the remaining echoes and SIGMA. The crew's last moments survive only as data in the dump.
-- The dump closes with his last entry, written as the failsafe starts.
-- **[open]** Whether Quell survives. (The planned twist layer would settle it: he does.)
-- **[open]** What the blast does to the nodes. One idea: they all collapse at once and every remaining echo plays in the same instant.
+- **Quell does not escape. [settled]** He sends the dump, and the **alignment window closes with him still aboard**. The station slips out of phase again, taking him with it: the TV switching off.
+- **No failsafe.** The station is not destroyed. The echoes, SIGMA, and Quell remain aboard, out of phase. SIGMA finally keeps him: "a lonely AI that refuses to let him leave", made literal.
+- The Mistral is still docked. It goes with him.
+- The dump closes with his last entry, written as the window closes.
+- **The reader never learns what happened after.** The dump is all that got out.
+- **[open]** Why Quell didn't trigger the failsafe: he chose not to, SIGMA stopped him, or the window closed first.
+- **[open]** What becomes of him aboard: how long he lasts, and whether anyone reaches the station in a later window.
+- **[open]** The dump reveals the station's location. Nashiro, or sliprunners like those holding Dovetail-7, could come for it in a future window. Did Quell leave the location out?
+
+### If the station were ever destroyed
+
+The rule still stands, as physics: destroying a pin damages the corridor around it, beyond any chance of stabilization, permanently destabilizing the region. Modeled on Dovetail-4, whose broken lock spread destabilization through its sector. It's why Dovetail-7 wasn't scuttled, and what Quell would have known the failsafe would do to the Trillium Arc.
 
 ## The crew
 

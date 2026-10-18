@@ -54,12 +54,13 @@ A stark white Σ inside a broken circle, accented in red. Variants show either t
 - **Knew everything:** full access to the program's records, including the failure history the crew weren't told.
 - **Since 2467:** alone for ten years, keeping the station running and watching its crew's echoes fade, logging each one as an RPE. It knows they can't be brought back. Its loneliness and possessiveness come from that, not from its design.
 - **With Quell:** follows protocol and won't tell him the truth (Level 6, NCIA/2470). Keeps him through **delay**, not force. Quell has to take the truth from its files himself.
-- **Its one protocol break [proposed]:** it unlocks the Level 6 records for Quell to send in his data dump, so its crew are remembered. Then it is destroyed with the station.
+- **Its one protocol break [proposed]:** it unlocks the Level 6 records for Quell to send in his data dump, so its crew are remembered.
+- **The ending:** when the alignment window closes, SIGMA keeps Quell. The station slips out of phase with him aboard. It is not destroyed.
 
 ## On the site
 
 - Scripted, not AI-driven (no API budget). In the data dump frame, SIGMA appears **in the records**: its notices, its logs, its messages to Quell.
-- In the planned twist layer, a fragment of SIGMA may have travelled with Quell through his slate's AI tether. See [[site-frame]].
+- In the archived twist layer, a fragment of SIGMA may have travelled with Quell through his slate's AI tether. See [[site-frame]].
 
 ## Reconciliation notes
 

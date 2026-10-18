@@ -50,7 +50,7 @@ Lived-in. Weathered, patched, and unmistakably Quell's: tools stowed in odd corn
 - His only tether to safety while aboard Dovetail-9. Docking and power routing through the ship are his fallback when the station turns hostile.
 - It embodies his independence: high-grade industrial engineering, customized and maintained by him alone.
 - Part home, part workshop, part survival pod. One man's entire world between jobs.
-- **Escape:** after sending the data dump and triggering the failsafe, the Mistral has to get clear of the ~3.2 km blast radius.
+- **Its fate:** still docked at Dovetail-9 when the alignment window closes. It goes out of phase with the station, and with Quell.
 
 ## Reconciliation notes
 

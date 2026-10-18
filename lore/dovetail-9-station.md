@@ -24,6 +24,11 @@ related:
 - **Scale references:** comparable to a submarine or offshore platform for crew density. The Mistral (58 m) is about a third of the hull's length.
 - The X9 failsafe's ~3.2 km radius is about four times the structure's overall length.
 
+## Defenses **[settled]**
+
+- **No external defenses.** Like every Dovetail station, it relies on secrecy and remoteness. Station security carries small arms for internal incidents only.
+- Nothing stops a ship from approaching and docking, which is how Quell gets aboard.
+
 ## Open
 
 - How the 12 decks divide between work (Anchor Core, X9, R&D, shielded) and living (quarters, galley, medical, hydroponics, administration).

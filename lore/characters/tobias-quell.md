@@ -68,7 +68,7 @@ He keeps no permanent base, avoids transmitting identifiers, and trades his reco
 
 - **He likes to explore and fix things.** That's it. Not money, not escape, not something buried. Salvage lets him do both, alone, on his own terms.
 - It's what pulls him to the beacon (somewhere nobody has been in ten years) and onto the station (systems failing, waiting to be understood).
-- **The tragedy:** Dovetail-9 is the one thing he can't fix. The crew can't be brought back and the station can't be saved. The fixer's last act is to destroy it.
+- **The tragedy:** Dovetail-9 is the one thing he can't fix. The crew can't be brought back and the station can't be saved. The fixer's last act is to tell the truth about it.
 
 ## Skills
 
@@ -139,7 +139,7 @@ Two registers, kept distinct:
 - He has to hardlink his slate to force doors and run diagnostics, which means plugging into the AI he'd least want in his systems.
 - The longer he stays, the more echoes he notices: exposure disrupts his brain's timing. He can't always trust what he perceives.
 - His logs change from private shorthand to testimony meant for strangers.
-- He broadcasts the data dump, then triggers the X9 failsafe. Whether he survives is **[open]**.
+- He broadcasts the data dump. Then the alignment window closes with him still aboard, and the station slips out of phase, taking him with it. **He does not escape. [settled]**
 - **The arc in one line:** the man "never interested in anything beyond the job" ends by giving everything he has to people he'll never meet.
 
 ## Reconciliation notes
