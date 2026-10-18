@@ -157,7 +157,7 @@ sc-if,sc-for{display:contents}
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
 <div style="position: relative; flex-grow: 1; min-width: 0; display: flex; align-items: center;">
-<input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
+<input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
 <span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>
 </div>
 </div>
