@@ -117,7 +117,7 @@ button{font:inherit}
 </div>
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
-<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 6px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
+<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 8px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
 <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
 <span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">AVAILABLE COMMANDS</span>
@@ -129,7 +129,7 @@ button{font:inherit}
 </sc-for>
 </div>
 </sc-if>
-<div style="font-size: 13px; color: #9FC7C2; white-space: pre-line;">{{out}}</div>
+<div style="font-size: 13px; color: #9FC7C2; min-height: 12px; white-space: pre-line;">{{out}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
 <input id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
@@ -171,7 +171,7 @@ button{font:inherit}
 </div>
 <a ref="{{dirRef}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
-<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 6px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
+<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 8px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112;">
 <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
 <span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">AVAILABLE COMMANDS</span>
@@ -183,7 +183,7 @@ button{font:inherit}
 </sc-for>
 </div>
 </sc-if>
-<div style="font-size: 13px; color: #9FC7C2; white-space: pre-line;">{{out}}</div>
+<div style="font-size: 13px; color: #9FC7C2; min-height: 12px; white-space: pre-line;">{{out}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="welcomecmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
 <input id="welcomecmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command (help lists them)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
