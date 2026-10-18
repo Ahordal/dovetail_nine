@@ -52,6 +52,8 @@ Ravel exists in the shadow of [[kessler-orion-drive-yards]] and [[valdez-systems
 - The Valdez and Mistral notes credited Valdez with co-developing the HFSD-3A. Canon: **Ravel alone**.
 - "HFSD" is used as a general term for high-frequency slip drives. Valdez makes its own HFSD lines; **HFSD-3A** is Ravel's model.
 
-## Open
+## Origins **[settled]**
 
-- **Ravel Prime.** Quell's bio says he was born on Ravel Prime, an industrial planet "governed entirely by Ravel Industries" with domed arcologies and corporate castes. This profile describes a small fringe company with hidden research yards, and Ravel was only three years old when Quell was born there in 2435. Unresolved; see [[canon]].
+- Founded in 2432 by propulsion engineers who broke away from **Ravel Prime**, a [[stratovan-heavyworks]] shipbuilding world in the Orion Arm industrial belt, and named after it.
+- Leaving a rigid, caste-run corporate world explains Ravel's character: fringe, experimental, working outside corporate oversight.
+- Ravel Industries does **not** govern Ravel Prime. Quell's bio originally said it did, which conflicted with Ravel's small size and its founding three years before his birth.

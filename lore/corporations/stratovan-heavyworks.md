@@ -44,6 +44,14 @@ In the 2470s, Stratovan stands as one of the few shipyards trusted equally by in
 - Heavy salvage frames compatible with [[duradyne]] robotics
 - Longstanding contracts with [[dynex-industries]] (T-Core integration) and [[blackline-systems]] (electronics and comms)
 
+## Ravel Prime **[settled]**
+
+- One of Stratovan's shipbuilding worlds in the Orion Arm industrial belt. Toxic atmosphere from generations of heavy industry; most people live in domed arcologies.
+- Run as a company world with **corporate caste tiers**. Children are educated early for technical roles to staff the yards.
+- In 2432, a group of its propulsion engineers broke away and founded [[ravel-industries]], named after the world.
+- Birthplace of Tobias Quell (2435), who grew up in a mid-tier technical enclave.
+- The contrast is deliberate: Stratovan builds ships trusted across the frontier while running a harsh company town.
+
 ## Reconciliation notes
 
 - The original note credited Blackline with "navigation & electronics". Navigation belongs to [[stratovan-systems]] (Navien), so Blackline's contract is now **electronics and comms**.

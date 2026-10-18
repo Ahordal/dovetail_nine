@@ -147,7 +147,7 @@ Only two built. Unit 001 is aboard Dovetail-9. Unit 002 is under classified lock
 ## Open questions
 
 1. **Data slate name.** See proposal above.
-2. **Ravel Prime vs. Ravel Industries.** Quell's bio has Ravel Industries governing an entire industrial planet with domed arcologies and corporate castes. Ravel's own profile describes a boutique, fringe company with scattered hidden research yards. Founded in 2432, Ravel was only three years old when Quell was born there in 2435.
+2. ~~Who governs Ravel Prime~~ **Settled:** Stratovan Heavyworks, under Nashiro. Ravel Industries was founded there in 2432 by engineers who broke away. See `lore/corporations/stratovan-heavyworks.md`.
 3. **Quell's career dates.** Born 2435, 17 years at Ravel, then years of solo salvage before 2477. For example: joined Ravel at about 20 (2455), left 2472, five years salvaging. That would put him at Ravel when Dovetail-9 vanished. Options: Ravel Prime is governed by a different, larger company that Ravel spun out of; or Ravel is bigger than its profile suggests; or Quell was born elsewhere and joined Ravel later.
 4. **"Mistral" naming.** Some notes treat Mistral as the ship's name, others as its class ("Mistral-class ISRV"). Is Quell's ship a Mistral-class ISRV named *Mistral*, or does it have its own name?
 5. **Predecessor to SIGMA.** Name of the governance system on Dovetail-1 through 7, if the proposal above is accepted.

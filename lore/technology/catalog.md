@@ -61,7 +61,7 @@ Every product named in the lore. Items with their own file are linked; the rest 
 | [[ravel-protek-3a-eva-suit]] | Ravel/ProTek | Quell's suit |
 | BLDS-1 to BLDS-4H | Blackline Systems | Standard slates |
 | EnviroComm Packs, Neural Interface Helmets, Frontier Beacons, PowerBridge Adapters | Blackline Systems | See [[blackline-systems]] |
-| Custom multi-tool | Quell (self-made) | His one valued possession; belongs in his character file |
+| Custom multi-tool | Quell (self-made) | His one valued possession; see [[tobias-quell]] |
 
 ## Corridor equipment
 
