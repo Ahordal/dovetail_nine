@@ -122,6 +122,8 @@ External device detected on UDC port 1.</span>
 
 <sc-if value="{{onLoggingIn}}" hint-placeholder-val="{{false}}">
 <div role="status" style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
+<sc-if value="{{loginVerifying}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
 <div style="display: flex; gap: 12px; font-size: 15px; letter-spacing: 0.1em; color: #E8E4DA;">
 <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
 <span>LOGGING IN</span>
@@ -129,12 +131,19 @@ External device detected on UDC port 1.</span>
 <span style="font-size: 13px; color: #A8A49A;">Verifying bioelectric signature</span>
 </div>
 </sc-if>
+<sc-if value="{{loginMatched}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+<span style="font-size: 15px; letter-spacing: 0.1em; color: #9FC7C2;">[ OK ] SIGNATURE MATCH</span>
+<span style="font-size: 13px; color: #E8E4DA;">Bioelectric signature matches device BLDS-X.</span>
+</div>
+</sc-if>
+</div>
+</sc-if>
 
 <sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
 <div style="border-top: 1px solid #2A2D30; padding: 56px 24px; min-height: 460px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
 <span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.14em;">SIGMA // IDENTITY VERIFIED</span>
-<p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Bioelectric signature matches device BLDS-X.
-Welcome aboard, Mr. Quell.
+<p style="margin: 0; white-space: pre-line; font-size: 15px; line-height: 1.8; color: #E8E4DA;">Welcome aboard, Mr. Quell.
 Clearance: GUEST.</p>
 <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
@@ -283,6 +292,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     clearInterval(this.loginSpin);
     clearTimeout(this.loginTimer);
+    clearTimeout(this.welcomeTimer);
     clearInterval(this.spinTimer);
     clearTimeout(this.delay);
     clearInterval(this.timer);
@@ -298,12 +308,13 @@ class Component extends DCLogic {
     }
     if (v === 'login') {
       if (this.state.shown < this.BOOT.length) return this.setState({ out: 'SIGMA: Station systems still initializing.' });
-      this.setState({ screen: 'loggingIn', helpOpen: false, out: '' });
+      this.setState({ screen: 'loggingIn', loginStage: 'verifying', helpOpen: false, out: '' });
       this.loginSpin = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
       this.loginTimer = setTimeout(() => {
         clearInterval(this.loginSpin);
         this.linkEstablished();
-        this.setState({ screen: 'welcome' });
+        this.setState({ loginStage: 'matched' });
+        this.welcomeTimer = setTimeout(() => this.setState({ screen: 'welcome' }), 1100);
       }, 1800);
       return;
     }
@@ -342,6 +353,8 @@ class Component extends DCLogic {
       out: this.state.out,
       onBootScreen: this.state.screen === 'boot',
       onLoggingIn: this.state.screen === 'loggingIn',
+      loginVerifying: this.state.loginStage !== 'matched',
+      loginMatched: this.state.loginStage === 'matched',
       onWelcome: this.state.screen === 'welcome',
       onCmd: (e) => this.setState({ cmd: e.target.value }),
       onKey: (e) => { if (e.key === 'Enter') { const val = this.state.cmd; this.setState({ cmd: '' }); this.run(val); } }
