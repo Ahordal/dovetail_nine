@@ -39,6 +39,8 @@ SLATE/
 └── tools/
 ```
 
+Interface prototype (boot screen, sound, file tree): `reference/interface-mockup/`.
+
 ### Mechanisms: **not yet committed**
 
 Candidates discussed, still to be decided:

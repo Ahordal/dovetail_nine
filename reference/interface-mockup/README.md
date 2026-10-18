@@ -1,0 +1,53 @@
+# Interface Mockup: Reference Material
+
+A clickable prototype of the site's interface, kept as development reference. Not production code.
+
+- **Live version:** https://claude.ai/artifact/SzzETicttuzH7m4dq3GSPm (private; share from its page to show others)
+- **Source:** `Boot.dc.html` and `Main.dc.html` in this folder. They use the artifact canvas's own component format, so they won't run as plain web pages. The real site will rebuild these ideas in Vite + React.
+
+## Boot and login (`Boot.dc.html`)
+
+1. **Connect.** The screen waits on "BLDS-X READY · UDC PORT 1 · NO LINK" with a CONNECT SLATE button. Browsers need a click before playing sound; in-story, it's Quell plugging in.
+2. **SIGMA logo:** the Σ in a broken circle with a red arc, the public designation, and "Nashiro Dynamics · Dovetail-9 Research Station".
+3. **Boot sequence:** station systems come online one line at a time (teal for normal, amber for warnings). Shows everything at once under reduced-motion settings.
+4. **SIGMA's greeting:** "Welcome aboard Dovetail-9. External device detected on UDC port 1. Identify yourself to continue."
+5. **Command prompt:** `login quell`, `status`, `clear`, `help`. A successful login links to the directory.
+6. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
+
+### Sound design
+
+Generated in the browser with the Web Audio API: no audio files, nothing to license. Inspired by a 1990s PC boot.
+
+| Sound | Detail |
+|---|---|
+| POST beep | Square wave, 980 Hz, 0.18 s |
+| Drive spin-up | Sawtooth motor 90 to 360 Hz plus sine whine 600 to 2400 Hz over ~3.2 s, then fades to silence by ~4 s. Capped at 75% of an earlier, shriller version. |
+| Fan | Soft low-passed noise, continues quietly after boot |
+| Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
+| Ready chime | Two sine notes, 660 then 880 Hz |
+
+Timing: beep, ~2.2 s of spin-up alone, then boot lines every 0.3 s with clicks, then the chime. A whoosh layer was tried and removed.
+
+## Station directory (`Main.dc.html`)
+
+- **Slate frame:** Blackline shell (BLDS-X, UDC link, battery, station time) around SIGMA's screen.
+- **File tree** with `DOVETAIL-9` as the master folder: decks, rooms, and Quell's slate under `devices/`. Folders are collapsible; all decks start collapsed. Opens on the station overview.
+- **Location panel:** what Quell sees, his scanner reading, the files and sub-folders there. Files open in a viewer.
+- **Terminal line:** `ls`, `cd <name>`, `cd ..`, `cd /`, `open <file>`, `help`, alongside clicking.
+
+## Look
+
+- Ground `#0B0C0D`, panels `#0F1112` / `#121416`, slate frame `#17191B`, borders `#2A2D30`.
+- Text off-white `#E8E4DA`, muted `#A8A49A`.
+- Accent SIGMA red `#E0504A`; warnings amber `#D9A441`; readings teal `#9FC7C2`.
+- Type: IBM Plex Mono (body), Chakra Petch (headings and labels).
+
+## Canon status
+
+Everything here follows the lore, except these, invented for the mockup and **not canon**:
+
+- deck names and layout beyond `DOVETAIL-9` as the master folder
+- crew names (shown as placeholders)
+- 214 environmental faults, power to 7 of 12 decks, 11 °C / 98 kPa, station times
+- "test 14" in the researcher's message
+- the lock badges (SEALED, NO POWER, CLEARANCE 3): illustrations of candidate mechanisms, none committed

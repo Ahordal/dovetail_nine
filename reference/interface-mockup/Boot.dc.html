@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dovetail-9 boot and login</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B0C0D}
+a{color:#E0504A}a:hover{color:#F07A74}
+button{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; background: #17191B; border: 1px solid #2E3236; border-radius: 18px; padding: 12px;">
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding: 4px 10px 12px 10px; font-family: 'Chakra Petch', sans-serif; font-size: 13px; letter-spacing: 0.08em; color: #A8A49A;">
+<span style="color: #E8E4DA; font-weight: 600;">BLACKLINE // BLDS-X</span>
+<span>UDC LINK ▸ ESTABLISHING</span>
+<span style="color: #D9A441;">PWR 23% · STATION TIME 03:58</span>
+</div>
+
+<div style="position: relative; background: #0B0C0D; border: 1px solid #2A2D30; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+
+<div style="display: flex; justify-content: flex-end; gap: 8px; padding: 10px 12px 0 12px;">
+<button type="button" onClick="{{toggleMute}}" aria-label="{{muteLabel}}" aria-pressed="{{muted}}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 1px solid #2E3236; border-radius: 50%; color: #E8E4DA; cursor: pointer;">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"></path>
+<sc-if value="{{soundOn}}" hint-placeholder-val="{{true}}">
+<path d="M15.5 9a4 4 0 0 1 0 6"></path>
+<path d="M18 6.5a7.5 7.5 0 0 1 0 11"></path>
+</sc-if>
+<sc-if value="{{muted}}" hint-placeholder-val="{{false}}">
+<path d="M16 9.5l5 5M21 9.5l-5 5"></path>
+</sc-if>
+</svg>
+</button>
+<button type="button" onClick="{{toggleHelp}}" aria-label="Help: list commands" aria-expanded="{{helpOpen}}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 1px solid #2E3236; border-radius: 50%; color: #E8E4DA; cursor: pointer;">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="9.5"></circle>
+<path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4"></path>
+<path d="M12 17.4h.01"></path>
+</svg>
+</button>
+</div>
+
+<sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
+<div role="region" aria-label="Available commands" style="position: absolute; top: 62px; right: 12px; width: min(340px, calc(100% - 24px)); box-sizing: border-box; background: #121416; border: 1px solid #2E3236; border-radius: 8px; padding: 16px 18px; z-index: 2; display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; letter-spacing: 0.1em; font-size: 13px;">COMMANDS</span>
+<button type="button" onClick="{{toggleHelp}}" aria-label="Close help" style="background: none; border: 1px solid #2E3236; color: #E8E4DA; border-radius: 4px; min-width: 44px; min-height: 36px; cursor: pointer;">✕</button>
+</div>
+<sc-for list="{{commands}}" as="c" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 8px; border-bottom: 1px solid #1E2123;">
+<span style="color: {{accent}};">{{c.cmd}}</span>
+<span style="color: #A8A49A; font-size: 13px;">{{c.desc}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 24px 20px; text-align: center;">
+<svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="SIGMA logo">
+<path d="M48 6 A42 42 0 1 0 88.6 37.2" fill="none" stroke="#E8E4DA" stroke-width="4"></path>
+<path d="M57 7 A42 42 0 0 1 87.4 31" fill="none" stroke="{{accent}}" stroke-width="4"></path>
+<path d="M31 27 H65 V35 H58 V33 H43 L56 48 L43 63 H58 V61 H65 V69 H31 V65 L45 48 L31 31 Z" fill="#E8E4DA"></path>
+</svg>
+<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 34px; letter-spacing: 0.22em; margin-left: 0.22em;">SIGMA</span>
+<span style="font-size: 12px; letter-spacing: 0.14em; color: #A8A49A; max-width: 44ch;">SYNTHETIC INTELLIGENCE FOR GOVERNANCE, MONITORING, AND ADAPTATION</span>
+<span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">NASHIRO DYNAMICS · DOVETAIL-9 RESEARCH STATION</span>
+</div>
+
+<div style="border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; min-height: 380px; box-sizing: border-box;">
+<sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
+<div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px 0;">
+<span style="color: #A8A49A; font-size: 13px; letter-spacing: 0.08em;">BLDS-X READY · UDC PORT 1 · NO LINK</span>
+<button type="button" onClick="{{begin}}" style="min-height: 52px; padding: 0 28px; background: none; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.14em; cursor: pointer;">CONNECT SLATE</button>
+<span style="color: #6F6C64; font-size: 12px;">Sound on. Use the speaker button to mute.</span>
+</div>
+</sc-if>
+<sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
+<div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
+<span style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
+<span style="flex: 1 1 260px; min-width: 0; color: #D6D2C8;">{{line.label}}</span>
+<span style="{{line.valStyle}}">{{line.value}}</span>
+</div>
+</sc-for>
+<sc-if value="{{booting}}" hint-placeholder-val="{{true}}">
+<span style="color: #6F6C64; font-size: 13px;">▌</span>
+</sc-if>
+<sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 16px; display: flex; flex-direction: column; gap: 4px; white-space: pre-line;">
+<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.1em;">SIGMA</span>
+<span>Welcome aboard Dovetail-9.
+External device detected on UDC port 1.
+Identify yourself to continue.</span>
+</div>
+</sc-if>
+</div>
+
+<div style="border-top: 1px solid #2A2D30; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; background: #0F1112;">
+<div style="font-size: 13px; color: #9FC7C2; min-height: 18px; white-space: pre-line;">{{out}}</div>
+<sc-if value="{{loggedIn}}" hint-placeholder-val="{{false}}">
+<a href="Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; letter-spacing: 0.08em; font-size: 13px;">ENTER STATION DIRECTORY ▸</a>
+</sc-if>
+<div style="display: flex; align-items: center; gap: 10px;">
+<label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
+<input id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command, e.g. login quell (help lists them all)" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="flex-grow: 1; min-width: 0; background: transparent; border: none; outline: none; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 36px;">
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E0504A","options":["#E0504A","#D9A441","#9FC7C2"]},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.BOOT = [
+      { label: 'UDC hardlink', value: 'DEVICE BLDS-X, PORT 1', tone: 'ok' },
+      { label: 'Protocol emulation', value: 'NASHIRO ENVIRONMENT', tone: 'ok' },
+      { label: 'DYNEX T-CORE X9', value: 'CONTAINMENT HOLDING · 1.3 EW', tone: 'ok' },
+      { label: 'Power distribution', value: 'PARTIAL · 7 OF 12 DECKS', tone: 'warn' },
+      { label: 'Life support', value: 'NOMINAL', tone: 'ok' },
+      { label: 'Atmosphere', value: '11 °C · 98 kPa', tone: 'ok' },
+      { label: 'Harmonic shielding', value: 'ONLINE', tone: 'ok' },
+      { label: 'Anchor Core', value: 'PHASE-LOCKED', tone: 'warn' },
+      { label: 'Alignment', value: 'WINDOW OPEN', tone: 'ok' },
+      { label: 'Distress beacon', value: 'TRANSMITTING · 3,652 DAYS', tone: 'warn' },
+      { label: 'Docking bay A', value: 'VESSEL DOCKED · ISRV MISTRAL', tone: 'ok' },
+      { label: 'Environmental faults', value: '214 ACTIVE', tone: 'warn' },
+      { label: 'Crew aboard', value: '0 OF 97', tone: 'warn' }
+    ];
+    this.COMMANDS = [
+      { cmd: 'login <name>', desc: 'Identify yourself to SIGMA.' },
+      { cmd: 'status', desc: 'Repeat the station status summary.' },
+      { cmd: 'clear', desc: 'Clear the response line.' },
+      { cmd: 'help', desc: 'List these commands.' }
+    ];
+    this.state = { started: false, shown: 0, helpOpen: false, cmd: '', out: '', loggedIn: false, muted: false };
+  }
+
+  // Synthesized with Web Audio so there are no audio files to license.
+  initAudio() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    const master = ctx.createGain();
+    master.gain.value = this.state.muted ? 0 : 0.5;
+    master.connect(ctx.destination);
+    const len = ctx.sampleRate * 2;
+    const noise = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    this.audio = { ctx, master, noise };
+  }
+
+  tone(freq, start, dur, type, vol) {
+    if (!this.audio) return;
+    const { ctx, master } = this.audio;
+    const t = ctx.currentTime + start;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.01);
+    g.gain.setValueAtTime(vol, t + dur - 0.03);
+    g.gain.linearRampToValueAtTime(0, t + dur);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+
+  click(start) {
+    if (!this.audio) return;
+    const { ctx, master, noise } = this.audio;
+    const t = ctx.currentTime + start;
+    const src = ctx.createBufferSource();
+    src.buffer = noise;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 1800 + Math.random() * 1400; bp.Q.value = 3;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.35, t + 0.003);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(t, Math.random()); src.stop(t + 0.05);
+  }
+
+  hum() {
+    if (!this.audio) return;
+    const { ctx, master, noise } = this.audio;
+    const t = ctx.currentTime;
+    const fan = ctx.createBufferSource();
+    fan.buffer = noise; fan.loop = true;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 500;
+    const fanG = ctx.createGain();
+    fanG.gain.setValueAtTime(0, t);
+    fanG.gain.linearRampToValueAtTime(0.06, t + 1.5);
+    fan.connect(lp); lp.connect(fanG); fanG.connect(master);
+    fan.start(t);
+    // Spin-up: the motor's whine climbs in pitch, carried at audible frequencies so small speakers reproduce it.
+    const motor = ctx.createOscillator();
+    motor.type = 'sawtooth';
+    motor.frequency.setValueAtTime(90, t + 0.2);
+    // Peaks at 75% of the original pitch, then fades to silence rather than holding the whine.
+    motor.frequency.exponentialRampToValueAtTime(360, t + 3.4);
+    const motorF = ctx.createBiquadFilter();
+    motorF.type = 'lowpass'; motorF.frequency.value = 1400;
+    const motorG = ctx.createGain();
+    motorG.gain.setValueAtTime(0, t);
+    motorG.gain.linearRampToValueAtTime(0.06, t + 0.6);
+    motorG.gain.linearRampToValueAtTime(0.045, t + 3.4);
+    motorG.gain.linearRampToValueAtTime(0, t + 4);
+    motor.connect(motorF); motorF.connect(motorG); motorG.connect(master);
+    motor.start(t + 0.2);
+    motor.stop(t + 4.1);
+    const whine = ctx.createOscillator();
+    whine.type = 'sine';
+    whine.frequency.setValueAtTime(600, t + 0.2);
+    whine.frequency.exponentialRampToValueAtTime(2400, t + 3.4);
+    const whineG = ctx.createGain();
+    whineG.gain.setValueAtTime(0, t);
+    whineG.gain.linearRampToValueAtTime(0.035, t + 1.2);
+    whineG.gain.linearRampToValueAtTime(0.02, t + 3.4);
+    whineG.gain.linearRampToValueAtTime(0, t + 4);
+    whine.connect(whineG); whineG.connect(master);
+    whine.start(t + 0.2);
+    whine.stop(t + 4.1);
+    this.audio.loops = [fan, motor, whine];
+  }
+
+  begin() {
+    if (this.state.started) return;
+    this.initAudio();
+    if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
+    this.tone(980, 0.05, 0.18, 'square', 0.12);
+    this.hum();
+    this.setState({ started: true });
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
+    // Let the drive spin up before the systems start listing.
+    this.delay = setTimeout(() => {
+      this.timer = setInterval(() => {
+        if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
+        const n = 1 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < n; i++) this.click(i * 0.045);
+        this.setState({ shown: this.state.shown + 1 });
+      }, 300);
+    }, 2200);
+  }
+
+  chime(start) {
+    this.tone(660, start, 0.28, 'sine', 0.14);
+    this.tone(880, start + 0.26, 0.42, 'sine', 0.12);
+  }
+
+  toggleMute() {
+    const muted = !this.state.muted;
+    if (this.audio) this.audio.master.gain.setTargetAtTime(muted ? 0 : 0.5, this.audio.ctx.currentTime, 0.02);
+    this.setState({ muted });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.delay);
+    clearInterval(this.timer);
+    if (this.audio) this.audio.ctx.close();
+  }
+
+  run(raw) {
+    const input = raw.trim();
+    if (!input) return;
+    const [verb, ...rest] = input.split(/\s+/);
+    const arg = rest.join(' ').toLowerCase();
+    const v = verb.toLowerCase();
+    if (v === 'help') return this.setState({ helpOpen: true, out: '' });
+    if (v === 'clear') return this.setState({ out: '' });
+    if (v === 'status') return this.setState({ out: 'Crew aboard: 0 of 97. Power: 7 of 12 decks. Alignment window open.' });
+    if (v === 'login') {
+      if (!arg) return this.setState({ out: 'SIGMA: Please provide a name.' });
+      if (arg === 'quell' || arg === 'tobias' || arg === 'tobias quell') {
+        return this.setState({ loggedIn: true, out: 'SIGMA: Bioelectric signature matches device BLDS-X.\nWelcome, Mr. Quell. Clearance: GUEST.' });
+      }
+      return this.setState({ out: 'SIGMA: No record of "' + rest.join(' ') + '" aboard this station.' });
+    }
+    this.setState({ out: 'SIGMA: Command not recognized. Type help.' });
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#E0504A';
+    const shown = Math.min(this.state.shown, this.BOOT.length);
+    const lines = this.BOOT.slice(0, shown).map((b, i) => {
+      const s = 0.4 + i * 0.3;
+      return {
+        t: '[' + s.toFixed(1).padStart(4, ' ') + 's]',
+        label: b.label,
+        value: b.value,
+        valStyle: 'flex-shrink: 0; color: ' + (b.tone === 'warn' ? '#D9A441' : '#9FC7C2') + ';'
+      };
+    });
+    return {
+      accent,
+      lines,
+      notStarted: !this.state.started,
+      booting: this.state.started && shown < this.BOOT.length,
+      booted: this.state.started && shown >= this.BOOT.length,
+      begin: () => this.begin(),
+      muted: this.state.muted,
+      soundOn: !this.state.muted,
+      muteLabel: this.state.muted ? 'Unmute sound' : 'Mute sound',
+      toggleMute: () => this.toggleMute(),
+      helpOpen: this.state.helpOpen,
+      toggleHelp: () => this.setState({ helpOpen: !this.state.helpOpen }),
+      commands: this.COMMANDS,
+      cmd: this.state.cmd,
+      out: this.state.out,
+      loggedIn: this.state.loggedIn,
+      onCmd: (e) => this.setState({ cmd: e.target.value }),
+      onKey: (e) => { if (e.key === 'Enter') { const val = this.state.cmd; this.setState({ cmd: '' }); this.run(val); } }
+    };
+  }
+}
+</script>
+</body>
+</html>
