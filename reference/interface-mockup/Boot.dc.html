@@ -14,6 +14,9 @@
 body{margin:0;background:#0B0C0D}
 a{color:#E0504A}a:hover{color:#F07A74}
 button{font:inherit}
+@keyframes sigma-spin{to{transform:rotate(360deg)}}
+.sigma-ring{transform-box:view-box;transform-origin:48px 48px;animation:sigma-spin 8s linear infinite}
+@media (prefers-reduced-motion: reduce){.sigma-ring{animation:none}}
 </style>
 </helmet>
 <div style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
@@ -66,8 +69,10 @@ button{font:inherit}
 
 <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 24px 20px; text-align: center;">
 <svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="SIGMA logo">
+<g class="sigma-ring">
 <path d="M48 6 A42 42 0 1 0 88.6 37.2" fill="none" stroke="#E8E4DA" stroke-width="4"></path>
 <path d="M57 7 A42 42 0 0 1 87.4 31" fill="none" stroke="{{accent}}" stroke-width="4"></path>
+</g>
 <path d="M31 27 H65 V35 H58 V33 H43 L56 48 L43 63 H58 V61 H65 V69 H31 V65 L45 48 L31 31 Z" fill="#E8E4DA"></path>
 </svg>
 <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 34px; letter-spacing: 0.22em; margin-left: 0.22em;">SIGMA</span>
