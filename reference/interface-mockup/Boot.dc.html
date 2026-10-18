@@ -15,7 +15,8 @@ body{margin:0;background:#0B0C0D}
 a{color:#E0504A}a:hover{color:#F07A74}
 button{font:inherit}
 @keyframes sigma-spin{from{transform:perspective(500px) rotateY(0deg)}to{transform:perspective(500px) rotateY(360deg)}}
-@keyframes sigma-spin-rev{from{transform:perspective(500px) rotateY(0deg)}to{transform:perspective(500px) rotateY(-360deg)}}
+/* Opposite Y spins at the same speed look identical head-on, so the glyph runs a quarter turn out of step. */
+@keyframes sigma-spin-rev{from{transform:perspective(500px) rotateY(90deg)}to{transform:perspective(500px) rotateY(-270deg)}}
 .sigma-ring,.sigma-glyph{position:absolute;inset:0;transform-origin:50% 50%}
 .sigma-ring{animation:sigma-spin 8s linear infinite}
 .sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
