@@ -112,7 +112,7 @@ button{font:inherit}
 <sc-if value="{{chattering}}" hint-placeholder-val="{{false}}">
 <div role="status" style="display: flex; gap: 12px; font-size: 13px; color: #D6D2C8;">
 <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
-<span>ESTABLISHING LINK TO SIGMA CORE</span>
+<span>INITIALIZING TERMINAL</span>
 </div>
 </sc-if>
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
@@ -184,16 +184,17 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.BOOT = [
-      // The terminal's own self-check; station systems belong on a separate status screen.
-      { label: 'SIGMA core link', value: 'ESTABLISHED', tone: 'ok' },
+      // The terminal's own self-check, in boot order: hardware, software, network, security.
+      // Scale matches the lore: a BLDS-X slate carries 4.2 PB, so a fixed terminal sits in TB to PB.
       { label: 'Terminal', value: 'DT9-T01A · DECK 01', tone: 'ok' },
-      { label: 'Firmware', value: 'SIGMA TERMINAL OS 4.12', tone: 'ok' },
-      { label: 'ROM checksum', value: 'OK', tone: 'ok' },
-      { label: 'Memory test', value: '65,536 K · OK', tone: 'ok' },
-      { label: 'Display', value: 'OK', tone: 'ok' },
-      { label: 'Input', value: 'KEYBOARD · OK', tone: 'ok' },
-      { label: 'Local storage', value: '3 FAULTED SECTORS', tone: 'warn' },
-      { label: 'Clock sync', value: 'STATION TIME 03:58', tone: 'ok' },
+      { label: 'Processor', value: 'STRATOVAN Q-LATTICE · 16 CORES · OK', tone: 'ok' },
+      { label: 'Working memory', value: '256 TB · TESTED OK', tone: 'ok' },
+      { label: 'Local storage', value: '2.0 PB · 3 BLOCKS UNREADABLE', tone: 'warn' },
+      { label: 'Firmware', value: 'SIGMA TERMINAL OS 4.12 · SIGNATURE VALID', tone: 'ok' },
+      { label: 'Display', value: 'PHOTONIC PANEL · OK', tone: 'ok' },
+      { label: 'Input', value: 'KEYBOARD · TOUCH · OK', tone: 'ok' },
+      { label: 'Clock', value: 'SYNCED · STATION TIME 03:58', tone: 'ok' },
+      { label: 'SIGMA core link', value: 'ESTABLISHED', tone: 'ok' },
       { label: 'Security module', value: 'ACTIVE', tone: 'ok' },
       { label: 'Last session', value: '3,652 DAYS AGO', tone: 'warn' }
     ];
@@ -267,7 +268,7 @@ class Component extends DCLogic {
     this.audio.loops = [fan];
   }
 
-  // Startup beeps for the link phase: one on connect, one when the link is established.
+  // Startup beeps: one as the terminal wakes, one as initialization completes.
   linkBeeps() {
     this.tone(1760, 0.62, 0.12, 'square', 0.08);
   }
@@ -288,7 +289,7 @@ class Component extends DCLogic {
     if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
     this.setState({ chattering: true });
     this.spinTimer = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
-    // Hold on the link message before the systems start listing.
+    // Hold on the initializing message before the self-check starts listing.
     this.delay = setTimeout(() => {
       clearInterval(this.spinTimer);
       this.linkEstablished();

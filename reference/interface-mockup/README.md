@@ -11,7 +11,23 @@ A clickable prototype of the site's interface, kept as development reference. No
 
 1. **Wake.** A small status strip ("TERMINAL DT9-T01A · 03:58") over a standby screen: "TERMINAL DT9-T01A · STANDBY" with a compact WAKE TERMINAL button. Browsers need a click before playing sound.
 2. **SIGMA logo:** 136 px emblem and a 46 px title (70% and 32 px on phones). The Σ in a broken circle with a red arc. The circle spins like a coin spun on a table, upright and turning around its vertical axis, while the Σ inside spins the opposite way, a quarter turn out of step so the two are visibly separate. Both have 6 px of depth (25 stacked layers 0.25 px apart, each edge the same colour as its face: off-white ring and Σ, red arc), so a solid edge shows side-on. One turn per 8 s each; both still under reduced-motion settings. Below: the public designation and "Nashiro Dynamics · Dovetail-9 Research Station".
-3. **Boot sequence: the terminal's own self-check, not the station's systems.** SIGMA core link, terminal ID and deck, firmware, ROM checksum, memory test, display, input, local storage (3 faulted sectors), clock sync, security module, and last session (3,652 days ago). Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
+3. **Boot sequence: the terminal's own self-check, not the station's systems,** in boot order (hardware, software, network, security):
+
+   | Check | Result |
+   |---|---|
+   | Terminal | DT9-T01A · DECK 01 |
+   | Processor | STRATOVAN Q-LATTICE · 16 CORES · OK |
+   | Working memory | 256 TB · TESTED OK |
+   | Local storage | 2.0 PB · 3 BLOCKS UNREADABLE (warning) |
+   | Firmware | SIGMA TERMINAL OS 4.12 · SIGNATURE VALID |
+   | Display | PHOTONIC PANEL · OK |
+   | Input | KEYBOARD · TOUCH · OK |
+   | Clock | SYNCED · STATION TIME 03:58 |
+   | SIGMA core link | ESTABLISHED |
+   | Security module | ACTIVE |
+   | Last session | 3,652 DAYS AGO (warning) |
+
+   Scale follows the lore: Quell's BLDS-X slate carries 4.2 PB and a Stratovan Q-bit lattice processor, so a fixed station terminal sits in the TB to PB range. Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
 4. **Greeting:** "Terminal ready."
 5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the self-check finishes gets "Station systems still initializing."
 6. **Logging-in screen:** "LOGGING IN" with the spinning cursor, over "Authenticating general user", for ~1.8 s. Then a beep, and "[ OK ] ACCESS GRANTED / General user session opened." for ~1.1 s.
@@ -28,13 +44,13 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Sound | Detail |
 |---|---|
 | POST beep | Square wave, 980 Hz, 0.18 s |
-| Link beeps | Startup beeps for the ~1.75 s link phase: one square-wave beep on connect (1760 Hz, 0.12 s), and one at 1568 Hz (0.14 s) when the link is established. Otherwise quiet. On screen: "ESTABLISHING LINK TO SIGMA CORE" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), replaced by "SIGMA core link: ESTABLISHED" as the first boot line. |
+| Startup beeps | For the ~1.75 s initializing phase: one square-wave beep as the terminal wakes (1760 Hz, 0.12 s), and one at 1568 Hz (0.14 s) as initialization completes. Otherwise quiet. On screen: "INITIALIZING TERMINAL" with an old-school spinning line cursor (cycling through bar, slash, dash, backslash), then the self-check begins. |
 | Fan | Soft low-passed noise, continues quietly after boot |
 | Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 | Login beep | 1568 Hz square wave when access is granted |
 
-Timing: POST beep, then the link phase (one startup beep, ~1.75 s of the loading cursor, a beep as the link is established), then boot lines every 0.22 s with clicks, then the chime.
+Timing: POST beep, then the initializing phase (one startup beep, ~1.75 s of the loading cursor, a beep as it completes), then boot lines every 0.22 s with clicks, then the chime.
 
 Tried and removed:
 - a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out)
@@ -65,6 +81,6 @@ Everything here follows the lore, except these, invented for the mockup and **no
 
 - room names and layout beyond numbered decks under `DOVETAIL-9`
 - crew names (shown as placeholders)
-- terminal ID DT9-T01A, SIGMA Terminal OS 4.12, memory and storage figures, station times
+- terminal ID DT9-T01A, SIGMA Terminal OS 4.12, 16 cores, 256 TB memory, 2.0 PB storage, station times
 - "test 14" in the researcher's message
 - the lock badges (SEALED, NO POWER, CLEARANCE 3): illustrations of candidate mechanisms, none committed
