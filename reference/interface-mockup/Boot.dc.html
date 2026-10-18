@@ -15,11 +15,9 @@ body{margin:0;background:#0B0C0D}
 a{color:#E0504A}a:hover{color:#F07A74}
 button{font:inherit}
 @keyframes sigma-spin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
-/* Opposite Y spins at the same speed look identical head-on, so the glyph runs a quarter turn out of step. */
-@keyframes sigma-spin-rev{from{transform:rotateY(90deg)}to{transform:rotateY(-270deg)}}
 .sigma-ring,.sigma-glyph{position:absolute;inset:0;transform-origin:50% 50%;transform-style:preserve-3d}
 .sigma-ring{animation:sigma-spin 8s linear infinite}
-.sigma-glyph{animation:sigma-spin-rev 8s linear infinite}
+.sigma-glyph{animation:sigma-spin 8s linear infinite}
 @media (prefers-reduced-motion: reduce){.sigma-ring,.sigma-glyph{animation:none}}
 @keyframes term-blink{50%{opacity:0}}
 .term-cursor{animation:term-blink 1.06s step-end infinite}
