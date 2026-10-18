@@ -40,7 +40,7 @@ sc-if,sc-for{display:contents}
 }
 </style>
 </helmet>
-<div class="boot-root" style="box-sizing: border-box; padding: max(20px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom)); background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.55;">
+<div class="boot-root" style="box-sizing: border-box; padding: max(20px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom)); background: #0B0C0D; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.55;">
 <div style="height: 100%; max-width: 1280px; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column;">
 
 <div style="position: relative; flex: 1 1 auto; min-height: 0; background: #0B0C0D; overflow: hidden; display: flex; flex-direction: column;">
@@ -82,7 +82,7 @@ sc-if,sc-for{display:contents}
 </div>
 </div>
 <span class="boot-title" style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 46px; letter-spacing: 0.22em; margin-left: 0.22em;">SIGMA</span>
-<span class="boot-sub" style="font-size: 12px; letter-spacing: 0.14em; color: #A8A49A; max-width: 44ch;">SYNTHETIC INTELLIGENCE FOR GOVERNANCE, MONITORING, AND ADAPTATION</span>
+<span class="boot-sub" style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A; max-width: 44ch;">SYNTHETIC INTELLIGENCE FOR GOVERNANCE, MONITORING, AND ADAPTATION</span>
 <span class="boot-sub" style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">NASHIRO DYNAMICS · DOVETAIL-9 RESEARCH STATION</span>
 </div>
 
@@ -92,7 +92,7 @@ sc-if,sc-for{display:contents}
 <div ref="{{logRef}}" class="boot-log" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 32px 0;">
-<span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.1em;">TERMINAL DT9-T01A · STANDBY</span>
+<span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.12em;">TERMINAL DT9-T01A · STANDBY</span>
 <button type="button" onClick="{{begin}}" style="min-height: 44px; padding: 0 20px; background: none; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; cursor: pointer;">WAKE TERMINAL</button>
 <span style="color: #6F6C64; font-size: 11px;">Sound on. Use the speaker button to mute.</span>
 </div>
@@ -107,7 +107,7 @@ sc-if,sc-for{display:contents}
 <div class="boot-grid">
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
 <sc-if value="{{line.isStage}}" hint-placeholder-val="{{false}}">
-<div style="grid-column: 1 / -1; margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; color: #6F6C64;">── {{line.label}}</div>
+<div style="grid-column: 1 / -1; margin-top: 8px; font-size: 11px; letter-spacing: 0.12em; color: #6F6C64;">── {{line.label}}</div>
 </sc-if>
 <sc-if value="{{line.isCheck}}" hint-placeholder-val="{{true}}">
 <div style="display: contents; font-size: 13px;">
@@ -140,7 +140,7 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-<span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">AVAILABLE COMMANDS</span>
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #A8A49A;">AVAILABLE COMMANDS</span>
 <button type="button" onClick="{{closeHelp}}" aria-label="Close help" style="margin-right: -8px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid #2E3236; border-radius: 4px; color: #E8E4DA; cursor: pointer; font-size: 13px;">✕</button>
 </div>
 <sc-for list="{{commands}}" as="c" hint-placeholder-count="2">
@@ -157,8 +157,8 @@ sc-if,sc-for{display:contents}
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
 <div style="position: relative; flex-grow: 1; min-width: 0; display: flex; align-items: center;">
-<input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 14px; min-height: 30px;">
-<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>
+<input ref="{{inputRef}}" id="bootcmd" type="text" autocomplete="off" spellcheck="false" placeholder="type a command" value="{{cmd}}" onChange="{{onCmd}}" onKeyDown="{{onKey}}" style="width: 100%; min-width: 0; padding: 0; background: transparent; border: none; outline: none; caret-color: transparent; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace; font-size: 13px; min-height: 30px;">
+<span aria-hidden="true" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); pointer-events: none; white-space: pre; color: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">{{cmd}}<span class="term-cursor" style="color: {{accent}};">▌</span></span>
 </div>
 </div>
 </div>
@@ -170,7 +170,7 @@ sc-if,sc-for{display:contents}
 <div role="status" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;">
 <sc-if value="{{loginVerifying}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-<div style="display: flex; gap: 12px; font-size: 13px; letter-spacing: 0.06em; color: #E8E4DA;">
+<div style="display: flex; gap: 12px; font-size: 13px; color: #E8E4DA;">
 <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #D9A441;">{{spinChar}}</span>
 <span>LOGGING IN</span>
 </div>
@@ -179,7 +179,7 @@ sc-if,sc-for{display:contents}
 </sc-if>
 <sc-if value="{{loginMatched}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-<span style="font-size: 13px; letter-spacing: 0.06em; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
+<span style="font-size: 13px; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
 <span style="font-size: 13px; color: #E8E4DA;">General user session opened.</span>
 </div>
 </sc-if>
@@ -189,14 +189,13 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
 <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
 <div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; font-size: 13px;">
-<span style="color: #9FC7C2; letter-spacing: 0.06em;">[ OK ] ACCESS GRANTED</span>
+<span style="font-size: 13px; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Session</span><span style="color: #9FC7C2;">GENERAL USER</span></div>
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Access</span><span style="color: #9FC7C2;">GENERAL</span></div>
 <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 4px;">
-<span style="color: {{accent}}; font-size: 12px; letter-spacing: 0.1em;">SIGMA</span>
-<span>Welcome to Dovetail-9.</span>
+<span style="font-size: 13px;"><span style="color: {{accent}}; letter-spacing: 0.06em;">SIGMA:</span> Welcome to Dovetail-9.</span>
 </div>
-<a ref="{{dirRef}}" onClick="{{enterDir}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
+<a ref="{{dirRef}}" onClick="{{enterDir}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
 </div>
 </div>
 </sc-if>

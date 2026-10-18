@@ -91,6 +91,16 @@ Every screen sits between a matching **top bar** and **bottom bar**, both in the
 
 Whenever SIGMA speaks, its name appears in SIGMA red and the message in off-white: on the response line ("SIGMA: General access session open."), and in the boot and welcome greetings. Plain system output, such as `ls` results and access errors, stays teal.
 
+## Type scale (boot and login)
+
+| Use | Style |
+|---|---|
+| All terminal text: boot log, status lines, typed input, help list, SIGMA messages | IBM Plex Mono 13 px, no extra letter spacing |
+| Small uppercase labels: top bar, stage headings, "AVAILABLE COMMANDS", standby | 11 px, 0.12em letter spacing |
+| Logo subtitles | 11 px, 0.14em |
+| Buttons (WAKE TERMINAL, ENTER STATION DIRECTORY) | Chakra Petch 600, 13 px, 0.14em, 44 px tall |
+| SIGMA title | Chakra Petch 600, 46 px (32 px on phones) |
+
 ## Look
 
 - Ground `#0B0C0D`, panels `#0F1112` / `#121416`, borders `#2A2D30`.
