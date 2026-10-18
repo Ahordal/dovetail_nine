@@ -9,15 +9,15 @@ A clickable prototype of the site's interface, kept as development reference. No
 
 ## Boot and login (`Boot.dc.html`)
 
-1. **Wake.** A small status strip ("TERMINAL DT9-T01A · 03:58") over a standby screen: "TERMINAL DT9-T01A · STANDBY" with a WAKE TERMINAL button. Browsers need a click before playing sound.
-2. **SIGMA logo:** the Σ in a broken circle with a red arc. The circle spins like a coin spun on a table, upright and turning around its vertical axis, while the Σ inside spins the opposite way, a quarter turn out of step so the two are visibly separate. Both have 6 px of depth (25 stacked layers 0.25 px apart, each edge the same colour as its face: off-white ring and Σ, red arc), so a solid edge shows side-on. One turn per 8 s each; both still under reduced-motion settings. Below: the public designation and "Nashiro Dynamics · Dovetail-9 Research Station".
+1. **Wake.** A small status strip ("TERMINAL DT9-T01A · 03:58") over a standby screen: "TERMINAL DT9-T01A · STANDBY" with a compact WAKE TERMINAL button. Browsers need a click before playing sound.
+2. **SIGMA logo:** 136 px emblem and a 46 px title (70% and 32 px on phones). The Σ in a broken circle with a red arc. The circle spins like a coin spun on a table, upright and turning around its vertical axis, while the Σ inside spins the opposite way, a quarter turn out of step so the two are visibly separate. Both have 6 px of depth (25 stacked layers 0.25 px apart, each edge the same colour as its face: off-white ring and Σ, red arc), so a solid edge shows side-on. One turn per 8 s each; both still under reduced-motion settings. Below: the public designation and "Nashiro Dynamics · Dovetail-9 Research Station".
 3. **Boot sequence: the terminal's own self-check, not the station's systems.** SIGMA core link, terminal ID and deck, firmware, ROM checksum, memory test, display, input, local storage (3 faulted sectors), clock sync, security module, and last session (3,652 days ago). Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
 4. **Greeting:** "Terminal ready."
-5. **Command prompt:** only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the self-check finishes gets "Station systems still initializing."
+5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the self-check finishes gets "Station systems still initializing."
 6. **Logging-in screen:** "LOGGING IN" with the spinning cursor, over "Authenticating general user", for ~1.8 s. Then a beep, and "[ OK ] ACCESS GRANTED / General user session opened." for ~1.1 s.
 7. **Welcome screen:** "SIGMA // GENERAL ACCESS", "Welcome to Dovetail-9. Access level: GENERAL. Restricted areas and files require higher clearance.", and an ENTER STATION DIRECTORY button.
 8. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
-9. **Fits one screen:** the terminal fills exactly the window height (100dvh on phones). Logo at the top, prompt pinned at the bottom, and the boot log scrolls in between, following each new line. On phones the emblem shrinks to two-thirds and the title and subtitles get smaller.
+9. **Fits one screen:** the terminal fills exactly the window height (100dvh on phones). Logo at the top, prompt pinned at the bottom, and the boot log scrolls in between, following each new line. On phones the emblem shrinks to 70% and the title and subtitles get smaller.
 
 Station systems (reactor, power, life support, shielding, beacon, crew aboard) belong on a separate station status screen, not in the boot. Not yet mocked up.
 
