@@ -84,7 +84,8 @@ The station's records (crew files, emails, specs, logs) are the same under every
 
 - The site is a terminal the reader explores to learn about Dovetail-9.
 - The mystery is in the past: what happened to the crew in 2467.
-- **The interface is the station's own UI [settled]:** SIGMA's terminal system aboard Dovetail-9. Quell's BLDS-X slate is **plugged into it** through the UDC; it is not the screen the reader sees. SIGMA shows the slate as a connected external device, and its abilities are the TOOLS.
+- **The interface is a generic station terminal [settled]:** SIGMA's system, as found anywhere aboard Dovetail-9. The boot and login are simply **logging onto the station's systems**, with no slate involved.
+- **The slate is a tool, used on demand [settled].** When something is locked or restricted, the reader goes to TOOLS, picks the slate, **jacks in**, then chooses an ability (override, spoof, and so on). It is not plugged in by default and is not the screen.
 - *Superseded:* the earlier leaning of a rugged Blackline slate frame around SIGMA's interface.
 - SIGMA, if live, is **scripted**, not AI (no budget for an API).
 
