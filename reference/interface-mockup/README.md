@@ -11,23 +11,32 @@ A clickable prototype of the site's interface, kept as development reference. No
 
 1. **Wake.** A small status strip ("TERMINAL DT9-T01A · 03:58") over a standby screen: "TERMINAL DT9-T01A · STANDBY" with a compact WAKE TERMINAL button. Browsers need a click before playing sound.
 2. **SIGMA logo:** 136 px emblem and a 46 px title (70% and 32 px on phones). The Σ in a broken circle with a red arc. The circle spins like a coin spun on a table, upright and turning around its vertical axis, while the Σ inside spins the opposite way, a quarter turn out of step so the two are visibly separate. Both have 6 px of depth (25 stacked layers 0.25 px apart, each edge the same colour as its face: off-white ring and Σ, red arc), so a solid edge shows side-on. One turn per 8 s each; both still under reduced-motion settings. Below: the public designation and "Nashiro Dynamics · Dovetail-9 Research Station".
-3. **Boot sequence: the terminal's own self-check, not the station's systems,** in boot order (hardware, software, network, security):
+3. **Boot sequence: the terminal's own self-check, not the station's systems.** Modeled on a real PC boot (power, firmware, POST, boot device, operating system, network, login), futurized for a station. Each stage has a small heading:
 
-   | Check | Result |
-   |---|---|
-   | Terminal | DT9-T01A · DECK 01 |
-   | Processor | STRATOVAN Q-LATTICE · 16 CORES · OK |
-   | Working memory | 256 TB · TESTED OK |
-   | Local storage | 2.0 PB · 3 BLOCKS UNREADABLE (warning) |
-   | Firmware | SIGMA TERMINAL OS 4.12 · SIGNATURE VALID |
-   | Display | PHOTONIC PANEL · OK |
-   | Input | KEYBOARD · TOUCH · OK |
-   | Clock | SYNCED · STATION TIME 03:58 |
-   | SIGMA core link | ESTABLISHED |
-   | Security module | ACTIVE |
-   | Last session | 3,652 DAYS AGO (warning) |
+   | Stage | Check | Result |
+   |---|---|---|
+   | Power | Station power bus | NOMINAL |
+   | | Terminal | DT9-T01A · DECK 01 |
+   | Firmware | Nashiro terminal firmware | v7.2 · CHECKSUM OK |
+   | Power-on self-test | Processor | STRATOVAN Q-LATTICE · 16 CORES · OK |
+   | | Working memory | 256 TB · TESTED OK |
+   | | Display | PHOTONIC PANEL · OK |
+   | | Input | KEYBOARD · TOUCH · OK |
+   | | Thermal | 12 °C · WITHIN LIMITS |
+   | | Storage | QUANTUM-MEM ARRAY · 2.0 PB · DETECTED |
+   | Boot | Boot device | LOCAL ARRAY · PARTITION 1 |
+   | | Boot integrity | NASHIRO SIGNATURE VALID |
+   | Operating system | Kernel | SIGMA TERMINAL OS 4.12 · LOADED |
+   | | Filesystem check | UNCLEAN SHUTDOWN DETECTED (warning) |
+   | | Filesystem repair | 3 BLOCKS UNREADABLE · ISOLATED (warning) |
+   | | Services | STARTED |
+   | Network | Section network | DECK 01 · ADDRESS ASSIGNED |
+   | | SIGMA core link | ESTABLISHED |
+   | | Clock | SYNCED TO SIGMA · 03:58 |
+   | Security | Security module | ACTIVE |
+   | | Last session | 3,652 DAYS AGO (warning) |
 
-   Scale follows the lore: Quell's BLDS-X slate carries 4.2 PB and a Stratovan Q-bit lattice processor, so a fixed station terminal sits in the TB to PB range. Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
+   The unclean shutdown is the terminal going dark mid-session in 2467. Lines appear every 0.16 s (~4.3 s total); stage headings get no drive click. Scale follows the lore: Quell's BLDS-X slate carries 4.2 PB and a Stratovan Q-bit lattice processor, so a fixed station terminal sits in the TB to PB range. Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
 4. **Greeting:** "Terminal ready."
 5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the self-check finishes gets "Station systems still initializing."
 6. **Logging-in screen:** "LOGGING IN" with the spinning cursor, over "Authenticating general user", for ~1.8 s. Then a beep, and "[ OK ] ACCESS GRANTED / General user session opened." for ~1.1 s.
@@ -50,7 +59,7 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Ready chime | Two sine notes, 660 then 880 Hz |
 | Login beep | 1568 Hz square wave when access is granted |
 
-Timing: POST beep, then the initializing phase (one startup beep, ~1.75 s of the loading cursor, a beep as it completes), then boot lines every 0.22 s with clicks, then the chime.
+Timing: POST beep, then the initializing phase (one startup beep, ~1.75 s of the loading cursor, a beep as it completes), then boot lines every 0.16 s with clicks (none on stage headings), then the chime.
 
 Tried and removed:
 - a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out)
@@ -81,6 +90,6 @@ Everything here follows the lore, except these, invented for the mockup and **no
 
 - room names and layout beyond numbered decks under `DOVETAIL-9`
 - crew names (shown as placeholders)
-- terminal ID DT9-T01A, SIGMA Terminal OS 4.12, 16 cores, 256 TB memory, 2.0 PB storage, station times
+- terminal ID DT9-T01A, firmware v7.2, SIGMA Terminal OS 4.12, 16 cores, 256 TB memory, 2.0 PB storage, 12 °C, station times
 - "test 14" in the researcher's message
 - the lock badges (SEALED, NO POWER, CLEARANCE 3): illustrations of candidate mechanisms, none committed

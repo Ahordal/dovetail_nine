@@ -116,11 +116,16 @@ button{font:inherit}
 </div>
 </sc-if>
 <sc-for list="{{lines}}" as="line" hint-placeholder-count="10">
+<sc-if value="{{line.isStage}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; color: #6F6C64;">── {{line.label}}</div>
+</sc-if>
+<sc-if value="{{line.isCheck}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-wrap: wrap; gap: 0 12px; font-size: 13px;">
 <span class="boot-ts" style="color: #6F6C64; flex-shrink: 0;">{{line.t}}</span>
 <span style="flex: 1 1 140px; min-width: 0; color: #D6D2C8;">{{line.label}}</span>
 <span style="{{line.valStyle}}">{{line.value}}</span>
 </div>
+</sc-if>
 </sc-for>
 <sc-if value="{{booting}}" hint-placeholder-val="{{true}}">
 <span style="color: #6F6C64; font-size: 13px;">▌</span>
@@ -184,17 +189,33 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.BOOT = [
-      // The terminal's own self-check, in boot order: hardware, software, network, security.
-      // Scale matches the lore: a BLDS-X slate carries 4.2 PB, so a fixed terminal sits in TB to PB.
+      // Modeled on a real PC boot, in its stages. Scale follows the lore: a BLDS-X slate
+      // carries 4.2 PB, so a fixed station terminal sits in the TB to PB range.
+      { stage: 'POWER' },
+      { label: 'Station power bus', value: 'NOMINAL', tone: 'ok' },
       { label: 'Terminal', value: 'DT9-T01A · DECK 01', tone: 'ok' },
+      { stage: 'FIRMWARE' },
+      { label: 'Nashiro terminal firmware', value: 'v7.2 · CHECKSUM OK', tone: 'ok' },
+      { stage: 'POWER-ON SELF-TEST' },
       { label: 'Processor', value: 'STRATOVAN Q-LATTICE · 16 CORES · OK', tone: 'ok' },
       { label: 'Working memory', value: '256 TB · TESTED OK', tone: 'ok' },
-      { label: 'Local storage', value: '2.0 PB · 3 BLOCKS UNREADABLE', tone: 'warn' },
-      { label: 'Firmware', value: 'SIGMA TERMINAL OS 4.12 · SIGNATURE VALID', tone: 'ok' },
       { label: 'Display', value: 'PHOTONIC PANEL · OK', tone: 'ok' },
       { label: 'Input', value: 'KEYBOARD · TOUCH · OK', tone: 'ok' },
-      { label: 'Clock', value: 'SYNCED · STATION TIME 03:58', tone: 'ok' },
+      { label: 'Thermal', value: '12 °C · WITHIN LIMITS', tone: 'ok' },
+      { label: 'Storage', value: 'QUANTUM-MEM ARRAY · 2.0 PB · DETECTED', tone: 'ok' },
+      { stage: 'BOOT' },
+      { label: 'Boot device', value: 'LOCAL ARRAY · PARTITION 1', tone: 'ok' },
+      { label: 'Boot integrity', value: 'NASHIRO SIGNATURE VALID', tone: 'ok' },
+      { stage: 'OPERATING SYSTEM' },
+      { label: 'Kernel', value: 'SIGMA TERMINAL OS 4.12 · LOADED', tone: 'ok' },
+      { label: 'Filesystem check', value: 'UNCLEAN SHUTDOWN DETECTED', tone: 'warn' },
+      { label: 'Filesystem repair', value: '3 BLOCKS UNREADABLE · ISOLATED', tone: 'warn' },
+      { label: 'Services', value: 'STARTED', tone: 'ok' },
+      { stage: 'NETWORK' },
+      { label: 'Section network', value: 'DECK 01 · ADDRESS ASSIGNED', tone: 'ok' },
       { label: 'SIGMA core link', value: 'ESTABLISHED', tone: 'ok' },
+      { label: 'Clock', value: 'SYNCED TO SIGMA · 03:58', tone: 'ok' },
+      { stage: 'SECURITY' },
       { label: 'Security module', value: 'ACTIVE', tone: 'ok' },
       { label: 'Last session', value: '3,652 DAYS AGO', tone: 'warn' }
     ];
@@ -296,10 +317,12 @@ class Component extends DCLogic {
       this.setState({ chattering: false });
       this.timer = setInterval(() => {
         if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
-        const n = 1 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < n; i++) this.click(i * 0.045);
+        if (!this.BOOT[this.state.shown].stage) {
+          const n = 1 + Math.floor(Math.random() * 3);
+          for (let i = 0; i < n; i++) this.click(i * 0.045);
+        }
         this.setState({ shown: this.state.shown + 1 });
-      }, 220);
+      }, 160);
     }, 2200);
   }
 
@@ -355,8 +378,11 @@ class Component extends DCLogic {
     const accent = this.props.accent ?? '#E0504A';
     const shown = Math.min(this.state.shown, this.BOOT.length);
     const lines = this.BOOT.slice(0, shown).map((b, i) => {
-      const s = 2.2 + i * 0.22;
+      if (b.stage) return { isStage: true, isCheck: false, label: b.stage };
+      const s = 2.2 + i * 0.16;
       return {
+        isStage: false,
+        isCheck: true,
         t: '[' + s.toFixed(1).padStart(4, ' ') + 's]',
         label: b.label,
         value: b.value,
