@@ -38,10 +38,10 @@ A clickable prototype of the site's interface, kept as development reference. No
 
    The unclean shutdown is the terminal going dark mid-session in 2467. Lines appear every 0.16 s (~4.3 s total); stage headings get no drive click. Scale follows the lore: Quell's BLDS-X slate carries 4.2 PB and a Stratovan Q-bit lattice processor, so a fixed station terminal sits in the TB to PB range. Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
 4. **Greeting:** "Terminal ready."
-5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `help` and `login` (no name needed). `help` opens the help menu and also prints the commands on the response line. `login` before the self-check finishes gets "Station systems still initializing."
+5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `help` and `login` (no name needed). `help` expands the prompt box upward to list the commands for the current screen ("COMMANDS ON THIS SCREEN"); typing `help` again, or any other command, folds it away. `login` before the self-check finishes gets "Station systems still initializing."
 6. **Logging-in screen:** "LOGGING IN" with the spinning cursor, over "Authenticating general user", for ~1.8 s. Then a beep, and "[ OK ] ACCESS GRANTED / General user session opened." for ~1.1 s.
 7. **Welcome screen:** "SIGMA // GENERAL ACCESS", "Welcome to Dovetail-9. Access level: GENERAL. Restricted areas and files require higher clearance.", and an ENTER STATION DIRECTORY button.
-8. **Help icon:** opens the command list. **Speaker icon:** mute and unmute.
+8. **Speaker icon:** mute and unmute. (The separate help icon and pop-up panel were removed: help lives in the prompt.)
 9. **Fits one screen:** the terminal fills exactly the window height (100dvh on phones). Logo at the top, prompt pinned at the bottom, and the boot log scrolls in between, following each new line. On phones the emblem shrinks to 70% and the title and subtitles get smaller.
 
 Station systems (reactor, power, life support, shielding, beacon, crew aboard) belong on a separate station status screen, not in the boot. Not yet mocked up.
@@ -75,7 +75,7 @@ Tried and removed:
 - **SIGMA header** with "ACCESS: GENERAL".
 - **File tree** with `DOVETAIL-9` as the master folder: Deck 01 to Deck 12, each with its rooms beneath. Places only. Folders are collapsible; all decks start collapsed. Opens on the station overview.
 - **Location panel:** what Quell sees, his scanner reading, the files and sub-folders there. Files open in a viewer.
-- **Terminal line:** `ls`, `cd <name>`, `cd ..`, `cd /`, `open <file>`, `help`, alongside clicking.
+- **Terminal line:** `ls`, `cd <name>`, `cd ..`, `cd /`, `open <file>`, `help`, alongside clicking. `help` expands the prompt box to list this screen's commands, the same way as on the boot screen.
 - **Not yet mocked up:** the TOOLS area (slate and its abilities), and Quell's own logs, which were removed with the old `devices/` folder.
 
 ## Look

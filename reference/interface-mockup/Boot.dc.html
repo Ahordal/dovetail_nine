@@ -50,29 +50,7 @@ button{font:inherit}
 </sc-if>
 </svg>
 </button>
-<button type="button" onClick="{{toggleHelp}}" aria-label="Help: list commands" aria-expanded="{{helpOpen}}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 1px solid #2E3236; border-radius: 50%; color: #E8E4DA; cursor: pointer;">
-<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<circle cx="12" cy="12" r="9.5"></circle>
-<path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4"></path>
-<path d="M12 17.4h.01"></path>
-</svg>
-</button>
 </div>
-
-<sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="Available commands" style="position: absolute; top: 62px; right: 12px; width: min(340px, calc(100% - 24px)); box-sizing: border-box; background: #121416; border: 1px solid #2E3236; border-radius: 8px; padding: 16px 18px; z-index: 2; display: flex; flex-direction: column; gap: 10px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
-<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; letter-spacing: 0.1em; font-size: 13px;">COMMANDS</span>
-<button type="button" onClick="{{toggleHelp}}" aria-label="Close help" style="background: none; border: 1px solid #2E3236; color: #E8E4DA; border-radius: 4px; min-width: 44px; min-height: 36px; cursor: pointer;">✕</button>
-</div>
-<sc-for list="{{commands}}" as="c" hint-placeholder-count="4">
-<div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 8px; border-bottom: 1px solid #1E2123;">
-<span style="color: {{accent}};">{{c.cmd}}</span>
-<span style="color: #A8A49A; font-size: 13px;">{{c.desc}}</span>
-</div>
-</sc-for>
-</div>
-</sc-if>
 
 <div style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 20px 20px 20px; text-align: center;">
 <div class="boot-emblem">
@@ -140,6 +118,17 @@ button{font:inherit}
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
 <div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; background: #0F1112;">
+<sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
+<div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
+<span style="font-size: 11px; letter-spacing: 0.14em; color: #A8A49A;">COMMANDS ON THIS SCREEN</span>
+<sc-for list="{{commands}}" as="c" hint-placeholder-count="2">
+<div style="display: flex; flex-wrap: wrap; gap: 2px 16px; font-size: 13px;">
+<span style="flex: 0 0 9ch; color: {{accent}};">{{c.cmd}}</span>
+<span style="flex: 1 1 200px; min-width: 0; color: #A8A49A;">{{c.desc}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
 <div style="font-size: 13px; color: #9FC7C2; min-height: 18px; white-space: pre-line;">{{out}}</div>
 <div style="display: flex; align-items: center; gap: 10px;">
 <label for="bootcmd" style="color: {{accent}}; font-weight: 500;">&gt;</label>
@@ -362,9 +351,9 @@ class Component extends DCLogic {
     const input = raw.trim();
     if (!input) return;
     const v = input.split(/\s+/)[0].toLowerCase();
-    if (v === 'help') {
-      return this.setState({ helpOpen: true, out: this.COMMANDS.map((c) => c.cmd.padEnd(8, ' ') + c.desc).join('\n') });
-    }
+    // Help expands the prompt itself; any other command folds it away.
+    if (v === 'help') return this.setState({ helpOpen: !this.state.helpOpen, out: '' });
+    this.setState({ helpOpen: false });
     if (v === 'login') {
       if (this.state.shown < this.BOOT.length) return this.setState({ out: 'SIGMA: Station systems still initializing.' });
       this.setState({ screen: 'loggingIn', loginStage: 'verifying', helpOpen: false, out: '' });
@@ -420,7 +409,6 @@ class Component extends DCLogic {
       muteLabel: this.state.muted ? 'Unmute sound' : 'Mute sound',
       toggleMute: () => this.toggleMute(),
       helpOpen: this.state.helpOpen,
-      toggleHelp: () => this.setState({ helpOpen: !this.state.helpOpen }),
       commands: this.COMMANDS,
       cmd: this.state.cmd,
       out: this.state.out,
