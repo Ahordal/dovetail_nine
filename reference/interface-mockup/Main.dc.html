@@ -22,6 +22,7 @@ button{font:inherit}
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding: 4px 10px 12px 10px; font-family: 'Chakra Petch', sans-serif; font-size: 13px; letter-spacing: 0.08em; color: #A8A49A;">
 <span style="color: #E8E4DA; font-weight: 600;">BLACKLINE // BLDS-X</span>
 <span>UDC LINK ▸ DOVETAIL-9 / SIGMA</span>
+<span style="color: #E8E4DA;"><span style="color: {{accent}};">◉</span> QUELL ▸ {{hereLabel}}</span>
 <span style="color: #D9A441;">PWR 23% · STATION TIME 16:20</span>
 </div>
 
@@ -53,7 +54,12 @@ button{font:inherit}
 <span aria-hidden="true" style="flex-shrink: 0; width: 28px;"></span>
 </sc-if>
 <button type="button" onClick="{{node.pick}}" style="{{node.btnStyle}}">
+<span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
 <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{node.label}}</span>
+<sc-if value="{{node.isHere}}" hint-placeholder-val="{{false}}">
+<span style="flex-shrink: 0; font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;">YOU</span>
+</sc-if>
+</span>
 <sc-if value="{{node.hasLock}}" hint-placeholder-val="{{false}}">
 <span style="flex-shrink: 0; font-size: 10px; letter-spacing: 0.06em; padding: 1px 6px; border: 1px solid #5A4A2A; color: #D9A441; border-radius: 3px;">{{node.lock}}</span>
 </sc-if>
@@ -247,6 +253,7 @@ class Component extends DCLogic {
         label: n.depth === 0 ? n.label + '/' : n.label,
         lock: n.lock || '',
         hasLock: !!n.lock,
+        isHere: sel,
         hasKids: kids,
         noKids: !kids,
         expanded: !shut,
@@ -272,6 +279,7 @@ class Component extends DCLogic {
       accent,
       nodes,
       path: this.pathOf(here.id),
+      hereLabel: here.depth === 0 ? 'STATION OVERVIEW' : this.pathOf(here.id).split('/').slice(2).join(' / ').toUpperCase(),
       locName: here.depth === 0 ? 'Station overview' : here.label,
       isLocked: locked,
       isOpen: !locked,

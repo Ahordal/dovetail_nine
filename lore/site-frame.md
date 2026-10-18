@@ -60,7 +60,8 @@ Candidates discussed, still to be decided:
 - echoes as files in the rooms where they happen
 - how far the reader can jump between distant folders
 - the tools and their actions
-- a marker showing where Quell currently is
+
+**Current location flag [settled]:** the interface always shows where Quell is, both in the status bar and on his folder in the tree.
 
 ### Twist layer notes (archived)
 
