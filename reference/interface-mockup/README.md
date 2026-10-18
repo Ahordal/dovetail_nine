@@ -21,12 +21,14 @@ Generated in the browser with the Web Audio API: no audio files, nothing to lice
 | Sound | Detail |
 |---|---|
 | POST beep | Square wave, 980 Hz, 0.18 s |
-| Drive spin-up | Sawtooth motor 90 to 360 Hz plus sine whine 600 to 2400 Hz over ~3.2 s, then fades to silence by ~4 s. Capped at 75% of an earlier, shriller version. |
+| Drive chatter | Rapid rhythmic ticks after the beep, in the spirit of the terminals in *Aliens*: band-passed noise bursts every ~55 ms for ~1.75 s, alternating 3400 and 2600 Hz, every fourth tick accented, a short pause every nine. Slight random jitter in timing and volume. |
 | Fan | Soft low-passed noise, continues quietly after boot |
 | Drive clicks | 1 to 3 short band-passed noise bursts per boot line |
 | Ready chime | Two sine notes, 660 then 880 Hz |
 
-Timing: beep, ~2.2 s of spin-up alone, then boot lines every 0.3 s with clicks, then the chime. A whoosh layer was tried and removed.
+Timing: beep, then ~1.75 s of drive chatter, then boot lines every 0.3 s with clicks, then the chime.
+
+Tried and removed: a rising drive spin-up (motor plus whine, later capped at 75% pitch and faded out), and a whoosh layer.
 
 ## Station directory (`Main.dc.html`)
 

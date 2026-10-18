@@ -206,35 +206,39 @@ class Component extends DCLogic {
     fanG.gain.linearRampToValueAtTime(0.06, t + 1.5);
     fan.connect(lp); lp.connect(fanG); fanG.connect(master);
     fan.start(t);
-    // Spin-up: the motor's whine climbs in pitch, carried at audible frequencies so small speakers reproduce it.
-    const motor = ctx.createOscillator();
-    motor.type = 'sawtooth';
-    motor.frequency.setValueAtTime(90, t + 0.2);
-    // Peaks at 75% of the original pitch, then fades to silence rather than holding the whine.
-    motor.frequency.exponentialRampToValueAtTime(360, t + 3.4);
-    const motorF = ctx.createBiquadFilter();
-    motorF.type = 'lowpass'; motorF.frequency.value = 1400;
-    const motorG = ctx.createGain();
-    motorG.gain.setValueAtTime(0, t);
-    motorG.gain.linearRampToValueAtTime(0.06, t + 0.6);
-    motorG.gain.linearRampToValueAtTime(0.045, t + 3.4);
-    motorG.gain.linearRampToValueAtTime(0, t + 4);
-    motor.connect(motorF); motorF.connect(motorG); motorG.connect(master);
-    motor.start(t + 0.2);
-    motor.stop(t + 4.1);
-    const whine = ctx.createOscillator();
-    whine.type = 'sine';
-    whine.frequency.setValueAtTime(600, t + 0.2);
-    whine.frequency.exponentialRampToValueAtTime(2400, t + 3.4);
-    const whineG = ctx.createGain();
-    whineG.gain.setValueAtTime(0, t);
-    whineG.gain.linearRampToValueAtTime(0.035, t + 1.2);
-    whineG.gain.linearRampToValueAtTime(0.02, t + 3.4);
-    whineG.gain.linearRampToValueAtTime(0, t + 4);
-    whine.connect(whineG); whineG.connect(master);
-    whine.start(t + 0.2);
-    whine.stop(t + 4.1);
-    this.audio.loops = [fan, motor, whine];
+    this.audio.loops = [fan];
+  }
+
+  // Rapid, rhythmic drive chatter, in the spirit of the terminals in Aliens.
+  tick(start, freq, vol) {
+    if (!this.audio) return;
+    const { ctx, master, noise } = this.audio;
+    const t = ctx.currentTime + start;
+    const src = ctx.createBufferSource();
+    src.buffer = noise;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 6;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.002);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.014);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(t, Math.random()); src.stop(t + 0.03);
+  }
+
+  chatter(start, dur) {
+    const step = 0.055;
+    let t = start;
+    let i = 0;
+    while (t < start + dur) {
+      // Alternate two pitches in a steady pulse, with slight jitter so it reads as mechanical, not synthetic.
+      const freq = i % 2 === 0 ? 3400 : 2600;
+      const vol = (i % 4 === 0 ? 0.3 : 0.18) * (0.85 + Math.random() * 0.3);
+      this.tick(t + (Math.random() - 0.5) * 0.006, freq, vol);
+      if (i % 9 === 8) t += step * 2;
+      t += step;
+      i++;
+    }
   }
 
   begin() {
@@ -243,10 +247,11 @@ class Component extends DCLogic {
     if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
     this.tone(980, 0.05, 0.18, 'square', 0.12);
     this.hum();
+    this.chatter(0.35, 1.75);
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) { this.setState({ shown: this.BOOT.length }); this.chime(0.4); return; }
-    // Let the drive spin up before the systems start listing.
+    // Let the drive chatter play before the systems start listing.
     this.delay = setTimeout(() => {
       this.timer = setInterval(() => {
         if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
