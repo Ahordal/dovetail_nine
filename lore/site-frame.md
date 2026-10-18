@@ -15,6 +15,8 @@ Who the reader is and what interface they use.
 - **The data dump stays in the story**, as something Quell does, not as the frame.
 - **Timeframe: about 24 hours aboard [settled].** No day-by-day structure; the story moves by hours.
 - **Logs are tied to places [settled]:** each entry records what Quell finds in a particular area, timestamped by station time.
+- *Superseded:* option 6, where the reader received the dump.
+- **Option 7's twist no longer works as written.** It needed Quell to escape and read his own dump, but canon now says he doesn't escape. Kept below for reference; any revival would need rethinking (for example, a version where the reader is Quell still aboard, re-reading, close to Gemini's purgatory idea).
 
 ## The file-tree model **[settled]**
 
@@ -22,11 +24,12 @@ The whole experience works as a file tree:
 
 - **Folders are places** (decks, then rooms). **Files are what's in them** (terminal contents, records, logs).
 - **Opening a folder is Quell going there.**
-- Quell's own material (logs, tools) sits in its own branch, separate from the station's.
+- **The station tree holds only places [settled].** `DOVETAIL-9/` at the top is the station overview, the starting screen.
+- **Quell's slate lives under TOOLS, outside the station tree [settled].** It's what he carries, so using it never moves him. The slate is one tool among several, and **each tool has one or more actions**.
 - A map, if added later, is a picture of the same folders.
 
 ```
-DOVETAIL-9/
+DOVETAIL-9/                ← places only
 ├── deck-01_docking-ring/
 ├── deck-02_habitation/
 │   ├── galley/
@@ -34,10 +37,15 @@ DOVETAIL-9/
 │   │   └── ...
 │   └── ...
 └── ...
-SLATE/
-├── logs/
-└── tools/
+
+TOOLS                      ← carried; usable anywhere
+├── slate        (logs, ...)
+├── scanner      (scan, ...)
+├── spoof        (...)
+└── override     (...)
 ```
+
+- Which tools exist and what each action does are **mechanisms, not yet committed**.
 
 Interface prototype (boot screen, sound, file tree): `reference/interface-mockup/`.
 
@@ -51,8 +59,8 @@ Candidates discussed, still to be decided:
 - station time advancing with each move and action
 - echoes as files in the rooms where they happen
 - how far the reader can jump between distant folders
-- *Superseded:* option 6, where the reader received the dump.
-- **Option 7's twist no longer works as written.** It needed Quell to escape and read his own dump, but canon now says he doesn't escape. Kept below for reference; any revival would need rethinking (for example, a version where the reader is Quell still aboard, re-reading, close to Gemini's purgatory idea).
+- the tools and their actions
+- a marker showing where Quell currently is
 
 ### Twist layer notes (archived)
 
