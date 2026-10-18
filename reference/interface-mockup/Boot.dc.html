@@ -257,22 +257,6 @@ class Component extends DCLogic {
     o.start(t); o.stop(t + dur + 0.05);
   }
 
-  click(start) {
-    if (!this.audio) return;
-    const { ctx, master, noise } = this.audio;
-    const t = ctx.currentTime + start;
-    const src = ctx.createBufferSource();
-    src.buffer = noise;
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass'; bp.frequency.value = 1800 + Math.random() * 1400; bp.Q.value = 3;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.35, t + 0.003);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
-    src.connect(bp); bp.connect(g); g.connect(master);
-    src.start(t, Math.random()); src.stop(t + 0.05);
-  }
-
   hum() {
     if (!this.audio) return;
     const { ctx, master, noise } = this.audio;
@@ -287,6 +271,31 @@ class Component extends DCLogic {
     fan.connect(lp); lp.connect(fanG); fanG.connect(master);
     fan.start(t);
     this.audio.loops = [fan];
+  }
+
+  // One tiny electronic blip, like a single printed character on the Nostromo's terminals.
+  blip(start, freq) {
+    if (!this.audio) return;
+    const { ctx, master } = this.audio;
+    const t = ctx.currentTime + start;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'square';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.05, t + 0.001);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.006);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + 0.01);
+  }
+
+  // A rapid run of single blips as each line prints, one per character-ish.
+  printChatter() {
+    const pitches = [2100, 2400, 2800];
+    const n = 7 + Math.floor(Math.random() * 6);
+    for (let i = 0; i < n; i++) {
+      this.blip(i * 0.012 + Math.random() * 0.002, pitches[Math.floor(Math.random() * pitches.length)]);
+    }
   }
 
   // Startup beeps: one as the terminal wakes, one as initialization completes.
@@ -317,10 +326,7 @@ class Component extends DCLogic {
       this.setState({ chattering: false });
       this.timer = setInterval(() => {
         if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); return; }
-        if (!this.BOOT[this.state.shown].stage) {
-          const n = 1 + Math.floor(Math.random() * 3);
-          for (let i = 0; i < n; i++) this.click(i * 0.045);
-        }
+        if (!this.BOOT[this.state.shown].stage) this.printChatter();
         this.setState({ shown: this.state.shown + 1 });
       }, 160);
     }, 2200);
