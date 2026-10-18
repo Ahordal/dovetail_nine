@@ -355,11 +355,9 @@ class Component extends DCLogic {
     // Thin layers stacked in depth give the emblem a solid edge when it turns side-on.
     const depths = [3, 2, 1, 0, -1, -2, -3];
     const layerStyle = (z) => 'position: absolute; left: 0; top: 0; transform: translateZ(' + z + 'px);';
-    const ringLayers = depths.map((z) => {
-      const face = Math.abs(z) === 3;
-      return { style: layerStyle(z), ring: face ? '#E8E4DA' : '#7E7A72', arc: face ? accent : '#8E2E2A' };
-    });
-    const glyphLayers = depths.map((z) => ({ style: layerStyle(z), fill: Math.abs(z) === 3 ? '#E8E4DA' : '#7E7A72' }));
+    // Each edge matches its face: off-white ring and glyph, red arc.
+    const ringLayers = depths.map((z) => ({ style: layerStyle(z), ring: '#E8E4DA', arc: accent }));
+    const glyphLayers = depths.map((z) => ({ style: layerStyle(z), fill: '#E8E4DA' }));
     return {
       accent,
       ringLayers,
