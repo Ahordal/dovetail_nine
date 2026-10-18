@@ -36,6 +36,10 @@ A clickable prototype of the site's interface, kept as development reference. No
    | Security | Security module | ACTIVE |
    | | Last session | 3,652 DAYS AGO (warning) |
 
+   **Memory test:** like an old PC, the working-memory line counts up through the RAM in GB (0 to 262,144 GB over about 1.4 s, a soft tick every few steps) before settling on "256 TB · TESTED OK". The list pauses while it counts.
+
+   **Completion:** the log ends with "[ OK ] BOOT SEQUENCE COMPLETE · TOTAL TIME n s", the real time from Wake Terminal to the last check. Timestamps on each line are real elapsed times too.
+
    The unclean shutdown is the terminal going dark mid-session in 2467. Lines appear every 0.16 s (~4.3 s total); stage headings get no drive click. Scale follows the lore: Quell's BLDS-X slate carries 4.2 PB and a Stratovan Q-bit lattice processor, so a fixed station terminal sits in the TB to PB range. Teal for normal, amber for warnings. On phones the timestamps hide so each line stays on one row. Everything at once under reduced-motion settings.
 4. **Greeting:** when the self-check finishes, the command line shows "SIGMA: Terminal ready. Type help for commands.", in the same style as the directory's opening message.
 5. **Command prompt:** appears only once the self-check finishes and the terminal is ready. Only `login` (no name needed), `help` and `close`. `help` expands the prompt box upward to list the commands for the current screen ("AVAILABLE COMMANDS"); typing `help` again, `close`, any other command, or the ✕ in the list's corner folds it away. On phones, entering `help` or `close` dismisses the keyboard so it doesn't cover the list. On desktop the prompt keeps focus throughout (including after the ✕), so the reader keeps typing. Every prompt shows a blinking block cursor in the accent colour (steady under reduced motion), and gets focus automatically on desktop when it appears. `login` before the self-check finishes gets "Station systems still initializing."

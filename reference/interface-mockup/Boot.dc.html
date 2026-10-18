@@ -121,6 +121,9 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{booting}}" hint-placeholder-val="{{true}}">
 <span style="color: #6F6C64; font-size: 13px;">▌</span>
 </sc-if>
+<sc-if value="{{bootComplete}}" hint-placeholder-val="{{false}}">
+<div style="margin-top: 12px; font-size: 13px; color: #9FC7C2;">[ OK ] BOOT SEQUENCE COMPLETE · TOTAL TIME {{bootTimeText}}</div>
+</sc-if>
 </div>
 </div>
 <sc-if value="{{canScroll}}" hint-placeholder-val="{{false}}">
@@ -221,7 +224,7 @@ class Component extends DCLogic {
       { label: 'Nashiro terminal firmware', value: 'v7.2 · CHECKSUM OK', tone: 'ok' },
       { stage: 'POWER-ON SELF-TEST' },
       { label: 'Processor', value: 'STRATOVAN Q-LATTICE · 16 CORES · OK', tone: 'ok' },
-      { label: 'Working memory', value: '256 TB · TESTED OK', tone: 'ok' },
+      { label: 'Working memory', value: '256 TB · TESTED OK', tone: 'ok', countMem: true },
       { label: 'Display', value: 'PHOTONIC PANEL · OK', tone: 'ok' },
       { label: 'Input', value: 'KEYBOARD · TOUCH · OK', tone: 'ok' },
       { label: 'Thermal', value: '12 °C · WITHIN LIMITS', tone: 'ok' },
@@ -314,19 +317,59 @@ class Component extends DCLogic {
     this.tone(980, 0.05, 0.18, 'square', 0.12);
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { this.setState({ shown: this.BOOT.length, out: 'SIGMA: Terminal ready. Type help for commands.' }); this.chime(0.4); return; }
+    this.startedAt = performance.now();
+    this.lineTimes = [];
+    if (reduce) {
+      this.BOOT.forEach((b, i) => { this.lineTimes[i] = 0; });
+      this.setState({ shown: this.BOOT.length, memDone: true, bootTime: 0, out: 'SIGMA: Terminal ready. Type help for commands.' });
+      this.chime(0.4);
+      return;
+    }
     this.setState({ chattering: true });
     this.spinTimer = setInterval(() => this.setState({ spin: this.state.spin + 1 }), 110);
     // Hold on the initializing message before the self-check starts listing.
     this.delay = setTimeout(() => {
       clearInterval(this.spinTimer);
       this.setState({ chattering: false });
-      this.timer = setInterval(() => {
-        if (this.state.shown >= this.BOOT.length) { clearInterval(this.timer); this.chime(0.1); this.setState({ out: 'SIGMA: Terminal ready. Type help for commands.' }); return; }
-        if (!this.BOOT[this.state.shown].stage) this.printChatter();
-        this.setState({ shown: this.state.shown + 1 });
-      }, 160);
+      this.timer = setInterval(() => this.step(), 160);
     }, 2200);
+  }
+
+  elapsed() { return (performance.now() - this.startedAt) / 1000; }
+
+  step() {
+    const i = this.state.shown;
+    if (i >= this.BOOT.length) {
+      clearInterval(this.timer);
+      this.chime(0.1);
+      this.setState({ bootTime: this.elapsed(), out: 'SIGMA: Terminal ready. Type help for commands.' });
+      return;
+    }
+    const item = this.BOOT[i];
+    if (!item.stage) this.printChatter();
+    this.lineTimes[i] = this.elapsed();
+    this.setState({ shown: i + 1 });
+    if (item.countMem) {
+      clearInterval(this.timer);
+      this.countMemory(() => { this.timer = setInterval(() => this.step(), 160); });
+    }
+  }
+
+  // Count the memory up in GB, the way old PCs ticked through their RAM before reporting OK.
+  countMemory(done) {
+    const total = 262144;
+    const steps = 48;
+    let n = 0;
+    this.memTimer = setInterval(() => {
+      n++;
+      this.setState({ memCount: Math.round((total * n) / steps) });
+      if (n % 4 === 0) this.blip(0, 2400);
+      if (n >= steps) {
+        clearInterval(this.memTimer);
+        this.setState({ memDone: true });
+        setTimeout(done, 160);
+      }
+    }, 30);
   }
 
   chime(start) {
@@ -354,8 +397,10 @@ class Component extends DCLogic {
     }
     if (!this.logEl) return;
     // Only follow new lines; jumping on every update would undo the reader scrolling up.
-    if (this.state.shown !== this.lastShown) {
+    const complete = typeof this.state.bootTime === 'number';
+    if (this.state.shown !== this.lastShown || complete !== this.lastComplete) {
       this.lastShown = this.state.shown;
+      this.lastComplete = complete;
       this.logEl.scrollTop = this.logEl.scrollHeight;
     }
     const canScroll = this.logEl.scrollHeight > this.logEl.clientHeight + 2;
@@ -371,6 +416,7 @@ class Component extends DCLogic {
     clearTimeout(this.loginTimer);
     clearTimeout(this.welcomeTimer);
     clearInterval(this.spinTimer);
+    clearInterval(this.memTimer);
     clearTimeout(this.delay);
     clearInterval(this.timer);
     if (this.audio) this.audio.ctx.close();
@@ -404,14 +450,15 @@ class Component extends DCLogic {
     const shown = Math.min(this.state.shown, this.BOOT.length);
     const lines = this.BOOT.slice(0, shown).map((b, i) => {
       if (b.stage) return { isStage: true, isCheck: false, label: b.stage };
-      const s = 2.2 + i * 0.16;
+      const s = (this.lineTimes && this.lineTimes[i]) || 0;
+      const counting = b.countMem && !this.state.memDone;
       return {
         isStage: false,
         isCheck: true,
         t: '[' + s.toFixed(1).padStart(4, ' ') + 's]',
         label: b.label,
-        value: b.value,
-        valStyle: 'font-size: 13px; min-width: 0; color: ' + (b.tone === 'warn' ? '#D9A441' : '#9FC7C2') + ';'
+        value: counting ? (this.state.memCount || 0).toLocaleString('en-US') + ' GB' : b.value,
+        valStyle: 'font-size: 13px; min-width: 0; color: ' + (counting ? '#E8E4DA' : (b.tone === 'warn' ? '#D9A441' : '#9FC7C2')) + ';'
       };
     });
     // Thin layers stacked in depth give the emblem a solid edge when it turns side-on.
@@ -458,6 +505,8 @@ class Component extends DCLogic {
       cmd: this.state.cmd,
       out: this.state.out,
       hasOut: !!this.state.out,
+      bootComplete: typeof this.state.bootTime === 'number',
+      bootTimeText: (this.state.bootTime || 0).toFixed(1) + ' s',
       outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
       outText: (this.state.out || '').replace(/^SIGMA:\s/, ''),
       outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
