@@ -12,7 +12,7 @@ related:
 
 ## Size **[settled]**
 
-- **166 crew**, all aboard in 2467 and all phase-displaced. Raised from 97 when the hull grew to 400 m (see [[dovetail-9-station]]).
+- **166 crew**, all aboard in 2467 and all killed by radiation released in the accident, over hours to days. Their bodies remain aboard where they fell (see [[phase-mechanics]]). Raised from 97 when the hull grew to 400 m (see [[dovetail-9-station]]).
 - Still sparse for the hull: much of the station is machinery SIGMA runs alone.
 
 ## Divisions **[settled]**

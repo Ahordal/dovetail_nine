@@ -56,7 +56,7 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 | **Dovetail-6** | 2455 | Grim Fault, Outer Midrim | Signal loss during ignition; never recovered | 22 (entire crew) | Presumed lost to phase collapse |
 | **Dovetail-7** | 2458 | Halo Verge, Expansion Belt | Full anchor achieved; abandoned after a jurisdictional dispute | 0 (experiment phase only) | The only documented success. Skeleton crew driven out by sliprunner raids; now a pirate station run by organized crime. |
 | **Dovetail-8** | 2461 | Mireon-5, Trillium Arc periphery | DAC collapse during phase-lock attempt; corridor fragment lost | 11 | First SIGMA deployment, as a prototype. **[proposed]** |
-| **Dovetail-9** | 2467 | K-17 "Sable", deep Trillium Arc | Station vanished during full-scale harmonic stabilization | 166 (all crew presumed phase-displaced) | Final deployment; program terminated under Nashiro blackout order |
+| **Dovetail-9** | 2467 | K-17 "Sable", deep Trillium Arc | Station vanished during full-scale harmonic stabilization | 166 (all crew presumed lost) | Final deployment; program terminated under Nashiro blackout order |
 
 **Governance AI [proposed]:** Dovetail-1 to 7 ran earlier, pre-SIGMA Nashiro governance frameworks (name **[open]**). Dovetail-8 ran a SIGMA prototype. Dovetail-9 had the first full SIGMA installation.
 

@@ -40,7 +40,7 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 ## Quell's arrival
 
 - **SIGMA did not lure him.** Quell homed in on an **emergency signal**.
-- **[proposed]** The station's automated distress beacon has run on protocol since 2467. It can only reach normal space during an **alignment window**, so it was silent for years, then suddenly detectable.
+- **[proposed]** The distress beacon was switched on by the dying crew in 2467 and has repeated ever since. It can only reach normal space during an **alignment window**, so it was silent for years, then suddenly detectable.
 - **Where:** Quell finds the station exactly where it vanished, at **K-17 "Sable", deep in the Trillium Arc**. It is phase-locked and has never moved.
 - He was already salvaging in the Trillium Arc. His **Ravel HFSD-3A** is one of the few drives that can survive that stretch of degraded corridor.
 - **[proposed]** K-17 "Sable" is a dim, dying star. The Trillium Arc lies in the outer Perseus Arm, near the Thrennal Expanse.
@@ -87,7 +87,8 @@ The rule still stands, as physics: destroying a pin damages the corridor around 
 
 ## The crew
 
-- The 166 crew persist as **echoes**, not dead in the usual sense.
+- **The 166 crew are dead.** Radiation released in the surge killed them over hours and days, and their bodies remain aboard where they fell (see [[phase-mechanics]]).
+- What persists are **echoes**: their last moments, caught in nodes and still replaying.
 - The echoes will likely be tied to **strange atmospheric events** aboard the station.
 - Echoes are never seen. They **manifest as sensory events**: things felt, heard, smelled, or registered by instruments, not figures in a corridor.
 - Nobody is behind them. Echoes are **moments caught in time**: fragments of 2467 replaying, not aware people reaching out. (Leaning, not locked.)

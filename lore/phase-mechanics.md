@@ -14,7 +14,7 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 - A **node** is a small pocket of space where time has stopped. Whatever was inside when it formed stays held in that moment.
 - The experiment was meant to make one big node out in the corridor. Shielding kept its effects out of the station.
 - At full power the reactor surged and the shielding lost power for two seconds. In that gap, hundreds of small nodes formed across the station, each trapping a moment from those two seconds.
-- The crew were knocked out of normal time. Their trapped moments remain.
+- Radiation released in the same surge killed the crew over the following hours and days; their bodies remain aboard. Their last ordinary moments, trapped in the nodes, remain too.
 - Every so often a node lets out a copy of its moment for a second or so. That is an **echo**: a trapped moment replaying, with nobody behind it.
 - Each replay uses up a little of the node's strength, so echoes **fade**. The moment never changes, it just gets weaker. The weakest have already gone silent.
 
@@ -67,7 +67,7 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 1. **T+0.0 s:** cascade begins; harmonics enter the station.
 2. **T+0.6 s:** a secondary node forms around the galley coffee machine, about a metre across. Time stops advancing inside it.
 3. **T+0.6 to 2.0 s:** it captures everything with mass: air carrying the coffee smell, warmth, steam, the pressure waves of the machine's gurgle. Light passes through.
-4. **T+2.0 s:** cascade ends. The person beside the machine is out of phase. The node holds a 1.4 s sliver.
+4. **T+2.0 s:** cascade ends. The person beside the machine has taken a lethal dose and doesn't know it yet. The node holds a 1.4 s sliver.
 5. **The years since:** the node holds, invisible. SIGMA reads only a faint constant temperature oddity.
 6. **Leak (irregular, days to weeks apart):** for 1.4 s, a smell of fresh coffee, a short gurgle, a puff of warm humid air. Heat is drawn in around it (cold spot) and the moisture condenses on the nearest cold surface.
 7. **Logged:** `RPE-0217 / DECK 2 / GALLEY / VOC spike, humidity +18%, thermal deficit 3.2 K / 1.4 s`.
@@ -95,10 +95,30 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 
 - **Quell and sub-threshold echoes:** his exposure-sharpened perception lets him notice echoes only instruments should detect. Sometimes his log and SIGMA's agree on things he shouldn't be able to sense.
 
-## Phase displacement
+## Why the crew died **[settled]**
 
-- At the instant of the full-power cascade, the crew were knocked **out of phase** with the present. Their bodies are not in normal time.
-- What remains in normal time is residue: their moments, caught in nodes and still leaking.
+- **Radiation, not the harmonics.** In the surge, the X9's containment shielding failed. The black hole's glow (gamma rays and particles) **streamed out along the conduit runs** into the station: radiation streaming, a real reactor-safety term for radiation escaping along pipes and cable channels.
+- **Every crew member took a lethal dose.** Not instantly: those near the core and the conduits collapsed within minutes to hours; those farther away lasted a day or two. Real high-dose cases follow this pattern.
+- **Machines survived.** Equipment near a black-hole reactor is radiation-hardened as standard, like real spacecraft and nuclear-plant electronics. The station stayed intact and running; its crew did not.
+- **The bodies remain aboard,** where each person finally fell. Where they died maps how the radiation spread and how long each had.
+- **The harmonics did something else:** in the same two seconds they made the nodes (the echoes) and caught the station in the phase-lock. The echoes hold the last ordinary moment, before anyone knew.
+- **[proposed] SIGMA kept them cold.** Unable to bear losing what was left of its crew, SIGMA lowered the station's temperature, preserving the bodies. The station is cold throughout; breath shows in the corridors.
+
+### The crew's last hours **[proposed]**
+
+- **They knew they were dying, and tried to tell someone.** They wrote reports, warnings and goodbyes. Nothing got out: the station had slipped out of phase in the same two seconds.
+- **The outbox:** hundreds of messages still sit in the comms queue, marked `QUEUED · NO ROUTE`.
+- **The beacon was switched on by the dying crew,** not by protocol. It has repeated their call for ten years.
+- **Why the messages never went out in a later window:** they carry classified program data, and Nashiro's rules forbid sending it. In every window SIGMA sent the beacon and held the messages: obedience, sitting on its crew's last words.
+- **Quell's dump finally sends them.** Ten years late, the families get their goodbyes and the cover-up breaks.
+
+### Residual radiation **[proposed]**
+
+- **The flash itself didn't linger,** but the neutrons it knocked loose made metal radioactive (activation, real).
+- **After ten years most has decayed;** longer-lived products such as cobalt-60 (half-life about 5 years) are down to roughly a quarter. What remains is **hot spots**: worst near the Core Chamber and along the conduit runs where the radiation streamed.
+- **Not like Chernobyl:** there is no fuel to scatter, so it's fixed in the station's metal, not in the air.
+- **For Quell:** he carries a dosimeter. Hot areas are survivable briefly, dangerous for long: a physical reason for restricted zones, and a cost for pushing into them. Ordinary areas are fairly safe; a day aboard is nowhere near a lethal dose unless he chooses to go deep.
+- **A clue in itself:** the hot spots trace the radiation's path along the conduits, not from "shutters near the core" as the official account claims.
 
 ## Effects on people
 
@@ -115,6 +135,14 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 - Fading began at the accident and has continued at the same pace ever since. It neither starts nor stops for Quell.
 - During an **alignment window** the station is reachable. That is how Dovetail-9 "reappeared", and it will drift out again when the window closes.
 - Windows have opened several times since 2467. Only during a window can the distress beacon reach normal space.
+
+### Who knows about the windows
+
+- **[settled] The beacon is the announcement.** Nobody outside needs to predict a window: when one opens, anyone in range suddenly hears a distress call from a station that vanished in 2467. Earlier windows went unanswered because nobody was close enough. Quell was, because he salvages deep in the Trillium Arc, where almost nobody goes.
+- **[settled] "Alignment window" is SIGMA's term**, from Stratovan's corridor science, not public language. Quell learns it aboard, from SIGMA's record of every window that opened and closed unanswered.
+- **[settled] SIGMA can predict each window precisely.** It measures the drift continuously and knows when this one closes to the minute. It controls what Quell is told, and its plan is delay.
+- Quell's own check would be the Mistral's Navien, which calculates corridor flow and could estimate the drift. He has stripped and restricted it because he doesn't trust AI.
+- **[proposed] Nashiro modeled the windows and chose to stay away.** Its scientists had the data to predict them. A sealed Level 6 memo shows they did, and decided the blackout mattered more than sending anyone: the abandonment was deliberate.
 
 ## Early warning signs
 

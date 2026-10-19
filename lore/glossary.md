@@ -48,7 +48,7 @@ One meaning per term. Use these consistently in lore and documents.
 | **Cascade** (harmonic node cascade) | The spread of small secondary nodes through the station during the two seconds the shielding was down. |
 | **Secondary node** | One of the small nodes the cascade left across the decks. Each holds a sliver of time. |
 | **Temporal arrest** | Time stopped inside a node. |
-| **Phase-displaced** | What happened to the crew: knocked out of normal time. |
+| **Phase-displaced** | Retired. The crew were killed by radiation from the X9, not displaced; their bodies remain aboard. See [[phase-mechanics]]. |
 | **Phase-lock** | Locking the array to a corridor's phase, the step before pinning. Dovetail-8 failed at it. |
 | **Phase-locked** | The station's state since the accident: Dovetail-9 phase-locked so completely that the station itself was caught, out of step with normal space. Not "pinned". |
 | **Alignment window** | A period when the corridor's drift brings the phase-locked station back in step with normal space. It is reachable, and signals get out. |

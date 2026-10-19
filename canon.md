@@ -132,7 +132,7 @@ Full program file: `lore/dovetail-program.md`.
 | Dovetail-6 | 2455 | Grim Fault, Outer Midrim | Signal loss during ignition, never recovered | 22 |
 | Dovetail-7 | 2458 | Halo Verge, Expansion Belt | Full anchor, abandoned over jurisdiction, used by sliprunners | 0 |
 | Dovetail-8 | 2461 | Mireon-5, Trillium Arc periphery | DAC collapse during phase-lock | 11 |
-| Dovetail-9 | 2467 | K-17 "Sable", deep Trillium Arc | Vanished during full-scale harmonic stabilization | 166 (phase-displaced) |
+| Dovetail-9 | 2467 | K-17 "Sable", deep Trillium Arc | Vanished during full-scale harmonic stabilization | 166 (killed by radiation from the X9; bodies remain aboard) |
 
 - Program terminated under Nashiro blackout order after Dovetail-9.
 - Records sealed under the Nashiro Corridor Integrity Act (NCIA/2470).
