@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dovetail-9 terminal home</title>
+    <script src="./support.js"></script>
+  </head>
+  <body>
+    <x-dc>
+      <helmet>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap"
+          rel="stylesheet" />
+        <style>
+          body {
+            margin: 0;
+            background: #0b0c0d;
+          }
+          a {
+            color: #e0504a;
+          }
+          a:hover {
+            color: #f07a74;
+          }
+          button {
+            font: inherit;
+          }
+          @keyframes term-blink {
+            50% {
+              opacity: 0;
+            }
+          }
+          .term-cursor {
+            animation: term-blink 1.06s step-end infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .term-cursor {
+              animation: none;
+            }
+          }
+          /* Phones: half the side margins, so content gets more of the width. */
+          @media (max-width: 560px) {
+            .m-x10 { padding-left: 10px !important; padding-right: 10px !important; }
+            .m-x12 { padding-left: 12px !important; padding-right: 12px !important; }
+            .m-x7 { padding-left: 7px !important; padding-right: 7px !important; }
+            .m-strip { padding-left: 10px !important; padding-right: 7px !important; }
+            .m-modal { padding-left: max(8px, env(safe-area-inset-left)) !important; padding-right: max(8px, env(safe-area-inset-right)) !important; }
+          }
+        </style>
+      </helmet>
+      <div
+        style="
+          height: 100vh;
+          height: 100dvh;
+          box-sizing: border-box;
+          padding: max(20px, env(safe-area-inset-top)) 0
+            max(20px, env(safe-area-inset-bottom));
+          background: #0b0c0d;
+          color: #e8e4da;
+          font-family: &quot;IBM Plex Mono&quot;, monospace;
+          font-size: 14px;
+          line-height: 1.55;
+        ">
+        <div style="box-sizing: border-box; height: 100%; max-width: 1280px; margin: 0 auto">
+          <div
+            style="
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              background: #0b0c0d;
+              overflow: hidden;
+            ">
+            <header class="m-x10"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 14px 20px;
+                background: #0f1112;
+                border-bottom: 1px solid #2a2d30;
+                border-radius: 8px 8px 0 0;
+                flex-shrink: 0;
+              ">
+              <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0">
+                <svg width="40" height="40" viewBox="0 0 34 34" role="img" aria-label="SIGMA logo" style="flex-shrink: 0">
+                  <path d="M17 2 A15 15 0 1 0 31.4 12.9" fill="none" stroke="#E8E4DA" stroke-width="2"></path>
+                  <path d="M20.5 2.4 A15 15 0 0 1 31.6 10.6" fill="none" stroke="{{accent}}" stroke-width="2"></path>
+                  <text x="17" y="23" text-anchor="middle" font-size="17" font-family="Chakra Petch, sans-serif" font-weight="600" fill="#E8E4DA">Σ</text>
+                </svg>
+                <span style="font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 22px; letter-spacing: 0.16em">SIGMA</span>
+              </div>
+              <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.12em; color: #a8a49a">TERMINAL {{termId}}</span>
+            </header>
+
+            <div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain">
+
+            <div class="m-strip"
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 6px 16px;
+                min-height: 41px;
+                box-sizing: border-box;
+                padding: 6px 14px 6px 20px;
+                border-bottom: 1px solid #2a2d30;
+                font-size: 11px;
+                letter-spacing: 0.12em;
+              ">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+                <span
+                  style="font-size: 11px; letter-spacing: 0.08em; padding: 3px 8px; border: 1px solid #1E6B35; color: #3DDC6A; border-radius: 4px;"
+                  >ACCESS: GENERAL</span
+                >
+                <span style="{{kindStyle}}">{{termKind}}</span>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px">
+                <span style="color: #a8a49a">STATION TIME <span style="color: #e8e4da; font-variant-numeric: tabular-nums">{{clock}}</span></span>
+              </div>
+            </div>
+
+            <sc-if value="{{hasPort}}" hint-placeholder-val="{{true}}">
+              <div class="m-x7" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 2px 14px; border-bottom: 1px solid #2a2d30">
+                  <button type="button" ref="{{portBtnRef}}" onClick="{{togglePort}}" aria-haspopup="dialog" aria-expanded="{{portOpen}}" aria-label="{{portButtonLabel}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 6px; background: none; border: none; cursor: pointer; white-space: nowrap; font-size: 12px; letter-spacing: 0.12em; color: {{portColor}};">
+                    <svg width="40" height="22" viewBox="0 0 40 22" aria-hidden="true">
+                      <rect x="1" y="1" width="38" height="20" rx="4" fill="#0F1112" stroke="{{portColor}}" stroke-width="1.5" stroke-dasharray="{{portDash}}"></rect>
+                      <rect x="6" y="7" width="28" height="8" rx="2" fill="none" stroke="{{portColor}}" stroke-width="1.2"></rect>
+                      <rect x="9" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                      <rect x="14" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                      <rect x="19" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                      <rect x="24" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                      <rect x="29" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                      <sc-if value="{{portDamaged}}" hint-placeholder-val="{{false}}">
+                        <polyline points="24,1 21,8 26,13 22,21" fill="none" stroke="{{portColor}}" stroke-width="1.5"></polyline>
+                      </sc-if>
+                      <sc-if value="{{portDisabled}}" hint-placeholder-val="{{false}}">
+                        <line x1="4" y1="19" x2="36" y2="3" stroke="{{portColor}}" stroke-width="1.5"></line>
+                      </sc-if>
+                      <sc-if value="{{portConnected}}" hint-placeholder-val="{{false}}">
+                        <rect x="6" y="7" width="28" height="8" rx="2" fill="{{portColor}}"></rect>
+                      </sc-if>
+                    </svg>
+                    <span aria-hidden="true">{{portText}}</span>
+                    <sc-if value="{{portCanAct}}" hint-placeholder-val="{{true}}">
+                      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 24px; margin-left: 6px; border: 1px solid #9FC7C2; border-radius: 4px">
+                          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="#9FC7C2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 4.5h11M10 1.5l3 3-3 3"></path>
+                            <path d="M14 9.5H3M6 6.5l-3 3 3 3"></path>
+                          </svg>
+                        </span>
+                    </sc-if>
+                  </button>
+              </div>
+            </sc-if>
+
+
+            <sc-if value="{{portOpen}}" hint-placeholder-val="{{false}}">
+              <div class="m-modal"
+                style="
+                  position: fixed;
+                  inset: 0;
+                  z-index: 50;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  box-sizing: border-box;
+                  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+                  background: rgba(5, 6, 7, 0.72);
+                ">
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="port-h"
+                  onKeyDown="{{portKey}}"
+                  style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; max-height: 100%">
+                  <button
+                    type="button"
+                    ref="{{closeRef}}"
+                    onClick="{{closePort}}"
+                    aria-label="Close Universal Data Connector"
+                    style="
+                      align-self: flex-end;
+                      flex-shrink: 0;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 36px;
+                      height: 36px;
+                      padding: 0;
+                      background: #0f1112;
+                      border: 1px solid #2e3236;
+                      border-radius: 6px;
+                      color: #e8e4da;
+                      cursor: pointer;
+                      font-size: 14px;
+                    ">
+                    ✕
+                  </button>
+                <section
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 0;
+                    overflow: auto;
+                    border: 1px solid #2a2d30;
+                    border-radius: 8px;
+                    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6);
+                  ">
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 14px 20px;
+                        background: #0f1112;
+                        border-bottom: 1px solid #2a2d30;
+                      ">
+                      <span id="port-h" style="white-space: nowrap; text-align: center; font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: clamp(11px, 3.4vw, 16px); letter-spacing: 0.14em">UNIVERSAL DATA CONNECTOR</span>
+                      <svg width="72" height="40" viewBox="0 0 40 22" role="img" aria-label="{{portLabel}}" style="display: block; flex-shrink: 0">
+                        <rect x="1" y="1" width="38" height="20" rx="4" fill="#0B0C0D" stroke="{{portColor}}" stroke-width="1.5" stroke-dasharray="{{portDash}}"></rect>
+                        <rect x="6" y="7" width="28" height="8" rx="2" fill="none" stroke="{{portColor}}" stroke-width="1.2"></rect>
+                        <rect x="9" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                        <rect x="14" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                        <rect x="19" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                        <rect x="24" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                        <rect x="29" y="9" width="2" height="4" fill="{{portColor}}"></rect>
+                        <sc-if value="{{portDamaged}}" hint-placeholder-val="{{false}}">
+                          <polyline points="24,1 21,8 26,13 22,21" fill="none" stroke="{{portColor}}" stroke-width="1.5"></polyline>
+                        </sc-if>
+                        <sc-if value="{{portDisabled}}" hint-placeholder-val="{{false}}">
+                          <line x1="4" y1="19" x2="36" y2="3" stroke="{{portColor}}" stroke-width="1.5"></line>
+                        </sc-if>
+                        <sc-if value="{{portConnected}}" hint-placeholder-val="{{false}}">
+                          <rect x="6" y="7" width="28" height="8" rx="2" fill="{{portColor}}"></rect>
+                        </sc-if>
+                      </svg>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px 20px; background: #0b0c0d">
+                      <sc-if value="{{showConnectStart}}" hint-placeholder-val="{{true}}">
+                        <button
+                          type="button"
+                          onClick="{{startConnect}}"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            width: 100%;
+                            min-height: 48px;
+                            background: none;
+                            border: 1px solid #9fc7c2;
+                            border-radius: 6px;
+                            color: #9fc7c2;
+                            cursor: pointer;
+                            font-family: &quot;Chakra Petch&quot;, sans-serif;
+                            font-weight: 600;
+                            font-size: 14px;
+                            letter-spacing: 0.16em;
+                          ">
+                          CONNECT
+                          <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 4.5h11M10 1.5l3 3-3 3"></path>
+                            <path d="M14 9.5H3M6 6.5l-3 3 3 3"></path>
+                          </svg>
+                        </button>
+                      </sc-if>
+                      <sc-if value="{{showChoose}}" hint-placeholder-val="{{false}}">
+                        <span id="choose-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">CHOOSE A DEVICE TO CONNECT</span>
+                        <div role="group" aria-labelledby="choose-h" style="display: flex; flex-direction: column; gap: 6px">
+                          <sc-for list="{{devices}}" as="v" hint-placeholder-count="1">
+                            <button
+                              type="button"
+                              onClick="{{v.act}}"
+                              style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                gap: 12px;
+                                width: 100%;
+                                min-height: 52px;
+                                padding: 8px 12px;
+                                text-align: left;
+                                background: #111315;
+                                border: 1px solid #2e3236;
+                                border-radius: 6px;
+                                color: #e8e4da;
+                                cursor: pointer;
+                              ">
+                              <span style="display: flex; flex-direction: column; min-width: 0">
+                                <span>{{v.name}}</span>
+                                <span style="font-size: 12px; color: #a8a49a">{{v.detail}}</span>
+                              </span>
+                              <span aria-hidden="true" style="flex-shrink: 0; color: #9fc7c2">▸</span>
+                            </button>
+                          </sc-for>
+                        </div>
+                        <span style="font-size: 12px; color: #6f6c64">[Other carried devices not yet decided]</span>
+                        <button
+                          type="button"
+                          onClick="{{cancelConnect}}"
+                          style="
+                            align-self: flex-start;
+                            min-height: 40px;
+                            padding: 0 14px;
+                            background: none;
+                            border: 1px solid #2e3236;
+                            border-radius: 4px;
+                            color: #e8e4da;
+                            cursor: pointer;
+                            font-size: 12px;
+                            letter-spacing: 0.1em;
+                          ">
+                          ◂ BACK
+                        </button>
+                      </sc-if>
+                      <sc-if value="{{showConnected}}" hint-placeholder-val="{{false}}">
+                        <button
+                          type="button"
+                          onClick="{{disconnectNow}}"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            width: 100%;
+                            min-height: 48px;
+                            background: none;
+                            border: 1px solid {{accent}};
+                            border-radius: 6px;
+                            color: {{accent}};
+                            cursor: pointer;
+                            font-family: &quot;Chakra Petch&quot;, sans-serif;
+                            font-weight: 600;
+                            font-size: 14px;
+                            letter-spacing: 0.16em;
+                          ">
+                          DISCONNECT
+                          <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 4.5h11M10 1.5l3 3-3 3"></path>
+                            <path d="M14 9.5H3M6 6.5l-3 3 3 3"></path>
+                          </svg>
+                        </button>
+                        <sc-if value="{{slateIn}}" hint-placeholder-val="{{false}}">
+                          <span style="font-size: 12px; color: #a8a49a; text-align: center">Slate tools not yet mocked up.</span>
+                        </sc-if>
+                      </sc-if>
+                      <sc-if value="{{portBlocked}}" hint-placeholder-val="{{false}}">
+                        <span style="color: #d9a441">{{portBlockedMsg}}</span>
+                      </sc-if>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; min-height: 36px; box-sizing: border-box; padding: 6px 20px; background: #0f1112; border-top: 1px solid #2a2d30">
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; font-size: 11px; letter-spacing: 0.1em; color: {{portColor}};">TERMINAL {{termId}} · {{portFooter}}</span>
+                    </div>
+                </section>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: flex-start">
+              <main class="m-x12"
+                style="
+                  flex: 3 1 520px;
+                  min-width: 0;
+                  box-sizing: border-box;
+                  padding: 20px 24px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 20px;
+                ">
+                <section aria-labelledby="here-h" style="display: flex; flex-direction: column; gap: 6px">
+                  <span style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">YOU ARE HERE</span>
+                  <h1
+                    id="here-h"
+                    style="
+                      margin: 0;
+                      font-family: &quot;Chakra Petch&quot;, sans-serif;
+                      font-weight: 600;
+                      font-size: 26px;
+                      letter-spacing: 0.04em;
+                    ">
+                    {{locName}}
+                  </h1>
+                  <div style="font-size: 12px; color: #a8a49a; overflow-wrap: anywhere">{{path}} · TERMINAL {{termId}}</div>
+                  <sc-if value="{{isLocked}}" hint-placeholder-val="{{false}}">
+                    <div
+                      style="
+                        margin-top: 6px;
+                        border: 1px solid #5a4a2a;
+                        background: #16130c;
+                        color: #e8c887;
+                        padding: 16px 18px;
+                        border-radius: 6px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 6px;
+                      ">
+                      <span style="font-size: 12px; letter-spacing: 0.1em; color: #d9a441">ACCESS: {{lockLabel}}</span>
+                      <span>{{lockMsg}}</span>
+                    </div>
+                  </sc-if>
+                </section>
+
+                <section aria-labelledby="layout-h" style="display: flex; flex-direction: column; gap: 10px">
+                  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px">
+                    <span id="layout-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">STATION LAYOUT</span>
+                    <span style="font-size: 11px; letter-spacing: 0.08em; color: #6f6c64">SCHEMATIC · LAYOUT NOT YET DESIGNED</span>
+                  </div>
+                  <ol
+                    style="
+                      list-style: none;
+                      margin: 0;
+                      padding: 0 0 0 14px;
+                      border-left: 2px solid #2a2d30;
+                      display: flex;
+                      flex-direction: column;
+                      gap: 6px;
+                    ">
+                    <sc-for list="{{decks}}" as="d" hint-placeholder-count="6">
+                      <li style="{{d.bandStyle}}">
+                        <button type="button" onClick="{{d.pick}}" style="{{d.rowStyle}}">
+                          <span style="flex: 0 0 6ch; color: #a8a49a; font-variant-numeric: tabular-nums">{{d.num}}</span>
+                          <span style="flex: 1 1 auto; min-width: 0; color: {{d.fnColor}};">{{d.fn}}</span>
+                          <sc-if value="{{d.isHere}}" hint-placeholder-val="{{false}}">
+                            <span
+                              style="flex-shrink: 0; font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;"
+                              >YOU</span
+                            >
+                          </sc-if>
+                          <sc-if value="{{d.hasLock}}" hint-placeholder-val="{{false}}">
+                            <span
+                              style="
+                                flex-shrink: 0;
+                                font-size: 10px;
+                                letter-spacing: 0.06em;
+                                padding: 1px 6px;
+                                border: 1px solid #5a4a2a;
+                                color: #d9a441;
+                                border-radius: 3px;
+                              "
+                              >{{d.lock}}</span
+                            >
+                          </sc-if>
+                          <span style="flex-shrink: 0; font-size: 12px; color: #6f6c64">{{d.roomCount}}</span>
+                        </button>
+                        <sc-if value="{{d.showRooms}}" hint-placeholder-val="{{false}}">
+                          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 10px 12px 10px">
+                            <sc-for list="{{d.rooms}}" as="r" hint-placeholder-count="3">
+                              <button type="button" onClick="{{r.pick}}" style="{{r.boxStyle}}">
+                                <span>{{r.label}}</span>
+                                <sc-if value="{{r.isHere}}" hint-placeholder-val="{{false}}">
+                                  <span
+                                    style="font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;"
+                                    >YOU</span
+                                  >
+                                </sc-if>
+                                <sc-if value="{{r.hasLock}}" hint-placeholder-val="{{false}}">
+                                  <span
+                                    style="
+                                      font-size: 10px;
+                                      letter-spacing: 0.06em;
+                                      padding: 1px 6px;
+                                      border: 1px solid #5a4a2a;
+                                      color: #d9a441;
+                                      border-radius: 3px;
+                                    "
+                                    >{{r.lock}}</span
+                                  >
+                                </sc-if>
+                              </button>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                      </li>
+                    </sc-for>
+                  </ol>
+                </section>
+              </main>
+
+              <aside class="m-x12"
+                aria-label="This terminal"
+                style="
+                  flex: 2 1 340px;
+                  min-width: 0;
+                  box-sizing: border-box;
+                  padding: 20px 24px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 20px;
+                ">
+                <sc-if value="{{isOpen}}" hint-placeholder-val="{{true}}">
+                  <section aria-labelledby="posted-h" style="display: flex; flex-direction: column; gap: 4px">
+                    <span id="posted-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">POSTED AT THIS TERMINAL</span>
+                    <sc-for list="{{files}}" as="file" hint-placeholder-count="1">
+                      <button type="button" onClick="{{file.pick}}" style="{{file.btnStyle}}">{{file.name}}</button>
+                    </sc-for>
+                    <sc-if value="{{noFiles}}" hint-placeholder-val="{{false}}">
+                      <span style="color: #a8a49a; padding: 6px 4px">Nothing posted here.</span>
+                    </sc-if>
+                  </section>
+                </sc-if>
+
+                <sc-if value="{{fileOpen}}" hint-placeholder-val="{{false}}">
+                  <div style="border: 1px solid #2a2d30; border-radius: 6px; background: #111315; overflow: hidden">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 8px 8px 8px 14px;
+                        border-bottom: 1px solid #2a2d30;
+                        font-size: 12px;
+                        letter-spacing: 0.06em;
+                        color: #a8a49a;
+                      ">
+                      <span style="overflow-wrap: anywhere">{{fileName}}</span>
+                      <button
+                        type="button"
+                        onClick="{{closeFile}}"
+                        aria-label="Close file"
+                        style="
+                          background: none;
+                          border: 1px solid #2e3236;
+                          color: #e8e4da;
+                          border-radius: 4px;
+                          min-width: 44px;
+                          min-height: 36px;
+                          cursor: pointer;
+                        ">
+                        ✕
+                      </button>
+                    </div>
+                    <pre
+                      style="
+                        margin: 0;
+                        padding: 16px 18px;
+                        white-space: pre-wrap;
+                        overflow-x: auto;
+                        font-family: &quot;IBM Plex Mono&quot;, monospace;
+                        font-size: 13px;
+                        line-height: 1.6;
+                        color: #e8e4da;
+                      ">
+{{fileBody}}</pre
+                    >
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{isOpen}}" hint-placeholder-val="{{true}}">
+                  <section aria-labelledby="local-h" style="{{localBox}}">
+                    <span id="local-h" style="{{localHeadStyle}}">{{localTitle}}</span>
+                    <span style="color: #a8a49a; max-width: 64ch">{{localNote}}</span>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 8px 0 0 0; border-top: 1px solid #1e2123">
+                      <span style="color: #a8a49a">{{localRow}}</span>
+                      <sc-if value="{{isRestricted}}" hint-placeholder-val="{{false}}">
+                        <span
+                          style="
+                            font-size: 10px;
+                            letter-spacing: 0.06em;
+                            padding: 1px 6px;
+                            border: 1px solid #5a4a2a;
+                            color: #d9a441;
+                            border-radius: 3px;
+                            align-self: center;
+                          "
+                          >CLEARANCE REQUIRED</span
+                        >
+                      </sc-if>
+                    </div>
+                  </section>
+                </sc-if>
+
+                <section style="display: flex; flex-direction: column; gap: 8px">
+                  <button
+                    type="button"
+                    onClick="{{toggleTree}}"
+                    aria-expanded="{{treeOpen}}"
+                    style="
+                      align-self: flex-start;
+                      min-height: 40px;
+                      padding: 0 14px;
+                      background: none;
+                      border: 1px solid #2e3236;
+                      border-radius: 4px;
+                      color: #e8e4da;
+                      cursor: pointer;
+                      font-size: 12px;
+                      letter-spacing: 0.1em;
+                    ">
+                    {{treeLabel}}
+                  </button>
+                  <sc-if value="{{treeOpen}}" hint-placeholder-val="{{false}}">
+                    <nav
+                      aria-label="Full station directory"
+                      style="
+                        box-sizing: border-box;
+                        padding: 10px 6px;
+                        border: 1px solid #2a2d30;
+                        border-radius: 6px;
+                        background: #0f1112;
+                      ">
+                      <sc-for list="{{nodes}}" as="node" hint-placeholder-count="12">
+                        <div style="{{node.rowStyle}}">
+                          <sc-if value="{{node.hasKids}}" hint-placeholder-val="{{true}}">
+                            <button
+                              type="button"
+                              onClick="{{node.toggle}}"
+                              aria-label="{{node.toggleLabel}}"
+                              aria-expanded="{{node.expanded}}"
+                              style="
+                                flex-shrink: 0;
+                                width: 28px;
+                                min-height: 36px;
+                                padding: 0;
+                                background: none;
+                                border: none;
+                                color: #a8a49a;
+                                cursor: pointer;
+                                font-size: 12px;
+                              ">
+                              {{node.chevron}}
+                            </button>
+                          </sc-if>
+                          <sc-if value="{{node.noKids}}" hint-placeholder-val="{{false}}">
+                            <span aria-hidden="true" style="flex-shrink: 0; width: 28px"></span>
+                          </sc-if>
+                          <button type="button" onClick="{{node.pick}}" style="{{node.btnStyle}}">
+                            <span style="display: flex; align-items: center; gap: 8px; min-width: 0">
+                              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{node.label}}</span>
+                              <sc-if value="{{node.isHere}}" hint-placeholder-val="{{false}}">
+                                <span
+                                  style="flex-shrink: 0; font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;"
+                                  >YOU</span
+                                >
+                              </sc-if>
+                            </span>
+                            <sc-if value="{{node.hasLock}}" hint-placeholder-val="{{false}}">
+                              <span
+                                style="
+                                  flex-shrink: 0;
+                                  font-size: 10px;
+                                  letter-spacing: 0.06em;
+                                  padding: 1px 6px;
+                                  border: 1px solid #5a4a2a;
+                                  color: #d9a441;
+                                  border-radius: 3px;
+                                "
+                                >{{node.lock}}</span
+                              >
+                            </sc-if>
+                          </button>
+                        </div>
+                      </sc-for>
+                    </nav>
+                  </sc-if>
+                </section>
+              </aside>
+            </div>
+            </div>
+
+            <div class="m-x10"
+              style="
+                flex-shrink: 0;
+                position: relative;
+                z-index: 1;
+                border-top: 1px solid #2a2d30;
+                padding: 5px 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                background: #0f1112;
+                border-radius: 0 0 8px 8px;
+              ">
+              <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
+                <div
+                  role="region"
+                  aria-label="Available commands"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #1e2123;
+                  ">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      gap: 12px;
+                    ">
+                    <span
+                      style="
+                        font-size: 11px;
+                        letter-spacing: 0.12em;
+                        color: #a8a49a;
+                      "
+                      >AVAILABLE COMMANDS</span
+                    >
+                    <button
+                      type="button"
+                      onClick="{{closeHelp}}"
+                      aria-label="Close help"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 32px;
+                        height: 32px;
+                        padding: 0;
+                        background: none;
+                        border: 1px solid #2e3236;
+                        border-radius: 4px;
+                        color: #e8e4da;
+                        cursor: pointer;
+                        font-size: 13px;
+                      ">
+                      ✕
+                    </button>
+                  </div>
+                  <sc-for list="{{commands}}" as="c" hint-placeholder-count="5">
+                    <div
+                      style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 2px 16px;
+                        font-size: 13px;
+                      ">
+                      <span style="flex: 0 0 12ch; color: {{accent}};"
+                        >{{c.cmd}}</span
+                      >
+                      <span
+                        style="flex: 1 1 200px; min-width: 0; color: #a8a49a"
+                        >{{c.desc}}</span
+                      >
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+                <div
+                  role="region"
+                  aria-label="SIGMA message history"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    padding: 6px 0 10px 0;
+                    border-bottom: 1px solid #1e2123;
+                    max-height: 40vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    scrollbar-width: none;
+                  ">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      gap: 12px;
+                    ">
+                    <span
+                      style="
+                        font-size: 11px;
+                        letter-spacing: 0.12em;
+                        color: #a8a49a;
+                      "
+                      >SIGMA MESSAGES</span
+                    >
+                  </div>
+                  <sc-for list="{{history}}" as="h" hint-placeholder-count="2">
+                    <div style="display: flex; gap: 12px; font-size: 13px">
+                      <span style="flex-shrink: 0; color: #6f6c64"
+                        >{{h.t}}</span
+                      >
+                      <span style="min-width: 0"
+                        ><span
+                          style="color: {{accent}}; letter-spacing: 0.06em;"
+                          >SIGMA:</span
+                        >
+                        <span style="{{h.style}}">{{h.text}}</span></span
+                      >
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{showOutLine}}" hint-placeholder-val="{{false}}">
+                <div
+                  style="
+                    font-size: 12px;
+                    white-space: pre-line;
+                    padding-top: 3px;
+                  ">
+                  <sc-if
+                    value="{{outFromSigma}}"
+                    hint-placeholder-val="{{false}}"
+                    ><span style="color: {{accent}}; letter-spacing: 0.06em;"
+                      >SIGMA:</span
+                    > </sc-if
+                  ><span style="{{outStyle}}">{{outText}}</span>
+                </div>
+              </sc-if>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <label for="cmd" style="color: {{accent}}; font-weight: 500;"
+                  >&gt;</label
+                >
+                <div
+                  style="
+                    position: relative;
+                    flex-grow: 1;
+                    min-width: 0;
+                    display: flex;
+                    align-items: center;
+                  ">
+                  <input
+                    ref="{{inputRef}}"
+                    id="cmd"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="type a command: ls, cd galley, cd deck 02, open SIGMA_notice_0001.msg, tree, help"
+                    value="{{cmd}}"
+                    onChange="{{onCmd}}"
+                    onKeyDown="{{onKey}}"
+                    style="
+                      width: 100%;
+                      min-width: 0;
+                      padding: 0;
+                      background: transparent;
+                      border: none;
+                      outline: none;
+                      caret-color: transparent;
+                      color: #e8e4da;
+                      font-family: &quot;IBM Plex Mono&quot;, monospace;
+                      font-size: 14px;
+                      min-height: 30px;
+                    " />
+                  <span
+                    aria-hidden="true"
+                    style="
+                      position: absolute;
+                      left: 0;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      pointer-events: none;
+                      white-space: pre;
+                      color: transparent;
+                      font-family: &quot;IBM Plex Mono&quot;, monospace;
+                      font-size: 14px;
+                    "
+                    >{{cmd}}<span class="term-cursor" style="color: {{accent}};"
+                      >▌</span
+                    ></span
+                  >
+                </div>
+                <sc-if value="{{hasHistory}}" hint-placeholder-val="{{false}}">
+                  <button
+                    type="button"
+                    onClick="{{toggleHist}}"
+                    aria-label="SIGMA message history"
+                    aria-expanded="{{histOpen}}"
+                    style="
+                      flex-shrink: 0;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 32px;
+                      height: 32px;
+                      padding: 0;
+                      background: none;
+                      border: 1px solid #2e3236;
+                      border-radius: 4px;
+                      color: #e8e4da;
+                      cursor: pointer;
+                    ">
+                    <sc-if
+                      value="{{histClosed}}"
+                      hint-placeholder-val="{{true}}"
+                      ><svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 15l6-6 6 6"></path></svg
+                    ></sc-if>
+                    <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}"
+                      ><svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg
+                    ></sc-if>
+                  </button>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-dc>
+    <script
+      type="text/x-dc"
+      data-dc-script
+      data-props='{"accent":{"editor":"color","default":"#E0504A","options":["#E0504A","#D9A441","#9FC7C2"]},"$preview":{"width":1440,"height":900}}'>
+      class Component extends DCLogic {
+        constructor(props) {
+          super(props);
+          // Starts where Quell came aboard, at the terminal the boot screen just logged into.
+          // Clock carries on from the boot screen's 03:58, in minutes since midnight.
+          this.portWasOpen = false;
+          this.state = { loc: 'd1a', file: null, cmd: '', out: 'SIGMA: General access session open. Type help for commands.', collapsed: { d2: true }, helpOpen: false, treeOpen: false, clockMin: 3 * 60 + 58 };
+          // SIGMA already typed the greeting on the login screen, so it arrives whole rather than retyped.
+          this.typingFor = this.state.out;
+          this.state.typed = this.state.out.replace(/^SIGMA:\s/, '').length;
+          this.COMMANDS = [
+            { cmd: 'ls', desc: 'List nearby places and the files posted here.' },
+            { cmd: 'cd <place>', desc: 'Walk to a nearby place, or a deck (cd galley, cd deck 02).' },
+            { cmd: 'cd ..', desc: "Go back to this deck's hub." },
+            { cmd: 'open <file>', desc: 'Read a file posted at this terminal.' },
+            { cmd: 'tree', desc: 'Show or hide the full station directory.' },
+            { cmd: 'udc', desc: "Show this terminal's data connector and what can connect." },
+            { cmd: 'connect <device>', desc: 'Plug a carried device into the UDC (connect slate).' },
+            { cmd: 'disconnect', desc: 'Unplug the connected device.' },
+            { cmd: 'help', desc: 'Show or hide this list.' },
+            { cmd: 'messages', desc: 'Show SIGMA message history.' },
+            { cmd: 'close', desc: 'Close this list.' }
+          ];
+          this.NODES = [
+            { id: 'root', label: 'DOVETAIL-9', depth: 0, parent: null },
+            { id: 'd1', label: 'Deck 01', num: '01', fn: 'Docking ring', depth: 1, parent: 'root' },
+            { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1' },
+            { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER' },
+            { id: 'd2', label: 'Deck 02', num: '02', fn: 'Habitation', depth: 1, parent: 'root' },
+            { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2' },
+            { id: 'd2b', label: 'Galley', depth: 2, parent: 'd2' },
+            { id: 'd2c', label: 'Crew Quarters', depth: 2, parent: 'd2' },
+            { id: 'd2d', label: 'Hydroponics', depth: 2, parent: 'd2', lock: 'SEALED' },
+            { id: 'd3', label: 'Deck 03', num: '03', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd4', label: 'Deck 04', num: '04', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd5', label: 'Deck 05', num: '05', fn: 'Research', depth: 1, parent: 'root', lock: 'CLEARANCE 3' },
+            { id: 'd6', label: 'Deck 06 to Deck 12', num: '06-12', fn: '[Not yet designed]', depth: 1, parent: 'root' }
+          ];
+          // Every place has its own terminal. Public ones in shared areas, restricted ones in specialised areas.
+          // Port states are spread out so each look can be seen in the mockup; none are canon.
+          this.TERM = {
+            d1: { id: 'DT9-T010', kind: 'PUBLIC', port: 'available' },
+            d1a: { id: 'DT9-T01A', kind: 'PUBLIC', port: 'available' },
+            d1b: { id: 'DT9-T01B', kind: 'RESTRICTED', port: 'damaged' },
+            d2: { id: 'DT9-T020', kind: 'PUBLIC', port: 'available' },
+            d2a: { id: 'DT9-T02A', kind: 'PUBLIC', port: 'none' },
+            d2b: { id: 'DT9-T02B', kind: 'PUBLIC', port: 'available' },
+            d2c: { id: 'DT9-T02C', kind: 'RESTRICTED', port: 'disabled' },
+            d2d: { id: 'DT9-T02D', kind: 'RESTRICTED', port: 'disabled' },
+            d3: { id: 'DT9-T030', kind: 'PUBLIC', port: 'damaged' },
+            d4: { id: 'DT9-T040', kind: 'PUBLIC', port: 'none' },
+            d5: { id: 'DT9-T050', kind: 'RESTRICTED', port: 'disabled' },
+            d6: { id: 'DT9-T060', kind: 'PUBLIC', port: 'available' }
+          };
+          this.PORT = {
+            available: { color: '#9FC7C2', text: 'UDC · AVAILABLE', status: 'AVAILABLE' },
+            damaged: { color: '#D9A441', text: 'UDC · DAMAGED', status: 'DAMAGED', why: 'Connector damaged. Pins bent, contacts burnt. Nothing can connect here.' },
+            disabled: { color: '#6F6C64', text: 'UDC · DISABLED', status: 'DISABLED', why: 'Connector disabled by SIGMA. Nothing can connect here.' },
+            connected: { text: 'UDC · UNREGISTERED DEVICE', status: 'UNREGISTERED DEVICE' }
+          };
+          // What Quell carries that has a hardlink connector. Only the slate is decided.
+          this.DEVICES = [
+            { id: 'slate', short: 'slate', name: 'Data slate', detail: 'Blackline BLDS-X · adaptive UDC' }
+          ];
+          // Station content only: Quell's notes live on his slate, and scanning is a tool.
+          this.LOC = {
+            d1: { files: [] },
+            d1a: { files: [
+              { name: 'SIGMA_notice_0001.msg', body: 'SIGMA // NOTICE\n\nWelcome to Dovetail-9.\nAccess level: GENERAL.\nPlease remain within permitted areas.' }
+            ] },
+            d1b: { lockMsg: 'Terminal offline. No power to this section.' },
+            d2: { files: [] },
+            d2a: { files: [
+              { name: 'crew_rota.txt', body: '[CREW ROTA: NAMES NOT YET WRITTEN]' }
+            ] },
+            d2b: { files: [
+              { name: 'RPE-0217.env', body: 'RPE-0217\n\nLOCATION    DECK 2 / GALLEY\nSIGNATURE   VOC spike, humidity +18%, thermal deficit 3.2 K\nDURATION    1.4 s\n\nINTENSITY\n2467   ██████████   1.00\n2470   █████████░   0.93\n2474   ████████░░   0.84\n2477   ████████░░   0.79\n\nSTATUS      ACTIVE / DECLINING\nCLASS       ENVIRONMENTAL FAULT' },
+              { name: 'msg_shield-dip.msg', body: 'FROM     [R&D TECHNICIAN]\nTO       [R&D TECHNICIAN]\nSUBJECT  test 14\n\nShield bus dipped for 4 ms during test 14.\nSame timestamp, the section C sensor logs a micro-node. Inside the shielding.\n\nThey closed it as two tickets. Power fluctuation, sensor fault.\nThat is one event, not two.\n\nDon’t forward this.' }
+            ] },
+            d2c: { files: [
+              { name: 'bunk_assignments.rpt', body: '[ROSTER NOT YET WRITTEN]' }
+            ] },
+            d2d: { lockMsg: 'Area sealed.' },
+            d3: { files: [] },
+            d4: { files: [] },
+            d5: { lockMsg: 'Research deck. Clearance 3 required. Your access: GENERAL.' },
+            d6: { files: [] }
+          };
+        }
+
+        isTouch() {
+          return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+        }
+
+        // Every SIGMA message goes into the history as it appears on the command line.
+        recordSigma() {
+          const out = this.state.out || '';
+          if (out === this.lastRecorded) return;
+          this.lastRecorded = out;
+          if (!/^SIGMA:\s/.test(out)) return;
+          const text = out.replace(/^SIGMA:\s/, '');
+          this.setState({ history: (this.state.history || []).concat([{ t: this.clockText(), text }]) });
+        }
+
+        clockText() {
+          const m = this.state.clockMin;
+          return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+        }
+
+        componentDidUpdate() {
+          this.recordSigma();
+          this.syncTyping();
+          // Focus follows the modal: into it on open, back to the UDC button on close.
+          const open = !!this.state.portOpen;
+          if (open !== this.portWasOpen) {
+            this.portWasOpen = open;
+            if (open && this.closeEl) this.closeEl.focus();
+            else if (!open && this.portBtnEl) this.portBtnEl.focus();
+          }
+        }
+
+        // Ready to type on arrival (not on phones, where focusing would pop the keyboard unasked).
+        componentDidMount() {
+          this.recordSigma();
+          this.initAudio();
+          this.syncTyping();
+          if (this.inputEl && !this.isTouch()) this.inputEl.focus();
+          // One station minute per real minute, for now. Whether moves also advance time is undecided.
+          this.clockTimer = setInterval(() => this.setState({ clockMin: this.state.clockMin + 1 }), 60000);
+        }
+
+        componentWillUnmount() {
+          clearInterval(this.clockTimer);
+          clearTimeout(this.typeTimer);
+          if (this.audio) this.audio.ctx.close();
+        }
+
+        // Synthesized with Web Audio so there are no audio files to license. Browsers keep it
+        // suspended until the first keypress, so the arrival message may print silently.
+        initAudio() {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          const ctx = new AC();
+          const master = ctx.createGain();
+          master.gain.value = 0.5;
+          master.connect(ctx.destination);
+          const noise = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+          const d = noise.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          this.audio = { ctx, master, noise };
+        }
+
+        // SIGMA's print-out chatter, one per character. Tuned by ear in the SIGMA Voice Tuner.
+        voiceChar() {
+          if (!this.audio || this.audio.ctx.state !== 'running') return;
+          const { ctx, master } = this.audio;
+          const t = ctx.currentTime + 0.005;
+          const a = 0.010, tau = 0.008 / 1.4, end = t + a + tau * 7;
+          const lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass'; lp.frequency.value = 6600; lp.Q.value = 0.7;
+          const env = ctx.createGain();
+          env.gain.setValueAtTime(0.0001, t);
+          env.gain.linearRampToValueAtTime(0.24, t + a);
+          env.gain.setTargetAtTime(0.0001, t + a, tau);
+          env.connect(lp); lp.connect(master);
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = 800; g.gain.value = 0.63;
+          o.connect(g); g.connect(env); o.start(t); o.stop(end);
+          const n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), gn = ctx.createGain();
+          n.buffer = this.audio.noise; n.playbackRate.value = 0.8 + Math.random() * 0.4;
+          bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 1.6; gn.gain.value = 1.17;
+          n.connect(bp); bp.connect(gn); gn.connect(env); n.start(t); n.stop(end);
+        }
+
+        // Types each new SIGMA line out a character at a time; other output appears at once.
+        syncTyping() {
+          const line = this.state.out || '';
+          if (line === this.typingFor) return;
+          this.typingFor = line;
+          clearTimeout(this.typeTimer);
+          const body = line.replace(/^SIGMA:\s/, '');
+          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!/^SIGMA:\s/.test(line) || reduce) return this.setState({ typed: body.length });
+          let i = 0;
+          const tick = () => {
+            if (body[i] !== ' ') this.voiceChar();
+            i++;
+            this.setState({ typed: i });
+            if (i < body.length) this.typeTimer = setTimeout(tick, 26);
+          };
+          this.setState({ typed: 0 });
+          // First character lands at half step, like the opening flurry in the reference.
+          this.typeTimer = setTimeout(tick, 13);
+        }
+
+        node(id) { return this.NODES.find((n) => n.id === id); }
+
+        // Deck hubs are places too, so they read as "Deck 01 hub" rather than a bare folder.
+        placeName(n) { return n.depth === 1 && !n.label.includes(' to ') ? n.label + ' hub' : n.label; }
+
+        pathOf(id) {
+          const parts = [];
+          let n = this.node(id);
+          while (n) { parts.unshift(n.label); n = n.parent ? this.node(n.parent) : null; }
+          return '/' + parts.join('/');
+        }
+
+        expandTo(id) {
+          const c = { ...this.state.collapsed };
+          let p = this.node(id).parent;
+          while (p) { delete c[p]; p = this.node(p).parent; }
+          return c;
+        }
+
+        deckOf(id) {
+          let n = this.node(id);
+          while (n && n.depth > 1) n = this.node(n.parent);
+          return n;
+        }
+
+        // The deck hub, the other rooms on this deck, and anything below here.
+        nearbyOf(id) {
+          const here = this.node(id);
+          if (here.depth === 1) return this.NODES.filter((n) => n.parent === id);
+          return [this.node(here.parent)].concat(this.NODES.filter((n) => n.parent === here.parent && n.id !== id));
+        }
+
+        plugIn(id) {
+          this.typingFor = null;
+          this.setState({ connected: id, out: 'SIGMA: Unregistered device detected on UDC.' });
+        }
+
+        unplug() {
+          this.typingFor = null;
+          this.setState({ connected: null, portStep: 'start', out: 'UDC · DEVICE REMOVED' });
+        }
+
+        // Moving connects Quell to the terminal at the new place.
+        go(id) {
+          const n = this.node(id);
+          if (n.depth === 0) return this.setState({ out: 'No terminal at the station level. Pick a deck.' });
+          if (id === this.state.loc) return this.setState({ out: 'Already here.' });
+          const t = this.TERM[id];
+          this.typingFor = null;
+          // Walking away means unplugging whatever was connected here.
+          this.setState({
+            loc: id,
+            file: null,
+            helpOpen: false,
+            portOpen: false,
+            connected: null,
+            collapsed: this.expandTo(id),
+            out: n.lock ? 'TERMINAL ' + t.id + ' · ' + n.lock : 'TERMINAL ' + t.id + ' · ' + this.placeName(n).toUpperCase() + ' · CONNECTED'
+          });
+        }
+
+        run(raw) {
+          const input = raw.trim();
+          const [verb, ...rest] = input.split(/\s+/);
+          const arg = rest.join(' ');
+          const here = this.node(this.state.loc);
+          const loc = this.LOC[here.id] || { files: [] };
+          if (!input) return;
+          // Retype even when the reply repeats, so a second bad command still gets an answer.
+          this.typingFor = null;
+          // Help expands the prompt itself; any other command folds it away.
+          // Help and history share the space above the prompt, so one closes the other.
+          if (verb === 'help') return this.setState({ helpOpen: !this.state.helpOpen, histOpen: false });
+          if (verb === 'messages') return this.setState({ histOpen: !this.state.histOpen, helpOpen: false });
+          if (verb === 'close') return this.setState({ helpOpen: false, histOpen: false });
+          this.setState({ helpOpen: false });
+          if (verb === 'tree') return this.setState({ treeOpen: !this.state.treeOpen, out: '' });
+          if (verb === 'connect') {
+            const port = this.TERM[here.id].port;
+            if (port === 'none') return this.setState({ out: 'No UDC on this terminal.' });
+            if (port !== 'available') return this.setState({ out: this.PORT[port].why });
+            const names = this.DEVICES.map((d) => d.short + ' (' + d.name + ')').join(', ');
+            if (!arg) return this.setState({ out: 'Devices you can connect: ' + names + '. Type connect <device>.' });
+            const a = arg.toLowerCase();
+            const dev = this.DEVICES.find((d) => d.short.startsWith(a) || d.name.toLowerCase().startsWith(a));
+            if (!dev) return this.setState({ out: 'No such device: ' + arg + '. Devices you can connect: ' + names + '.' });
+            if (this.state.connected === dev.id) return this.setState({ out: dev.name + ' already connected.' });
+            return this.plugIn(dev.id);
+          }
+          if (verb === 'disconnect') {
+            if (!this.state.connected) return this.setState({ out: 'Nothing connected.' });
+            return this.unplug();
+          }
+          if (verb === 'udc' || verb === 'port') {
+            if (this.TERM[here.id].port === 'none') return this.setState({ out: 'No UDC on this terminal.' });
+            return this.setState({ portOpen: !this.state.portOpen, portStep: 'start', out: '' });
+          }
+          if (verb === 'ls') {
+            if (here.lock) return this.setState({ out: 'Access denied: ' + here.lock });
+            const list = this.nearbyOf(here.id).map((k) => this.placeName(k) + '/').concat((loc.files || []).map((f) => f.name));
+            return this.setState({ out: list.length ? list.join('   ') : '(nothing here)' });
+          }
+          if (verb === 'cd') {
+            if (arg === '..') return here.depth === 2 ? this.go(here.parent) : this.setState({ out: 'Already at the deck hub. Pick a deck to travel to.' });
+            const a = arg.toLowerCase();
+            const num = a.replace(/^deck\s*/, '').padStart(2, '0');
+            const decks = this.NODES.filter((n) => n.depth === 1);
+            const target = this.nearbyOf(here.id).concat(decks).find((k) =>
+              k.label.toLowerCase().startsWith(a) || (k.num && k.num.startsWith(num)) || (k.fn && k.fn.toLowerCase().startsWith(a)));
+            if (!target || !arg) return this.setState({ out: 'No such place nearby: ' + arg });
+            return this.go(target.id);
+          }
+          if (verb === 'open') {
+            if (here.lock) return this.setState({ out: 'Access denied: ' + here.lock });
+            const f = (loc.files || []).find((x) => x.name.toLowerCase().startsWith(arg.toLowerCase()));
+            if (!f || !arg) return this.setState({ out: 'No such file posted here: ' + arg });
+            return this.setState({ file: f.name, out: '' });
+          }
+          this.setState({ out: 'SIGMA: Command not recognized.' });
+        }
+
+        renderVals() {
+          const accent = this.props.accent ?? '#E0504A';
+          const here = this.node(this.state.loc);
+          const loc = this.LOC[here.id] || { files: [] };
+          const term = this.TERM[here.id];
+          const locked = !!here.lock;
+          const restricted = term.kind === 'RESTRICTED';
+          const portState = this.state.connected ? 'connected' : term.port;
+          // Terminals without a port never draw one, but keep a fallback so the lookup can't fail.
+          const portLook = this.PORT[portState] || this.PORT.disabled;
+          const connectedDev = this.DEVICES.find((d) => d.id === this.state.connected);
+          const deck = this.deckOf(here.id);
+          const collapsed = this.state.collapsed;
+          const hasKids = (id) => this.NODES.some((m) => m.parent === id);
+          const visible = (n) => {
+            let p = n.parent;
+            while (p) { if (collapsed[p]) return false; p = this.node(p).parent; }
+            return true;
+          };
+          const lockBadge = (n) => ({ lock: n.lock || '', hasLock: !!n.lock });
+          const nodes = this.NODES.filter(visible).map((n) => {
+            const sel = n.id === here.id;
+            const kids = hasKids(n.id);
+            const shut = !!collapsed[n.id];
+            return {
+              label: n.depth === 0 ? n.label + '/' : n.label,
+              ...lockBadge(n),
+              isHere: sel,
+              hasKids: kids,
+              noKids: !kids,
+              expanded: !shut,
+              chevron: shut ? '▸' : '▾',
+              toggleLabel: (shut ? 'Expand ' : 'Collapse ') + n.label,
+              toggle: () => this.setState({ collapsed: { ...collapsed, [n.id]: !shut } }),
+              pick: () => this.go(n.id),
+              rowStyle: 'display: flex; align-items: center; border-radius: 4px; padding-left: ' + (2 + n.depth * 16) + 'px; '
+                + (sel ? 'background: #23272B; box-shadow: inset 2px 0 0 ' + accent + ';' : ''),
+              btnStyle: 'display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-grow: 1; min-width: 0; text-align: left; min-height: 36px; cursor: pointer; border: none; background: transparent; padding: 6px 10px 6px 2px; color: '
+                + (sel ? '#FFFFFF' : (n.lock ? '#A8A49A' : '#D6D2C8')) + ';'
+            };
+          });
+          // Schematic stand-in for the station map: decks stacked in order, the current deck opened out to its rooms.
+          const decks = this.NODES.filter((n) => n.depth === 1).map((n) => {
+            const mine = !!deck && deck.id === n.id;
+            const roomNodes = this.NODES.filter((m) => m.parent === n.id);
+            const rooms = roomNodes.map((r) => ({
+              label: r.label,
+              isHere: r.id === here.id,
+              ...lockBadge(r),
+              pick: () => this.go(r.id),
+              boxStyle: 'display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 12px; border-radius: 4px; cursor: pointer; text-align: left; '
+                + (r.id === here.id ? 'background: #23272B; border: 1px solid ' + accent + '; color: #FFFFFF;' : 'background: #111315; border: 1px solid #2E3236; color: ' + (r.lock ? '#A8A49A' : '#E8E4DA') + ';')
+            }));
+            return {
+              num: n.num,
+              fn: n.fn,
+              fnColor: n.fn.startsWith('[') ? '#6F6C64' : (n.lock ? '#A8A49A' : '#E8E4DA'),
+              isHere: mine && n.id === here.id,
+              ...lockBadge(n),
+              roomCount: roomNodes.length ? roomNodes.length + ' rooms' : '',
+              rooms,
+              showRooms: mine && rooms.length > 0,
+              pick: () => this.go(n.id),
+              bandStyle: 'border-radius: 6px; border: 1px solid ' + (mine ? '#3A3F44' : '#1E2123') + '; background: ' + (mine ? '#14171A' : 'transparent') + ';',
+              rowStyle: 'display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: none; background: none; padding: 8px 10px; min-height: 40px; cursor: pointer; color: #E8E4DA;'
+                + (mine && n.id === here.id ? ' box-shadow: inset 2px 0 0 ' + accent + ';' : '')
+            };
+          });
+          const fileList = locked ? [] : (loc.files || []);
+          const files = fileList.map((f) => ({
+            name: f.name,
+            pick: () => this.setState({ file: f.name }),
+            btnStyle: 'text-align: left; background: ' + (this.state.file === f.name ? '#1A1D20' : 'none') + '; border: none; color: #E8E4DA; padding: 8px 4px; min-height: 40px; cursor: pointer; border-bottom: 1px solid #1E2123;'
+          }));
+          const open = fileList.find((f) => f.name === this.state.file);
+          return {
+            accent,
+            nodes,
+            decks,
+            termId: term.id,
+            termKind: term.kind + ' TERMINAL',
+            kindStyle: 'font-size: 11px; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; border: 1px solid '
+              + (restricted ? '#5A4A2A; color: #D9A441;' : '#2F4A47; color: #9FC7C2;'),
+            clock: this.clockText(),
+            // A terminal with no port shows nothing; the absence is the signal.
+            hasPort: term.port !== 'none',
+            portColor: portState === 'connected' ? accent : portLook.color,
+            portText: portLook.text,
+            portLabel: 'Universal Data Connector: ' + (portState === 'connected' ? 'unregistered device connected' : portState),
+            portStatus: portLook.status,
+            portFooter: connectedDev ? connectedDev.name.toUpperCase() + ' CONNECTED' : portLook.status,
+            // An explicit action on usable connectors, so it reads as something to plug into, not just a status.
+            // A small connect icon marks a usable UDC as something to click; the modal carries the words.
+            portCanAct: portState === 'available',
+            portButtonLabel: 'Universal Data Connector: ' + (portState === 'connected' ? 'unregistered device connected. Manage connection.' : portState === 'available' ? 'available. Connect a device.' : portState + '. Show details.'),
+            portDash: portState === 'damaged' ? '5 3' : 'none',
+            portDamaged: portState === 'damaged',
+            portDisabled: portState === 'disabled',
+            portConnected: portState === 'connected',
+            portOpen: !!this.state.portOpen,
+            togglePort: () => this.setState({ portOpen: !this.state.portOpen, portStep: 'start' }),
+            closePort: () => this.setState({ portOpen: false, portStep: 'start' }),
+            startConnect: () => this.setState({ portStep: 'choose' }),
+            cancelConnect: () => this.setState({ portStep: 'start' }),
+            disconnectNow: () => this.unplug(),
+            showConnectStart: term.port === 'available' && !this.state.connected && this.state.portStep !== 'choose',
+            showChoose: term.port === 'available' && !this.state.connected && this.state.portStep === 'choose',
+            showConnected: !!this.state.connected,
+            connectedName: connectedDev ? connectedDev.name : '',
+            connectedDetail: connectedDev ? connectedDev.detail : '',
+            portKey: (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.setState({ portOpen: false }); } },
+            closeRef: (el) => { this.closeEl = el; },
+            portBtnRef: (el) => { this.portBtnEl = el; },
+            portUsable: term.port === 'available',
+            portBlocked: term.port === 'damaged' || term.port === 'disabled',
+            portBlockedMsg: (this.PORT[term.port] && this.PORT[term.port].why) || '',
+            slateIn: this.state.connected === 'slate',
+            devices: this.DEVICES.map((v) => ({ name: v.name, detail: v.detail, act: () => this.plugIn(v.id) })),
+            isRestricted: restricted && !locked,
+            // Every terminal carries its own area's systems; restricted ones lock some behind clearance.
+            localTitle: this.placeName(here).toUpperCase() + ' SYSTEMS' + (restricted ? ' · RESTRICTED' : ''),
+            localNote: restricted
+              ? "This area's own systems and information. Some need clearance that general access doesn't have."
+              : "This area's own systems and information.",
+            localRow: '[' + this.placeName(here) + ' systems not yet written]',
+            localBox: 'display: flex; flex-direction: column; gap: 8px; border-radius: 6px; padding: 14px 16px; border: 1px solid ' + (restricted ? '#5A4A2A' : '#2A2D30') + ';',
+            localHeadStyle: 'font-size: 11px; letter-spacing: 0.12em; color: ' + (restricted ? '#D9A441' : '#A8A49A') + ';',
+            path: this.pathOf(here.id),
+            locName: this.placeName(here),
+            isLocked: locked,
+            isOpen: !locked,
+            lockLabel: here.lock || '',
+            lockMsg: loc.lockMsg || '',
+            files,
+            noFiles: !locked && files.length === 0,
+            fileOpen: !!open,
+            fileName: open ? open.name : '',
+            fileBody: open ? open.body : '',
+            closeFile: () => this.setState({ file: null }),
+            treeOpen: !!this.state.treeOpen,
+            treeLabel: this.state.treeOpen ? 'HIDE FULL DIRECTORY' : 'SHOW FULL DIRECTORY',
+            toggleTree: () => this.setState({ treeOpen: !this.state.treeOpen }),
+            cmd: this.state.cmd,
+            hasOut: !!this.state.out,
+            showOutLine: !!this.state.out && !this.state.histOpen,
+            history: (this.state.history || []).map((h, i, list) => ({ t: h.t, text: h.text, style: i === list.length - 1 ? 'color: #E8E4DA;' : 'color: #A8A49A;' })),
+            hasHistory: (this.state.history || []).length > 0,
+            histOpen: !!this.state.histOpen,
+            histClosed: !this.state.histOpen,
+            toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
+            outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
+            outText: (this.state.out || '').replace(/^SIGMA:\s/, '').slice(0, this.typingFor === (this.state.out || '') ? (this.state.typed || 0) : 0),
+            outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
+            inputRef: (el) => { this.inputEl = el; },
+            helpOpen: this.state.helpOpen,
+            closeHelp: () => { this.setState({ helpOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
+            commands: this.COMMANDS,
+            onCmd: (e) => this.setState({ cmd: e.target.value }),
+            onKey: (e) => {
+              if (e.key !== 'Enter') return;
+              if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
+              const v = this.state.cmd;
+              // On phones, dismiss the keyboard so SIGMA's reply isn't hidden; on desktop keep typing.
+              if (this.isTouch()) e.target.blur();
+              this.setState({ cmd: '' });
+              this.run(v);
+            }
+          };
+        }
+      }
+    </script>
+  </body>
+</html>

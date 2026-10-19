@@ -33,7 +33,9 @@ sc-if,sc-for{display:contents}
 @media (max-width: 560px){
 .boot-ts{display:none}
 .boot-block{width:100%}
-.boot-grid{grid-template-columns:auto minmax(0,1fr);column-gap:16px}
+.boot-grid{grid-template-columns:minmax(0,38%) minmax(0,1fr);column-gap:10px}
+.boot-grid span{font-size:12px !important}
+.boot-log{padding:14px 48px 14px 16px !important}
 .boot-emblem{transform:scale(0.7);margin:-20px 0}
 .boot-title{font-size:32px !important}
 .boot-sub{font-size:10px !important}
@@ -88,7 +90,7 @@ sc-if,sc-for{display:contents}
 
 <sc-if value="{{onBootScreen}}" hint-placeholder-val="{{true}}">
 <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
-<div style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
+<div style="position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column;">
 <div ref="{{logRef}}" class="boot-log" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 32px 0;">
@@ -139,7 +141,7 @@ sc-if,sc-for{display:contents}
 </div>
 
 <sc-if value="{{booted}}" hint-placeholder-val="{{false}}">
-<div style="flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 5px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112; border-radius: 0 0 8px 8px;">
+<div style="position: relative; z-index: 1; flex-shrink: 0; border-top: 1px solid #2A2D30; padding: 5px 20px; display: flex; flex-direction: column; gap: 2px; background: #0F1112; border-radius: 0 0 8px 8px;">
 <sc-if value="{{helpOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Available commands" style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #1E2123;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
@@ -202,24 +204,13 @@ sc-if,sc-for{display:contents}
 <sc-if value="{{loginMatched}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
 <span style="font-size: 13px; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
-<span style="font-size: 13px; color: #E8E4DA;">General user session opened.</span>
 </div>
 </sc-if>
-</div>
-</sc-if>
-
-<sc-if value="{{onWelcome}}" hint-placeholder-val="{{false}}">
-<div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;">
-<div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; font-size: 13px;">
-<span style="font-size: 13px; color: #9FC7C2;">[ OK ] ACCESS GRANTED</span>
-<div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Session</span><span style="color: #9FC7C2;">GENERAL USER</span></div>
-<div style="display: flex; flex-wrap: wrap; gap: 0 12px;"><span style="flex: 0 0 10ch; color: #D6D2C8;">Access</span><span style="color: #9FC7C2;">GENERAL</span></div>
-<a ref="{{dirRef}}" onClick="{{enterDir}}" href="Main.dc.html" style="margin-top: 16px; align-self: center; display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em;">ENTER STATION DIRECTORY ▸</a>
-</div>
+<a ref="{{dirRef}}" href="Home.dc.html" tabindex="-1" aria-hidden="true" style="display: none;">Terminal home</a>
 </div>
 </sc-if>
 <sc-if value="{{showBlankBar}}" hint-placeholder-val="{{true}}">
-<div style="flex-shrink: 0; min-height: 41px; box-sizing: border-box; border-top: 1px solid #2A2D30; background: #0F1112; border-radius: 0 0 8px 8px; padding: 5px 20px; display: flex; flex-direction: column; justify-content: center; gap: 2px;">
+<div style="position: relative; z-index: 1; flex-shrink: 0; min-height: 41px; box-sizing: border-box; border-top: 1px solid #2A2D30; background: #0F1112; border-radius: 0 0 8px 8px; padding: 5px 20px; display: flex; flex-direction: column; justify-content: center; gap: 2px;">
 <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="SIGMA message history" style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 10px 0; border-bottom: 1px solid #1E2123; max-height: 40vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
@@ -320,29 +311,69 @@ class Component extends DCLogic {
     o.start(t); o.stop(t + dur + 0.05);
   }
 
-  // One tiny electronic blip, like a single printed character on the Nostromo's terminals.
-  blip(start, freq) {
-    if (!this.audio) return;
+  // SIGMA's print-out chatter, one per character. Tuned by ear in the SIGMA Voice Tuner.
+  voiceChar(start = 0) {
+    if (!this.audio || this.audio.ctx.state !== 'running') return;
     const { ctx, master } = this.audio;
-    const t = ctx.currentTime + start;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = 'square';
-    o.frequency.value = freq;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.05, t + 0.001);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.006);
-    o.connect(g); g.connect(master);
-    o.start(t); o.stop(t + 0.01);
+    if (!this.audio.noise) {
+      const b = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+      const d = b.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      this.audio.noise = b;
+    }
+    const t = ctx.currentTime + 0.005 + start;
+    const a = 0.010, tau = 0.008 / 1.4, end = t + a + tau * 7;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 6600; lp.Q.value = 0.7;
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.linearRampToValueAtTime(0.24, t + a);
+    env.gain.setTargetAtTime(0.0001, t + a, tau);
+    env.connect(lp); lp.connect(master);
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = 800; g.gain.value = 0.63;
+    o.connect(g); g.connect(env); o.start(t); o.stop(end);
+    const n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), gn = ctx.createGain();
+    n.buffer = this.audio.noise; n.playbackRate.value = 0.8 + Math.random() * 0.4;
+    bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 1.6; gn.gain.value = 1.17;
+    n.connect(bp); bp.connect(gn); gn.connect(env); n.start(t); n.stop(end);
   }
 
-  // A rapid run of single blips as each line prints, one per character-ish.
+  // The help line is display-only, so it never lands in the message history.
+  sigmaLine() {
+    return this.state.helpOpen ? 'SIGMA: Available commands listed above. Type close to dismiss.' : (this.state.out || '');
+  }
+
+  // Types each new SIGMA line out a character at a time; other output appears at once.
+  syncTyping() {
+    const line = this.sigmaLine();
+    if (line === this.typingFor) return;
+    this.typingFor = line;
+    clearTimeout(this.typeTimer);
+    const body = line.replace(/^SIGMA:\s/, '');
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!/^SIGMA:\s/.test(line) || reduce) return this.setState({ typed: body.length });
+    let i = 0;
+    const tick = () => {
+      if (body[i] !== ' ') this.voiceChar();
+      i++;
+      this.setState({ typed: i });
+      if (i < body.length) this.typeTimer = setTimeout(tick, 26);
+      else if (this.chimeAfter === line) { this.chimeAfter = null; this.chime(0.12); }
+    };
+    this.setState({ typed: 0 });
+    // First character lands at half step, like the opening flurry in the reference.
+    this.typeTimer = setTimeout(tick, 13);
+  }
+
+  // Six characters at SIGMA's 26 ms pace fill the 160 ms between boot lines, so the chatter runs unbroken.
   printChatter() {
-    const pitches = [2100, 2400, 2800];
-    const n = 7 + Math.floor(Math.random() * 6);
-    for (let i = 0; i < n; i++) {
-      this.blip(i * 0.012 + Math.random() * 0.002, pitches[Math.floor(Math.random() * pitches.length)]);
-    }
+    for (let i = 0; i < 6; i++) this.voiceChar(i * 0.026);
+  }
+
+  // Bookends the boot: plays on wake and again as the directory opens. Ends at 0.23 s.
+  wakeBeep() {
+    this.tone(980, 0.05, 0.18, 'square', 0.12);
   }
 
   // Login confirmation beep.
@@ -354,7 +385,7 @@ class Component extends DCLogic {
     if (this.state.started) return;
     this.initAudio();
     if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
-    this.tone(980, 0.05, 0.18, 'square', 0.12);
+    this.wakeBeep();
     this.setState({ started: true });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.startedAt = performance.now();
@@ -381,8 +412,9 @@ class Component extends DCLogic {
     const i = this.state.shown;
     if (i >= this.BOOT.length) {
       clearInterval(this.timer);
-      this.chime(0.1);
-      this.setState({ bootTime: this.elapsed(), out: 'SIGMA: Terminal ready. Type help for commands.' });
+      // The chime waits for SIGMA to finish typing this line.
+      this.chimeAfter = 'SIGMA: Terminal ready. Type help for commands.';
+      this.setState({ bootTime: this.elapsed(), out: this.chimeAfter });
       return;
     }
     const item = this.BOOT[i];
@@ -403,7 +435,7 @@ class Component extends DCLogic {
     this.memTimer = setInterval(() => {
       n++;
       this.setState({ memCount: Math.round((total * n) / steps) });
-      if (n % 4 === 0) this.blip(0, 2400);
+      if (n % 4 === 0) this.voiceChar();
       if (n >= steps) {
         clearInterval(this.memTimer);
         this.setState({ memDone: true });
@@ -439,8 +471,26 @@ class Component extends DCLogic {
     this.setState({ history: (this.state.history || []).concat([{ t: '03:58', text }]) });
   }
 
+  // Pinned while the reader is at the bottom; scrolling up unpins until they return.
+  watchLog(el) {
+    if (el.dt9Watched) return;
+    el.dt9Watched = true;
+    this.pinned = true;
+    el.addEventListener('scroll', () => { this.pinned = el.scrollTop + el.clientHeight >= el.scrollHeight - 4; });
+    // The prompt bar grows as SIGMA types its greeting, which shrinks the log; re-pin when that happens.
+    if (window.ResizeObserver) {
+      this.logRO = new window.ResizeObserver(() => {
+        if (this.pinned) el.scrollTop = el.scrollHeight;
+        const canScroll = el.scrollHeight > el.clientHeight + 2;
+        if (canScroll !== this.state.canScroll) this.setState({ canScroll });
+      });
+      this.logRO.observe(el);
+    }
+  }
+
   componentDidUpdate() {
     this.recordSigma();
+    this.syncTyping();
     // Focus the prompt once it appears, so the reader can type straight away (not on phones,
     // where focusing would pop the keyboard unasked).
     if (this.inputEl && !this.autoFocused && !this.isTouch()) {
@@ -453,6 +503,9 @@ class Component extends DCLogic {
     if (this.state.shown !== this.lastShown || complete !== this.lastComplete) {
       this.lastShown = this.state.shown;
       this.lastComplete = complete;
+      this.pinned = true;
+      this.logEl.scrollTop = this.logEl.scrollHeight;
+    } else if (this.pinned) {
       this.logEl.scrollTop = this.logEl.scrollHeight;
     }
     const canScroll = this.logEl.scrollHeight > this.logEl.clientHeight + 2;
@@ -466,17 +519,21 @@ class Component extends DCLogic {
   componentWillUnmount() {
     clearInterval(this.loginSpin);
     clearTimeout(this.loginTimer);
-    clearTimeout(this.welcomeTimer);
+    clearTimeout(this.enterTimer);
     clearInterval(this.spinTimer);
     clearInterval(this.memTimer);
     clearTimeout(this.delay);
     clearInterval(this.timer);
+    clearTimeout(this.typeTimer);
+    if (this.logRO) this.logRO.disconnect();
     if (this.audio) this.audio.ctx.close();
   }
 
   run(raw) {
     const input = raw.trim();
     if (!input) return;
+    // Retype even when the reply repeats, so a second bad command still gets an answer.
+    this.typingFor = null;
     const v = input.split(/\s+/)[0].toLowerCase();
     // Help expands the prompt itself; any other command folds it away.
     // Help and history share the space above the prompt, so one closes the other.
@@ -491,8 +548,14 @@ class Component extends DCLogic {
       this.loginTimer = setTimeout(() => {
         clearInterval(this.loginSpin);
         this.accessBeep();
-        this.setState({ loginStage: 'matched' });
-        this.welcomeTimer = setTimeout(() => this.setState({ screen: 'welcome', out: 'SIGMA: Welcome to Dovetail-9.' }), 1100);
+        // SIGMA greets here, where sound is already allowed; the terminal home shows it without retyping.
+        this.setState({ loginStage: 'matched', out: 'SIGMA: General access session open.' });
+        // A docking-ring terminal is for navigation only, so it opens the directory straight after access is granted.
+        this.enterTimer = setTimeout(() => {
+          this.wakeBeep();
+          // Follow the link once the beep has played; leaving at once would close the audio first.
+          this.enterTimer = setTimeout(() => { if (this.dirEl) this.dirEl.click(); }, 260);
+        }, 1100);
       }, 1800);
       return;
     }
@@ -523,22 +586,16 @@ class Component extends DCLogic {
     // Each edge matches its face: off-white ring and glyph, red arc.
     const ringLayers = depths.map((z) => ({ style: layerStyle(z), ring: '#E8E4DA', arc: accent }));
     const glyphLayers = depths.map((z) => ({ style: layerStyle(z), fill: '#E8E4DA' }));
+    const out = this.sigmaLine();
+    const outFromSigma = /^SIGMA:\s/.test(out);
+    const typed = this.typingFor === out ? (this.state.typed || 0) : 0;
     return {
       accent,
       ringLayers,
       glyphLayers,
-      logRef: (el) => { this.logEl = el; },
+      logRef: (el) => { if (el) this.watchLog(el); this.logEl = el; },
       inputRef: (el) => { this.inputEl = el; },
       dirRef: (el) => { this.dirEl = el; },
-      // Beep first, then follow the link once the tone has played; leaving the
-      // screen at once would close the audio before it's heard.
-      enterDir: (e) => {
-        if (this.leaving) return;
-        e.preventDefault();
-        this.leaving = true;
-        this.tone(1320, 0, 0.12, 'square', 0.08);
-        setTimeout(() => { if (this.dirEl) this.dirEl.click(); }, 170);
-      },
       canScroll: !!this.state.canScroll,
       scrollUp: () => this.scrollLog(-1),
       scrollDown: () => this.scrollLog(1),
@@ -557,9 +614,9 @@ class Component extends DCLogic {
       closeHelp: () => { this.setState({ helpOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
       commands: this.COMMANDS,
       cmd: this.state.cmd,
-      out: this.state.out,
-      hasOut: !!this.state.out,
-      showOutLine: !!this.state.out && !this.state.histOpen,
+      out,
+      hasOut: !!out,
+      showOutLine: !!out && !this.state.histOpen,
       history: (this.state.history || []).map((h, i, list) => ({ t: h.t, text: h.text, style: i === list.length - 1 ? 'color: #E8E4DA;' : 'color: #A8A49A;' })),
       hasHistory: (this.state.history || []).length > 0,
       histOpen: !!this.state.histOpen,
@@ -567,21 +624,20 @@ class Component extends DCLogic {
       toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
       bootComplete: typeof this.state.bootTime === 'number',
       bootTimeText: (this.state.bootTime || 0).toFixed(1) + ' s',
-      outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
-      outText: (this.state.out || '').replace(/^SIGMA:\s/, ''),
-      outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
+      outFromSigma,
+      outText: out.replace(/^SIGMA:\s/, '').slice(0, typed),
+      outStyle: outFromSigma ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
       showBlankBar: !(this.state.screen === 'boot' && this.state.started && this.state.shown >= this.BOOT.length),
       onBootScreen: this.state.screen === 'boot',
       onLoggingIn: this.state.screen === 'loggingIn',
       loginVerifying: this.state.loginStage !== 'matched',
       loginMatched: this.state.loginStage === 'matched',
-      onWelcome: this.state.screen === 'welcome',
       onCmd: (e) => this.setState({ cmd: e.target.value }),
       onKey: (e) => {
         if (e.key !== 'Enter') return;
         const val = this.state.cmd;
-        // On phones, dismiss the keyboard so it doesn't cover the help list; on desktop keep typing.
-        if (this.isTouch() && ['help', 'close'].includes(val.trim().toLowerCase())) e.target.blur();
+        // On phones, dismiss the keyboard so SIGMA's reply isn't hidden; on desktop keep typing.
+        if (this.isTouch()) e.target.blur();
         this.setState({ cmd: '' });
         this.run(val);
       }

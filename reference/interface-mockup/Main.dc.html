@@ -746,12 +746,77 @@
           this.setState({ history: (this.state.history || []).concat([{ t: '16:20', text }]) });
         }
 
-        componentDidUpdate() { this.recordSigma(); }
+        componentDidUpdate() { this.recordSigma(); this.syncTyping(); }
 
         // Ready to type on arrival (not on phones, where focusing would pop the keyboard unasked).
         componentDidMount() {
           this.recordSigma();
+          this.initAudio();
+          this.syncTyping();
           if (this.inputEl && !this.isTouch()) this.inputEl.focus();
+        }
+
+        componentWillUnmount() {
+          clearTimeout(this.typeTimer);
+          if (this.audio) this.audio.ctx.close();
+        }
+
+        // Synthesized with Web Audio so there are no audio files to license. Browsers keep it
+        // suspended until the first keypress, so the arrival message may print silently.
+        initAudio() {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          const ctx = new AC();
+          const master = ctx.createGain();
+          master.gain.value = 0.5;
+          master.connect(ctx.destination);
+          const noise = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+          const d = noise.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          this.audio = { ctx, master, noise };
+        }
+
+        // SIGMA's print-out chatter, one per character. Tuned by ear in the SIGMA Voice Tuner.
+        voiceChar() {
+          if (!this.audio || this.audio.ctx.state !== 'running') return;
+          const { ctx, master } = this.audio;
+          const t = ctx.currentTime + 0.005;
+          const a = 0.010, tau = 0.008 / 1.4, end = t + a + tau * 7;
+          const lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass'; lp.frequency.value = 6600; lp.Q.value = 0.7;
+          const env = ctx.createGain();
+          env.gain.setValueAtTime(0.0001, t);
+          env.gain.linearRampToValueAtTime(0.24, t + a);
+          env.gain.setTargetAtTime(0.0001, t + a, tau);
+          env.connect(lp); lp.connect(master);
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = 800; g.gain.value = 0.63;
+          o.connect(g); g.connect(env); o.start(t); o.stop(end);
+          const n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), gn = ctx.createGain();
+          n.buffer = this.audio.noise; n.playbackRate.value = 0.8 + Math.random() * 0.4;
+          bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 1.6; gn.gain.value = 1.17;
+          n.connect(bp); bp.connect(gn); gn.connect(env); n.start(t); n.stop(end);
+        }
+
+        // Types each new SIGMA line out a character at a time; other output appears at once.
+        syncTyping() {
+          const line = this.state.out || '';
+          if (line === this.typingFor) return;
+          this.typingFor = line;
+          clearTimeout(this.typeTimer);
+          const body = line.replace(/^SIGMA:\s/, '');
+          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!/^SIGMA:\s/.test(line) || reduce) return this.setState({ typed: body.length });
+          let i = 0;
+          const tick = () => {
+            if (body[i] !== ' ') this.voiceChar();
+            i++;
+            this.setState({ typed: i });
+            if (i < body.length) this.typeTimer = setTimeout(tick, 26);
+          };
+          this.setState({ typed: 0 });
+          // First character lands at half step, like the opening flurry in the reference.
+          this.typeTimer = setTimeout(tick, 13);
         }
 
         node(id) { return this.NODES.find((n) => n.id === id); }
@@ -780,6 +845,8 @@
           const loc = this.LOC[here.id] || { files: [] };
           const kids = this.NODES.filter((n) => n.parent === here.id);
           if (!input) return;
+          // Retype even when the reply repeats, so a second bad command still gets an answer.
+          this.typingFor = null;
           // Help expands the prompt itself; any other command folds it away.
           // Help and history share the space above the prompt, so one closes the other.
           if (verb === 'help') return this.setState({ helpOpen: !this.state.helpOpen, histOpen: false });
@@ -879,7 +946,7 @@
             histClosed: !this.state.histOpen,
             toggleHist: () => this.setState({ histOpen: !this.state.histOpen, helpOpen: false }),
             outFromSigma: /^SIGMA:\s/.test(this.state.out || ''),
-            outText: (this.state.out || '').replace(/^SIGMA:\s/, ''),
+            outText: (this.state.out || '').replace(/^SIGMA:\s/, '').slice(0, this.typingFor === (this.state.out || '') ? (this.state.typed || 0) : 0),
             outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
             inputRef: (el) => { this.inputEl = el; },
             helpOpen: this.state.helpOpen,
@@ -888,9 +955,10 @@
             onCmd: (e) => this.setState({ cmd: e.target.value }),
             onKey: (e) => {
               if (e.key !== 'Enter') return;
+              if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
               const v = this.state.cmd;
-              // On phones, dismiss the keyboard so it doesn't cover the help list; on desktop keep typing.
-              if (this.isTouch() && ['help', 'close'].includes(v.trim().toLowerCase())) e.target.blur();
+              // On phones, dismiss the keyboard so SIGMA's reply isn't hidden; on desktop keep typing.
+              if (this.isTouch()) e.target.blur();
               this.setState({ cmd: '' });
               this.run(v);
             }

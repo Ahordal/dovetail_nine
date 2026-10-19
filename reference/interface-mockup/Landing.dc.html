@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dovetail-9</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000000}
+a{color:#E8E4DA}a:hover{color:#FFFFFF}
+.landing-root{height:100vh;height:100dvh}
+.begin:hover{background:#E8E4DA;color:#0B0C0D}
+.begin:focus-visible{outline:2px solid #9FC7C2;outline-offset:3px}
+</style>
+</helmet>
+<div class="landing-root" style="box-sizing: border-box; display: flex; flex-direction: column; background: #000000; color: #E8E4DA; font-family: 'IBM Plex Mono', monospace;">
+<div style="position: relative; flex: 1 1 auto; min-height: 0;">
+<img src="/_blob/74af3ce43e4ab1162f8dec12957eaded" alt="A dark research station hangs in space. A small ship approaches its lit docking bay, and a red star glows below." style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center 55%; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 88%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 88%, transparent 100%);">
+</div>
+<div style="flex-shrink: 0; box-sizing: border-box; padding: 8px clamp(16px, 4vw, 48px) max(28px, env(safe-area-inset-bottom)) clamp(16px, 4vw, 48px);">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px;">
+<h1 aria-label="Dovetail-9" style="margin: 0; font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: clamp(44px, 10vw, 128px); line-height: 0.9; letter-spacing: 0.06em; white-space: nowrap; color: #5E6368;"><span aria-hidden="true">DOVETAIL-</span><span aria-hidden="true" style="color: {{accent}};">9</span></h1>
+<a class="begin" href="Boot.dc.html" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 28px; margin-bottom: 4px; border: 1px solid #E8E4DA; border-radius: 4px; color: #E8E4DA; text-decoration: none; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.18em;">BEGIN<span aria-hidden="true">▸</span></a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E0504A"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#E0504A' };
+  }
+}
+</script>
+</body>
+</html>
