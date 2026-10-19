@@ -46,6 +46,22 @@
           .loc-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid #9fc7c2; animation: loc-ping 2.4s ease-out infinite; }
           @keyframes loc-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
           @media (prefers-reduced-motion: reduce) { .loc-dot::after { animation: none; opacity: 0.35; } }
+          /* Quell's slate: Blackline hardware in amber, a different device from SIGMA's terminal. */
+          .slate-btn { position: absolute; right: 14px; bottom: 14px; z-index: 5; display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 14px; background: #16130d; border: 1.5px solid #c98a2b; border-radius: 10px; color: #e8a33d; font-family: "Chakra Petch", sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6); }
+          .slate-btn:hover { background: #211b10; }
+          .slate-btn:focus-visible, .slate-tab:focus-visible, .slate-close:focus-visible { outline: 2px solid #9fc7c2; outline-offset: 2px; }
+          .slate { position: relative; display: flex; flex-direction: column; min-height: 0; padding: 14px; background: #1b1813; border: 1px solid #3b342a; border-radius: 22px; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.65), inset 0 0 0 2px #0d0c09; }
+          .slate-screw { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #3b342a; box-shadow: inset 0 0 0 1px #0d0c09; }
+          .slate-screen { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; overflow: auto; background: #0e0c08; border: 1px solid #3b342a; border-radius: 10px; color: #e8a33d; font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+          .slate-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #3b342a; font-size: 11px; letter-spacing: 0.12em; color: #9b7a45; }
+          .slate-brand { font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.2em; color: #e8a33d; }
+          .slate-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-bottom: 1px solid #3b342a; }
+          .slate-tab { min-height: 36px; padding: 0 12px; background: none; border: 1px solid #5a4a2a; border-radius: 6px; color: #e8a33d; font-family: "Chakra Petch", sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; cursor: pointer; }
+          .slate-tab[aria-pressed="true"] { background: #e8a33d; border-color: #e8a33d; color: #0e0c08; }
+          .slate-body { flex: 1 1 auto; display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; min-height: 180px; }
+          .slate-label { font-size: 11px; letter-spacing: 0.14em; color: #9b7a45; }
+          .slate-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 8px 0; border-bottom: 1px solid #2a241a; }
+          .slate-close { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; background: #16130d; border: 1px solid #5a4a2a; border-radius: 6px; color: #e8a33d; cursor: pointer; font-size: 14px; }
           /* Phones: half the side margins, so content gets more of the width. */
           @media (max-width: 560px) {
             .m-x10 { padding-left: 10px !important; padding-right: 10px !important; }
@@ -101,7 +117,77 @@
               <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.12em; color: #a8a49a">TERMINAL {{termId}}</span>
             </header>
 
-            <div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain">
+            <sc-if value="{{slateOpen}}" hint-placeholder-val="{{false}}">
+              <div class="m-modal"
+                style="
+                  position: fixed;
+                  inset: 0;
+                  z-index: 60;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  box-sizing: border-box;
+                  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+                  background: rgba(5, 6, 7, 0.72);
+                ">
+                <div role="dialog" aria-modal="true" aria-labelledby="slate-h" onKeyDown="{{slateKey}}" style="display: flex; flex-direction: column; width: 100%; height: 100%">
+                  <section class="slate" style="flex: 1 1 auto">
+                    <span aria-hidden="true" class="slate-screw" style="top: 6px; left: 6px"></span>
+                    <span aria-hidden="true" class="slate-screw" style="top: 6px; right: 6px"></span>
+                    <span aria-hidden="true" class="slate-screw" style="bottom: 6px; left: 6px"></span>
+                    <span aria-hidden="true" class="slate-screw" style="bottom: 6px; right: 6px"></span>
+                    <div class="slate-screen">
+                      <div class="slate-top">
+                        <span><span id="slate-h" class="slate-brand">BLACKLINE</span> · BLDS-X</span>
+                        <span style="display: flex; align-items: center; gap: 14px"><span>LINK · MISTRAL · PWR 98%</span><button type="button" class="slate-close" ref="{{closeSlateRef}}" onClick="{{closeSlate}}" aria-label="Put the slate away">✕</button></span>
+                      </div>
+                      <div class="slate-tabs" role="group" aria-label="Slate apps">
+                        <sc-for list="{{slateApps}}" as="a" hint-placeholder-count="5">
+                          <button type="button" class="slate-tab" onClick="{{a.pick}}" aria-pressed="{{a.on}}">{{a.label}}</button>
+                        </sc-for>
+                      </div>
+                      <div class="slate-body">
+                        <sc-if value="{{appTimer}}" hint-placeholder-val="{{true}}">
+                          <sc-if value="{{hasWindow}}" hint-placeholder-val="{{true}}">
+                            <div role="timer" aria-live="off" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 0; text-align: center">
+                              <span class="slate-label">{{slateTimerLabel}}</span>
+                              <span ref="{{timerRef}}" style="{{slateTimerBig}}">{{slateTimerText}}</span>
+                              <span class="slate-label">SET FROM SIGMA ALIGNMENT RECORD · NEXT WINDOW EST. 6.1 YEARS</span>
+                            </div>
+                          </sc-if>
+                          <sc-if value="{{noTimer}}" hint-placeholder-val="{{false}}">
+                            <span>NO TIMER SET.</span>
+                          </sc-if>
+                        </sc-if>
+                        <sc-if value="{{appLogs}}" hint-placeholder-val="{{false}}">
+                          <span class="slate-label">QUELL · LOGS</span>
+                          <span style="color: #9b7a45">[Quell's notes not yet written. Entries are added as he explores.]</span>
+                        </sc-if>
+                        <sc-if value="{{appDose}}" hint-placeholder-val="{{false}}">
+                          <span class="slate-label">DOSIMETER</span>
+                          <div class="slate-row"><span>ACCUMULATED DOSE</span><span style="color: #9b7a45">[not yet mocked up]</span></div>
+                          <div class="slate-row"><span>CURRENT RATE</span><span style="color: #9b7a45">[not yet mocked up]</span></div>
+                        </sc-if>
+                        <sc-if value="{{appMistral}}" hint-placeholder-val="{{false}}">
+                          <span class="slate-label">MISTRAL · SHIP LINK</span>
+                          <div class="slate-row"><span>LINK</span><span>NFQL · DOCKED · DECK 01</span></div>
+                          <div class="slate-row"><span>DRIVE RESONANCE</span><span style="color: #9b7a45">[not yet mocked up]</span></div>
+                        </sc-if>
+                        <sc-if value="{{appTools}}" hint-placeholder-val="{{false}}">
+                          <span class="slate-label">TOOLS</span>
+                          <sc-for list="{{slateTools}}" as="tl" hint-placeholder-count="3">
+                            <div class="slate-row"><span>{{tl.name}}</span><span style="{{tl.style}}">{{tl.status}}</span></div>
+                          </sc-for>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column">
+            <div ref="{{scrollRef}}" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; touch-action: pan-y; -webkit-overflow-scrolling: touch">
 
             <div class="m-strip"
               style="
@@ -688,6 +774,14 @@
               </aside>
             </div>
             </div>
+            <button type="button" class="slate-btn" ref="{{slateBtnRef}}" onClick="{{toggleSlate}}" aria-haspopup="dialog" aria-expanded="{{slateOpen}}" aria-label="{{slateBtnLabel}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2.5"></rect><path d="M9 18.5h6"></path></svg>
+              <span>SLATE</span>
+              <sc-if value="{{hasWindow}}" hint-placeholder-val="{{false}}">
+                <span ref="{{timerRef}}" style="{{slateBtnTimer}}">{{slateTimerText}}</span>
+              </sc-if>
+            </button>
+            </div>
 
             <div class="m-x10"
               style="
@@ -712,6 +806,10 @@
                     gap: 6px;
                     padding-bottom: 10px;
                     border-bottom: 1px solid #1e2123;
+                    max-height: min(45vh, 360px);
+                    overflow-y: auto;
+                    touch-action: pan-y;
+                    -webkit-overflow-scrolling: touch;
                   ">
                   <div
                     style="
@@ -819,8 +917,7 @@
                 <div
                   style="
                     font-size: 12px;
-                    white-space: pre-line;
-                    padding-top: 3px;
+                    line-height: 1.5;
                   ">
                   <sc-if
                     value="{{outFromSigma}}"
@@ -948,9 +1045,19 @@
         constructor(props) {
           super(props);
           // Starts where Quell came aboard, at the terminal the boot screen just logged into.
-          // Clock carries on from the boot screen's 03:58, in minutes since midnight.
+          // Station time runs in real time from the reader's first arrival (03:58, carrying on from the boot screen).
+          // The window countdown starts only once the reader learns why the station phases, then runs in real time too.
+          // Both are saved in the browser, so they keep running while the page is shut.
           this.portWasOpen = false;
-          this.state = { loc: 'd1a', file: null, cmd: '', out: 'SIGMA: General access session open. Type help for commands.', collapsed: { d2: true }, helpOpen: false, treeOpen: false, clockMin: 3 * 60 + 58 };
+          this.slateWasOpen = false;
+          this.timerEls = new Set();
+          this.arriveAt = this.loadArrival();
+          this.windowCloseAt = this.readStored('dt9-window-close');
+          this.state = { loc: 'd1a', file: null, cmd: '', out: 'SIGMA: General access session open. Type help for commands.', collapsed: { d2: true }, helpOpen: false, treeOpen: false, now: Date.now(), slateOpen: false, slateApp: 'timer' };
+          if (this.windowCloseAt && this.windowRemaining() === 0) {
+            this.closedAnnounced = true;
+            this.state.out = this.CLOSED_MSG;
+          }
           // SIGMA already typed the greeting on the login screen, so it arrives whole rather than retyped.
           this.typingFor = this.state.out;
           this.state.typed = this.state.out.replace(/^SIGMA:\s/, '').length;
@@ -960,6 +1067,8 @@
             { cmd: 'cd ..', desc: "Go back to this deck's hub." },
             { cmd: 'open <file>', desc: 'Read a file posted at this terminal.' },
             { cmd: 'tree', desc: 'Show or hide the full station directory.' },
+            { cmd: 'window', desc: 'Ask SIGMA how long the alignment window has left.' },
+            { cmd: 'slate', desc: 'Bring up your slate, or put it away.' },
             { cmd: 'udc', desc: "Show this terminal's data connector and what can connect." },
             { cmd: 'connect <device>', desc: 'Plug a carried device into the UDC (connect slate).' },
             { cmd: 'disconnect', desc: 'Unplug the connected device.' },
@@ -1010,7 +1119,9 @@
           ];
           // Station content only: Quell's notes live on his slate, and scanning is a tool.
           this.LOC = {
-            d1: { files: [] },
+            d1: { files: [
+              { name: 'SIGMA_alignment_record.sig', reveals: true, body: 'SIGMA // ALIGNMENT WINDOW RECORD\nDOVETAIL-9 · K-17 "SABLE" · DEEP TRILLIUM ARC\n\nSTATION STATUS    PHASE-LOCKED SINCE T+0\nCORRIDOR          DRIFT CONTINUING\nALIGNMENT         RECURS AT BEAT INTERVAL\nINTERVAL          INCREASING\n\nWINDOW  OPENED     DURATION  BEACON   RESPONSE\n01      T+0.4 Y    03:10     ACTIVE   NONE\n02      T+1.3 Y    06:05     ACTIVE   NONE\n03      T+2.9 Y    10:20     ACTIVE   NONE\n04      T+5.5 Y    16:40     ACTIVE   NONE\n05      T+9.5 Y    OPEN      ACTIVE   1 VESSEL\n\nNEXT WINDOW       EST. T+15.5 Y' }
+            ] },
             d1a: { files: [
               { name: 'SIGMA_notice_0001.msg', body: 'SIGMA // NOTICE\n\nWelcome to Dovetail-9.\nAccess level: GENERAL.\nPlease remain within permitted areas.' }
             ] },
@@ -1048,20 +1159,133 @@
           this.setState({ history: (this.state.history || []).concat([{ t: this.clockText(), text }]) });
         }
 
+        get CLOSED_MSG() { return 'SIGMA: Alignment window closed. Next window: estimated 6.1 years.'; }
+
+        // Station seconds since midnight on arrival, and how long the window has left once discovered.
+        static get ARRIVE() { return 3 * 3600 + 58 * 60; }
+        static get WINDOW_LEFT() { return 16 * 3600; }
+
+        readStored(key) {
+          try {
+            const v = Number(localStorage.getItem(key));
+            return v > 0 ? v : null;
+          } catch (e) { return null; }
+        }
+
+        store(key, value) {
+          try {
+            if (value === null) localStorage.removeItem(key);
+            else localStorage.setItem(key, String(value));
+          } catch (e) {}
+        }
+
+        loadArrival() {
+          const v = this.readStored('dt9-arrive');
+          if (v) return v;
+          const now = Date.now();
+          this.store('dt9-arrive', now);
+          return now;
+        }
+
+        // Learning why the station phases is what starts the clock.
+        discoverWindow() {
+          if (this.windowCloseAt) return;
+          this.windowCloseAt = Date.now() + Component.WINDOW_LEFT * 1000;
+          this.store('dt9-window-close', this.windowCloseAt);
+          this.typingFor = null;
+          this.chirp();
+          this.setState({ now: Date.now(), slateApp: 'timer', out: 'SLATE · WINDOW TIMER SET · 16:00:00' });
+        }
+
+        // Two short high pips: Blackline hardware, nothing like SIGMA's voice.
+        chirp() {
+          if (!this.audio) return;
+          const { ctx, master } = this.audio;
+          if (ctx.state === 'suspended') ctx.resume();
+          [0, 0.09].forEach((d) => {
+            const t0 = ctx.currentTime + 0.01 + d;
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = 2400;
+            g.gain.setValueAtTime(0, t0);
+            g.gain.linearRampToValueAtTime(0.16, t0 + 0.005);
+            g.gain.setValueAtTime(0.16, t0 + 0.04);
+            g.gain.linearRampToValueAtTime(0, t0 + 0.055);
+            o.connect(g); g.connect(master);
+            o.start(t0); o.stop(t0 + 0.08);
+          });
+        }
+
+        slateTimerText() {
+          return this.windowRemaining() === 0 ? '00:00:00' : this.windowText();
+        }
+
+        windowRemaining() {
+          if (!this.windowCloseAt) return null;
+          return Math.max(0, Math.floor((this.windowCloseAt - (this.state ? this.state.now : Date.now())) / 1000));
+        }
+
         clockText() {
-          const m = this.state.clockMin;
-          return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+          const s = Math.floor(Component.ARRIVE + (this.state.now - this.arriveAt) / 1000);
+          const day = ((s % 86400) + 86400) % 86400;
+          return String(Math.floor(day / 3600)).padStart(2, '0') + ':' + String(Math.floor((day % 3600) / 60)).padStart(2, '0');
+        }
+
+        windowText() {
+          const r = this.windowRemaining();
+          const pad = (n) => String(n).padStart(2, '0');
+          return pad(Math.floor(r / 3600)) + ':' + pad(Math.floor((r % 3600) / 60)) + ':' + pad(r % 60);
+        }
+
+        // Rebuilding the page every second interrupts touch scrolling on phones. So the page only re-renders
+        // when something visible changes (the minute, the last-hour colour, the close); the countdown's seconds
+        // are written straight into its text.
+        tick() {
+          const now = Date.now();
+          const prev = this.state.now;
+          const minuteChanged = Math.floor(now / 60000) !== Math.floor(prev / 60000);
+          if (this.windowCloseAt) {
+            const left = (at) => Math.max(0, Math.floor((this.windowCloseAt - at) / 1000));
+            const r = left(now);
+            const crossedHour = left(prev) >= 3600 && r < 3600;
+            if (r === 0 || crossedHour || minuteChanged) {
+              this.setState({ now });
+              if (r === 0 && !this.closedAnnounced) {
+                this.closedAnnounced = true;
+                this.typingFor = null;
+                this.setState({ out: this.CLOSED_MSG });
+              }
+              return;
+            }
+            const pad = (n) => String(n).padStart(2, '0');
+            const text = pad(Math.floor(r / 3600)) + ':' + pad(Math.floor((r % 3600) / 60)) + ':' + pad(r % 60);
+            this.timerEls.forEach((el) => { if (el.isConnected) el.textContent = text; else this.timerEls.delete(el); });
+            return;
+          }
+          if (minuteChanged) this.setState({ now });
         }
 
         componentDidUpdate() {
           this.recordSigma();
           this.syncTyping();
+          // The bar changes height when SIGMA's message changes length: re-arm scrolling once it settles.
+          const outNow = this.state.out || '';
+          if (outNow !== this.lastOutForScroll) {
+            this.lastOutForScroll = outNow;
+            clearTimeout(this.unstickTimer);
+            this.unstickTimer = setTimeout(() => this.unstickScroll(), 400);
+          }
           // Focus follows the modal: into it on open, back to the UDC button on close.
           const open = !!this.state.portOpen;
           if (open !== this.portWasOpen) {
             this.portWasOpen = open;
             if (open && this.closeEl) this.closeEl.focus();
             else if (!open && this.portBtnEl) this.portBtnEl.focus();
+          }
+          const slate = !!this.state.slateOpen;
+          if (slate !== this.slateWasOpen) {
+            this.slateWasOpen = slate;
+            if (slate && this.closeSlateEl) this.closeSlateEl.focus();
+            else if (!slate && this.slateBtnEl) this.slateBtnEl.focus();
           }
         }
 
@@ -1071,12 +1295,33 @@
           this.initAudio();
           this.syncTyping();
           if (this.inputEl && !this.isTouch()) this.inputEl.focus();
-          // One station minute per real minute, for now. Whether moves also advance time is undecided.
-          this.clockTimer = setInterval(() => this.setState({ clockMin: this.state.clockMin + 1 }), 60000);
+          // Real time: one station second per real second. Whether moves also advance time is undecided.
+          this.clockTimer = setInterval(() => this.tick(), 1000);
+          // Phones sometimes stop scrolling the content after the visible height changes (keyboard, browser bars,
+          // rotation) until something forces a fresh layout. Re-arm scrolling whenever that happens.
+          this.onViewport = () => this.unstickScroll();
+          window.addEventListener('resize', this.onViewport);
+          window.addEventListener('orientationchange', this.onViewport);
+          if (window.visualViewport) window.visualViewport.addEventListener('resize', this.onViewport);
+        }
+
+        // Toggling overflow off and on, around a forced layout read, makes the browser rebuild the scroll area.
+        unstickScroll() {
+          const el = this.scrollEl;
+          if (!el) return;
+          const top = el.scrollTop;
+          el.style.overflowY = 'hidden';
+          void el.offsetHeight;
+          el.style.overflowY = 'auto';
+          el.scrollTop = top;
         }
 
         componentWillUnmount() {
           clearInterval(this.clockTimer);
+          clearTimeout(this.unstickTimer);
+          window.removeEventListener('resize', this.onViewport);
+          window.removeEventListener('orientationchange', this.onViewport);
+          if (window.visualViewport) window.visualViewport.removeEventListener('resize', this.onViewport);
           this.cancelLink();
           clearTimeout(this.typeTimer);
           if (this.audio) this.audio.ctx.close();
@@ -1220,12 +1465,12 @@
 
         plugIn(id) {
           this.typingFor = null;
-          this.setState({ connected: id, out: 'SIGMA: Unregistered device detected on UDC.' });
+          this.setState({ connected: id, out: 'SIGMA: Unregistered device connected to UDC.' });
         }
 
         unplug() {
           this.typingFor = null;
-          this.setState({ connected: null, portStep: 'start', linkLines: [], out: 'UDC · DEVICE REMOVED' });
+          this.setState({ connected: null, portStep: 'start', linkLines: [], out: 'SIGMA: Unregistered device disconnected from UDC.' });
         }
 
         // Moving connects Quell to the terminal at the new place.
@@ -1266,6 +1511,21 @@
           if (verb === 'close') return this.setState({ helpOpen: false, histOpen: false });
           this.setState({ helpOpen: false });
           if (verb === 'tree') return this.setState({ treeOpen: !this.state.treeOpen, out: '' });
+          if (verb === 'slate') return this.setState({ slateOpen: !this.state.slateOpen, portOpen: false, out: '' });
+          if (verb === 'window' && this.windowCloseAt) {
+            const r = this.windowRemaining();
+            if (r === 0) return this.setState({ out: this.CLOSED_MSG });
+            return this.setState({ out: 'SIGMA: Alignment window closes in ' + Math.floor(r / 3600) + ' h ' + Math.floor((r % 3600) / 60) + ' min. Next window: estimated 6.1 years.' });
+          }
+          // Mockup only: restart the 24-hour window.
+          if (verb === 'reset' && arg.toLowerCase() === 'window') {
+            this.windowCloseAt = null;
+            this.store('dt9-window-close', null);
+            this.arriveAt = Date.now();
+            this.store('dt9-arrive', this.arriveAt);
+            this.closedAnnounced = false;
+            return this.setState({ now: Date.now(), out: 'MOCKUP · WINDOW RESET' });
+          }
           if (verb === 'connect') {
             const port = this.TERM[here.id].port;
             if (port === 'none') return this.setState({ out: 'No UDC on this terminal.' });
@@ -1305,7 +1565,9 @@
             if (here.lock) return this.setState({ out: 'Access denied: ' + here.lock });
             const f = (loc.files || []).find((x) => x.name.toLowerCase().startsWith(arg.toLowerCase()));
             if (!f || !arg) return this.setState({ out: 'No such file posted here: ' + arg });
-            return this.setState({ file: f.name, out: '' });
+            this.setState({ file: f.name, out: '' });
+            if (f.reveals) this.discoverWindow();
+            return;
           }
           this.setState({ out: 'SIGMA: Command not recognized.' });
         }
@@ -1381,7 +1643,7 @@
           const fileList = locked ? [] : (loc.files || []);
           const files = fileList.map((f) => ({
             name: f.name,
-            pick: () => this.setState({ file: f.name }),
+            pick: () => { this.setState({ file: f.name }); if (f.reveals) this.discoverWindow(); },
             btnStyle: 'text-align: left; background: ' + (this.state.file === f.name ? '#1A1D20' : 'none') + '; border: none; color: #E8E4DA; padding: 8px 4px; min-height: 40px; cursor: pointer; border-bottom: 1px solid #1E2123;'
           }));
           const open = fileList.find((f) => f.name === this.state.file);
@@ -1394,6 +1656,11 @@
             kindStyle: 'font-size: 11px; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; border: 1px solid '
               + (restricted ? '#5A4A2A; color: #D9A441;' : '#2F4A47; color: #9FC7C2;'),
             clock: this.clockText(),
+            hasWindow: !!this.windowCloseAt,
+            windowLabel: this.windowRemaining() === 0 ? 'WINDOW CLOSED' : 'WINDOW CLOSES IN',
+            windowText: this.windowCloseAt && this.windowRemaining() > 0 ? this.windowText() : '',
+            // Amber while there's time, SIGMA red in the last hour and once closed.
+            windowStyle: 'color: ' + (this.windowCloseAt && this.windowRemaining() < 3600 ? accent : '#D9A441') + ';',
             // A terminal with no port shows nothing; the absence is the signal.
             hasPort: term.port !== 'none',
             portColor: portState === 'connected' ? accent : portLook.color,
@@ -1410,8 +1677,37 @@
             portDisabled: portState === 'disabled',
             portConnected: portState === 'connected',
             portOpen: !!this.state.portOpen,
-            togglePort: () => (this.state.portOpen ? this.closeModal() : this.setState({ portOpen: true, portStep: this.state.connected ? 'done' : 'start', linkLines: this.state.connected ? this.state.linkLines : [] })),
+            togglePort: () => (this.state.portOpen ? this.closeModal() : this.setState({ slateOpen: false, portOpen: true, portStep: this.state.connected ? 'done' : 'start', linkLines: this.state.connected ? this.state.linkLines : [] })),
             closePort: () => this.closeModal(),
+            slateOpen: !!this.state.slateOpen,
+            timerRef: (el) => { if (el) this.timerEls.add(el); },
+            toggleSlate: () => this.setState({ slateOpen: !this.state.slateOpen, portOpen: false, now: Date.now() }),
+            closeSlate: () => this.setState({ slateOpen: false }),
+            slateKey: (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.setState({ slateOpen: false }); } },
+            slateBtnRef: (el) => { this.slateBtnEl = el; },
+            closeSlateRef: (el) => { this.closeSlateEl = el; },
+            slateBtnLabel: 'Slate' + (this.windowCloseAt ? ', window timer ' + this.slateTimerText() : '') + '. Open.',
+            slateApps: [['timer', 'TIMER'], ['logs', 'LOGS'], ['dose', 'DOSE'], ['mistral', 'MISTRAL'], ['tools', 'TOOLS']].map(([id, label]) => ({
+              label, on: this.state.slateApp === id, pick: () => this.setState({ slateApp: id })
+            })),
+            appTimer: this.state.slateApp === 'timer',
+            appLogs: this.state.slateApp === 'logs',
+            appDose: this.state.slateApp === 'dose',
+            appMistral: this.state.slateApp === 'mistral',
+            appTools: this.state.slateApp === 'tools',
+            noTimer: !this.windowCloseAt,
+            slateTimerText: this.windowCloseAt ? this.slateTimerText() : '',
+            slateTimerLabel: this.windowRemaining() === 0 ? 'ALIGNMENT WINDOW CLOSED' : 'ALIGNMENT WINDOW CLOSES IN',
+            // Amber while there's time, red in the last hour and once closed.
+            slateTimerBig: 'font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: clamp(36px, 11vw, 52px); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; color: '
+              + (this.windowCloseAt && this.windowRemaining() < 3600 ? accent : '#E8A33D') + ';',
+            slateBtnTimer: 'font-variant-numeric: tabular-nums; padding-left: 10px; border-left: 1px solid #5a4a2a; color: '
+              + (this.windowCloseAt && this.windowRemaining() < 3600 ? accent : '#E8A33D') + ';',
+            slateTools: ['SPOOF', 'OVERRIDE', 'SCAN'].map((name) => ({
+              name,
+              status: this.state.connected === 'slate' ? 'READY · [not yet mocked up]' : 'REQUIRES UDC LINK',
+              style: 'color: ' + (this.state.connected === 'slate' ? '#E8A33D' : '#9B7A45') + ';'
+            })),
             startConnect: () => this.setState({ portStep: 'choose' }),
             cancelConnect: () => this.setState({ portStep: 'start' }),
             disconnectNow: () => this.unplug(),
@@ -1471,16 +1767,17 @@
             outText: (this.state.out || '').replace(/^SIGMA:\s/, '').slice(0, this.typingFor === (this.state.out || '') ? (this.state.typed || 0) : 0),
             outStyle: /^SIGMA:\s/.test(this.state.out || '') ? 'color: #E8E4DA;' : 'color: #9FC7C2;',
             inputRef: (el) => { this.inputEl = el; },
+            scrollRef: (el) => { this.scrollEl = el; },
             helpOpen: this.state.helpOpen,
             closeHelp: () => { this.setState({ helpOpen: false }); if (this.inputEl && !this.isTouch()) this.inputEl.focus(); },
-            commands: this.COMMANDS,
+            commands: this.COMMANDS.filter((c) => c.cmd !== 'window' || !!this.windowCloseAt),
             onCmd: (e) => this.setState({ cmd: e.target.value }),
             onKey: (e) => {
               if (e.key !== 'Enter') return;
               if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
               const v = this.state.cmd;
               // On phones, dismiss the keyboard so SIGMA's reply isn't hidden; on desktop keep typing.
-              if (this.isTouch()) e.target.blur();
+              if (this.isTouch()) { e.target.blur(); setTimeout(() => this.unstickScroll(), 350); }
               this.setState({ cmd: '' });
               this.run(v);
             }
