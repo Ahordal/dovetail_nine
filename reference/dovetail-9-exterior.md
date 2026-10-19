@@ -8,7 +8,8 @@ Official mood and shape reference for the station. AI-generated from the prompt 
 
 - Shape and overall length match [[dovetail-9-station]].
 - The Mistral's domed cockpit and folded salvage arm match canon.
-- The Mistral looks large relative to the hull; that's foreground perspective. Canon: 58 m vs a 180 m hull.
+- The Mistral looks large relative to the hull; that's foreground perspective. Canon: 58 m vs a 400 m hull.
+- The prompt below says 180 m, the hull length when the image was made. The hull is now about 400 m; the image's proportions still hold.
 
 ## Prompt
 

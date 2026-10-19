@@ -29,6 +29,9 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 - The **Dovetail Anchor Core (DAC)** is a resonance lattice that forces a **phase node** into a degraded corridor: a point held still so the surrounding corridor stops drifting.
 - Powered by the **DYNEX T-CORE X9 Ignis**. Kept in sync with the corridor's shifting phase by **SIGMA**.
 - **Rule: pinning a place pins a moment.** Inside a phase node, time stops advancing. This is **temporal arrest**.
+- **Rule: the pin's energy goes into the corridor [settled].** The array radiates the X9's output into the corridor, the way a transmitter's antenna sends its power out as radio waves, to hold the drifting corridor still, like pushing a swing steadily against the wind. The energy leaves the station instead of turning into heat there. Less than a billionth leaks back as heat, shed by radiators along the array arms.
+  - Real basis: transmitters, lasers and merging black holes all send energy away as radiation instead of heating their source. The invented part is the efficiency: no real device loses as little as one part in a billion.
+  - Without this rule, 3.5 exawatts of waste heat would vaporize the station. It also sharpens the accident: when the surge hit with the shielding down, the energy found its way into the station.
 
 ## Harmonic node cascade
 

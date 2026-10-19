@@ -23,7 +23,7 @@ Framework: the **Swiss cheese model** (James Reason). Every safety layer has hol
 | Containment-priority protocol | Diverts every reserve to X9 containment if it wavers | Ranks shielding below containment (Power Priority Matrix rev. 4) |
 | X9 containment | Holds the singularity | DYNEX's own notes: destabilizes under prolonged harmonic exposure |
 
-**Why containment outranks shielding:** losing containment means an uncontrolled singularity, with no known limit to the damage. The ZK-Class failsafe (antimatter injection, ~3.2 km destruction radius) is the *controlled* worst case. Protecting containment at all costs is a defensible engineering call.
+**Why containment outranks shielding:** losing containment means the singularity's stored spin energy (~2.6 × 10²⁸ J) discharging uncontrolled, with no known limit to the damage (see [[dynex-t-core-x9-ignis]]). The ZK-Class failsafe (antimatter injection, ~3.2 km destruction radius) is the *controlled* worst case. Protecting containment at all costs is a defensible engineering call.
 
 ## Months before
 
@@ -67,6 +67,16 @@ To the crew, the whole thing felt like a single instant: a flash.
 - SIGMA logs thousands of alarms in the first second. There is nobody left to read them.
 - The station is phase-locked and drifts out of phase with normal space. Nashiro loses signal.
 - Nashiro issues a blackout order. Records are later sealed under NCIA/2470.
+
+## The official account **[proposed]**
+
+DYNEX's sealed technical dossier on the X9 tells a different story, and it's the one in the corporate record:
+
+- An "unforeseen resonance wave" from the corridor synced with the containment coils and the magnetic bottle oscillated.
+- The containment protocol pulled every reserve to stiffen the fields, spiking toward the 7.8 EW ceiling.
+- Safety interlocks **cycled the primary radiation shutters open for two seconds** to vent overpressure, "exposing the adjacent core spaces".
+
+It never mentions the harmonic shielding, the backup bus, Power Priority Matrix rev. 4, capacitor bank B or the waiver. It blames a physical shutter cycle near the core, not a power decision that left every deck exposed. A reader who finds both this account and the station's own records can see what the official version leaves out.
 
 ## Real-world parallels
 

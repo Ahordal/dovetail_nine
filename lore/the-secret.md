@@ -26,9 +26,9 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 ### Chain of command
 
 - **Nashiro gave the orders** from off-station.
-- A **station administrator** ran things locally aboard Dovetail-9, and is one of the 97.
+- A **station administrator** ran things locally aboard Dovetail-9, and is one of the 166.
 - The administrator **had no doubts** about proceeding.
-- The station had several organizational arms, including **science/R&D**.
+- The station had seven divisions, including **Science**. See [[crew]].
 - Some **lower-level researchers had concerns**, but only shared them among themselves in private emails and intranet messages. Nobody raised them officially.
 
 ### Warning signs
@@ -87,7 +87,7 @@ The rule still stands, as physics: destroying a pin damages the corridor around 
 
 ## The crew
 
-- The 97 crew persist as **echoes**, not dead in the usual sense.
+- The 166 crew persist as **echoes**, not dead in the usual sense.
 - The echoes will likely be tied to **strange atmospheric events** aboard the station.
 - Echoes are never seen. They **manifest as sensory events**: things felt, heard, smelled, or registered by instruments, not figures in a corridor.
 - Nobody is behind them. Echoes are **moments caught in time**: fragments of 2467 replaying, not aware people reaching out. (Leaning, not locked.)

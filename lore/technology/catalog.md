@@ -67,7 +67,7 @@ Every product named in the lore. Items with their own file are linked; the rest 
 
 | Product | Maker | Notes |
 |---|---|---|
-| Dovetail Anchor Core (DAC) | Dovetail Program | The station's 800 m resonance array; see [[dovetail-9-station]] |
+| Dovetail Anchor Core (DAC) | Dovetail Program | The station's ~1.7 km resonance array; see [[dovetail-9-station]] |
 | Valdez adaptive harmonic stabilizers | Valdez Systems | Dovetail-9's active shielding |
 | Ravel Harmonizers, Pulse Cascade Regulators, EchoFrame Testbeds | Ravel Industries | See [[ravel-industries]] |
 

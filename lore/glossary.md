@@ -38,7 +38,7 @@ One meaning per term. Use these consistently in lore and documents.
 | **Node** (phase node) | The point being held still. Inside it, time stops advancing. |
 | **Stabilization** | The corridor steadied as a result of a pin. The **goal**. "Harmonic stabilization" is the experiment's formal name. |
 | **Anchor** | A working, permanent pin. Dovetail-7 is the only documented one. |
-| **Dovetail Anchor Core (DAC)** | The station's resonance array: the 800 m structure that creates the pin. |
+| **Dovetail Anchor Core (DAC)** | The station's resonance array: the ~1.7 km structure that creates the pin. |
 | **Counter-resonator** | The aft end of the array, balancing the forward focus. Forms no node. |
 
 ## The accident and after

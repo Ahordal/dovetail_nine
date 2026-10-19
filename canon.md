@@ -113,6 +113,11 @@ The original notes put Dovetail-1 in 2439, decades before SIGMA (2460s) or Navie
 
 This fits SIGMA's "first deployed 2460s" and Nashiro's "SIGMA aboard the Dovetail stations" (plural).
 
+### Power by station **[proposed]**
+- **Dovetail-1 to 8:** banks of DYNEX fusion cores. Gigawatts: enough to pin minor corridors, refuelable, and able to be switched off (which drops the pin).
+- **Dovetail-8's failure** at the edge of the Trillium Arc showed fusion couldn't hold a major corridor, which takes exawatts.
+- **Dovetail-9:** the X9, the only source powerful enough, and one that can never be switched off.
+
 Full program file: `lore/dovetail-program.md`.
 
 ### Station record
@@ -127,14 +132,19 @@ Full program file: `lore/dovetail-program.md`.
 | Dovetail-6 | 2455 | Grim Fault, Outer Midrim | Signal loss during ignition, never recovered | 22 |
 | Dovetail-7 | 2458 | Halo Verge, Expansion Belt | Full anchor, abandoned over jurisdiction, used by sliprunners | 0 |
 | Dovetail-8 | 2461 | Mireon-5, Trillium Arc periphery | DAC collapse during phase-lock | 11 |
-| Dovetail-9 | 2467 | K-17 "Sable", deep Trillium Arc | Vanished during full-scale harmonic stabilization | 97 (phase-displaced) |
+| Dovetail-9 | 2467 | K-17 "Sable", deep Trillium Arc | Vanished during full-scale harmonic stabilization | 166 (phase-displaced) |
 
 - Program terminated under Nashiro blackout order after Dovetail-9.
 - Records sealed under the Nashiro Corridor Integrity Act (NCIA/2470).
 - Classification: BLACK OPS, Level 6 Clearance.
 
+### Dovetail-9 crew **[settled]**
+166 crew in seven divisions: Command & Administration, Security, Medical, Science, Engineering, Maintenance, Habitation services. Raised from 97 when the main hull grew to about 400 m. Full breakdown: `lore/crew.md`.
+
 ### DYNEX T-CORE X9 Ignis-Class
 Only two built. Unit 001 is aboard Dovetail-9. Unit 002 is under classified lockdown. No shutdown option once initialized.
+
+**[settled]** A rotating micro black hole (about a billion tonnes, proton-sized) held in a magnetic trap. Its power is drawn from its spin (the Blandford–Znajek process); its Hawking glow is a small, unstoppable extra. Output 3.5 EW, surge limit 7.8 EW. The failsafe destroys the station and cuts the pin but cannot destroy the black hole. Grounded in real theoretical physics; full basis in `lore/technology/dynex-t-core-x9-ignis.md`. **[proposed]** Both cores were made at a DYNEX forge: seeded with a solar-powered gamma-ray laser array, then grown and spun up by feeding them an asteroid. Each took decades and a star-scale energy harvest, which is why only two exist.
 
 ---
 

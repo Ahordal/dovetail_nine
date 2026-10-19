@@ -56,7 +56,7 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 | **Dovetail-6** | 2455 | Grim Fault, Outer Midrim | Signal loss during ignition; never recovered | 22 (entire crew) | Presumed lost to phase collapse |
 | **Dovetail-7** | 2458 | Halo Verge, Expansion Belt | Full anchor achieved; abandoned after a jurisdictional dispute | 0 (experiment phase only) | The only documented success. Skeleton crew driven out by sliprunner raids; now a pirate station run by organized crime. |
 | **Dovetail-8** | 2461 | Mireon-5, Trillium Arc periphery | DAC collapse during phase-lock attempt; corridor fragment lost | 11 | First SIGMA deployment, as a prototype. **[proposed]** |
-| **Dovetail-9** | 2467 | K-17 "Sable", deep Trillium Arc | Station vanished during full-scale harmonic stabilization | 97 (all crew presumed phase-displaced) | Final deployment; program terminated under Nashiro blackout order |
+| **Dovetail-9** | 2467 | K-17 "Sable", deep Trillium Arc | Station vanished during full-scale harmonic stabilization | 166 (all crew presumed phase-displaced) | Final deployment; program terminated under Nashiro blackout order |
 
 **Governance AI [proposed]:** Dovetail-1 to 7 ran earlier, pre-SIGMA Nashiro governance frameworks (name **[open]**). Dovetail-8 ran a SIGMA prototype. Dovetail-9 had the first full SIGMA installation.
 
@@ -84,6 +84,14 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 
 - A pin only holds while it's powered. If an anchor stops, its corridor drifts again. This is why the X9 has no shutdown option.
 
+## What powered the earlier stations **[proposed]**
+
+- **Dovetail-1 to 8 ran on banks of DYNEX fusion cores:** large station versions of the T-Core line (the Mistral's T12 is a 500 MW fusion core).
+- **Enough for minor corridors.** Pinning a small, mildly degraded corridor like the Halo Verge takes gigawatts. A fusion bank supplies that, burning on the order of 90 kg of fuel a year per gigawatt, with its waste heat shed by large radiators.
+- **Not enough for the Trillium Arc.** A major, deeply degraded corridor takes exawatts, about a billion times more. Fusion can't reach that: at 3.5 EW it would burn around 10 tonnes of fuel a second, and its waste heat would vaporize it.
+- **Dovetail-8 proved it.** Its DAC collapse during phase-lock, at the edge of the Arc, showed fusion couldn't hold a corridor that size. That failure is why Nashiro commissioned the X9 for Dovetail-9 (see [[dynex-t-core-x9-ignis]]).
+- **Fusion cores can be switched off; the X9 can't.** Dovetail-7's cores could stop at any time, but stopping them drops the pin. The program's escalation runs from proven, limited technology to something no one can switch off.
+
 ## Why Dovetail-7 was abandoned **[settled]**
 
 - **It was a test site, not the prize.** The Halo Verge corridor was a minor, low-value route, chosen because it was degraded but safe to experiment on. The anchor's real value was the data: proof the method worked and how to repeat it.
@@ -93,7 +101,7 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 - **Nashiro's support faded over time.** Early raids brought reinforcements; as the site's value dropped, the reinforcements came less often, then stopped.
 - **People died** in the attacks and in the final escape. **[settled]**
 - **[proposed]** The station record still lists **0** fatalities for Dovetail-7, because the program only counted deaths during the experiment itself. The skeleton crew's deaths were logged elsewhere as security incidents. A reader who finds both can catch the discrepancy.
-- **Its power couldn't be shut down,** so it was left running.
+- **Its power couldn't safely be shut down,** so it was left running. Its fusion cores could be stopped, but that would drop the pin (see below).
 - **[proposed] Why it wasn't scuttled:** destroying a working anchor releases its pin all at once. Dovetail-4 showed what that does: "destabilization spread to the local sector", still interdicted. Scuttling Dovetail-7 risked a disaster in territory another authority claims, and an investigation. Leaving it running was the only quiet option.
 - **Now a pirate station run by organized crime.** **[settled]** They keep the anchor alive, patching and refueling it, because a working anchor is a fortune: a private route through the Halo Verge. When it finally fails, the corridor will drift again.
 - Document pair: the official record ("abandoned following a jurisdictional dispute") against an internal Level 6 memo (low value, data harvested, not worth contesting).
@@ -118,6 +126,6 @@ In theory, this would lock a section of the Trillium Arc into a stable flow stat
 - The organized crime group that runs Dovetail-7 now.
 - ~~What destroying Dovetail-9 would do to the Trillium Arc~~ **Settled:** it would degrade the corridor beyond any chance of stabilization and permanently destabilize the region. The station is never destroyed. See [[the-secret]].
 - When the Trillium Arc degraded, and how many colonies it stranded.
-- **What powered Dovetail-1 to 8?** The X9 was installed only on Dovetail-9. Earlier DYNEX T-Core models are the obvious answer.
+- ~~What powered Dovetail-1 to 8?~~ **Proposed:** banks of DYNEX fusion cores. See What powered the earlier stations, above.
 - **Dovetail-6** lost signal at ignition and was never recovered. Could it be phase-locked too, the way Dovetail-9 is? Not canon; a possible thread.
 - The name of the pre-SIGMA governance system.
