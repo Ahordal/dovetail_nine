@@ -39,6 +39,13 @@
               animation: none;
             }
           }
+          /* Current location box: stencilled deck number, corner brackets, live locator dot. */
+          .loc-deck { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: clamp(64px, 12vw, 112px); line-height: 1; letter-spacing: 0.02em; color: #9fc7c2; opacity: 0.07; pointer-events: none; white-space: nowrap; }
+          .loc-corner { position: absolute; width: 14px; height: 14px; border-style: solid; border-color: #9fc7c2; opacity: 0.55; pointer-events: none; }
+          .loc-dot { position: relative; flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; background: #9fc7c2; }
+          .loc-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid #9fc7c2; animation: loc-ping 2.4s ease-out infinite; }
+          @keyframes loc-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
+          @media (prefers-reduced-motion: reduce) { .loc-dot::after { animation: none; opacity: 0.35; } }
           /* Phones: half the side margins, so content gets more of the width. */
           @media (max-width: 560px) {
             .m-x10 { padding-left: 10px !important; padding-right: 10px !important; }
@@ -317,6 +324,19 @@
                           ◂ BACK
                         </button>
                       </sc-if>
+                      <sc-if value="{{showLinkLog}}" hint-placeholder-val="{{false}}">
+                        <div role="status" aria-live="polite" style="display: flex; flex-direction: column; gap: 4px; font-size: 13px">
+                          <sc-for list="{{linkLines}}" as="ln" hint-placeholder-count="2">
+                            <span style="color: #9fc7c2">[ OK ] {{ln.text}}</span>
+                          </sc-for>
+                          <sc-if value="{{linking}}" hint-placeholder-val="{{true}}">
+                            <span style="display: flex; gap: 12px; color: #e8e4da">
+                              <span aria-hidden="true" style="display: inline-block; width: 1ch; color: #d9a441">{{spinChar}}</span>
+                              <span>LINKING {{linkName}}</span>
+                            </span>
+                          </sc-if>
+                        </div>
+                      </sc-if>
                       <sc-if value="{{showConnected}}" hint-placeholder-val="{{false}}">
                         <button
                           type="button"
@@ -371,11 +391,17 @@
                   flex-direction: column;
                   gap: 20px;
                 ">
-                <section aria-labelledby="here-h" style="display: flex; flex-direction: column; gap: 6px">
-                  <span style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">YOU ARE HERE</span>
+                <section aria-labelledby="here-h" style="position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; background: #0f1112; border: 1px solid #2a2d30; border-radius: 8px">
+                  <span aria-hidden="true" class="loc-deck">{{deckNum}}</span>
+                  <span aria-hidden="true" class="loc-corner" style="top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px"></span>
+                  <span aria-hidden="true" class="loc-corner" style="top: 6px; right: 6px; border-width: 1.5px 1.5px 0 0"></span>
+                  <span aria-hidden="true" class="loc-corner" style="bottom: 6px; left: 6px; border-width: 0 0 1.5px 1.5px"></span>
+                  <span aria-hidden="true" class="loc-corner" style="bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0"></span>
+                  <span style="position: relative; display: flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 0.12em; color: #a8a49a"><span aria-hidden="true" class="loc-dot"></span>CURRENT LOCATION</span>
                   <h1
                     id="here-h"
                     style="
+                      position: relative;
                       margin: 0;
                       font-family: &quot;Chakra Petch&quot;, sans-serif;
                       font-weight: 600;
@@ -384,10 +410,11 @@
                     ">
                     {{locName}}
                   </h1>
-                  <div style="font-size: 12px; color: #a8a49a; overflow-wrap: anywhere">{{path}} · TERMINAL {{termId}}</div>
+                  <div style="position: relative; font-size: 16px; letter-spacing: 0.04em; color: #a8a49a">{{deckLabel}}</div>
                   <sc-if value="{{isLocked}}" hint-placeholder-val="{{false}}">
                     <div
                       style="
+                        position: relative;
                         margin-top: 6px;
                         border: 1px solid #5a4a2a;
                         background: #16130c;
@@ -1050,6 +1077,7 @@
 
         componentWillUnmount() {
           clearInterval(this.clockTimer);
+          this.cancelLink();
           clearTimeout(this.typeTimer);
           if (this.audio) this.audio.ctx.close();
         }
@@ -1144,6 +1172,52 @@
           return [this.node(here.parent)].concat(this.NODES.filter((n) => n.parent === here.parent && n.id !== id));
         }
 
+        // The "data accepted" notes from the SIGMA Voice Tuner: square tones through a muffled speaker.
+        ding(freq, dur) {
+          if (!this.audio) return;
+          const { ctx, master } = this.audio;
+          const t = ctx.currentTime + 0.01;
+          const lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass'; lp.frequency.value = 1600; lp.Q.value = 2;
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'square'; o.frequency.value = freq;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.12, t + Math.min(0.01, dur / 4));
+          g.gain.setValueAtTime(0.12, t + Math.max(0, dur - 0.03));
+          g.gain.linearRampToValueAtTime(0, t + dur);
+          o.connect(g); g.connect(lp); lp.connect(master);
+          o.start(t); o.stop(t + dur + 0.05);
+        }
+
+        // Connecting is a short process, like the boot: two steps, each with a ding, then a completion ding.
+        beginLink(id) {
+          this.cancelLink();
+          if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
+          this.setState({ portOpen: true, portStep: 'linking', linkDev: id, linkLines: [], spin: 0 });
+          this.linkSpin = setInterval(() => this.setState({ spin: (this.state.spin || 0) + 1 }), 110);
+          const step = (ms, fn) => this.linkTimers.push(setTimeout(fn, ms));
+          step(600, () => { this.ding(1320, 0.05); this.setState({ linkLines: this.state.linkLines.concat([{ text: 'HANDSHAKE' }]) }); });
+          step(1250, () => { this.ding(990, 0.05); this.setState({ linkLines: this.state.linkLines.concat([{ text: 'PROTOCOL · NASHIRO TERMINAL OS' }]) }); });
+          step(1950, () => {
+            this.ding(660, 0.12);
+            clearInterval(this.linkSpin);
+            this.setState({ portStep: 'done', linkLines: this.state.linkLines.concat([{ text: 'LINK ESTABLISHED' }]) });
+            this.plugIn(id);
+          });
+        }
+
+        // Closing mid-link abandons it; closing after connecting keeps the device plugged in.
+        closeModal() {
+          if (this.state.portStep === 'linking') this.cancelLink();
+          this.setState({ portOpen: false, portStep: this.state.connected ? 'done' : 'start', linkLines: this.state.connected ? this.state.linkLines : [] });
+        }
+
+        cancelLink() {
+          (this.linkTimers || []).forEach(clearTimeout);
+          this.linkTimers = [];
+          clearInterval(this.linkSpin);
+        }
+
         plugIn(id) {
           this.typingFor = null;
           this.setState({ connected: id, out: 'SIGMA: Unregistered device detected on UDC.' });
@@ -1151,7 +1225,7 @@
 
         unplug() {
           this.typingFor = null;
-          this.setState({ connected: null, portStep: 'start', out: 'UDC · DEVICE REMOVED' });
+          this.setState({ connected: null, portStep: 'start', linkLines: [], out: 'UDC · DEVICE REMOVED' });
         }
 
         // Moving connects Quell to the terminal at the new place.
@@ -1161,13 +1235,16 @@
           if (id === this.state.loc) return this.setState({ out: 'Already here.' });
           const t = this.TERM[id];
           this.typingFor = null;
+          this.cancelLink();
           // Walking away means unplugging whatever was connected here.
           this.setState({
             loc: id,
             file: null,
             helpOpen: false,
             portOpen: false,
+            portStep: 'start',
             connected: null,
+            linkLines: [],
             collapsed: this.expandTo(id),
             out: n.lock ? 'TERMINAL ' + t.id + ' · ' + n.lock : 'TERMINAL ' + t.id + ' · ' + this.placeName(n).toUpperCase() + ' · CONNECTED'
           });
@@ -1199,7 +1276,7 @@
             const dev = this.DEVICES.find((d) => d.short.startsWith(a) || d.name.toLowerCase().startsWith(a));
             if (!dev) return this.setState({ out: 'No such device: ' + arg + '. Devices you can connect: ' + names + '.' });
             if (this.state.connected === dev.id) return this.setState({ out: dev.name + ' already connected.' });
-            return this.plugIn(dev.id);
+            return this.beginLink(dev.id);
           }
           if (verb === 'disconnect') {
             if (!this.state.connected) return this.setState({ out: 'Nothing connected.' });
@@ -1333,24 +1410,29 @@
             portDisabled: portState === 'disabled',
             portConnected: portState === 'connected',
             portOpen: !!this.state.portOpen,
-            togglePort: () => this.setState({ portOpen: !this.state.portOpen, portStep: 'start' }),
-            closePort: () => this.setState({ portOpen: false, portStep: 'start' }),
+            togglePort: () => (this.state.portOpen ? this.closeModal() : this.setState({ portOpen: true, portStep: this.state.connected ? 'done' : 'start', linkLines: this.state.connected ? this.state.linkLines : [] })),
+            closePort: () => this.closeModal(),
             startConnect: () => this.setState({ portStep: 'choose' }),
             cancelConnect: () => this.setState({ portStep: 'start' }),
             disconnectNow: () => this.unplug(),
             showConnectStart: term.port === 'available' && !this.state.connected && this.state.portStep !== 'choose',
             showChoose: term.port === 'available' && !this.state.connected && this.state.portStep === 'choose',
             showConnected: !!this.state.connected,
+            linking: this.state.portStep === 'linking',
+            showLinkLog: (this.state.linkLines || []).length > 0 || this.state.portStep === 'linking',
+            linkLines: this.state.linkLines || [],
+            linkName: ((this.DEVICES.find((d) => d.id === this.state.linkDev) || {}).name || '').toUpperCase(),
+            spinChar: ['|', '/', '-', '\\'][(this.state.spin || 0) % 4],
             connectedName: connectedDev ? connectedDev.name : '',
             connectedDetail: connectedDev ? connectedDev.detail : '',
-            portKey: (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.setState({ portOpen: false }); } },
+            portKey: (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.closeModal(); } },
             closeRef: (el) => { this.closeEl = el; },
             portBtnRef: (el) => { this.portBtnEl = el; },
             portUsable: term.port === 'available',
             portBlocked: term.port === 'damaged' || term.port === 'disabled',
             portBlockedMsg: (this.PORT[term.port] && this.PORT[term.port].why) || '',
             slateIn: this.state.connected === 'slate',
-            devices: this.DEVICES.map((v) => ({ name: v.name, detail: v.detail, act: () => this.plugIn(v.id) })),
+            devices: this.DEVICES.map((v) => ({ name: v.name, detail: v.detail, act: () => this.beginLink(v.id) })),
             isRestricted: restricted && !locked,
             // Every terminal carries its own area's systems; restricted ones lock some behind clearance.
             localTitle: this.placeName(here).toUpperCase() + ' SYSTEMS' + (restricted ? ' · RESTRICTED' : ''),
@@ -1361,6 +1443,8 @@
             localBox: 'display: flex; flex-direction: column; gap: 8px; border-radius: 6px; padding: 14px 16px; border: 1px solid ' + (restricted ? '#5A4A2A' : '#2A2D30') + ';',
             localHeadStyle: 'font-size: 11px; letter-spacing: 0.12em; color: ' + (restricted ? '#D9A441' : '#A8A49A') + ';',
             path: this.pathOf(here.id),
+            deckLabel: deck ? deck.label : '',
+            deckNum: deck ? deck.num : '',
             locName: this.placeName(here),
             isLocked: locked,
             isOpen: !locked,
