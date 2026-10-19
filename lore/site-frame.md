@@ -95,6 +95,8 @@ The station's records (crew files, emails, specs, logs) are the same under every
 - **No personal identification at login [settled].** SIGMA does not verify who is using a terminal.
 - **The slate is a tool, used on demand [settled].** When something is locked or restricted, the reader goes to TOOLS, picks the slate, **jacks in**, then chooses an ability (override, spoof, and so on). It is not plugged in by default and is not the screen.
 - *Superseded:* the earlier leaning of a rugged Blackline slate frame around SIGMA's interface.
+- **The slate is always at hand [settled].** It's a tablet with its own screen and built-in tools. A dedicated, always-present button brings its screen up over the terminal, in Blackline's own look, distinct from SIGMA's. Its standalone functions (Quell's notes, his window timer, dosimeter, the link to the Mistral) work anywhere; its tools that act on the station (spoof, override, and so on) need a UDC connection.
+- **The window countdown is on the slate, not the terminals [settled].** Quell doesn't trust SIGMA to keep his schedule, so he sets his own timer the moment he learns why the station phases. It's his number on his device, which leaves room for it to disagree with SIGMA's, or to show time he can't account for.
 - SIGMA, if live, is **scripted**, not AI (no budget for an API).
 
 ## Options

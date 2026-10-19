@@ -41,6 +41,11 @@ What actually happened aboard Dovetail-9. For the writer only; every document on
 
 - **SIGMA did not lure him.** Quell homed in on an **emergency signal**.
 - **[proposed]** The distress beacon was switched on by the dying crew in 2467 and has repeated ever since. It can only reach normal space during an **alignment window**, so it was silent for years, then suddenly detectable.
+- **[proposed] Why he can't just leave: the field detunes his slip drive.** The array never stopped, so the station still sits in the harmonic field. Crewed sections are shielded; a docked ship isn't. The Mistral's Ravel HFSD-3A works by holding a precise resonance, and parked in the field it slowly drifts out of tune. By the time he catches it, it can't jump, and the degraded Trillium Arc can only be crossed with a precisely tuned Ravel drive.
+  - **How he finds out:** first by ear, as the drive's idle hum goes slightly off pitch (17 years at Ravel; easy to dismiss on a station full of sounds that aren't real; his log: "drive hum's off. or I am."). Then a drift alarm he wrote himself fires on his slate over its link to the Mistral. Then, hands on the valve cluster, the diagnosis: past hand correction.
+  - **What it gives him:** a goal aboard. The fix needs harmonic stabilizer parts Valdez supplied to the program, somewhere on the station, possibly in hot or restricted areas.
+  - **The irony:** a harmonic-stability engineer whose own drive fails in the one place he can't fix it in time.
+  - **SIGMA's sensors** would detect it before he does. It mentions it late and in passing, true and useless ("The vessel's drive resonance has been degrading since docking."). To someone who doesn't trust AI, that sounds like a confession, even if it isn't one.
 - **Where:** Quell finds the station exactly where it vanished, at **K-17 "Sable", deep in the Trillium Arc**. It is phase-locked and has never moved.
 - He was already salvaging in the Trillium Arc. His **Ravel HFSD-3A** is one of the few drives that can survive that stretch of degraded corridor.
 - **[proposed]** K-17 "Sable" is a dim, dying star. The Trillium Arc lies in the outer Perseus Arm, near the Thrennal Expanse.

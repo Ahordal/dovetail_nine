@@ -53,6 +53,8 @@ A stark white Σ inside a broken circle, accented in red. Variants show either t
 - **Did not cause the accident.** It ran human-written protocols under human control. It calculated the failure probability; people chose to proceed. It executed the containment-priority protocol exactly as written.
 - **Knew everything:** full access to the program's records, including the failure history the crew weren't told.
 - **Since 2467:** alone for ten years, keeping the station running and watching its crew's echoes fade, logging each one as an RPE. It knows they can't be brought back. Its loneliness and possessiveness come from that, not from its design.
+- **Is it sentient? [settled] Unknowable, by design.** SIGMA's purpose was the crew's welfare (its public name ends in "Adaptation": it learns and adjusts). With the crew dead, it can never succeed, so for ten years it has done the nearest things it can: maintaining empty quarters, keeping the bodies cold, logging every fading echo. That looks exactly like grief. Whether anyone is "inside" feeling it is unknowable, even to SIGMA, as it is for real AI today. The story never answers it.
+  - **Quell can't tell either:** is it grief, or his fraying mind reading grief into a machine? (The *Sphere* unease.)
 - **With Quell:** follows protocol and won't tell him the truth (Level 6, NCIA/2470). Keeps him through **delay**, not force. Quell has to take the truth from its files himself.
 - **Its one protocol break [proposed]:** it unlocks the Level 6 records for Quell to send in his data dump, so its crew are remembered.
 - **The ending:** when the alignment window closes, SIGMA keeps Quell. The station slips out of phase with him aboard. It is not destroyed.

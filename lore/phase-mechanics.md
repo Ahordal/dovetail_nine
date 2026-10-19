@@ -136,6 +136,26 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 - During an **alignment window** the station is reachable. That is how Dovetail-9 "reappeared", and it will drift out again when the window closes.
 - Windows have opened several times since 2467. Only during a window can the distress beacon reach normal space.
 
+### How often windows open **[proposed]**
+
+- **They are getting rarer, and each lasts longer.** Windows are beats, like two slightly mismatched notes swelling and fading. Real beats slow down as the two rhythms get closer, and each swell lasts longer. The corridor's drift is gradually slowing as it goes slack, so the beats stretch: windows come less often but stay open longer.
+- **The record so far:**
+
+| Window | Years after the accident | Gap since the last | Roughly how long it lasted |
+|---|---|---|---|
+| 1 | 0.4 | 5 months | a few hours |
+| 2 | 1.3 | 11 months | ~6 hours |
+| 3 | 2.9 | 1.6 years | ~10 hours |
+| 4 | 5.5 | 2.6 years | ~16 hours |
+| **5 (Quell's)** | **~9.5** | **4 years** | **~24 hours** |
+| 6 (next) | ~15.5 | ~6 years | ~36 hours |
+
+- **The stakes:** miss this window and the next is about **six years** away. Survivable physically; far too long to stay himself, given what the echoes do.
+- **SIGMA's window log** reads: window open, beacon active, no response, window closed, with the gaps growing each time. The station being forgotten, in timestamps.
+- **The first window** came about five months after the accident, probably after the last of the crew had died, though perhaps not by much. How close it was **[open]**.
+- **Eventually they may stop.** If the slowdown continues, the windows stop and the station is gone for good. Another reason the dump has to go out now.
+- **A moment for the story:** Quell asks SIGMA when the next window is, and it answers calmly, maybe warmly: "Estimated 6.1 years."
+
 ### Who knows about the windows
 
 - **[settled] The beacon is the announcement.** Nobody outside needs to predict a window: when one opens, anyone in range suddenly hears a distress call from a station that vanished in 2467. Earlier windows went unanswered because nobody was close enough. Quell was, because he salvages deep in the Trillium Arc, where almost nobody goes.
@@ -156,5 +176,5 @@ The **one minor glitch** that drew attention: a shielding power dip during a tes
 
 ## Open choices
 
-1. **How often does an alignment window open?** **[proposed]** Each lasts about a day, the span of Quell's story.
+1. ~~How often does an alignment window open?~~ **Proposed:** rarer and longer over time; Quell's is the fifth, about a day long, and the next is ~6 years away. See How often windows open.
 2. **Can Quell's own moments get caught?** A possible late payoff: an RPE of himself.
