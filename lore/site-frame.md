@@ -56,7 +56,7 @@ Interface prototype (boot screen, sound, file tree): `reference/interface-mockup
 
 Candidates discussed, still to be decided:
 
-- a description shown on entering each folder (what Quell sees and senses)
+- a description shown on entering each folder (what Quell sees and senses). Since his notes live on the slate and scanning is a tool, this would come from the slate or scanner, not the terminal
 - sealed, unpowered, and clearance-locked folders, and how each is opened
 - `spoof` and `override`, and their cost
 - station time advancing with each move and action
@@ -86,6 +86,12 @@ The station's records (crew files, emails, specs, logs) are the same under every
 - The mystery is in the past: what happened to the crew in 2467.
 - **The interface is a generic station terminal [settled]:** SIGMA's system, as found anywhere aboard Dovetail-9. The boot and login are simply **logging onto the station's systems**, with no slate involved.
 - **Terminals work like those in Alien: Isolation [settled].** Any terminal gives general access: the station map and general information. But some areas are **protected** and some documents are **scrambled**. Those are what the slate's tools are for.
+- **Every terminal has its own ID and shows where it is [settled].** Moving through the station means using the terminal at each place.
+- **Terminals carry their own area's information and systems [settled]:** an engineering terminal has engineering systems, and so on. This sits on top of the general access every terminal gives.
+- **[proposed]** Public terminals in shared areas, restricted terminals in specialised areas, where some local systems need clearance.
+- **General terminals show the station layout and where you are [settled].** A navigation map is the goal once the station layout exists (see Navigation above). The layout itself is not yet decided.
+- **Quell's notes live on his slate, not on the terminals [settled].** Terminals show only station content.
+- **The scanner is a tool, or a function of certain devices [settled]**, such as the slate's corridor scans. Terminals don't show scan readings.
 - **No personal identification at login [settled].** SIGMA does not verify who is using a terminal.
 - **The slate is a tool, used on demand [settled].** When something is locked or restricted, the reader goes to TOOLS, picks the slate, **jacks in**, then chooses an ability (override, spoof, and so on). It is not plugged in by default and is not the screen.
 - *Superseded:* the earlier leaning of a rugged Blackline slate frame around SIGMA's interface.
