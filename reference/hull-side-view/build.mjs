@@ -36,8 +36,6 @@ for (const cx of [72, X1 + 48]) {
   add(`<polygon class="ring" points="${cx - w},${f(midY - h + c)} ${cx - w + c},${f(midY - h)} ${cx + w - c},${f(midY - h)} ${cx + w},${f(midY - h + c)} ${cx + w},${f(midY + h - c)} ${cx + w - c},${f(midY + h)} ${cx - w + c},${f(midY + h)} ${cx - w},${f(midY + h - c)}"/>`);
   for (const y of [midY - h, midY + h]) add(`<circle class="truss-light" cx="${cx}" cy="${f(y)}" r="1.4"/>`);
 }
-add(`<text class="t-note" x="24" y="${f(midY + 24)}">array continues ~650 m</text>`);
-add(`<text class="t-note" x="${X1 + 96}" y="${f(midY + 24)}" text-anchor="end">array continues ~650 m</text>`);
 
 // Two comms spires, after the exterior image: a taller one left of centre, a shorter twin-tipped one to its right.
 const up = (h) => f(Y0 - h * S);
@@ -106,15 +104,29 @@ for (const m of [(140 + 189) / 2, (211 + 260) / 2]) {
   // Ladder rungs, drawn one per metre.
   for (let y = ey0 + S; y < ey1 - 0.5; y += S) add(`<line class="rung" x1="${f(mx(m) - 1.5 * S + 1.2)}" y1="${f(y)}" x2="${f(mx(m) + 1.5 * S - 1.2)}" y2="${f(y)}"/>`);
 }
-// Shielding plant on Deck 07: capacitor halls between each shaft and the chamber.
-for (const [m0, m1, name] of [[168, 188, "BANK A"], [212, 232, "BANK B"]]) {
-  add(`<rect class="section" x="${f(mx(m0))}" y="${f(dy(7) + 3 * S)}" width="${f((m1 - m0) * S)}" height="${f(DH - 3 * S)}"/>`);
-  add(`<text class="t-note" x="${f(mx((m0 + m1) / 2))}" y="${f(dy(7) + 3 * S + 8.6)}" text-anchor="middle">${name}</text>`);
+// A door: a thicker stretch of shared wall, floor to three quarters of the deck.
+// Nudge (in drawing units) keeps a door on the room side when the wall borders a shaft.
+const door = (m, k, nudge = 0) => `<line class="door" x1="${f(mx(m) + nudge)}" y1="${f(dy(k + 1) - 0.75 * DH)}" x2="${f(mx(m) + nudge)}" y2="${dy(k + 1)}"/>`;
+// Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
+for (const [m0, m1, name] of [[112, 140, "R&amp;D"], [140, 163, "EXP CONTROL"]]) {
+  const w = (m1 - m0) * S;
+  add(`<rect class="section" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
+  add(`<text class="t-note" x="${f(mx((m0 + m1) / 2))}" y="${f(dy(5) + DH / 2 + 2.6)}" text-anchor="middle"${w < 60 ? ` textLength="${f(w - 6)}" lengthAdjust="spacingAndGlyphs"` : ""}>${name}</text>`);
+}
+// The sealed R&D lock between the two rooms, and a hatch from experiment control into the access shaft.
+add(door(140, 5));
+add(door(163, 5, -0.8));
+// Shielding plant on Deck 07: capacitor halls from each shaft in toward the chamber, a door into each shaft.
+add(door(166, 7, 0.8));
+add(door(234, 7, -0.8));
+for (const [m0, m1, name] of [[166, 188, "BANK A"], [212, 234, "BANK B"]]) {
+  add(`<rect class="section" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  add(`<text class="t-note" x="${f(mx((m0 + m1) / 2))}" y="${f(dy(7) + DH / 2 + 2.6)}" text-anchor="middle">${name}</text>`);
   // Charge from the chamber's Harvest Rings, out to the emitters along the Deck 06 conduits.
   const inner = m0 < 200 ? m1 : m0, ry = dy(7) + 3 * S + (DH - 3 * S) / 2;
   const edge = Math.sqrt((11 * S) ** 2 - (ry - midY) ** 2) * (m0 < 200 ? -1 : 1);
   add(`<line class="power" x1="${f(mx(inner))}" y1="${f(ry)}" x2="${f(mx(200) + edge)}" y2="${f(ry)}"/>`);
-  add(`<line class="power" x1="${f(mx((m0 + m1) / 2))}" y1="${f(dy(7) + 3 * S)}" x2="${f(mx((m0 + m1) / 2))}" y2="${f(midY)}"/><circle class="power-node" cx="${f(mx((m0 + m1) / 2))}" cy="${f(midY)}" r="1.6"/>`);
+  add(`<line class="power" x1="${f(mx((m0 + m1) / 2))}" y1="${dy(7)}" x2="${f(mx((m0 + m1) / 2))}" y2="${f(midY)}"/><circle class="power-node" cx="${f(mx((m0 + m1) / 2))}" cy="${f(midY)}" r="1.6"/>`);
 }
 // Core Chamber: a ~22 m sphere behind this face, black hole at the middle of Deck 06.
 add(`<circle class="core" cx="${ccx}" cy="${f(midY)}" r="${cr}"/><circle class="singularity" cx="${ccx}" cy="${f(midY)}" r="1.6"/>`);
@@ -126,7 +138,7 @@ add(`<text class="t-watermark" x="${f(ex0 + 8)}" y="${f(ey0 + 16)}" textLength="
 // Docking bay: Decks 08 to 11, centred under the superstructure.
 const bx = mx(BAY[0]), bw = f((BAY[1] - BAY[0]) * S), by = dy(8), bh = f(4 * DH);
 add(`<rect class="bay" x="${bx}" y="${by}" width="${bw}" height="${bh}"/>`);
-add(`<text class="t-label" x="${f(bx + 8)}" y="${f(by + 12)}">DOCKING BAY</text>`);
+add(`<text class="t-watermark" x="${f(bx + 8)}" y="${f(dy(12) - 6)}" textLength="${f(bw - 16)}" lengthAdjust="spacing">DOCKING BAY</text>`);
 
 // The Mistral seen from astern (16.5 × 11.2 m): it flies in nose first, so its tail faces out of the bay.
 const sw = f(16.5 * S), sh = f(11.2 * S);
@@ -135,13 +147,13 @@ const cx = f(bx + bw / 2), cy = f(dy(9) + DH / 2);
 const sx = f(cx - sw / 2), sy = f(cy - sh / 2);
 add(`<g class="ship"><rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" rx="5"/><circle cx="${f(cx - 9)}" cy="${f(cy + 1)}" r="4.5"/><circle cx="${f(cx + 9)}" cy="${f(cy + 1)}" r="4.5"/></g>`);
 const r = f(13 * S);
-add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-anchor="end">MISTRAL</text>`);
+add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-anchor="end">MISTRAL →</text>`);
 
 // Boarding umbilical and Airlock A's door, both the full height of Deck 09.
 const floor9 = dy(10), wall = f(bx + 98 * S);
 add(`<rect class="umbilical" x="${f(sx + sw)}" y="${dy(9)}" width="${f(wall - sx - sw)}" height="${f(DH)}"/>`);
 add(`<rect class="airlock" x="${f(wall - 1.5)}" y="${dy(9)}" width="3" height="${f(DH)}"/>`);
-add(`<text class="t-label" x="${f(wall + 8)}" y="${f(dy(9) + 9.5)}">AIRLOCK A</text>`);
+add(`<text class="t-watermark t-room" x="${f(wall + 8)}" y="${f(dy(9) + DH / 2 + 4)}">AIRLOCK A</text>`);
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(dy(9) + DH / 2 + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
 // Scale: length ruler and hull height.
@@ -150,6 +162,13 @@ add(`<line class="ruler" x1="${X0}" y1="${ry}" x2="${X1}" y2="${ry}"/>`);
 for (let m = 0; m <= L; m += 50) {
   add(`<line class="ruler" x1="${mx(m)}" y1="${f(ry - 4)}" x2="${mx(m)}" y2="${f(ry + 4)}"/>`);
   add(`<text class="t-scale" x="${mx(m)}" y="${f(ry + 16)}" text-anchor="middle">${m === L ? '400 m' : m}</text>`);
+}
+// The ruler carries on past a small gap at each end, arrows pointing on along the array.
+for (const [x0, x1] of [[X0 - 8, 8], [X1 + 8, X1 + 152]]) {
+  const d = x1 > x0 ? 1 : -1;
+  add(`<line class="ruler" x1="${x0}" y1="${ry}" x2="${x1}" y2="${ry}"/><polyline class="ruler arrow" points="${x1 - 5 * d},${f(ry - 3)} ${x1},${ry} ${x1 - 5 * d},${f(ry + 3)}"/>`);
+  // Fixed length (the shorter left extension) so both labels fit and match, whatever font loads.
+  add(`<text class="t-note t-array" x="${f((x0 + x1) / 2)}" y="${f(ry - 5)}" text-anchor="middle" textLength="${f(X0 - 20)}" lengthAdjust="spacingAndGlyphs">Array continues ~650 metres</text>`);
 }
 const hx = X1 + 110;
 add(`<line class="ruler" x1="${hx}" y1="${Y0}" x2="${hx}" y2="${f(Y1)}"/><line class="ruler" x1="${hx - 4}" y1="${Y0}" x2="${hx + 4}" y2="${Y0}"/><line class="ruler" x1="${hx - 4}" y1="${f(Y1)}" x2="${hx + 4}" y2="${f(Y1)}"/>`);
@@ -210,6 +229,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .door { stroke: var(--muted); stroke-width: 1.6; }
   .section { fill: none; stroke: var(--deck); stroke-width: 1; }
   .conduit { stroke: var(--muted); stroke-width: 1.4; }
   .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
@@ -219,6 +239,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
+  .arrow { fill: none; }
+  .t-array { font-size: 6.8px; }
   .t-deck { font: 500 8px var(--mono); fill: var(--muted); letter-spacing: 0.06em; }
   .t-label { font: 600 9.5px var(--display); fill: var(--fg); letter-spacing: 0.12em; }
   .t-accent { fill: var(--accent); }
@@ -227,6 +249,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .t-strong { fill: var(--fg); }
   .t-watermark { font: 600 16px var(--display); fill: var(--fg); fill-opacity: 0.14; pointer-events: none; }
   .t-deck-num { font-size: 13px; }
+  .t-room { font-size: 11px; letter-spacing: 0.12em; }
   .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
   .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
@@ -270,6 +293,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 140 to 260 m along on Decks 05 to 07, with two vertical access shafts through it, one either side of the chamber.</li>
+        <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
         <li><b>Docking bay</b> across Decks 08 to 11, centred along the hull under the superstructure, unpressurized, open to space, about 98 m long.</li>
@@ -284,7 +308,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Lift shafts:</b> how many, where, which decks they stop at.</li>
         <li><b>Access shaft</b> routes.</li>
         <li><b>Which end is forward</b>, where the array focuses its node.</li>
-        <li><b>Needs a dedicated place:</b> experiment control, SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
+        <li><b>Needs a dedicated place:</b> SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
     </section>

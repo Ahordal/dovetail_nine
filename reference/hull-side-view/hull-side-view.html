@@ -51,6 +51,7 @@
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .door { stroke: var(--muted); stroke-width: 1.6; }
   .section { fill: none; stroke: var(--deck); stroke-width: 1; }
   .conduit { stroke: var(--muted); stroke-width: 1.4; }
   .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
@@ -60,6 +61,8 @@
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
+  .arrow { fill: none; }
+  .t-array { font-size: 6.8px; }
   .t-deck { font: 500 8px var(--mono); fill: var(--muted); letter-spacing: 0.06em; }
   .t-label { font: 600 9.5px var(--display); fill: var(--fg); letter-spacing: 0.12em; }
   .t-accent { fill: var(--accent); }
@@ -68,6 +71,7 @@
   .t-strong { fill: var(--fg); }
   .t-watermark { font: 600 16px var(--display); fill: var(--fg); fill-opacity: 0.14; pointer-events: none; }
   .t-deck-num { font-size: 13px; }
+  .t-room { font-size: 11px; letter-spacing: 0.12em; }
   .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
   .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
@@ -98,8 +102,6 @@
       <polygon class="ring" points="1123,241.6 1128,236.6 1128,236.6 1133,241.6 1133,269.6 1128,274.6 1128,274.6 1123,269.6"/>
       <circle class="truss-light" cx="1128" cy="236.6" r="1.4"/>
       <circle class="truss-light" cx="1128" cy="274.6" r="1.4"/>
-      <text class="t-note" x="24" y="279.6">array continues ~650 m</text>
-      <text class="t-note" x="1176" y="279.6" text-anchor="end">array continues ~650 m</text>
       <rect class="spire-block" x="513.6" y="138" width="76.8" height="12"/>
       <rect class="spire-block" x="528" y="126" width="48" height="12"/>
       <rect class="spire-block" x="540" y="114" width="24" height="12"/>
@@ -250,25 +252,33 @@
       <line class="rung" x1="682.8" y1="277.2" x2="687.6" y2="277.2"/>
       <line class="rung" x1="682.8" y1="279.6" x2="687.6" y2="279.6"/>
       <line class="rung" x1="682.8" y1="282" x2="687.6" y2="282"/>
-      <rect class="section" x="523.2" y="272.4" width="48" height="12"/>
-      <text class="t-note" x="547.2" y="281" text-anchor="middle">BANK A</text>
+      <rect class="section" x="388.8" y="226.8" width="67.2" height="19.2"/>
+      <text class="t-note" x="422.4" y="239" text-anchor="middle">R&amp;D</text>
+      <rect class="section" x="456" y="226.8" width="55.2" height="19.2"/>
+      <text class="t-note" x="483.6" y="239" text-anchor="middle" textLength="49.2" lengthAdjust="spacingAndGlyphs">EXP CONTROL</text>
+      <line class="door" x1="456" y1="231.6" x2="456" y2="246"/>
+      <line class="door" x1="510.4" y1="231.6" x2="510.4" y2="246"/>
+      <line class="door" x1="519.2" y1="270" x2="519.2" y2="284.4"/>
+      <line class="door" x1="680.8" y1="270" x2="680.8" y2="284.4"/>
+      <rect class="section" x="518.4" y="265.2" width="52.8" height="19.2"/>
+      <text class="t-note" x="544.8" y="277.4" text-anchor="middle">BANK A</text>
       <line class="power" x1="571.2" y1="278.4" x2="586.7" y2="278.4"/>
-      <line class="power" x1="547.2" y1="272.4" x2="547.2" y2="255.6"/><circle class="power-node" cx="547.2" cy="255.6" r="1.6"/>
-      <rect class="section" x="628.8" y="272.4" width="48" height="12"/>
-      <text class="t-note" x="652.8" y="281" text-anchor="middle">BANK B</text>
+      <line class="power" x1="544.8" y1="265.2" x2="544.8" y2="255.6"/><circle class="power-node" cx="544.8" cy="255.6" r="1.6"/>
+      <rect class="section" x="628.8" y="265.2" width="52.8" height="19.2"/>
+      <text class="t-note" x="655.2" y="277.4" text-anchor="middle">BANK B</text>
       <line class="power" x1="628.8" y1="278.4" x2="613.3" y2="278.4"/>
-      <line class="power" x1="652.8" y1="272.4" x2="652.8" y2="255.6"/><circle class="power-node" cx="652.8" cy="255.6" r="1.6"/>
+      <line class="power" x1="655.2" y1="265.2" x2="655.2" y2="255.6"/><circle class="power-node" cx="655.2" cy="255.6" r="1.6"/>
       <circle class="core" cx="600" cy="255.6" r="26.4"/><circle class="singularity" cx="600" cy="255.6" r="1.6"/>
       <text class="t-note t-ship" x="600" y="246.6" text-anchor="middle">CORE</text>
       <text class="t-note t-ship" x="600" y="269.6" text-anchor="middle">CHAMBER</text>
       <text class="t-watermark" x="464" y="242.8" textLength="272" lengthAdjust="spacing">ENGINEERING</text>
       <rect class="bay" x="482.4" y="284.4" width="235.2" height="76.8"/>
-      <text class="t-label" x="490.4" y="296.4">DOCKING BAY</text>
+      <text class="t-watermark" x="490.4" y="355.2" textLength="219.2" lengthAdjust="spacing">DOCKING BAY</text>
       <g class="ship"><rect x="580.2" y="299.8" width="39.6" height="26.9" rx="5"/><circle cx="591" cy="314.2" r="4.5"/><circle cx="609" cy="314.2" r="4.5"/></g>
-      <text class="t-note t-ship" x="562.8" y="315.8" text-anchor="end">MISTRAL</text>
+      <text class="t-note t-ship" x="562.8" y="315.8" text-anchor="end">MISTRAL →</text>
       <rect class="umbilical" x="619.8" y="303.6" width="97.8" height="19.2"/>
       <rect class="airlock" x="716.1" y="303.6" width="3" height="19.2"/>
-      <text class="t-label" x="725.6" y="313.1">AIRLOCK A</text>
+      <text class="t-watermark t-room" x="725.6" y="317.2">AIRLOCK A</text>
       <text class="t-note t-ship" x="668.7" y="315.8" text-anchor="middle">UMBILICAL</text>
       <line class="ruler" x1="120" y1="402.4" x2="1080" y2="402.4"/>
       <line class="ruler" x1="120" y1="398.4" x2="120" y2="406.4"/>
@@ -289,6 +299,10 @@
       <text class="t-scale" x="960" y="418.4" text-anchor="middle">350</text>
       <line class="ruler" x1="1080" y1="398.4" x2="1080" y2="406.4"/>
       <text class="t-scale" x="1080" y="418.4" text-anchor="middle">400 m</text>
+      <line class="ruler" x1="112" y1="402.4" x2="8" y2="402.4"/><polyline class="ruler arrow" points="13,399.4 8,402.4 13,405.4"/>
+      <text class="t-note t-array" x="60" y="397.4" text-anchor="middle" textLength="100" lengthAdjust="spacingAndGlyphs">Array continues ~650 metres</text>
+      <line class="ruler" x1="1088" y1="402.4" x2="1232" y2="402.4"/><polyline class="ruler arrow" points="1227,399.4 1232,402.4 1227,405.4"/>
+      <text class="t-note t-array" x="1160" y="397.4" text-anchor="middle" textLength="100" lengthAdjust="spacingAndGlyphs">Array continues ~650 metres</text>
       <line class="ruler" x1="1190" y1="150" x2="1190" y2="380.4"/><line class="ruler" x1="1186" y1="150" x2="1194" y2="150"/><line class="ruler" x1="1186" y1="380.4" x2="1194" y2="380.4"/>
       <text class="t-scale" x="1198" y="268.2">~96 m</text>
     </svg>
@@ -313,6 +327,7 @@
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 140 to 260 m along on Decks 05 to 07, with two vertical access shafts through it, one either side of the chamber.</li>
+        <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
         <li><b>Docking bay</b> across Decks 08 to 11, centred along the hull under the superstructure, unpressurized, open to space, about 98 m long.</li>
@@ -327,7 +342,7 @@
         <li><b>Lift shafts:</b> how many, where, which decks they stop at.</li>
         <li><b>Access shaft</b> routes.</li>
         <li><b>Which end is forward</b>, where the array focuses its node.</li>
-        <li><b>Needs a dedicated place:</b> experiment control, SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
+        <li><b>Needs a dedicated place:</b> SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
     </section>
