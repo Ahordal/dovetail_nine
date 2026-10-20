@@ -51,7 +51,9 @@
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .door { stroke: var(--muted); stroke-width: 1.6; }
+  .room { fill: none; stroke: var(--muted); stroke-width: 1; }
   .section { fill: none; stroke: var(--deck); stroke-width: 1; }
   .conduit { stroke: var(--muted); stroke-width: 1.4; }
   .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
@@ -71,8 +73,18 @@
   .t-strong { fill: var(--fg); }
   .t-watermark { font: 600 16px var(--display); fill: var(--fg); fill-opacity: 0.14; pointer-events: none; }
   .t-deck-num { font-size: 13px; }
-  .t-room { font-size: 11px; letter-spacing: 0.12em; }
+  .t-room { font-size: 11px; letter-spacing: 0.12em; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; paint-order: stroke; }
   .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .tag circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.9; }
+  .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
+  .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .sheet .swatch { display: inline-block; width: 28px; min-width: 0; height: 12px; flex: none; overflow: visible; }
+  .here-dot { fill: #9fc7c2; }
+  .here-ring { fill: none; stroke: #9fc7c2; stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: here-ping 2.4s ease-out infinite; }
+  @keyframes here-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .here-ring { animation: none; opacity: 0.35; } }
   .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
   .record section { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -161,7 +173,7 @@
       <polygon class="hull-fill" points="768,150 768,169.2 852,169.2 852,188.4 936,188.4 936,207.6 1020,207.6 1020,226.8 1080,226.8 1080,246 1080,246 1080,265.2 1080,265.2 1080,284.4 1080,284.4 1080,303.6 1056,303.6 1056,322.8 1020,322.8 1020,342 972,342 972,361.2 840,361.2 840,380.4 360,380.4 360,361.2 228,361.2 228,342 180,342 180,322.8 144,322.8 144,303.6 120,303.6 120,284.4 120,284.4 120,265.2 120,265.2 120,246 120,246 120,226.8 180,226.8 180,207.6 264,207.6 264,188.4 348,188.4 348,169.2 432,169.2 432,150"/>
       <g clip-path="url(#hull-clip)">
       <rect class="service" x="120" y="150" width="960" height="7.2"/>
-      <text class="t-watermark t-deck-num" x="439" y="167.6">01</text>
+      <text class="t-watermark t-deck-num" x="452.8" y="167.6">01</text>
       <rect class="service" x="120" y="169.2" width="960" height="7.2"/>
       <line class="deck-line" x1="120" y1="169.2" x2="1080" y2="169.2"/>
       <text class="t-watermark t-deck-num" x="355" y="186.8">02</text>
@@ -197,6 +209,36 @@
       <text class="t-watermark t-deck-num" x="367" y="378.8">12</text>
       </g>
       <polygon class="hull-edge" points="768,150 768,169.2 852,169.2 852,188.4 936,188.4 936,207.6 1020,207.6 1020,226.8 1080,226.8 1080,246 1080,246 1080,265.2 1080,265.2 1080,284.4 1080,284.4 1080,303.6 1056,303.6 1056,322.8 1020,322.8 1020,342 972,342 972,361.2 840,361.2 840,380.4 360,380.4 360,361.2 228,361.2 228,342 180,342 180,322.8 144,322.8 144,303.6 120,303.6 120,284.4 120,284.4 120,265.2 120,265.2 120,246 120,246 120,226.8 180,226.8 180,207.6 264,207.6 264,188.4 348,188.4 348,169.2 432,169.2 432,150"/>
+      <rect class="lift" x="439.2" y="150" width="9.6" height="230.4"/>
+      <line class="door" x1="439.2" y1="154.8" x2="439.2" y2="169.2"/>
+      <line class="door" x1="439.2" y1="174" x2="439.2" y2="188.4"/>
+      <line class="door" x1="439.2" y1="193.2" x2="439.2" y2="207.6"/>
+      <line class="door" x1="439.2" y1="212.4" x2="439.2" y2="226.8"/>
+      <line class="door" x1="439.2" y1="231.6" x2="439.2" y2="246"/>
+      <line class="door" x1="439.2" y1="250.8" x2="439.2" y2="265.2"/>
+      <line class="door" x1="439.2" y1="270" x2="439.2" y2="284.4"/>
+      <line class="door" x1="439.2" y1="289.2" x2="439.2" y2="303.6"/>
+      <line class="door" x1="439.2" y1="308.4" x2="439.2" y2="322.8"/>
+      <line class="door" x1="439.2" y1="327.6" x2="439.2" y2="342"/>
+      <line class="door" x1="439.2" y1="346.8" x2="439.2" y2="361.2"/>
+      <line class="door" x1="439.2" y1="366" x2="439.2" y2="380.4"/>
+      <text class="t-note" x="444" y="146" text-anchor="middle">LIFT</text>
+      <rect class="lift" x="751.2" y="150" width="9.6" height="230.4"/>
+      <line class="door" x1="760.8" y1="154.8" x2="760.8" y2="169.2"/>
+      <line class="door" x1="760.8" y1="174" x2="760.8" y2="188.4"/>
+      <line class="door" x1="760.8" y1="193.2" x2="760.8" y2="207.6"/>
+      <line class="door" x1="760.8" y1="212.4" x2="760.8" y2="226.8"/>
+      <line class="door" x1="760.8" y1="231.6" x2="760.8" y2="246"/>
+      <line class="door" x1="760.8" y1="250.8" x2="760.8" y2="265.2"/>
+      <line class="door" x1="760.8" y1="270" x2="760.8" y2="284.4"/>
+      <line class="door" x1="760.8" y1="289.2" x2="760.8" y2="303.6"/>
+      <line class="door" x1="760.8" y1="308.4" x2="760.8" y2="322.8"/>
+      <line class="door" x1="760.8" y1="327.6" x2="760.8" y2="342"/>
+      <line class="door" x1="760.8" y1="346.8" x2="760.8" y2="361.2"/>
+      <line class="door" x1="760.8" y1="366" x2="760.8" y2="380.4"/>
+      <text class="t-note" x="756" y="146" text-anchor="middle">LIFT</text>
+      <rect class="room" x="415.2" y="246" width="24" height="19.2"/>
+      <rect class="room" x="760.8" y="246" width="24" height="19.2"/>
       <line class="tram" x1="124" y1="263.6" x2="456" y2="263.6"/>
       <line class="tram tram-behind" x1="456" y1="263.6" x2="744" y2="263.6"/>
       <line class="tram" x1="744" y1="263.6" x2="1076" y2="263.6"/>
@@ -252,20 +294,14 @@
       <line class="rung" x1="682.8" y1="277.2" x2="687.6" y2="277.2"/>
       <line class="rung" x1="682.8" y1="279.6" x2="687.6" y2="279.6"/>
       <line class="rung" x1="682.8" y1="282" x2="687.6" y2="282"/>
-      <rect class="section" x="388.8" y="226.8" width="67.2" height="19.2"/>
-      <text class="t-note" x="422.4" y="239" text-anchor="middle">R&amp;D</text>
-      <rect class="section" x="456" y="226.8" width="55.2" height="19.2"/>
-      <text class="t-note" x="483.6" y="239" text-anchor="middle" textLength="49.2" lengthAdjust="spacingAndGlyphs">EXP CONTROL</text>
-      <line class="door" x1="456" y1="231.6" x2="456" y2="246"/>
-      <line class="door" x1="510.4" y1="231.6" x2="510.4" y2="246"/>
-      <line class="door" x1="519.2" y1="270" x2="519.2" y2="284.4"/>
-      <line class="door" x1="680.8" y1="270" x2="680.8" y2="284.4"/>
-      <rect class="section" x="518.4" y="265.2" width="52.8" height="19.2"/>
-      <text class="t-note" x="544.8" y="277.4" text-anchor="middle">BANK A</text>
+      <rect class="room" x="388.8" y="226.8" width="67.2" height="19.2"/>
+      <rect class="room" x="456" y="226.8" width="55.2" height="19.2"/>
+      <rect class="room" x="566.4" y="207.6" width="52.8" height="19.2"/>
+      <rect class="room" x="619.2" y="207.6" width="21.6" height="19.2"/>
+      <rect class="room" x="518.4" y="265.2" width="52.8" height="19.2"/>
       <line class="power" x1="571.2" y1="278.4" x2="586.7" y2="278.4"/>
       <line class="power" x1="544.8" y1="265.2" x2="544.8" y2="255.6"/><circle class="power-node" cx="544.8" cy="255.6" r="1.6"/>
-      <rect class="section" x="628.8" y="265.2" width="52.8" height="19.2"/>
-      <text class="t-note" x="655.2" y="277.4" text-anchor="middle">BANK B</text>
+      <rect class="room" x="628.8" y="265.2" width="52.8" height="19.2"/>
       <line class="power" x1="628.8" y1="278.4" x2="613.3" y2="278.4"/>
       <line class="power" x1="655.2" y1="265.2" x2="655.2" y2="255.6"/><circle class="power-node" cx="655.2" cy="255.6" r="1.6"/>
       <circle class="core" cx="600" cy="255.6" r="26.4"/><circle class="singularity" cx="600" cy="255.6" r="1.6"/>
@@ -278,8 +314,17 @@
       <text class="t-note t-ship" x="562.8" y="315.8" text-anchor="end">MISTRAL →</text>
       <rect class="umbilical" x="619.8" y="303.6" width="97.8" height="19.2"/>
       <rect class="airlock" x="716.1" y="303.6" width="3" height="19.2"/>
-      <text class="t-watermark t-room" x="725.6" y="317.2">AIRLOCK A</text>
+      <g class="here"><circle class="here-ring" cx="726.6" cy="313.2" r="6"/><circle class="here-dot" cx="726.6" cy="313.2" r="3"/></g>
+      <text class="t-watermark t-room" x="736.6" y="317.2">AIRLOCK A</text>
       <text class="t-note t-ship" x="668.7" y="315.8" text-anchor="middle">UMBILICAL</text>
+      <g class="tag"><circle cx="427.2" cy="255.6" r="5"/><text x="427.2" y="257.9" text-anchor="middle">5</text></g>
+      <g class="tag"><circle cx="772.8" cy="255.6" r="5"/><text x="772.8" y="257.9" text-anchor="middle">5</text></g>
+      <g class="tag"><circle cx="422.4" cy="236.4" r="5"/><text x="422.4" y="238.7" text-anchor="middle">3</text></g>
+      <g class="tag"><circle cx="483.6" cy="236.4" r="5"/><text x="483.6" y="238.7" text-anchor="middle">4</text></g>
+      <g class="tag"><circle cx="592.8" cy="217.2" r="5"/><text x="592.8" y="219.5" text-anchor="middle">1</text></g>
+      <g class="tag"><circle cx="630" cy="217.2" r="5"/><text x="630" y="219.5" text-anchor="middle">2</text></g>
+      <g class="tag"><circle cx="544.8" cy="274.8" r="5"/><text x="544.8" y="277.1" text-anchor="middle">6</text></g>
+      <g class="tag"><circle cx="655.2" cy="274.8" r="5"/><text x="655.2" y="277.1" text-anchor="middle">7</text></g>
       <line class="ruler" x1="120" y1="402.4" x2="1080" y2="402.4"/>
       <line class="ruler" x1="120" y1="398.4" x2="120" y2="406.4"/>
       <text class="t-scale" x="120" y="418.4" text-anchor="middle">0</text>
@@ -306,7 +351,27 @@
       <line class="ruler" x1="1190" y1="150" x2="1190" y2="380.4"/><line class="ruler" x1="1186" y1="150" x2="1194" y2="150"/><line class="ruler" x1="1186" y1="380.4" x2="1194" y2="380.4"/>
       <text class="t-scale" x="1198" y="268.2">~96 m</text>
     </svg>
-    <figcaption class="caption">Each deck: about 5 m floor to ceiling (dark band) plus about 3 m of service space above it (lighter band); floors sit on the deck lines. The dashed circle is behind this face. Dotted lines are shielding power: each bank charges from the chamber and feeds the emitters along the Deck 06 conduits. Heights come from the exterior image. Lengths don't: the image sees the hull at an angle, so how long each deck runs and where the masts stand are first guesses. The bay is centred under the superstructure.</figcaption>
+<div class="legend">
+      <ul aria-label="Room key">
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">1</text></g></svg>SIGMA&apos;s core, Deck 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>SIGMA operations room, Deck 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">3</text></g></svg>R&amp;D, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Experiment control, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Lift lobby and tram stop, Deck 06</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank A capacitor hall, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bank B capacitor hall, Deck 07</li>
+      </ul>
+      <ul aria-label="Line styles">
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="8" y1="0" x2="8" y2="12"/><line class="door" x1="8" y1="3" x2="8" y2="12"/></svg>Lift stop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
+      </ul>
+    </div>
+    <figcaption class="caption">Each deck: about 5 m floor to ceiling (dark band) plus about 3 m of service space above it (lighter band); floors sit on the deck lines. Doors between rooms are left to the deck plans. Each capacitor hall charges from the chamber and feeds the emitters along the Deck 06 conduits. Heights come from the exterior image. Lengths don't: the image sees the hull at an angle, so how long each deck runs and where the masts stand are first guesses. The bay is centred under the superstructure.</figcaption>
   </figure>
   <div class="record">
     <section>
@@ -327,6 +392,8 @@
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 140 to 260 m along on Decks 05 to 07, with two vertical access shafts through it, one either side of the chamber.</li>
+        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks. Dashed: deeper in the hull than this face.</li>
+        <li><b>SIGMA&apos;s core</b> on Deck 04, centred over the chamber: server vault and operations room.</li>
         <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
@@ -339,10 +406,9 @@
       <h2><span class="tag open">NOT PLACED YET</span></h2>
       <ul>
         <li><b>Observation gallery</b>, where in engineering it looks into the chamber.</li>
-        <li><b>Lift shafts:</b> how many, where, which decks they stop at.</li>
         <li><b>Access shaft</b> routes.</li>
         <li><b>Which end is forward</b>, where the array focuses its node.</li>
-        <li><b>Needs a dedicated place:</b> SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
+        <li><b>Needs a dedicated place:</b> array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
     </section>

@@ -12,7 +12,8 @@ const dy = (k) => +(Y0 + (k - 1) * DH).toFixed(1);
 const f = (n) => +n.toFixed(1);
 // Stepped profile: tiers on top, full length through the middle decks where the array attaches, keel modules below.
 const SPAN = [null, [130, 270], [95, 305], [60, 340], [25, 375], [0, 400], [0, 400], [0, 400], [0, 400], [10, 390], [25, 375], [45, 355], [100, 300]];
-const BAY = [151, 249];   // centred under the superstructure
+const BAY = [151, 249];
+const LIFTS = [135, 265], LW = 4;   // the only positions that reach all 12 decks, clear of engineering and the bay   // centred under the superstructure
 const pts = [];
 for (let k = 1; k <= 12; k++) pts.push([mx(SPAN[k][1]), dy(k)], [mx(SPAN[k][1]), dy(k + 1)]);
 for (let k = 12; k >= 1; k--) pts.push([mx(SPAN[k][0]), dy(k + 1)], [mx(SPAN[k][0]), dy(k)]);
@@ -78,10 +79,33 @@ for (let k = 1; k <= 12; k++) {
   const y = dy(k);
   add(`<rect class="service" x="${X0}" y="${y}" width="${f(L * S)}" height="${f(3 * S)}"/>`);
   if (k > 1) add(`<line class="deck-line" x1="${X0}" y1="${y}" x2="${X1}" y2="${y}"/>`);
-  add(`<text class="t-watermark t-deck-num" x="${f(mx(SPAN[k][0]) + 7)}" y="${f(y + 3 * S + 10.4)}">${String(k).padStart(2, '0')}</text>`);
+  // Slide a deck number past a lift shaft it would sit under.
+  let lx = mx(SPAN[k][0]) + 7;
+  for (const L of LIFTS) if (lx < mx(L + LW / 2) && lx + 18 > mx(L - LW / 2)) lx = mx(L + LW / 2) + 4;
+  add(`<text class="t-watermark t-deck-num" x="${f(lx)}" y="${f(y + 3 * S + 10.4)}">${String(k).padStart(2, '0')}</text>`);
 }
 add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
+
+// Numbered key tag for rooms too small to label; the legend names them.
+// Tags are drawn last so they sit solid over the conduits and lift lines.
+const tags = [];
+const tag = (m, k, n) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + 2.3)}" text-anchor="middle">${n}</text></g>`;
+// A lift stop: a thicker stretch of shaft wall, floor to three quarters of the deck. Room doors live in the deck plans.
+// Nudge (in drawing units) keeps a door on the room side when the wall borders a shaft.
+const door = (m, k, nudge = 0) => `<line class="door" x1="${f(mx(m) + nudge)}" y1="${f(dy(k + 1) - 0.75 * DH)}" x2="${f(mx(m) + nudge)}" y2="${dy(k + 1)}"/>`;
+// Lift shafts top to bottom, dashed since they sit deeper than this face; a stop on every deck.
+for (const L of LIFTS) {
+  const out = L < 200 ? L - LW / 2 : L + LW / 2;
+  add(`<rect class="lift" x="${f(mx(L - LW / 2))}" y="${Y0}" width="${f(LW * S)}" height="${f(Y1 - Y0)}"/>`);
+  for (let k = 1; k <= 12; k++) add(door(out, k));
+  add(`<text class="t-note" x="${mx(L)}" y="${Y0 - 4}" text-anchor="middle">LIFT</text>`);
+}
+// Lift lobbies on Deck 06: where the lifts meet the tram, its two main stops.
+for (const [m0, m1] of [[123, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 277]]) {
+  add(`<rect class="room" x="${f(mx(m0))}" y="${dy(6)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  tags.push(tag((m0 + m1) / 2, 6, 5));
+}
 
 // Tram along Deck 06.
 const tramY = f(dy(7) - 1.6);
@@ -104,24 +128,21 @@ for (const m of [(140 + 189) / 2, (211 + 260) / 2]) {
   // Ladder rungs, drawn one per metre.
   for (let y = ey0 + S; y < ey1 - 0.5; y += S) add(`<line class="rung" x1="${f(mx(m) - 1.5 * S + 1.2)}" y1="${f(y)}" x2="${f(mx(m) + 1.5 * S - 1.2)}" y2="${f(y)}"/>`);
 }
-// A door: a thicker stretch of shared wall, floor to three quarters of the deck.
-// Nudge (in drawing units) keeps a door on the room side when the wall borders a shaft.
-const door = (m, k, nudge = 0) => `<line class="door" x1="${f(mx(m) + nudge)}" y1="${f(dy(k + 1) - 0.75 * DH)}" x2="${f(mx(m) + nudge)}" y2="${dy(k + 1)}"/>`;
 // Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
-for (const [m0, m1, name] of [[112, 140, "R&amp;D"], [140, 163, "EXP CONTROL"]]) {
+for (const [m0, m1, n] of [[112, 140, 3], [140, 163, 4]]) {
   const w = (m1 - m0) * S;
-  add(`<rect class="section" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
-  add(`<text class="t-note" x="${f(mx((m0 + m1) / 2))}" y="${f(dy(5) + DH / 2 + 2.6)}" text-anchor="middle"${w < 60 ? ` textLength="${f(w - 6)}" lengthAdjust="spacingAndGlyphs"` : ""}>${name}</text>`);
+  add(`<rect class="room" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
+  tags.push(tag((m0 + m1) / 2, 5, n));
 }
-// The sealed R&D lock between the two rooms, and a hatch from experiment control into the access shaft.
-add(door(140, 5));
-add(door(163, 5, -0.8));
-// Shielding plant on Deck 07: capacitor halls from each shaft in toward the chamber, a door into each shaft.
-add(door(166, 7, 0.8));
-add(door(234, 7, -0.8));
-for (const [m0, m1, name] of [[166, 188, "BANK A"], [212, 234, "BANK B"]]) {
-  add(`<rect class="section" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
-  add(`<text class="t-note" x="${f(mx((m0 + m1) / 2))}" y="${f(dy(7) + DH / 2 + 2.6)}" text-anchor="middle">${name}</text>`);
+// SIGMA's core on Deck 04, centred over the chamber: the server vault and its operations room.
+for (const [m0, m1, n] of [[186, 208, 1], [208, 217, 2]]) {
+  add(`<rect class="room" x="${f(mx(m0))}" y="${dy(4)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  tags.push(tag((m0 + m1) / 2, 4, n));
+}
+// Shielding plant on Deck 07: capacitor halls from each shaft in toward the chamber.
+for (const [m0, m1, n] of [[166, 188, 6], [212, 234, 7]]) {
+  add(`<rect class="room" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  tags.push(tag((m0 + m1) / 2, 7, n));
   // Charge from the chamber's Harvest Rings, out to the emitters along the Deck 06 conduits.
   const inner = m0 < 200 ? m1 : m0, ry = dy(7) + 3 * S + (DH - 3 * S) / 2;
   const edge = Math.sqrt((11 * S) ** 2 - (ry - midY) ** 2) * (m0 < 200 ? -1 : 1);
@@ -153,8 +174,12 @@ add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-an
 const floor9 = dy(10), wall = f(bx + 98 * S);
 add(`<rect class="umbilical" x="${f(sx + sw)}" y="${dy(9)}" width="${f(wall - sx - sw)}" height="${f(DH)}"/>`);
 add(`<rect class="airlock" x="${f(wall - 1.5)}" y="${dy(9)}" width="3" height="${f(DH)}"/>`);
-add(`<text class="t-watermark t-room" x="${f(wall + 8)}" y="${f(dy(9) + DH / 2 + 4)}">AIRLOCK A</text>`);
+// You are here: Quell's current place, same pinging dot as the terminal's current location box.
+add(`<g class="here"><circle class="here-ring" cx="${f(wall + 9)}" cy="${f(dy(9) + DH / 2)}" r="6"/><circle class="here-dot" cx="${f(wall + 9)}" cy="${f(dy(9) + DH / 2)}" r="3"/></g>`);
+add(`<text class="t-watermark t-room" x="${f(wall + 19)}" y="${f(dy(9) + DH / 2 + 4)}">AIRLOCK A</text>`);
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(dy(9) + DH / 2 + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
+
+tags.forEach(add);
 
 // Scale: length ruler and hull height.
 const ry = f(Y1 + 22);
@@ -229,7 +254,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .door { stroke: var(--muted); stroke-width: 1.6; }
+  .room { fill: none; stroke: var(--muted); stroke-width: 1; }
   .section { fill: none; stroke: var(--deck); stroke-width: 1; }
   .conduit { stroke: var(--muted); stroke-width: 1.4; }
   .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
@@ -249,8 +276,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .t-strong { fill: var(--fg); }
   .t-watermark { font: 600 16px var(--display); fill: var(--fg); fill-opacity: 0.14; pointer-events: none; }
   .t-deck-num { font-size: 13px; }
-  .t-room { font-size: 11px; letter-spacing: 0.12em; }
+  .t-room { font-size: 11px; letter-spacing: 0.12em; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; paint-order: stroke; }
   .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .tag circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.9; }
+  .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
+  .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .sheet .swatch { display: inline-block; width: 28px; min-width: 0; height: 12px; flex: none; overflow: visible; }
+  .here-dot { fill: #9fc7c2; }
+  .here-ring { fill: none; stroke: #9fc7c2; stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: here-ping 2.4s ease-out infinite; }
+  @keyframes here-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .here-ring { animation: none; opacity: 0.35; } }
   .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
   .record section { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -272,7 +309,27 @@ const html = `<title>Dovetail-9 Hull Section</title>
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a full-deck-height boarding umbilical to Airlock A on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
       ${svg.join('\n      ')}
     </svg>
-    <figcaption class="caption">Each deck: about 5 m floor to ceiling (dark band) plus about 3 m of service space above it (lighter band); floors sit on the deck lines. The dashed circle is behind this face. Dotted lines are shielding power: each bank charges from the chamber and feeds the emitters along the Deck 06 conduits. Heights come from the exterior image. Lengths don't: the image sees the hull at an angle, so how long each deck runs and where the masts stand are first guesses. The bay is centred under the superstructure.</figcaption>
+<div class="legend">
+      <ul aria-label="Room key">
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">1</text></g></svg>SIGMA&apos;s core, Deck 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>SIGMA operations room, Deck 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">3</text></g></svg>R&amp;D, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Experiment control, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Lift lobby and tram stop, Deck 06</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank A capacitor hall, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bank B capacitor hall, Deck 07</li>
+      </ul>
+      <ul aria-label="Line styles">
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="8" y1="0" x2="8" y2="12"/><line class="door" x1="8" y1="3" x2="8" y2="12"/></svg>Lift stop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
+      </ul>
+    </div>
+    <figcaption class="caption">Each deck: about 5 m floor to ceiling (dark band) plus about 3 m of service space above it (lighter band); floors sit on the deck lines. Doors between rooms are left to the deck plans. Each capacitor hall charges from the chamber and feeds the emitters along the Deck 06 conduits. Heights come from the exterior image. Lengths don't: the image sees the hull at an angle, so how long each deck runs and where the masts stand are first guesses. The bay is centred under the superstructure.</figcaption>
   </figure>
   <div class="record">
     <section>
@@ -293,6 +350,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 140 to 260 m along on Decks 05 to 07, with two vertical access shafts through it, one either side of the chamber.</li>
+        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks. Dashed: deeper in the hull than this face.</li>
+        <li><b>SIGMA&apos;s core</b> on Deck 04, centred over the chamber: server vault and operations room.</li>
         <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
@@ -305,10 +364,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <h2><span class="tag open">NOT PLACED YET</span></h2>
       <ul>
         <li><b>Observation gallery</b>, where in engineering it looks into the chamber.</li>
-        <li><b>Lift shafts:</b> how many, where, which decks they stop at.</li>
         <li><b>Access shaft</b> routes.</li>
         <li><b>Which end is forward</b>, where the array focuses its node.</li>
-        <li><b>Needs a dedicated place:</b> SIGMA&apos;s core, array access at both ends, command and comms, life support, hydroponics.</li>
+        <li><b>Needs a dedicated place:</b> array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
     </section>

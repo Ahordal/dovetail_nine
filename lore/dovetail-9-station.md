@@ -32,6 +32,10 @@ related:
   - Science designed and called the run; Engineering ran the X9, the array and the shielding from here; SIGMA executed. The DYNEX, Valdez and Stratovan contractors had their own stations ([[crew]]).
   - **Everyone was in the room** at the moment of the accident, including the administrator who signed the bank B waiver. Its records, and the bodies still at their stations, show who sat where and who gave the go-ahead ([[the-secret]]).
   - Direct runs to the X9 and the array conduits on the Deck 06 spine below.
+- **[proposed] SIGMA's core** is on **Deck 04, centred at 200 m, directly above the Core Chamber**: a shielded server vault with a small operations room beside it, a few hundred square metres in all (see [[sigma]]).
+  - **No team of its own.** Command & Administration's operations staff work with SIGMA day to day; Engineering keeps up the hardware ([[crew]]).
+  - Short runs one deck down to experiment control and the X9, and up to command and the comms spires on Deck 01. Its heat goes into the coolant loop along the spine to the radiators.
+  - Hard to reach: engineering and the chamber's hot spots lie below it. The hardware is radiation-hardened; Quell isn't. When he reaches it, he stands over the black hole SIGMA has watched for ten years.
 - **[proposed] Harmonic shielding** comes in two parts (see [[the-accident]]):
   - **Emitters**, spread through the hull rather than in one room: a shield layer around the crewed sections, heaviest along the Deck 06 conduit runs and where the conduits enter the hull at each end, since harmonics come in along them.
   - **The shielding plant**, on **Deck 07 inside engineering**, directly under the spine and the chamber: the switch room where the primary bus, backup bus and capacitor banks meet, and **two capacitor halls, one either side of the chamber**, Bank A and Bank B. Short runs to the Harvest Rings beside it and the Deck 06 emitters above it.
@@ -46,7 +50,9 @@ related:
   - **Tram:** the horizontal lift, running the length of the hull on **one main deck only, Deck 06**. Crossing the hull end to end means getting to that deck first. At 400 m, walking end to end takes five minutes or more, longer hauling gear or suited.
   - **Access shafts:** maintenance shafts, both vertical and horizontal, for crew and repairs. **[proposed]** The way around when a lift or the tram is down.
   - **Corridors** on every deck, on foot.
-  - Number of lift shafts, where they stop, and the routes of the access shafts **[open]**.
+  - **[proposed] Two lift cores, at about 135 m and 265 m along,** each serving all 12 decks. They are the only positions that reach every deck: inside Deck 01 (130 to 270 m), just outside engineering (140 to 260 m), clear of the docking bay, and inside Deck 12 (100 to 300 m). The centre of the hull can't take a lift, since engineering and the bay fill it from Deck 05 down. The shafts are solid bulkheads, with a door on every deck facing away from the centre.
+  - **[proposed] Lift lobbies on Deck 06,** on the outer side of each lift, are the tram's two main stops: where people change between lift and tram, and a natural place for public terminals.
+  - The routes of the access shafts beyond engineering's two **[open]**.
 - **Anchor Core array:** the Dovetail Anchor Core's resonance lattice. Open, unpressurized truss structures extending **straight out from both ends of the hull** along the same axis, for an overall length of about **1.7 km** (keeping the exterior image's proportions, where the hull is about a quarter of the whole). Accessed only by suited maintenance crews.
 - **Shape:** long, linear, accelerator-like. Bracket-shaped resonance coils and emitter housings line the trusses at even intervals, like the stages of a particle accelerator, with conduits running back into the hull. A heavy industrial frame, not a ring or gate.
 - **[proposed] Reinforcement rings:** the bracket-shaped coil housings above, seen as octagonal frames that wrap the truss at intervals, as in the exterior image, with at least one close to the hull at each end. They carry amber marker lights (the radiator markers, see Radiators above) that blink faster than the spires' red beacons, and no antennas.
@@ -81,10 +87,11 @@ related:
 ## Open
 
 - How the hull divides between work (Anchor Core, X9, R&D, shielded) and living (quarters, galley, medical, hydroponics, administration): which sections of which decks, since decks are shared.
+- **Deck plans [open].** A top-down plan of each deck, to follow the side view: rooms, corridors and doors, and what the side view can't show, such as which side of the hull the bay opens on, where the lifts sit across the width, and which wall the tram runs along. Doors recorded here (the R&D lock, the shaft hatch, the bank hall doors) get drawn there.
 - **Systems that need a dedicated place [open].** These are built into the hull's structure, so they should be placed before the rest of the decks are filled in:
   - ~~Harmonic shielding plant~~ Placed: Deck 07 in engineering (see Scale above).
   - ~~Experiment control~~ Placed: Deck 05, between R&D and engineering (see Scale above).
-  - **SIGMA's core:** a shielded, cooled server vault, deep and central rather than at an end (see [[sigma]]).
+  - ~~SIGMA's core~~ Placed: Deck 04, centred over the chamber (see Scale above).
   - **Array access at both ends:** airlocks, suit rooms and tool stores where the hull meets the array on Deck 06. The natural ends of the tram line.
   - **Command and comms:** Deck 01 under the antennas (proposed above), including the emergency beacon Quell followed.
   - **Life support plant:** air, water and thermal machinery. Its coolant loop ties to the radiators on the array arms, so likely along the spine too.
