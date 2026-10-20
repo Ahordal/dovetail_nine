@@ -88,59 +88,71 @@ add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
+// SIGMA's emblem: a white sigma in a broken ring, the ring's upper right arc in red.
+const sigmaLogo = (cx, cy, r) => {
+  const pt = (deg) => { const a = deg * Math.PI / 180; return `${f(cx + r * Math.cos(a))},${f(cy + r * Math.sin(a))}`; };
+  const arc = (a0, a1) => `M ${pt(a0)} A ${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${pt(a1)}`;
+  const w = r * 0.44, h = r * 0.5, t = r * 0.15;
+  const sig = [[w, -h + t], [w, -h], [-w, -h], [w * 0.15, 0], [-w, h], [w, h], [w, h - t]].map(([x, y]) => `${f(cx + x)},${f(cy + y)}`).join(" ");
+  return `<g class="sigma-logo"><circle class="sl-bg" cx="${f(cx)}" cy="${f(cy)}" r="${r}"/><path class="sl-ring" d="${arc(4, 283)}"/><path class="sl-red" d="${arc(-68, -4)}"/><polyline class="sl-sigma" points="${sig}"/></g>`;
+};
 // Tags are drawn last so they sit solid over the conduits and lift lines.
 const tags = [];
-const tag = (m, k, n) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + 2.3)}" text-anchor="middle">${n}</text></g>`;
-// A lift stop: a thicker stretch of shaft wall, floor to three quarters of the deck. Room doors live in the deck plans.
-// Nudge (in drawing units) keeps a door on the room side when the wall borders a shaft.
-const door = (m, k, nudge = 0) => `<line class="door" x1="${f(mx(m) + nudge)}" y1="${f(dy(k + 1) - 0.75 * DH)}" x2="${f(mx(m) + nudge)}" y2="${dy(k + 1)}"/>`;
-// Lift shafts top to bottom, dashed since they sit deeper than this face; a stop on every deck.
+// Optional vertical offset lets a tag share a narrow room with the you-are-here marker.
+const tag = (m, k, n, off = 0) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 2.3)}" text-anchor="middle">${n}</text></g>`;
+// Lift shafts top to bottom, dashed since they sit deeper than this face. A dot marks each deck served;
+// which side the doors open on is left to the deck plans.
 for (const L of LIFTS) {
-  const out = L < 200 ? L - LW / 2 : L + LW / 2;
   add(`<rect class="lift" x="${f(mx(L - LW / 2))}" y="${Y0}" width="${f(LW * S)}" height="${f(Y1 - Y0)}"/>`);
-  for (let k = 1; k <= 12; k++) add(door(out, k));
+  for (let k = 1; k <= 12; k++) add(`<circle class="stop" cx="${mx(L)}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
   add(`<text class="t-note" x="${mx(L)}" y="${Y0 - 4}" text-anchor="middle">LIFT</text>`);
 }
 // Lift lobbies on Deck 06: where the lifts meet the tram, its two main stops.
 for (const [m0, m1] of [[123, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 277]]) {
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(6)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
-  tags.push(tag((m0 + m1) / 2, 6, 5));
+  tags.push(tag((m0 + m1) / 2, 6, 4));
 }
 
 // Tram along Deck 06.
 const tramY = f(dy(7) - 1.6);
-// Faded through engineering: it passes behind, in its own shielded tube.
-add(`<line class="tram" x1="${X0 + 4}" y1="${tramY}" x2="${mx(140)}" y2="${tramY}"/>`);
-add(`<line class="tram tram-behind" x1="${mx(140)}" y1="${tramY}" x2="${mx(260)}" y2="${tramY}"/>`);
-add(`<line class="tram" x1="${mx(260)}" y1="${tramY}" x2="${X1 - 4}" y2="${tramY}"/>`);
+// Faded wherever it runs through a room or section on Deck 06 (the lobbies, engineering, the lifts between).
+const TRAM_FADE = [123, 277];
+add(`<line class="tram" x1="${X0 + 4}" y1="${tramY}" x2="${mx(TRAM_FADE[0])}" y2="${tramY}"/>`);
+add(`<line class="tram tram-behind" x1="${mx(TRAM_FADE[0])}" y1="${tramY}" x2="${mx(TRAM_FADE[1])}" y2="${tramY}"/>`);
+add(`<line class="tram" x1="${mx(TRAM_FADE[1])}" y1="${tramY}" x2="${X1 - 4}" y2="${tramY}"/>`);
 add(`<text class="t-label t-accent" x="${X1 - 6}" y="${f(dy(6) + 3 * S + 7.6)}" text-anchor="end">TRAM · FULL LENGTH</text>`);
 
 // Engineering: the section around the Core Chamber, Decks 05 to 07.
-const ex0 = mx(140), ex1 = mx(260), ey0 = dy(5), ey1 = dy(8);
+// Engineering runs out to meet both lift shafts.
+const EX = [LIFTS[0] + LW / 2, LIFTS[1] - LW / 2];   // 137 to 263 m
+const ex0 = mx(EX[0]), ex1 = mx(EX[1]), ey0 = dy(5), ey1 = dy(8);
 add(`<rect class="section" x="${ex0}" y="${ey0}" width="${f(ex1 - ex0)}" height="${f(ey1 - ey0)}"/>`);
 // Conduits along the spine from the chamber out to both arrays.
 const cr = f(11 * S), ccx = mx(200);
 add(`<line class="conduit" x1="${X0}" y1="${f(midY)}" x2="${f(ccx - cr)}" y2="${f(midY)}"/><line class="conduit" x1="${f(ccx + cr)}" y1="${f(midY)}" x2="${X1}" y2="${f(midY)}"/>`);
 add(`<text class="t-note" x="${f(X0 + 30)}" y="${f(midY - 3)}">CONDUITS · KEEL</text>`);
 // Two vertical access shafts through engineering, midway between the chamber and the section edge.
-for (const m of [(140 + 189) / 2, (211 + 260) / 2]) {
+for (const m of [164.5, 235.5]) {
   add(`<rect class="shaft" x="${f(mx(m) - 1.5 * S)}" y="${ey0}" width="${f(3 * S)}" height="${f(ey1 - ey0)}"/>`);
   // Ladder rungs, drawn one per metre.
   for (let y = ey0 + S; y < ey1 - 0.5; y += S) add(`<line class="rung" x1="${f(mx(m) - 1.5 * S + 1.2)}" y1="${f(y)}" x2="${f(mx(m) + 1.5 * S - 1.2)}" y2="${f(y)}"/>`);
 }
 // Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
-for (const [m0, m1, n] of [[112, 140, 3], [140, 163, 4]]) {
+for (const [m0, m1, n] of [[112, 137, 2], [137, 163, 3]]) {
   const w = (m1 - m0) * S;
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 5, n));
 }
-// SIGMA's core on Deck 04, centred over the chamber: the server vault and its operations room.
-for (const [m0, m1, n] of [[186, 208, 1], [208, 217, 2]]) {
-  add(`<rect class="room" x="${f(mx(m0))}" y="${dy(4)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
-  tags.push(tag((m0 + m1) / 2, 4, n));
-}
+// SIGMA's core: a 5 m column from Deck 04 up into command on Deck 01, on the chamber's axis.
+const CW = 5, cx0 = 200 - CW / 2;
+add(`<rect class="sigma-core" x="${mx(cx0)}" y="${dy(1)}" width="${f(CW * S)}" height="${f(4 * DH)}"/>`);
+// SIGMA's emblem, centred on the column's height.
+tags.push(sigmaLogo(mx(200), dy(3), 5.5));
+// Its operations room at the base, where Engineering services the hardware.
+add(`<rect class="room" x="${mx(cx0 + CW)}" y="${dy(4)}" width="${f(9 * S)}" height="${f(DH)}"/>`);
+tags.push(tag(cx0 + CW + 4.5, 4, 1));
 // Shielding plant on Deck 07: capacitor halls from each shaft in toward the chamber.
-for (const [m0, m1, n] of [[166, 188, 6], [212, 234, 7]]) {
+for (const [m0, m1, n] of [[166, 188, 5], [212, 234, 6]]) {
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 7, n));
   // Charge from the chamber's Harvest Rings, out to the emitters along the Deck 06 conduits.
@@ -167,16 +179,50 @@ const sw = f(16.5 * S), sh = f(11.2 * S);
 const cx = f(bx + bw / 2), cy = f(dy(9) + DH / 2);
 const sx = f(cx - sw / 2), sy = f(cy - sh / 2);
 add(`<g class="ship"><rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" rx="5"/><circle cx="${f(cx - 9)}" cy="${f(cy + 1)}" r="4.5"/><circle cx="${f(cx + 9)}" cy="${f(cy + 1)}" r="4.5"/></g>`);
-const r = f(13 * S);
+// Gantry crane: a rail the length of the bay ceiling, the trolley parked over the cargo platform with its grab lowered.
+const railY = dy(8), tx = mx(BAY[0] + 6);
+add(`<g class="gantry"><rect x="${bx}" y="${railY}" width="${bw}" height="${f(0.9 * S)}"/>`);
+add(`<rect x="${f(tx - 2.2 * S)}" y="${f(railY + 0.9 * S)}" width="${f(4.4 * S)}" height="${f(1.6 * S)}"/>`);
+const grabY = dy(10) - 2.5 * S;
+add(`<line x1="${f(tx)}" y1="${f(railY + 2.5 * S)}" x2="${f(tx)}" y2="${f(grabY)}"/>`);
+add(`<polyline points="${f(tx - 2 * S)},${f(grabY + 1.6 * S)} ${f(tx - 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY + 1.6 * S)}"/></g>`);
+// Cargo platform: a deck outside the cargo door on Deck 10, where the gantry sets loads down.
+add(`<rect class="platform" x="${bx}" y="${f(dy(11) - 0.7 * S)}" width="${f(10 * S)}" height="${f(0.7 * S)}"/>`);
+tags.push(tag(BAY[0] + 5, 10, 9, 3.2));
+// Docking clamps 1 to 4: two arms down from the bay ceiling, two up from the floor, each ending in a pad on the hull.
+add(`<g class="clamp">`);
+for (const [n, side, m] of [[1, -1, -4.5], [2, -1, 4.5], [3, 1, -4.5], [4, 1, 4.5]]) {
+  const x = f(cx + m * S), hull = f(cy + side * sh / 2), root = side < 0 ? dy(8) : dy(12);
+  const padY = side < 0 ? f(hull - 0.9 * S) : hull, joint = f((root + hull) / 2);
+  add(`<rect x="${f(x - 0.55 * S)}" y="${f(Math.min(root, padY))}" width="${f(1.1 * S)}" height="${f(Math.abs(padY - root))}"/>`);
+  add(`<rect x="${f(x - 1.6 * S)}" y="${padY}" width="${f(3.2 * S)}" height="${f(0.9 * S)}"/>`);
+  add(`<circle cx="${x}" cy="${joint}" r="2"/><rect x="${f(x - 1.4 * S)}" y="${f(root - (side < 0 ? 0 : 0.8 * S))}" width="${f(2.8 * S)}" height="${f(0.8 * S)}"/>`);
+}
+add(`</g>`);
+const r = f(12.5 * S);
 add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-anchor="end">MISTRAL →</text>`);
 
-// Boarding umbilical and Airlock A's door, both the full height of Deck 09.
+// Boarding umbilical, and the airlock doors at the full height of Deck 09.
 const floor9 = dy(10), wall = f(bx + 98 * S);
-add(`<rect class="umbilical" x="${f(sx + sw)}" y="${dy(9)}" width="${f(wall - sx - sw)}" height="${f(DH)}"/>`);
-add(`<rect class="airlock" x="${f(wall - 1.5)}" y="${dy(9)}" width="3" height="${f(DH)}"/>`);
+// Half a deck tall, centred on Deck 09 and the ship.
+add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(dy(9) + DH / 4)}" width="${f(wall - sx - sw)}" height="${f(DH / 2)}"/>`);
+// Airlock rooms on Deck 09, one in each end wall of the bay: A takes the umbilical, B faces it.
+const AL = 6.5;
+add(`<rect class="room" x="${wall}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
+add(`<rect class="room" x="${f(bx - AL * S)}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
+for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 1.5)}" y="${dy(9)}" width="3" height="${f(DH)}"/>`);
+tags.push(tag(BAY[1] + AL / 2, 9, "A", -3.6), tag(BAY[0] - AL / 2, 9, "B"));
+// Bay control: from Airlock A to the lift, looking into the bay.
+const bc0 = BAY[1] + AL, bc1 = LIFTS[1] - LW / 2;
+add(`<rect class="room" x="${f(mx(bc0))}" y="${dy(9)}" width="${f((bc1 - bc0) * S)}" height="${f(DH)}"/>`);
+tags.push(tag((bc0 + bc1) / 2, 9, 7));
+// Cargo hold: two decks, beside Airlock B on Deck 09 and running to the bay wall on Deck 10, with a cargo door there.
+const cg0 = LIFTS[0] + LW / 2, cg1 = BAY[0] - AL;
+add(`<polygon class="room" points="${mx(cg0)},${dy(9)} ${f(mx(cg1))},${dy(9)} ${f(mx(cg1))},${dy(10)} ${bx},${dy(10)} ${bx},${dy(11)} ${mx(cg0)},${dy(11)}"/>`);
+add(`<rect class="airlock" x="${f(bx - 1.5)}" y="${dy(10)}" width="3" height="${f(DH)}"/>`);
+tags.push(tag((cg0 + BAY[0]) / 2, 10, 8));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
-add(`<g class="here"><circle class="here-ring" cx="${f(wall + 9)}" cy="${f(dy(9) + DH / 2)}" r="6"/><circle class="here-dot" cx="${f(wall + 9)}" cy="${f(dy(9) + DH / 2)}" r="3"/></g>`);
-add(`<text class="t-watermark t-room" x="${f(wall + 19)}" y="${f(dy(9) + DH / 2 + 4)}">AIRLOCK A</text>`);
+add(`<g class="here"><circle class="here-ring" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="6"/><circle class="here-dot" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="3"/></g>`);
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(dy(9) + DH / 2 + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
 tags.forEach(add);
@@ -231,7 +277,15 @@ const html = `<title>Dovetail-9 Hull Section</title>
   h1 { margin: 0; font: 600 30px/1.15 var(--display); letter-spacing: 0.04em; text-wrap: balance; }
   .lede { margin: 0; max-width: 68ch; color: var(--muted); }
   .sheet { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
-  .sheet svg { display: block; width: 100%; min-width: 820px; height: auto; }
+  .sheet svg { display: block; width: 100%; height: auto; }
+  .viewport svg#hull { width: 100%; height: 100%; }
+  .viewport { position: relative; height: clamp(360px, 72vh, 820px); overflow: hidden; touch-action: none; cursor: grab; outline-offset: -2px; }
+  .viewport.dragging { cursor: grabbing; }
+  .zoom { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; align-items: center; z-index: 1; }
+  .zoom button { min-width: 30px; height: 30px; padding: 0 8px; font: 500 14px var(--mono); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; }
+  .zoom button:hover { border-color: var(--muted); }
+  .zoom output { min-width: 44px; text-align: right; font: 400 11px var(--mono); color: var(--muted); }
+  .zoom-hint { margin: 0; padding: 6px 14px 0; font-size: 11px; color: var(--muted); }
   .hull-fill { fill: var(--bg); }
   .hull-edge { fill: none; stroke: var(--muted); stroke-width: 1.2; }
   .service { fill: var(--service); }
@@ -255,14 +309,19 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
   .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
-  .door { stroke: var(--muted); stroke-width: 1.6; }
+  .stop { fill: var(--muted); }
   .room { fill: none; stroke: var(--muted); stroke-width: 1; }
-  .section { fill: none; stroke: var(--deck); stroke-width: 1; }
+  .section { fill: none; stroke: var(--muted); stroke-width: 1; }
   .conduit { stroke: var(--muted); stroke-width: 1.4; }
   .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
   .singularity { fill: var(--fg); }
-  .bay { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .bay { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .ship rect, .ship path { fill: var(--panel); stroke: var(--ship); stroke-width: 1; }
+  .gantry rect { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .gantry line { stroke: var(--muted); stroke-width: 0.8; }
+  .gantry polyline { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  .platform { fill: var(--muted); }
+  .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
@@ -279,6 +338,10 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .t-room { font-size: 11px; letter-spacing: 0.12em; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; paint-order: stroke; }
   .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
   .tag circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.9; }
+  .sl-bg { fill: var(--bg); }
+  .sl-ring { fill: none; stroke: var(--fg); stroke-width: 0.9; }
+  .sl-red { fill: none; stroke: #c81c19; stroke-width: 0.9; }
+  .sl-sigma { fill: none; stroke: var(--fg); stroke-width: 1.1; stroke-linejoin: miter; }
   .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
   .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
   .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
@@ -288,6 +351,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .here-ring { fill: none; stroke: #9fc7c2; stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: here-ping 2.4s ease-out infinite; }
   @keyframes here-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .here-ring { animation: none; opacity: 0.35; } }
+  .sigma-core { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
   .record section { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -306,26 +370,42 @@ const html = `<title>Dovetail-9 Hull Section</title>
     <p class="lede">Looking at the side of the hull where the docking bay opens. Drawn to scale: 400 m at its longest, 12 decks of about 8 m each. The profile is stepped like the exterior image: tiers on top, full length through the middle decks where the array attaches, modules hanging below.</p>
   </header>
   <figure class="sheet" style="margin: 0">
-    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a full-deck-height boarding umbilical to Airlock A on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
+    <div class="viewport" id="hull-viewport" tabindex="0" aria-label="Hull drawing. Scroll or pinch to zoom, drag to pan; plus, minus and zero keys also work.">
+    <div class="zoom" role="group" aria-label="Zoom">
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+      <button type="button" data-zoom="fit" aria-label="Fit whole drawing">Fit</button>
+      <output id="hull-zoom-level" aria-live="polite">100%</output>
+    </div>
+    <svg id="hull" viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a full-deck-height boarding umbilical to Airlock A on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
       ${svg.join('\n      ')}
     </svg>
+    </div>
+    <p class="zoom-hint">Scroll or pinch to zoom, drag to pan.</p>
 <div class="legend">
       <ul aria-label="Room key">
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">1</text></g></svg>SIGMA&apos;s core, Deck 04</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>SIGMA operations room, Deck 04</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">3</text></g></svg>R&amp;D, Deck 05</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Experiment control, Deck 05</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Lift lobby and tram stop, Deck 06</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank A capacitor hall, Deck 07</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bank B capacitor hall, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true">${sigmaLogo(14, 6, 5.5)}</svg>SIGMA&apos;s core, Decks 01 to 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">1</text></g></svg>SIGMA operations room, Deck 04</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>R&amp;D, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">3</text></g></svg>Experiment control, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Lift lobby and tram stop, Deck 06</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Bank A capacitor hall, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank B capacitor hall, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09: the boarding umbilical</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09, across the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bay control room, Deck 09</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10, cargo door to the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo platform, outside the cargo door</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="8" y1="0" x2="8" y2="12"/><line class="door" x1="8" y1="3" x2="8" y2="12"/></svg>Lift stop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/></svg>Lift stop</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
       </ul>
     </div>
@@ -349,15 +429,15 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Hull about 100 m wide</b>, roughly square in cross-section. The bay reaches ~70 m in, nose first.</li>
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
-        <li><b>Engineering</b> around the chamber, 140 to 260 m along on Decks 05 to 07, with two vertical access shafts through it, one either side of the chamber.</li>
+        <li><b>Engineering</b> around the chamber, 137 to 263 m along on Decks 05 to 07, meeting both lift shafts, with two vertical access shafts through it, one either side of the chamber.</li>
         <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks. Dashed: deeper in the hull than this face.</li>
-        <li><b>SIGMA&apos;s core</b> on Deck 04, centred over the chamber: server vault and operations room.</li>
+        <li><b>SIGMA&apos;s core</b>: a 5 m column on the chamber&apos;s axis, from Deck 04 up into command on Deck 01, operations room at its base.</li>
         <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
         <li><b>Docking bay</b> across Decks 08 to 11, centred along the hull under the superstructure, unpressurized, open to space, about 98 m long.</li>
         <li><b>Docking ring:</b> the clamps inside the bay that hold the ship.</li>
-        <li><b>Airlock A</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical.</li>
+        <li><b>Airlock A</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical. <b>Airlock B</b> faces it across the bay.</li>
       </ul>
     </section>
     <section>
@@ -372,6 +452,125 @@ const html = `<title>Dovetail-9 Hull Section</title>
     </section>
   </div>
 </div>
+
+<script>
+// Zoom and pan by rewriting the drawing's viewBox, so line work stays crisp at any scale.
+// The viewBox always matches the window's shape, so the maths maps pointer to drawing 1:1.
+(function () {
+  var svg = document.getElementById('hull');
+  var vp = document.getElementById('hull-viewport');
+  var out = document.getElementById('hull-zoom-level');
+  if (!svg || !vp) return;
+  var W0 = ${W}, H0 = ${H}, MAXZ = 16;
+  var A = 1, fitW = W0, v = { x: 0, y: 0, w: W0, h: H0 };
+  function measure() {
+    var r = vp.getBoundingClientRect();
+    A = r.width ? r.height / r.width : H0 / W0;
+    fitW = Math.max(W0, H0 / A);
+  }
+  function apply() {
+    svg.setAttribute('viewBox', v.x + ' ' + v.y + ' ' + v.w + ' ' + v.h);
+    if (out) out.textContent = Math.round(fitW / v.w * 100) + '%';
+  }
+  function clamp() {
+    v.w = Math.min(fitW, Math.max(fitW / MAXZ, v.w));
+    v.h = v.w * A;
+    v.x = v.w >= W0 ? (W0 - v.w) / 2 : Math.min(W0 - v.w, Math.max(0, v.x));
+    v.y = v.h >= H0 ? (H0 - v.h) / 2 : Math.min(H0 - v.h, Math.max(0, v.y));
+  }
+  function fit() { v.w = fitW; clamp(); apply(); }
+  function toSvg(cx, cy) {
+    var r = svg.getBoundingClientRect();
+    return { x: v.x + (cx - r.left) / r.width * v.w, y: v.y + (cy - r.top) / r.height * v.h };
+  }
+  function zoomAt(f, px, py) {
+    var nw = Math.min(fitW, Math.max(fitW / MAXZ, v.w / f));
+    var k = nw / v.w;
+    v.x = px - (px - v.x) * k;
+    v.y = py - (py - v.y) * k;
+    v.w = nw;
+    clamp();
+    apply();
+  }
+  function zoomCentre(f) { zoomAt(f, v.x + v.w / 2, v.y + v.h / 2); }
+  function pan(dxPx, dyPx) {
+    var r = svg.getBoundingClientRect();
+    v.x -= dxPx / r.width * v.w;
+    v.y -= dyPx / r.height * v.h;
+    clamp();
+    apply();
+  }
+  measure();
+  fit();
+  // Keep the same zoom level when the window changes shape.
+  window.addEventListener('resize', function () {
+    var z = fitW / v.w, cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    measure();
+    v.w = fitW / z; v.h = v.w * A; v.x = cx - v.w / 2; v.y = cy - v.h / 2;
+    clamp();
+    apply();
+  });
+
+  vp.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var p = toSvg(e.clientX, e.clientY);
+    zoomAt(Math.exp(-e.deltaY * 0.0015), p.x, p.y);
+  }, { passive: false });
+
+  // One pointer pans; two pointers pinch-zoom around their midpoint.
+  var pts = new Map(), pinch = null;
+  vp.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('.zoom')) return;
+    vp.setPointerCapture(e.pointerId);
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    vp.classList.add('dragging');
+  });
+  vp.addEventListener('pointermove', function (e) {
+    var prev = pts.get(e.pointerId);
+    if (!prev) return;
+    var cur = { x: e.clientX, y: e.clientY };
+    pts.set(e.pointerId, cur);
+    if (pts.size === 1) {
+      pan(cur.x - prev.x, cur.y - prev.y);
+    } else if (pts.size === 2) {
+      var a = Array.from(pts.values());
+      var d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y);
+      var mid = toSvg((a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2);
+      if (pinch) zoomAt(d / pinch, mid.x, mid.y);
+      pinch = d;
+    }
+  });
+  function end(e) {
+    pts.delete(e.pointerId);
+    if (pts.size < 2) pinch = null;
+    if (!pts.size) vp.classList.remove('dragging');
+  }
+  vp.addEventListener('pointerup', end);
+  vp.addEventListener('pointercancel', end);
+
+  vp.querySelector('.zoom').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.zoom === 'in') zoomCentre(1.5);
+    else if (b.dataset.zoom === 'out') zoomCentre(1 / 1.5);
+    else fit();
+  });
+
+  // Keys only while the drawing has focus.
+  vp.addEventListener('keydown', function (e) {
+    var step = 40;
+    if (e.key === '+' || e.key === '=') zoomCentre(1.25);
+    else if (e.key === '-' || e.key === '_') zoomCentre(0.8);
+    else if (e.key === '0') fit();
+    else if (e.key === 'ArrowLeft') pan(step, 0);
+    else if (e.key === 'ArrowRight') pan(-step, 0);
+    else if (e.key === 'ArrowUp') pan(0, step);
+    else if (e.key === 'ArrowDown') pan(0, -step);
+    else return;
+    e.preventDefault();
+  });
+})();
+</script>
 `;
 writeFileSync(new URL('./hull-side-view.html', import.meta.url), html);
 console.log('ok', W, H);
