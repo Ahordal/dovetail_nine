@@ -48,7 +48,7 @@ related:
 - **The aft end is a counter-resonator,** balancing the forward focus so the structure doesn't tear itself apart. Both tips glow; only the forward one forms a node.
 - **Why the array is big:** like a radio antenna, it must be sized to what it resonates with. To engage a corridor it has to be built at the corridor's scale.
 - **Fits the program's stated aim:** the Experiment note says a stable anchor could create "an entry/exit node" in the corridor.
-- Visual reference: `reference/dovetail-9-exterior.png`.
+- Visual reference: `reference/dovetail-9-exterior.png`. Side view of the hull, drawn from this file: `reference/hull-side-view/`.
 - **Conduits** carry power and data from the array into the hull, to the X9 and SIGMA. During the accident, with the shielding down, the harmonics entered along them (see [[the-accident]]).
 - **Scale references:** 166 crew in a 400 m hull is sparse, closer to an automated plant than a submarine: large stretches are machinery SIGMA runs alone, which suits a station dead for ten years. The Mistral (58 m) is about a seventh of the hull's length.
 - The X9 failsafe's ~3.2 km radius is about twice the structure's overall length.
