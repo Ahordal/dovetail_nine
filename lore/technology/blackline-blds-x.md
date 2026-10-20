@@ -62,7 +62,7 @@ An older salvage variant: occasional flickers, corrupted overlays, unstable proj
 
 - **Where Quell keeps his daily logs**, in tight technical shorthand.
 - **His interface into Dovetail-9:** he hardlinks through the UDC to force doors and run diagnostics.
-- **The site's interface** is built on the slate: rugged Blackline shell outside, SIGMA's corporate system inside. See [[site-frame]].
+- **Always at hand on the site:** its own screen comes up over whatever Quell is looking at, in Blackline's look, distinct from SIGMA's. It is not the frame around SIGMA's interface. See [[site-frame]].
 - **The site's mechanics come from it:** the Protocol Emulation Suite becomes `spoof` and the ROK becomes `override`. Quell includes both in his data dump so receivers can open SIGMA's locked records.
 - **The ROK's anomaly risk** is a possible cause of Quell's memory damage in the archived twist layer.
 - **AI tether safeguards** are the hook for a fragment of SIGMA travelling with him, if the archived twist layer is ever revived.

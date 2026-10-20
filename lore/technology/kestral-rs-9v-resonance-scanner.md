@@ -31,6 +31,7 @@ Detects micro-distortions in structural materials and in corridor residue fields
 - **His way of detecting echoes.** Under [[phase-mechanics]], a secondary node is a pocket of held tension. A harmonic scanner should pick it up as a faint, constant distortion, and spike when it rings.
 - That makes him one of the few people equipped to notice what SIGMA logs as RPEs, and to cross-check SIGMA's data against his own.
 - Its readings could appear in the data dump alongside his logs, as a second instrument record beside SIGMA's.
+- **[proposed] It's the site's `scan`.** Scanning works anywhere, no UDC needed (settled in [[site-frame]]).
 
 ## Open
 
