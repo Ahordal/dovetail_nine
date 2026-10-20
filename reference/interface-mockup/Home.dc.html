@@ -61,7 +61,26 @@
           .slate-body { flex: 1 1 auto; display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; min-height: 180px; }
           .slate-label { font-size: 11px; letter-spacing: 0.14em; color: #9b7a45; }
           .slate-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 8px 0; border-bottom: 1px solid #2a241a; }
+          /* Desktop: slate stays within the terminal layout's 1280 px width and 20 px top/bottom gap. */
+          @media (min-width: 561px) { .slate-modal { padding-top: max(20px, env(safe-area-inset-top)) !important; padding-bottom: max(20px, env(safe-area-inset-bottom)) !important; } }
           .slate-close { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; background: #16130d; border: 1px solid #5a4a2a; border-radius: 6px; color: #e8a33d; cursor: pointer; font-size: 14px; }
+          /* Travel: the screen goes dark and an arrow makes the trip, leg by leg. */
+          .tr-screen { position: fixed; inset: 0; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; width: 100%; box-sizing: border-box; padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom)); margin: 0; background: #000; border: none; border-radius: 0; color: #e8e4da; font-family: "IBM Plex Mono", monospace; font-size: 13px; text-align: left; cursor: pointer; }
+          .tr-screen:focus-visible { outline: none; }
+          .tr-cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; width: 100%; max-width: 560px; font-size: 11px; letter-spacing: 0.12em; color: #a8a49a; font-variant-numeric: tabular-nums; }
+          .tr-stage { position: relative; display: block; width: 100%; max-width: 560px; height: 220px; overflow: hidden; }
+          .tr-corridor { position: absolute; left: 0; right: 0; top: 70px; height: 60px; box-sizing: border-box; border-top: 1px solid #3a3f44; border-bottom: 1px solid #3a3f44; }
+          .tr-tag { position: absolute; bottom: 26px; font-size: 11px; letter-spacing: 0.1em; color: #8c8880; white-space: nowrap; }
+          .tr-mover { position: absolute; display: block; line-height: 0; transition: left 60ms linear, top 60ms linear; }
+          .tr-shaft { position: absolute; top: 0; bottom: 0; left: calc(50% - 30px); width: 60px; box-sizing: border-box; border-left: 1px solid #3a3f44; border-right: 1px solid #3a3f44; }
+          .tr-ladder { position: absolute; top: 0; bottom: 0; left: calc(50% - 30px); width: 60px; box-sizing: border-box; border-left: 2px solid #3a3f44; border-right: 2px solid #3a3f44; background: repeating-linear-gradient(to bottom, transparent 0 10px, #3a3f44 10px 12px); }
+          /* Decks stacked edge to edge; only the one the arrow is on fills and shows its number. */
+          .tr-deck { position: absolute; left: 0; right: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: flex-end; padding-right: 14px; border: 1px solid #23272b; font-family: "Chakra Petch", sans-serif; font-weight: 600; letter-spacing: 0.08em; white-space: nowrap; color: transparent; transition: background-color 120ms linear, color 120ms linear; }
+          .tr-deck.lit { background: rgba(232, 163, 61, 0.28); color: #e8a33d; }
+          .tr-rail { position: absolute; left: 0; right: 0; top: 100px; border-top: 2px dashed #3a3f44; }
+          /* The traveller is one solid chevron the width of the passage. */
+          .chev polygon { fill: #E8A33D; }
+          .tr-hint { min-height: 16px; font-family: "Chakra Petch", sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.16em; color: #9b7a45; }
           /* Phones: half the side margins, so content gets more of the width. */
           @media (max-width: 560px) {
             .m-x10 { padding-left: 10px !important; padding-right: 10px !important; }
@@ -118,7 +137,7 @@
             </header>
 
             <sc-if value="{{slateOpen}}" hint-placeholder-val="{{false}}">
-              <div class="m-modal"
+              <div class="m-modal slate-modal"
                 style="
                   position: fixed;
                   inset: 0;
@@ -130,7 +149,7 @@
                   padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
                   background: rgba(5, 6, 7, 0.72);
                 ">
-                <div role="dialog" aria-modal="true" aria-labelledby="slate-h" onKeyDown="{{slateKey}}" style="display: flex; flex-direction: column; width: 100%; height: 100%">
+                <div role="dialog" aria-modal="true" aria-labelledby="slate-h" onKeyDown="{{slateKey}}" style="display: flex; flex-direction: column; width: 100%; max-width: 1280px; height: 100%">
                   <section class="slate" style="flex: 1 1 auto">
                     <span aria-hidden="true" class="slate-screw" style="top: 6px; left: 6px"></span>
                     <span aria-hidden="true" class="slate-screw" style="top: 6px; right: 6px"></span>
@@ -161,7 +180,15 @@
                         </sc-if>
                         <sc-if value="{{appLogs}}" hint-placeholder-val="{{false}}">
                           <span class="slate-label">QUELL · LOGS</span>
-                          <span style="color: #9b7a45">[Quell's notes not yet written. Entries are added as he explores.]</span>
+                          <sc-for list="{{logs}}" as="lg" hint-placeholder-count="2">
+                            <div class="slate-row" style="flex-direction: column; justify-content: flex-start">
+                              <span class="slate-label">{{lg.t}} · {{lg.place}}</span>
+                              <span style="max-width: 64ch">{{lg.text}}</span>
+                            </div>
+                          </sc-for>
+                          <sc-if value="{{noLogs}}" hint-placeholder-val="{{false}}">
+                            <span style="color: #9b7a45">No entries yet. Quell notes each place the first time he reaches it.</span>
+                          </sc-if>
                         </sc-if>
                         <sc-if value="{{appDose}}" hint-placeholder-val="{{false}}">
                           <span class="slate-label">DOSIMETER</span>
@@ -184,6 +211,119 @@
                   </section>
                 </div>
               </div>
+            </sc-if>
+
+            <sc-if value="{{travelOpen}}" hint-placeholder-val="{{false}}">
+              <div class="m-modal"
+                style="
+                  position: fixed;
+                  inset: 0;
+                  z-index: 50;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  box-sizing: border-box;
+                  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+                  background: rgba(5, 6, 7, 0.72);
+                ">
+                <div role="dialog" aria-modal="true" aria-labelledby="travel-h" onKeyDown="{{travelKey}}" style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; max-height: 100%">
+                  <button type="button" ref="{{travelCloseRef}}" onClick="{{closeTravel}}" aria-label="Close travel" style="align-self: flex-end; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; background: #0f1112; border: 1px solid #2e3236; border-radius: 6px; color: #e8e4da; cursor: pointer; font-size: 14px">✕</button>
+                  <section style="display: flex; flex-direction: column; min-height: 0; overflow: auto; border: 1px solid #2a2d30; border-radius: 8px; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6)">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 20px; background: #0f1112; border-bottom: 1px solid #2a2d30; text-align: center">
+                      <span id="travel-h" style="font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.14em">{{tvTitle}}</span>
+                      <span style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">{{tvSub}}</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px 20px; background: #0b0c0d">
+                      <sc-if value="{{tvIsPlaces}}" hint-placeholder-val="{{true}}">
+                        <span id="tv-list-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">WHERE TO?</span>
+                        <div role="group" aria-labelledby="tv-list-h" style="display: flex; flex-direction: column; gap: 6px">
+                          <sc-for list="{{tvList}}" as="pl" hint-placeholder-count="3">
+                            <button type="button" onClick="{{pl.pick}}" aria-disabled="{{pl.ariaDisabled}}" style="{{pl.style}}">
+                              <span style="display: flex; flex-direction: column; min-width: 0">
+                                <span>{{pl.name}}</span>
+                                <span style="font-size: 12px; color: #a8a49a">{{pl.detail}}</span>
+                              </span>
+                              <span style="flex-shrink: 0; display: flex; align-items: center; gap: 8px">
+                                <sc-if value="{{pl.isHere}}" hint-placeholder-val="{{false}}">
+                                  <span style="font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;">YOU</span>
+                                </sc-if>
+                                <sc-if value="{{pl.hasLock}}" hint-placeholder-val="{{false}}">
+                                  <span style="font-size: 10px; letter-spacing: 0.06em; padding: 1px 6px; border: 1px solid #5a4a2a; color: #d9a441; border-radius: 3px">{{pl.lock}}</span>
+                                </sc-if>
+                                <span style="font-size: 12px; color: #9fc7c2">{{pl.time}}</span>
+                              </span>
+                            </button>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{tvIsConfirm}}" hint-placeholder-val="{{false}}">
+                        <span style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">TRAVEL TO</span>
+                        <span style="font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 22px; letter-spacing: 0.04em">{{tvDest}}</span>
+                        <ol style="margin: 4px 0 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 13px">
+                          <sc-for list="{{tvLegs}}" as="lg" hint-placeholder-count="3">
+                            <li style="display: flex; gap: 10px"><span style="flex-shrink: 0; color: #6f6c64">{{lg.n}}</span><span>{{lg.text}}</span></li>
+                          </sc-for>
+                        </ol>
+                        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding-top: 8px; border-top: 1px solid #1e2123; font-size: 13px">
+                          <span style="color: #a8a49a">Time</span><span style="color: #9fc7c2">{{tvTime}}</span>
+                        </div>
+                        <sc-if value="{{tvHasWindow}}" hint-placeholder-val="{{false}}">
+                          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: 13px">
+                            <span style="color: #a8a49a">Window left on arrival</span><span style="color: #d9a441; font-variant-numeric: tabular-nums">{{tvWindowAfter}}</span>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{tvHasLock}}" hint-placeholder-val="{{false}}">
+                          <span style="font-size: 12px; color: #d9a441">{{tvLockNote}}</span>
+                        </sc-if>
+                        <button type="button" ref="{{travelGoRef}}" onClick="{{confirmTravel}}" style="display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 6px; background: none; border: 1px solid #9fc7c2; border-radius: 6px; color: #9fc7c2; cursor: pointer; font-family: &quot;Chakra Petch&quot;, sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.16em">YES, TRAVEL</button>
+                        <button type="button" onClick="{{travelBack}}" style="align-self: flex-start; min-height: 40px; padding: 0 14px; background: none; border: 1px solid #2e3236; border-radius: 4px; color: #e8e4da; cursor: pointer; font-size: 12px; letter-spacing: 0.1em">◂ BACK</button>
+                      </sc-if>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; min-height: 36px; box-sizing: border-box; padding: 6px 20px; background: #0f1112; border-top: 1px solid #2a2d30">
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; letter-spacing: 0.1em; color: #a8a49a">{{tvFooter}}</span>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{inTransit}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="tr-screen" ref="{{trRef}}" onClick="{{trClick}}" onKeyDown="{{trKey}}" aria-label="{{trLabel}}">
+                <span class="tr-cap"><span style="color: #e8a33d">{{tsLegLabel}}</span><span>{{tsLegCount}}</span></span>
+                <span class="tr-stage" aria-hidden="true">
+                  <sc-if value="{{tsAcross}}" hint-placeholder-val="{{true}}">
+                    <span class="tr-corridor"></span>
+                    <sc-if value="{{tsTram}}" hint-placeholder-val="{{false}}">
+                      <span class="tr-rail"></span>
+                    </sc-if>
+                    <span class="tr-tag" style="left: 0">{{tsFrom}}</span>
+                    <span class="tr-tag" style="right: 0">{{tsTo}}</span>
+                    <span class="tr-mover" style="{{tsAcrossStyle}}">
+                      <svg class="chev" width="44" height="60" viewBox="0 0 44 60">
+                        <polygon points="0,0 20,0 44,30 20,60 0,60 24,30"></polygon>
+                      </svg>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{tsUpDown}}" hint-placeholder-val="{{false}}">
+                    <sc-for list="{{tsStops}}" as="s" hint-placeholder-count="2">
+                      <span class="{{s.cls}}" style="{{s.style}}">{{s.label}}</span>
+                    </sc-for>
+                    <sc-if value="{{tsLift}}" hint-placeholder-val="{{true}}">
+                      <span class="tr-shaft"></span>
+                    </sc-if>
+                    <sc-if value="{{tsLadder}}" hint-placeholder-val="{{false}}">
+                      <span class="tr-ladder"></span>
+                    </sc-if>
+                    <span class="tr-mover" style="{{tsUpDownStyle}}">
+                      <svg class="chev" width="60" height="44" viewBox="0 0 60 44">
+                        <polygon points="0,0 30,24 60,0 60,20 30,44 0,20"></polygon>
+                      </svg>
+                    </span>
+                  </sc-if>
+                </span>
+                <span class="tr-cap"><span>STATION TIME {{trClock}}</span><span>{{trWindow}}</span></span>
+                <span class="tr-hint" aria-hidden="true">{{trHint}}</span>
+              </button>
             </sc-if>
 
             <div style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column">
@@ -469,7 +609,7 @@
             <div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: flex-start">
               <main class="m-x12"
                 style="
-                  flex: 3 1 520px;
+                  flex: 1 1 auto;
                   min-width: 0;
                   box-sizing: border-box;
                   padding: 20px 24px;
@@ -518,11 +658,13 @@
                 </section>
 
                 <section aria-labelledby="layout-h" style="display: flex; flex-direction: column; gap: 10px">
-                  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px">
-                    <span id="layout-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">STATION LAYOUT</span>
-                    <span style="font-size: 11px; letter-spacing: 0.08em; color: #6f6c64">SCHEMATIC · LAYOUT NOT YET DESIGNED</span>
-                  </div>
+                  <button type="button" id="layout-h" onClick="{{toggleLayout}}" aria-expanded="{{layoutExpanded}}" aria-controls="layout-list" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 16px; width: 100%; min-height: 44px; padding: 8px 14px; text-align: left; background: #111315; border: 1px solid #2e3236; border-radius: 6px; color: #e8e4da; cursor: pointer">
+                    <span style="font-size: 12px; letter-spacing: 0.12em"><span aria-hidden="true" style="display: inline-block; width: 1.4em; color: {{accent}}">{{layoutCaret}}</span>STATION LAYOUT</span>
+                    <span style="font-size: 11px; letter-spacing: 0.08em; color: #6f6c64">DECKS 01 TO 12</span>
+                  </button>
+                  <sc-if value="{{layoutOpen}}" hint-placeholder-val="{{true}}">
                   <ol
+                    id="layout-list"
                     style="
                       list-style: none;
                       margin: 0;
@@ -559,219 +701,12 @@
                           </sc-if>
                           <span style="flex-shrink: 0; font-size: 12px; color: #6f6c64">{{d.roomCount}}</span>
                         </button>
-                        <sc-if value="{{d.showRooms}}" hint-placeholder-val="{{false}}">
-                          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 10px 12px 10px">
-                            <sc-for list="{{d.rooms}}" as="r" hint-placeholder-count="3">
-                              <button type="button" onClick="{{r.pick}}" style="{{r.boxStyle}}">
-                                <span>{{r.label}}</span>
-                                <sc-if value="{{r.isHere}}" hint-placeholder-val="{{false}}">
-                                  <span
-                                    style="font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;"
-                                    >YOU</span
-                                  >
-                                </sc-if>
-                                <sc-if value="{{r.hasLock}}" hint-placeholder-val="{{false}}">
-                                  <span
-                                    style="
-                                      font-size: 10px;
-                                      letter-spacing: 0.06em;
-                                      padding: 1px 6px;
-                                      border: 1px solid #5a4a2a;
-                                      color: #d9a441;
-                                      border-radius: 3px;
-                                    "
-                                    >{{r.lock}}</span
-                                  >
-                                </sc-if>
-                              </button>
-                            </sc-for>
-                          </div>
-                        </sc-if>
                       </li>
                     </sc-for>
                   </ol>
-                </section>
-              </main>
-
-              <aside class="m-x12"
-                aria-label="This terminal"
-                style="
-                  flex: 2 1 340px;
-                  min-width: 0;
-                  box-sizing: border-box;
-                  padding: 20px 24px;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 20px;
-                ">
-                <sc-if value="{{isOpen}}" hint-placeholder-val="{{true}}">
-                  <section aria-labelledby="posted-h" style="display: flex; flex-direction: column; gap: 4px">
-                    <span id="posted-h" style="font-size: 11px; letter-spacing: 0.12em; color: #a8a49a">POSTED AT THIS TERMINAL</span>
-                    <sc-for list="{{files}}" as="file" hint-placeholder-count="1">
-                      <button type="button" onClick="{{file.pick}}" style="{{file.btnStyle}}">{{file.name}}</button>
-                    </sc-for>
-                    <sc-if value="{{noFiles}}" hint-placeholder-val="{{false}}">
-                      <span style="color: #a8a49a; padding: 6px 4px">Nothing posted here.</span>
-                    </sc-if>
-                  </section>
-                </sc-if>
-
-                <sc-if value="{{fileOpen}}" hint-placeholder-val="{{false}}">
-                  <div style="border: 1px solid #2a2d30; border-radius: 6px; background: #111315; overflow: hidden">
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        gap: 12px;
-                        padding: 8px 8px 8px 14px;
-                        border-bottom: 1px solid #2a2d30;
-                        font-size: 12px;
-                        letter-spacing: 0.06em;
-                        color: #a8a49a;
-                      ">
-                      <span style="overflow-wrap: anywhere">{{fileName}}</span>
-                      <button
-                        type="button"
-                        onClick="{{closeFile}}"
-                        aria-label="Close file"
-                        style="
-                          background: none;
-                          border: 1px solid #2e3236;
-                          color: #e8e4da;
-                          border-radius: 4px;
-                          min-width: 44px;
-                          min-height: 36px;
-                          cursor: pointer;
-                        ">
-                        ✕
-                      </button>
-                    </div>
-                    <pre
-                      style="
-                        margin: 0;
-                        padding: 16px 18px;
-                        white-space: pre-wrap;
-                        overflow-x: auto;
-                        font-family: &quot;IBM Plex Mono&quot;, monospace;
-                        font-size: 13px;
-                        line-height: 1.6;
-                        color: #e8e4da;
-                      ">
-{{fileBody}}</pre
-                    >
-                  </div>
-                </sc-if>
-
-                <sc-if value="{{isOpen}}" hint-placeholder-val="{{true}}">
-                  <section aria-labelledby="local-h" style="{{localBox}}">
-                    <span id="local-h" style="{{localHeadStyle}}">{{localTitle}}</span>
-                    <span style="color: #a8a49a; max-width: 64ch">{{localNote}}</span>
-                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 8px 0 0 0; border-top: 1px solid #1e2123">
-                      <span style="color: #a8a49a">{{localRow}}</span>
-                      <sc-if value="{{isRestricted}}" hint-placeholder-val="{{false}}">
-                        <span
-                          style="
-                            font-size: 10px;
-                            letter-spacing: 0.06em;
-                            padding: 1px 6px;
-                            border: 1px solid #5a4a2a;
-                            color: #d9a441;
-                            border-radius: 3px;
-                            align-self: center;
-                          "
-                          >CLEARANCE REQUIRED</span
-                        >
-                      </sc-if>
-                    </div>
-                  </section>
-                </sc-if>
-
-                <section style="display: flex; flex-direction: column; gap: 8px">
-                  <button
-                    type="button"
-                    onClick="{{toggleTree}}"
-                    aria-expanded="{{treeOpen}}"
-                    style="
-                      align-self: flex-start;
-                      min-height: 40px;
-                      padding: 0 14px;
-                      background: none;
-                      border: 1px solid #2e3236;
-                      border-radius: 4px;
-                      color: #e8e4da;
-                      cursor: pointer;
-                      font-size: 12px;
-                      letter-spacing: 0.1em;
-                    ">
-                    {{treeLabel}}
-                  </button>
-                  <sc-if value="{{treeOpen}}" hint-placeholder-val="{{false}}">
-                    <nav
-                      aria-label="Full station directory"
-                      style="
-                        box-sizing: border-box;
-                        padding: 10px 6px;
-                        border: 1px solid #2a2d30;
-                        border-radius: 6px;
-                        background: #0f1112;
-                      ">
-                      <sc-for list="{{nodes}}" as="node" hint-placeholder-count="12">
-                        <div style="{{node.rowStyle}}">
-                          <sc-if value="{{node.hasKids}}" hint-placeholder-val="{{true}}">
-                            <button
-                              type="button"
-                              onClick="{{node.toggle}}"
-                              aria-label="{{node.toggleLabel}}"
-                              aria-expanded="{{node.expanded}}"
-                              style="
-                                flex-shrink: 0;
-                                width: 28px;
-                                min-height: 36px;
-                                padding: 0;
-                                background: none;
-                                border: none;
-                                color: #a8a49a;
-                                cursor: pointer;
-                                font-size: 12px;
-                              ">
-                              {{node.chevron}}
-                            </button>
-                          </sc-if>
-                          <sc-if value="{{node.noKids}}" hint-placeholder-val="{{false}}">
-                            <span aria-hidden="true" style="flex-shrink: 0; width: 28px"></span>
-                          </sc-if>
-                          <button type="button" onClick="{{node.pick}}" style="{{node.btnStyle}}">
-                            <span style="display: flex; align-items: center; gap: 8px; min-width: 0">
-                              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{node.label}}</span>
-                              <sc-if value="{{node.isHere}}" hint-placeholder-val="{{false}}">
-                                <span
-                                  style="flex-shrink: 0; font-size: 10px; letter-spacing: 0.08em; padding: 1px 6px; border-radius: 3px; background: {{accent}}; color: #0B0C0D; font-weight: 500;"
-                                  >YOU</span
-                                >
-                              </sc-if>
-                            </span>
-                            <sc-if value="{{node.hasLock}}" hint-placeholder-val="{{false}}">
-                              <span
-                                style="
-                                  flex-shrink: 0;
-                                  font-size: 10px;
-                                  letter-spacing: 0.06em;
-                                  padding: 1px 6px;
-                                  border: 1px solid #5a4a2a;
-                                  color: #d9a441;
-                                  border-radius: 3px;
-                                "
-                                >{{node.lock}}</span
-                              >
-                            </sc-if>
-                          </button>
-                        </div>
-                      </sc-for>
-                    </nav>
                   </sc-if>
                 </section>
-              </aside>
+              </main>
             </div>
             </div>
             <button type="button" class="slate-btn" ref="{{slateBtnRef}}" onClick="{{toggleSlate}}" aria-haspopup="dialog" aria-expanded="{{slateOpen}}" aria-label="{{slateBtnLabel}}">
@@ -1053,7 +988,7 @@
           this.timerEls = new Set();
           this.arriveAt = this.loadArrival();
           this.windowCloseAt = this.readStored('dt9-window-close');
-          this.state = { loc: 'd1a', file: null, cmd: '', out: 'SIGMA: General access session open. Type help for commands.', collapsed: { d2: true }, helpOpen: false, treeOpen: false, now: Date.now(), slateOpen: false, slateApp: 'timer' };
+          this.state = { loc: 'd1a', file: null, cmd: '', out: 'SIGMA: General access session open. Type help for commands.', collapsed: { d2: true }, layoutOpen: false, helpOpen: false, treeOpen: false, now: Date.now(), slateOpen: false, slateApp: 'timer' };
           if (this.windowCloseAt && this.windowRemaining() === 0) {
             this.closedAnnounced = true;
             this.state.out = this.CLOSED_MSG;
@@ -1063,7 +998,7 @@
           this.state.typed = this.state.out.replace(/^SIGMA:\s/, '').length;
           this.COMMANDS = [
             { cmd: 'ls', desc: 'List nearby places and the files posted here.' },
-            { cmd: 'cd <place>', desc: 'Walk to a nearby place, or a deck (cd galley, cd deck 02).' },
+            { cmd: 'cd <place>', desc: 'Travel somewhere nearby, or pick from a deck (cd galley, cd deck 02). Asks before you go.' },
             { cmd: 'cd ..', desc: "Go back to this deck's hub." },
             { cmd: 'open <file>', desc: 'Read a file posted at this terminal.' },
             { cmd: 'tree', desc: 'Show or hide the full station directory.' },
@@ -1079,17 +1014,23 @@
           this.NODES = [
             { id: 'root', label: 'DOVETAIL-9', depth: 0, parent: null },
             { id: 'd1', label: 'Deck 01', num: '01', fn: 'Docking ring', depth: 1, parent: 'root' },
-            { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1' },
-            { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER' },
+            { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1', m: 60 },
+            { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER', m: 35 },
             { id: 'd2', label: 'Deck 02', num: '02', fn: 'Habitation', depth: 1, parent: 'root' },
-            { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2' },
-            { id: 'd2b', label: 'Galley', depth: 2, parent: 'd2' },
-            { id: 'd2c', label: 'Crew Quarters', depth: 2, parent: 'd2' },
-            { id: 'd2d', label: 'Hydroponics', depth: 2, parent: 'd2', lock: 'SEALED' },
+            { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2', m: 20 },
+            { id: 'd2b', label: 'Galley', depth: 2, parent: 'd2', m: 45 },
+            { id: 'd2c', label: 'Crew Quarters', depth: 2, parent: 'd2', m: 70 },
+            { id: 'd2d', label: 'Hydroponics', depth: 2, parent: 'd2', lock: 'SEALED', m: 95 },
             { id: 'd3', label: 'Deck 03', num: '03', fn: '[Not yet designed]', depth: 1, parent: 'root' },
             { id: 'd4', label: 'Deck 04', num: '04', fn: '[Not yet designed]', depth: 1, parent: 'root' },
             { id: 'd5', label: 'Deck 05', num: '05', fn: 'Research', depth: 1, parent: 'root', lock: 'CLEARANCE 3' },
-            { id: 'd6', label: 'Deck 06 to Deck 12', num: '06-12', fn: '[Not yet designed]', depth: 1, parent: 'root' }
+            { id: 'd6', label: 'Deck 06', num: '06', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd7', label: 'Deck 07', num: '07', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd8', label: 'Deck 08', num: '08', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd9', label: 'Deck 09', num: '09', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd10', label: 'Deck 10', num: '10', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd11', label: 'Deck 11', num: '11', fn: '[Not yet designed]', depth: 1, parent: 'root' },
+            { id: 'd12', label: 'Deck 12', num: '12', fn: '[Not yet designed]', depth: 1, parent: 'root' }
           ];
           // Every place has its own terminal. Public ones in shared areas, restricted ones in specialised areas.
           // Port states are spread out so each look can be seen in the mockup; none are canon.
@@ -1105,7 +1046,13 @@
             d3: { id: 'DT9-T030', kind: 'PUBLIC', port: 'damaged' },
             d4: { id: 'DT9-T040', kind: 'PUBLIC', port: 'none' },
             d5: { id: 'DT9-T050', kind: 'RESTRICTED', port: 'disabled' },
-            d6: { id: 'DT9-T060', kind: 'PUBLIC', port: 'available' }
+            d6: { id: 'DT9-T060', kind: 'PUBLIC', port: 'available' },
+            d7: { id: 'DT9-T070', kind: 'PUBLIC', port: 'available' },
+            d8: { id: 'DT9-T080', kind: 'PUBLIC', port: 'available' },
+            d9: { id: 'DT9-T090', kind: 'PUBLIC', port: 'available' },
+            d10: { id: 'DT9-T100', kind: 'PUBLIC', port: 'available' },
+            d11: { id: 'DT9-T110', kind: 'PUBLIC', port: 'available' },
+            d12: { id: 'DT9-T120', kind: 'PUBLIC', port: 'available' }
           };
           this.PORT = {
             available: { color: '#9FC7C2', text: 'UDC · AVAILABLE', status: 'AVAILABLE' },
@@ -1141,8 +1088,182 @@
             d3: { files: [] },
             d4: { files: [] },
             d5: { lockMsg: 'Research deck. Clearance 3 required. Your access: GENERAL.' },
-            d6: { files: [] }
+            d6: { files: [] },
+            d7: { files: [] },
+            d8: { files: [] },
+            d9: { files: [] },
+            d10: { files: [] },
+            d11: { files: [] },
+            d12: { files: [] }
           };
+          // Travel (mockup, not canon): metres from each deck's hub, decks the lift skips, and how far is far enough for the tram.
+          this.NO_LIFT = [3, 4];
+          this.TRAM_MIN = 80;
+          this.visited = new Set(['d1a']);
+          // What Quell sees on arrival, first visit then return. Kept for the place screen. Placeholder writing, not canon.
+          this.NOTES = {
+            d1: ['Docking ring hub. Lift doors on the far side, one jammed half open. Dust on everything, thick enough to write in.'],
+            d1a: ['Airlock A. The Mistral\'s umbilical ticking behind the inner door. Only warm air on this ring.', 'Back at the airlock. The Mistral is still there.'],
+            d1b: ['Docking control. Door shut, panel dark. No power this side.'],
+            d2: ['Habitation hub. Deck signs still lit on emergency power. Someone\'s jacket on a rail by the lift.'],
+            d2a: ['Corridor 2A. Doors down one side, a nameplate on each. Most are shut.'],
+            d2b: ['Galley. Emergency lights, maybe one panel in ten. Trays still on the tables. Four of them at the far end, still in their seats.', 'Galley again. I don\'t look at the far end.'],
+            d2c: ['Crew quarters. I don\'t open the doors. Not yet.'],
+            d2d: ['Hydroponics. Sealed. Condensation on the inside of the glass.']
+          };
+        }
+
+        reduceMotion() {
+          return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        }
+
+        deckNo(n) { return parseInt(n.num, 10); }
+
+        // Every trip starts on foot. Same deck: run there, or run to the tram for the far end.
+        // Another deck: run to the lift (a ladder where it doesn't stop), ride, then run to the place.
+        planRoute(fromId, toId) {
+          const a = this.node(fromId), b = this.node(toId);
+          const fromDeck = this.deckNo(this.deckOf(fromId)), toDeck = this.deckNo(this.deckOf(toId));
+          const legs = [];
+          // Running at about 3 m/s.
+          const run = (from, to, dist) => legs.push({ kind: 'run', from, to, dist, ms: Math.min(1800, 700 + dist * 14), sec: dist / 3 });
+          if (fromDeck === toDeck) {
+            const dist = Math.abs((a.m || 0) - (b.m || 0)) || 20;
+            if (dist < this.TRAM_MIN) run(this.placeName(a), this.placeName(b), dist);
+            else {
+              run(this.placeName(a), 'Tram', 10);
+              legs.push({ kind: 'tram', from: this.placeName(a), to: this.placeName(b), dist, ms: 2200, sec: 45 + dist / 8 });
+            }
+          } else {
+            const span = Math.abs(fromDeck - toDeck);
+            const ladder = [fromDeck, toDeck].find((d) => this.NO_LIFT.includes(d));
+            const lobby = ladder ? 'Ladder well 3' : 'Lift B';
+            run(this.placeName(a), lobby, a.depth === 2 ? a.m || 20 : 10);
+            legs.push(ladder
+              ? { kind: 'ladder', fromDeck, toDeck, ladder, ms: Math.min(4200, 1200 + 800 * span), sec: 150 * span }
+              : { kind: 'lift', fromDeck, toDeck, ms: Math.min(3200, 900 + 500 * span), sec: 40 + 15 * span });
+            if (b.depth === 2) run(lobby, this.placeName(b), b.m || 20);
+          }
+          return { legs, min: Math.max(1, Math.ceil(legs.reduce((s, l) => s + l.sec, 0) / 60)) };
+        }
+
+        legText(l) {
+          const deck = (d) => 'Deck ' + String(d).padStart(2, '0');
+          if (l.kind === 'run') return 'On foot to ' + l.to + ' · ' + l.dist + ' m';
+          if (l.kind === 'tram') return 'Tram to ' + l.to + ' · ' + l.dist + ' m';
+          if (l.kind === 'lift') return 'Lift B · ' + deck(l.fromDeck) + ' to ' + deck(l.toDeck);
+          return 'Ladder well 3 · ' + deck(l.fromDeck) + ' to ' + deck(l.toDeck) + ' (no lift to ' + deck(l.ladder) + ')';
+        }
+
+        deckAt(leg, p) {
+          return leg.fromDeck + Math.sign(leg.toDeck - leg.fromDeck) * Math.round(p * Math.abs(leg.toDeck - leg.fromDeck));
+        }
+
+        openDeck(deckId) {
+          this.setState({ travel: { deck: deckId, step: 'places', target: null }, slateOpen: false, portOpen: false, helpOpen: false, histOpen: false });
+        }
+
+        // Picking a deck lists its places. Rooms on this deck (or `cd ..`) go straight to the confirmation.
+        askTravel(id, direct) {
+          const n = this.node(id);
+          if (n.depth === 0) return this.setState({ out: 'No terminal at the station level. Pick a deck.' });
+          if (id === this.state.loc) return this.setState({ out: 'Already here.' });
+          const deck = this.deckOf(id);
+          if (!direct && (n.depth === 1 || deck.id !== this.deckOf(this.state.loc).id)) return this.openDeck(deck.id);
+          this.setState({ travel: { deck: deck.id, step: 'confirm', target: id }, slateOpen: false, portOpen: false, helpOpen: false, histOpen: false });
+        }
+
+        closeTravel() {
+          this.setState({ travel: null });
+          if (this.inputEl && !this.isTouch()) this.inputEl.focus();
+        }
+
+        confirmTravel() {
+          const t = this.state.travel;
+          if (!t || !t.target) return;
+          this.setState({ travel: null });
+          this.go(t.target);
+        }
+
+        // Mockup: the trip's cost comes off both clocks at once; between trips they still run in real time.
+        startTrip(fromId, toId) {
+          this.clearTrip();
+          const route = this.planRoute(fromId, toId);
+          const clockFrom = this.clockText();
+          const cost = route.min * 60000;
+          this.arriveAt -= cost;
+          this.store('dt9-arrive', this.arriveAt);
+          if (this.windowCloseAt) {
+            this.windowCloseAt -= cost;
+            this.store('dt9-window-close', this.windowCloseAt);
+          }
+          this.visited.add(toId);
+          const now = Date.now();
+          this.setState({ now, tr: { from: fromId, to: toId, legs: route.legs, min: route.min, leg: 0, p: 0, clockFrom, clockTo: this.clockAt(now) } });
+          this.runLeg(0);
+        }
+
+        runLeg(i) {
+          this.clearTrip();
+          const tr = this.state.tr;
+          if (!tr) return;
+          if (i >= tr.legs.length) return this.endTrip();
+          const leg = tr.legs[i];
+          if (this.reduceMotion()) {
+            this.setState({ tr: { ...tr, leg: i, p: 1 } });
+            this.tripTimer = setTimeout(() => this.runLeg(i + 1), 800);
+            return;
+          }
+          this.setState({ tr: { ...tr, leg: i, p: 0 } });
+          if (leg.kind === 'run') this.stepTimer = setInterval(() => this.footstep(), 250);
+          if (leg.kind === 'ladder') this.stepTimer = setInterval(() => this.rung(), 320);
+          if (leg.kind === 'lift') this.stopHum = this.drone(55, 220, 0.09, 0.2);
+          if (leg.kind === 'tram') {
+            this.stopHum = this.drone(82, 420, 0.05, 0.25);
+            this.stepTimer = setInterval(() => this.burst(900, 'bandpass', 3, 0.2, 0.05), 520);
+          }
+          const start = Date.now();
+          let deck = leg.fromDeck;
+          this.tripTimer = setInterval(() => {
+            const t = this.state.tr;
+            if (!t) return;
+            const p = Math.min(1, (Date.now() - start) / leg.ms);
+            if (leg.kind === 'lift') {
+              const cur = this.deckAt(leg, p);
+              if (cur !== deck) this.ding(1180, 0.05);
+              deck = cur;
+            }
+            this.setState({ tr: { ...t, p } });
+            if (p < 1) return;
+            if (leg.kind === 'lift') this.ding(660, 0.14);
+            this.runLeg(i + 1);
+          }, 50);
+        }
+
+        // An arrival chime over a beat of black, then the new place.
+        endTrip() {
+          this.clearTrip();
+          this.arrivedChime();
+          this.tripTimer = setTimeout(() => this.finishTrip(), 550);
+        }
+
+        finishTrip() {
+          this.clearTrip();
+          this.typingFor = null;
+          this.setState({ tr: null, out: this.pendingOut || '', now: Date.now() });
+          if (this.inputEl && !this.isTouch()) this.inputEl.focus();
+        }
+
+        clearTrip() {
+          clearTimeout(this.tripTimer);
+          clearInterval(this.tripTimer);
+          clearInterval(this.stepTimer);
+          if (this.stopHum) { this.stopHum(); this.stopHum = null; }
+        }
+
+        // Any key or tap skips the rest of the trip.
+        advanceTrip() {
+          if (this.state.tr) this.endTrip();
         }
 
         isTouch() {
@@ -1224,8 +1345,10 @@
           return Math.max(0, Math.floor((this.windowCloseAt - (this.state ? this.state.now : Date.now())) / 1000));
         }
 
-        clockText() {
-          const s = Math.floor(Component.ARRIVE + (this.state.now - this.arriveAt) / 1000);
+        clockText() { return this.clockAt(this.state.now); }
+
+        clockAt(now) {
+          const s = Math.floor(Component.ARRIVE + (now - this.arriveAt) / 1000);
           const day = ((s % 86400) + 86400) % 86400;
           return String(Math.floor(day / 3600)).padStart(2, '0') + ':' + String(Math.floor((day % 3600) / 60)).padStart(2, '0');
         }
@@ -1285,7 +1408,20 @@
           if (slate !== this.slateWasOpen) {
             this.slateWasOpen = slate;
             if (slate && this.closeSlateEl) this.closeSlateEl.focus();
-            else if (!slate && this.slateBtnEl) this.slateBtnEl.focus();
+            else if (!slate && this.slateBtnEl && !this.state.tr && !this.state.travel) this.slateBtnEl.focus();
+          }
+          // Travel panel: the ✕ when it opens on a deck's places, YES when it reaches the confirmation.
+          const tvStep = this.state.travel ? this.state.travel.step : null;
+          if (tvStep !== this.tvWasStep) {
+            this.tvWasStep = tvStep;
+            if (tvStep === 'places' && this.travelCloseEl) this.travelCloseEl.focus();
+            if (tvStep === 'confirm' && this.travelGoEl) this.travelGoEl.focus();
+          }
+          // The trip screen takes focus, so any key moves it on.
+          const trip = !!this.state.tr;
+          if (trip !== this.tripWasOn) {
+            this.tripWasOn = trip;
+            if (trip && this.trEl) this.trEl.focus();
           }
         }
 
@@ -1323,6 +1459,7 @@
           window.removeEventListener('orientationchange', this.onViewport);
           if (window.visualViewport) window.visualViewport.removeEventListener('resize', this.onViewport);
           this.cancelLink();
+          this.clearTrip();
           clearTimeout(this.typeTimer);
           if (this.audio) this.audio.ctx.close();
         }
@@ -1339,7 +1476,103 @@
           const noise = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
           const d = noise.getChannelData(0);
           for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-          this.audio = { ctx, master, noise };
+          // Two seconds, so looped room tone and lift hum don't flutter at the loop rate.
+          const long = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+          const l = long.getChannelData(0);
+          for (let i = 0; i < l.length; i++) l[i] = Math.random() * 2 - 1;
+          this.audio = { ctx, master, noise, long };
+        }
+
+        playing() { return !!this.audio && this.audio.ctx.state === 'running'; }
+
+        // A short filtered noise burst: the basis of steps, rungs and door seals.
+        burst(freq, type, q, gain, dur) {
+          if (!this.playing()) return;
+          const { ctx, master, long } = this.audio;
+          const t = ctx.currentTime + 0.005;
+          const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+          n.buffer = long;
+          f.type = type; f.frequency.value = freq; f.Q.value = q;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(gain, t + 0.006);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+          n.connect(f); f.connect(g); g.connect(master);
+          n.start(t, Math.random()); n.stop(t + dur + 0.02);
+        }
+
+        footstep() { this.burst(170 + Math.random() * 60, 'lowpass', 1, 0.6, 0.1); }
+
+        // Boot on a metal rung: a knock plus a short ring.
+        rung() {
+          this.burst(2200, 'bandpass', 8, 0.3, 0.05);
+          if (!this.playing()) return;
+          const { ctx, master } = this.audio;
+          const t = ctx.currentTime + 0.005;
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = 540 + Math.random() * 40;
+          g.gain.setValueAtTime(0.06, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+          o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.2);
+        }
+
+        doorHiss() { this.burst(1400, 'highpass', 0.7, 0.16, 0.7); }
+
+        // Arrival: a rising three-note "you made it", same muffled square voice as ding.
+        arrivedChime() {
+          if (!this.playing()) return;
+          const { ctx, master } = this.audio;
+          const lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass'; lp.frequency.value = 2200; lp.Q.value = 1;
+          lp.connect(master);
+          [[659, 0, 0.09], [880, 0.1, 0.09], [1319, 0.2, 0.32]].forEach(([freq, at, dur]) => {
+            const t = ctx.currentTime + 0.01 + at;
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'square'; o.frequency.value = freq;
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(0.1, t + 0.008);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            o.connect(g); g.connect(lp);
+            o.start(t); o.stop(t + dur + 0.02);
+          });
+        }
+
+        // A held low sound under a trip or a room. Returns a function that fades it out.
+        drone(freq, cutoff, toneGain, noiseGain) {
+          if (!this.playing()) return null;
+          const { ctx, master, long } = this.audio;
+          const t = ctx.currentTime;
+          const out = ctx.createGain(), lp = ctx.createBiquadFilter();
+          out.gain.setValueAtTime(0, t);
+          out.gain.linearRampToValueAtTime(1, t + 0.4);
+          lp.type = 'lowpass'; lp.frequency.value = cutoff;
+          lp.connect(out); out.connect(master);
+          const o = ctx.createOscillator(), og = ctx.createGain();
+          o.type = 'sawtooth'; o.frequency.value = freq; og.gain.value = toneGain;
+          o.connect(og); og.connect(lp); o.start(t);
+          const n = ctx.createBufferSource(), ng = ctx.createGain();
+          n.buffer = long; n.loop = true; ng.gain.value = noiseGain;
+          n.connect(ng); ng.connect(lp); n.start(t);
+          return () => {
+            const e = ctx.currentTime;
+            out.gain.cancelScheduledValues(e);
+            out.gain.setValueAtTime(out.gain.value, e);
+            out.gain.linearRampToValueAtTime(0, e + 0.4);
+            o.stop(e + 0.45); n.stop(e + 0.45);
+          };
+        }
+
+        // Same POST beep as the boot screen.
+        postBeep() {
+          if (!this.playing()) return;
+          const { ctx, master } = this.audio;
+          const t = ctx.currentTime + 0.01;
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'square'; o.frequency.value = 980;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.12, t + 0.005);
+          g.gain.setValueAtTime(0.12, t + 0.17);
+          g.gain.linearRampToValueAtTime(0, t + 0.18);
+          o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.2);
         }
 
         // SIGMA's print-out chatter, one per character. Tuned by ear in the SIGMA Voice Tuner.
@@ -1473,26 +1706,33 @@
           this.setState({ connected: null, portStep: 'start', linkLines: [], out: 'SIGMA: Unregistered device disconnected from UDC.' });
         }
 
-        // Moving connects Quell to the terminal at the new place.
+        // Moving plays the trip, then shows the new place.
         go(id) {
           const n = this.node(id);
           if (n.depth === 0) return this.setState({ out: 'No terminal at the station level. Pick a deck.' });
           if (id === this.state.loc) return this.setState({ out: 'Already here.' });
+          if (this.state.tr) return;
           const t = this.TERM[id];
+          const from = this.state.loc;
           this.typingFor = null;
           this.cancelLink();
+          if (this.audio && this.audio.ctx.state === 'suspended') this.audio.ctx.resume();
+          this.pendingOut = n.lock ? 'TERMINAL ' + t.id + ' · ' + n.lock : 'TERMINAL ' + t.id + ' · ' + this.placeName(n).toUpperCase() + ' · CONNECTED';
           // Walking away means unplugging whatever was connected here.
           this.setState({
             loc: id,
             file: null,
             helpOpen: false,
+            histOpen: false,
+            slateOpen: false,
             portOpen: false,
             portStep: 'start',
             connected: null,
             linkLines: [],
             collapsed: this.expandTo(id),
-            out: n.lock ? 'TERMINAL ' + t.id + ' · ' + n.lock : 'TERMINAL ' + t.id + ' · ' + this.placeName(n).toUpperCase() + ' · CONNECTED'
+            out: ''
           });
+          this.startTrip(from, id);
         }
 
         run(raw) {
@@ -1552,14 +1792,14 @@
             return this.setState({ out: list.length ? list.join('   ') : '(nothing here)' });
           }
           if (verb === 'cd') {
-            if (arg === '..') return here.depth === 2 ? this.go(here.parent) : this.setState({ out: 'Already at the deck hub. Pick a deck to travel to.' });
+            if (arg === '..') return here.depth === 2 ? this.askTravel(here.parent, true) : this.setState({ out: 'Already at the deck hub. Pick a deck to travel to.' });
             const a = arg.toLowerCase();
             const num = a.replace(/^deck\s*/, '').padStart(2, '0');
             const decks = this.NODES.filter((n) => n.depth === 1);
             const target = this.nearbyOf(here.id).concat(decks).find((k) =>
               k.label.toLowerCase().startsWith(a) || (k.num && k.num.startsWith(num)) || (k.fn && k.fn.toLowerCase().startsWith(a)));
             if (!target || !arg) return this.setState({ out: 'No such place nearby: ' + arg });
-            return this.go(target.id);
+            return this.askTravel(target.id);
           }
           if (verb === 'open') {
             if (here.lock) return this.setState({ out: 'Access denied: ' + here.lock });
@@ -1606,7 +1846,7 @@
               chevron: shut ? '▸' : '▾',
               toggleLabel: (shut ? 'Expand ' : 'Collapse ') + n.label,
               toggle: () => this.setState({ collapsed: { ...collapsed, [n.id]: !shut } }),
-              pick: () => this.go(n.id),
+              pick: () => this.askTravel(n.id),
               rowStyle: 'display: flex; align-items: center; border-radius: 4px; padding-left: ' + (2 + n.depth * 16) + 'px; '
                 + (sel ? 'background: #23272B; box-shadow: inset 2px 0 0 ' + accent + ';' : ''),
               btnStyle: 'display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-grow: 1; min-width: 0; text-align: left; min-height: 36px; cursor: pointer; border: none; background: transparent; padding: 6px 10px 6px 2px; color: '
@@ -1617,14 +1857,6 @@
           const decks = this.NODES.filter((n) => n.depth === 1).map((n) => {
             const mine = !!deck && deck.id === n.id;
             const roomNodes = this.NODES.filter((m) => m.parent === n.id);
-            const rooms = roomNodes.map((r) => ({
-              label: r.label,
-              isHere: r.id === here.id,
-              ...lockBadge(r),
-              pick: () => this.go(r.id),
-              boxStyle: 'display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 12px; border-radius: 4px; cursor: pointer; text-align: left; '
-                + (r.id === here.id ? 'background: #23272B; border: 1px solid ' + accent + '; color: #FFFFFF;' : 'background: #111315; border: 1px solid #2E3236; color: ' + (r.lock ? '#A8A49A' : '#E8E4DA') + ';')
-            }));
             return {
               num: n.num,
               fn: n.fn,
@@ -1632,9 +1864,7 @@
               isHere: mine && n.id === here.id,
               ...lockBadge(n),
               roomCount: roomNodes.length ? roomNodes.length + ' rooms' : '',
-              rooms,
-              showRooms: mine && rooms.length > 0,
-              pick: () => this.go(n.id),
+              pick: () => this.openDeck(n.id),
               bandStyle: 'border-radius: 6px; border: 1px solid ' + (mine ? '#3A3F44' : '#1E2123') + '; background: ' + (mine ? '#14171A' : 'transparent') + ';',
               rowStyle: 'display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: none; background: none; padding: 8px 10px; min-height: 40px; cursor: pointer; color: #E8E4DA;'
                 + (mine && n.id === here.id ? ' box-shadow: inset 2px 0 0 ' + accent + ';' : '')
@@ -1647,10 +1877,110 @@
             btnStyle: 'text-align: left; background: ' + (this.state.file === f.name ? '#1A1D20' : 'none') + '; border: none; color: #E8E4DA; padding: 8px 4px; min-height: 40px; cursor: pointer; border-bottom: 1px solid #1E2123;'
           }));
           const open = fileList.find((f) => f.name === this.state.file);
+          const tr = this.state.tr;
+          const leg = tr ? tr.legs[tr.leg] : null;
+          const p = tr ? tr.p : 0;
+          const deckName = (d) => 'DECK ' + String(d).padStart(2, '0');
+          // Lift and ladder: decks top to bottom in station order, the arrow passing through them.
+          let tsStops = [];
+          let tsY = 0;
+          if (leg && leg.fromDeck) {
+            const lo = Math.min(leg.fromDeck, leg.toDeck), hi = Math.max(leg.fromDeck, leg.toDeck);
+            const span = this.NODES.filter((n) => n.depth === 1 && this.deckNo(n) >= lo && this.deckNo(n) <= hi);
+            // Bands share the 220px stage, centred, at most 60px tall, overlapping 1px so outlines stay single.
+            const gap = -1, h = Math.min(60, (210 - gap * (span.length - 1)) / span.length);
+            const top0 = (220 - span.length * h - gap * (span.length - 1)) / 2;
+            const fi = span.findIndex((n) => this.deckNo(n) === leg.fromDeck);
+            const ti = span.findIndex((n) => this.deckNo(n) === leg.toDeck);
+            const pos = fi + (ti - fi) * p;
+            tsY = top0 + h / 2 + pos * (h + gap);
+            tsStops = span.map((n, i) => ({
+              label: 'DECK ' + n.num,
+              cls: 'tr-deck' + (Math.round(pos) === i ? ' lit' : ''),
+              style: 'top: ' + (top0 + i * (h + gap)) + 'px; height: ' + h + 'px; font-size: ' + Math.min(22, Math.round(h * 0.5)) + 'px;'
+            }));
+          }
+          const tsLegLabel = !leg ? ''
+            : leg.kind === 'run' ? 'ON FOOT · ' + leg.from.toUpperCase() + ' ▸ ' + leg.to.toUpperCase()
+            : leg.kind === 'tram' ? 'TRAM · ' + leg.from.toUpperCase() + ' ▸ ' + leg.to.toUpperCase()
+            : (leg.kind === 'lift' ? 'LIFT B' : 'LADDER WELL 3 · NO LIFT TO ' + deckName(leg.ladder)) + ' · ' + deckName(leg.fromDeck) + ' ▸ ' + deckName(leg.toDeck);
+          // The travel panel: a deck's places, then the confirmation for the one picked.
+          const tv = this.state.travel;
+          const tvDeck = tv ? this.node(tv.deck) : null;
+          const tvTarget = tv && tv.target ? this.node(tv.target) : null;
+          const tvRoute = tvTarget ? this.planRoute(here.id, tvTarget.id) : null;
+          const tvPlaces = tvDeck ? [tvDeck].concat(this.NODES.filter((n) => n.parent === tvDeck.id)) : [];
+          const hms = (s) => [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60].map((v) => String(v).padStart(2, '0')).join(':');
           return {
+            travelOpen: !!tv,
+            tvIsPlaces: !!tv && tv.step === 'places',
+            tvIsConfirm: !!tv && tv.step === 'confirm',
+            tvTitle: tvDeck ? tvDeck.label.toUpperCase() : '',
+            tvSub: tvDeck ? (tvDeck.fn.startsWith('[') ? 'FUNCTION NOT YET DESIGNED' : tvDeck.fn.toUpperCase()) + (tvDeck.lock ? ' · ' + tvDeck.lock : '') : '',
+            tvList: tvPlaces.map((n) => {
+              const isHere = n.id === here.id;
+              const r = isHere ? null : this.planRoute(here.id, n.id);
+              return {
+                name: this.placeName(n),
+                detail: isHere ? 'You are here' : n.depth === 1 ? 'The deck itself · lift lobby' : 'Room',
+                time: isHere ? '' : 'about ' + r.min + ' min',
+                isHere,
+                ...lockBadge(n),
+                ariaDisabled: isHere ? 'true' : 'false',
+                pick: () => { if (!isHere) this.setState({ travel: { ...tv, step: 'confirm', target: n.id } }); },
+                style: 'display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 52px; padding: 8px 12px; text-align: left; border-radius: 6px; '
+                  + (isHere ? 'background: #23272B; border: 1px solid ' + accent + '; color: #E8E4DA; cursor: default;' : 'background: #111315; border: 1px solid #2E3236; color: #E8E4DA; cursor: pointer;')
+              };
+            }),
+            tvDest: tvTarget ? this.placeName(tvTarget) + (tvTarget.depth === 2 ? ' · ' + tvDeck.label : '') : '',
+            tvLegs: tvRoute ? tvRoute.legs.map((l, i) => ({ n: i + 1, text: this.legText(l) })) : [],
+            tvTime: tvRoute ? 'About ' + tvRoute.min + ' min' : '',
+            tvHasWindow: !!this.windowCloseAt && this.windowRemaining() > 0,
+            tvWindowAfter: tvRoute && this.windowCloseAt ? hms(Math.max(0, this.windowRemaining() - tvRoute.min * 60)) : '',
+            tvHasLock: !!(tvTarget && tvTarget.lock),
+            tvLockNote: tvTarget && tvTarget.lock ? 'Access: ' + tvTarget.lock + '. You can get there, not necessarily in.' : '',
+            tvFooter: 'CURRENT LOCATION · ' + this.placeName(here).toUpperCase() + (deck && here.depth === 2 ? ' · ' + deck.label.toUpperCase() : ''),
+            closeTravel: () => this.closeTravel(),
+            travelBack: () => this.setState({ travel: { ...tv, step: 'places', target: null } }),
+            confirmTravel: () => this.confirmTravel(),
+            travelKey: (e) => { if (e.key === 'Escape') { e.stopPropagation(); this.closeTravel(); } },
+            travelCloseRef: (el) => { this.travelCloseEl = el; },
+            travelGoRef: (el) => { this.travelGoEl = el; },
+            inTransit: !!tr,
+            tsLift: !!leg && leg.kind === 'lift',
+            tsLadder: !!leg && leg.kind === 'ladder',
+            tsTram: !!leg && leg.kind === 'tram',
+            tsLegLabel,
+            tsLegCount: tr && tr.legs.length > 1 ? 'LEG ' + (tr.leg + 1) + ' OF ' + tr.legs.length : '',
+            tsFrom: leg && leg.from ? leg.from.toUpperCase() : '',
+            tsTo: leg && leg.to ? leg.to.toUpperCase() : '',
+            tsAcross: !!leg && (leg.kind === 'run' || leg.kind === 'tram'),
+            tsUpDown: !!leg && (leg.kind === 'lift' || leg.kind === 'ladder'),
+            tsAcrossStyle: 'left: calc((100% - 44px) * ' + p + '); top: 70px;',
+            // Decks run top to bottom, so a higher deck number means down.
+            tsUpDownStyle: 'left: calc(50% - 30px); top: ' + (tsY - 22) + 'px;' + (leg && leg.toDeck < leg.fromDeck ? ' transform: scaleY(-1);' : ''),
+            tsStops,
+            trClock: tr ? tr.clockFrom + ' ▸ ' + tr.clockTo : '',
+            trWindow: tr && this.windowCloseAt ? 'WINDOW −' + tr.min + ' MIN' : '',
+            trHint: tr ? 'SKIP ▸' : '',
+            trLabel: tr ? 'Travelling to ' + this.placeName(this.node(tr.to)) + '. Skip.' : '',
+            trRef: (el) => { this.trEl = el; },
+            trClick: () => this.advanceTrip(),
+            trKey: (e) => {
+              // Enter and Space already click the button.
+              if (e.repeat || e.key === 'Enter' || e.key === ' ' || ['Shift', 'Control', 'Alt', 'Meta'].includes(e.key)) return;
+              e.preventDefault();
+              if (e.key !== 'Tab') this.advanceTrip();
+            },
+            logs: this.state.logs || [],
+            noLogs: !(this.state.logs || []).length,
             accent,
             nodes,
             decks,
+            layoutOpen: !!this.state.layoutOpen,
+            layoutExpanded: this.state.layoutOpen ? 'true' : 'false',
+            layoutCaret: this.state.layoutOpen ? '▾' : '▸',
+            toggleLayout: () => this.setState({ layoutOpen: !this.state.layoutOpen }),
             termId: term.id,
             termKind: term.kind + ' TERMINAL',
             kindStyle: 'font-size: 11px; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; border: 1px solid '
