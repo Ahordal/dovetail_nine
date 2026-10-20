@@ -179,15 +179,16 @@ const sw = f(16.5 * S), sh = f(11.2 * S);
 const cx = f(bx + bw / 2), cy = f(dy(9) + DH / 2);
 const sx = f(cx - sw / 2), sy = f(cy - sh / 2);
 add(`<g class="ship"><rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" rx="5"/><circle cx="${f(cx - 9)}" cy="${f(cy + 1)}" r="4.5"/><circle cx="${f(cx + 9)}" cy="${f(cy + 1)}" r="4.5"/></g>`);
-// Gantry crane: a rail the length of the bay ceiling, the trolley parked over the cargo platform with its grab lowered.
+// Gantry crane: a rail the length of the bay ceiling, the trolley parked over the cargo dock with its grab lowered.
 const railY = dy(8), tx = mx(BAY[0] + 6);
 add(`<g class="gantry"><rect x="${bx}" y="${railY}" width="${bw}" height="${f(0.9 * S)}"/>`);
 add(`<rect x="${f(tx - 2.2 * S)}" y="${f(railY + 0.9 * S)}" width="${f(4.4 * S)}" height="${f(1.6 * S)}"/>`);
-const grabY = dy(10) - 2.5 * S;
+const grabY = dy(11) - 7 * S;
 add(`<line x1="${f(tx)}" y1="${f(railY + 2.5 * S)}" x2="${f(tx)}" y2="${f(grabY)}"/>`);
 add(`<polyline points="${f(tx - 2 * S)},${f(grabY + 1.6 * S)} ${f(tx - 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY + 1.6 * S)}"/></g>`);
-// Cargo platform: a deck outside the cargo door on Deck 10, where the gantry sets loads down.
-add(`<rect class="platform" x="${bx}" y="${f(dy(11) - 0.7 * S)}" width="${f(10 * S)}" height="${f(0.7 * S)}"/>`);
+// Cargo dock: a raised platform outside the cargo door, a deck above the bay floor, where the gantry sets loads down.
+add(`<rect class="platform" x="${bx}" y="${dy(11)}" width="${f(10 * S)}" height="${f(0.7 * S)}"/>`);
+for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1="${f(dy(11) + 0.7 * S)}" x2="${f(mx(BAY[0] + m))}" y2="${dy(12)}"/>`);
 tags.push(tag(BAY[0] + 5, 10, 9, 3.2));
 // Docking clamps 1 to 4: two arms down from the bay ceiling, two up from the floor, each ending in a pad on the hull.
 add(`<g class="clamp">`);
@@ -205,25 +206,86 @@ add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-an
 // Boarding umbilical, and the airlock doors at the full height of Deck 09.
 const floor9 = dy(10), wall = f(bx + 98 * S);
 // Half a deck tall, centred on Deck 09 and the ship.
-add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(dy(9) + DH / 4)}" width="${f(wall - sx - sw)}" height="${f(DH / 2)}"/>`);
-// Airlock rooms on Deck 09, one in each end wall of the bay: A takes the umbilical, B faces it.
+// Airlock and cargo doors fill a deck's room height only: below the service band, above the floor plate.
+// Floor lines are 1 unit thick, centred on the deck line: doors stop flush against them, above and below.
+const FL = 0.5;
+const doorTop = (k) => dy(k) + 3 * S, doorBot = (k) => dy(k + 1) - FL;
+const door9Mid = (doorTop(9) + doorBot(9)) / 2;
+add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(door9Mid - DH / 4)}" width="${f(wall - sx - sw)}" height="${f(DH / 2)}"/>`);
+// Airlock rooms, one in each end wall of the bay: A takes the umbilical on Deck 09, B faces it.
 const AL = 6.5;
 add(`<rect class="room" x="${wall}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
 add(`<rect class="room" x="${f(bx - AL * S)}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
-for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 1.5)}" y="${dy(9)}" width="3" height="${f(DH)}"/>`);
+for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 0.8)}" y="${f(doorTop(9))}" width="1.6" height="${f(doorBot(9) - doorTop(9))}"/>`);
 tags.push(tag(BAY[1] + AL / 2, 9, "A", -3.6), tag(BAY[0] - AL / 2, 9, "B"));
 // Bay control: from Airlock A to the lift, looking into the bay.
 const bc0 = BAY[1] + AL, bc1 = LIFTS[1] - LW / 2;
 add(`<rect class="room" x="${f(mx(bc0))}" y="${dy(9)}" width="${f((bc1 - bc0) * S)}" height="${f(DH)}"/>`);
 tags.push(tag((bc0 + bc1) / 2, 9, 7));
-// Cargo hold: two decks, beside Airlock B on Deck 09 and running to the bay wall on Deck 10, with a cargo door there.
-const cg0 = LIFTS[0] + LW / 2, cg1 = BAY[0] - AL;
-add(`<polygon class="room" points="${mx(cg0)},${dy(9)} ${f(mx(cg1))},${dy(9)} ${f(mx(cg1))},${dy(10)} ${bx},${dy(10)} ${bx},${dy(11)} ${mx(cg0)},${dy(11)}"/>`);
-add(`<rect class="airlock" x="${f(bx - 1.5)}" y="${dy(10)}" width="3" height="${f(DH)}"/>`);
-tags.push(tag((cg0 + BAY[0]) / 2, 10, 8));
+// Cargo hold: the cargo door opens into a one-deck hallway on Deck 10, which runs past the lift and opens
+// into a two-storey storage area (Decks 09 and 10). Its floor sits a deck above the bay floor, level with the dock.
+const CG = [105, BAY[0]], cgTop = dy(9), cgBot = dy(11);
+const ST = LIFTS[0] - LW / 2;   // storage meets the lift shaft
+add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx(ST)},${dy(10)} ${bx},${dy(10)} ${bx},${cgBot} ${mx(CG[0])},${cgBot}"/>`);
+// The lift passes through the hallway only, with its one cargo stop there on Deck 10.
+add(`<rect class="lift" x="${f(mx(LIFTS[0] - LW / 2))}" y="${dy(10)}" width="${f(LW * S)}" height="${f(DH)}"/>`);
+for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
+// The cargo door: Deck 10's full height, below Airlock B, opening onto the raised dock.
+// The cargo door runs the full deck, from the deck above's floor plate down to its own.
+add(`<rect class="airlock" x="${f(bx - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
+// Storage: three empty shelving levels carried on a truss frame, posts tied by diagonal bracing between levels.
+add(`<g class="racks">`);
+{
+  const R0 = CG[0] + 1.5, R1 = CG[0] + 15, LEVELS = [4.4, 8.8, 13.2], DEPTH = 0.7, BAYS = 3;
+  const posts = [];
+  for (let k = 0; k <= BAYS; k++) posts.push(R0 + (R1 - R0) * k / BAYS);
+  const Y = (h) => f(cgBot - h * S);
+  for (const m of posts) add(`<line class="upright" x1="${f(mx(m))}" y1="${Y(0)}" x2="${f(mx(m))}" y2="${Y(LEVELS[2])}"/>`);
+  // Each level is a shallow truss: two chords with a zigzag web, the deck plate on top.
+  for (const h of LEVELS) {
+    add(`<line class="shelf" x1="${f(mx(R0))}" y1="${Y(h)}" x2="${f(mx(R1))}" y2="${Y(h)}"/><line class="chord" x1="${f(mx(R0))}" y1="${Y(h - DEPTH)}" x2="${f(mx(R1))}" y2="${Y(h - DEPTH)}"/>`);
+    let zz = "";
+    for (let m = R0, up = true; m <= R1 + 0.01; m += 1.1, up = !up) zz += `${f(mx(Math.min(m, R1)))},${Y(up ? h : h - DEPTH)} `;
+    add(`<polyline class="web" points="${zz}"/>`);
+  }
+  // Diagonal bracing in each bay, alternating direction level by level.
+  const tiers = [0, ...LEVELS.map((h) => h - DEPTH)];
+  for (let t = 0; t < 3; t++) {
+    const h0 = t === 0 ? 0 : LEVELS[t - 1], h1 = tiers[t + 1];
+    for (let k = 0; k < BAYS; k++) {
+      const a = posts[k], b = posts[k + 1], flip = (k + t) % 2 === 1;
+      add(`<line class="brace" x1="${f(mx(flip ? b : a))}" y1="${Y(h0)}" x2="${f(mx(flip ? a : b))}" y2="${Y(h1)}"/>`);
+    }
+  }
+  // A few boxes here and there, drawn over the bracing: [metres along, level, width, height].
+  for (const [m, h, w, bh] of [[107.2, 0, 2.2, 1.6], [109.6, 0, 1.4, 1.1], [116.4, 0, 2.6, 2.0], [112.8, 4.4, 1.8, 1.3], [118.3, 4.4, 1.2, 0.9], [107.6, 8.8, 2.4, 1.8], [114.9, 13.2, 1.6, 1.2], [124.0, 0, 2.2, 1.8], [124.4, 1.8, 1.6, 1.3], [129.2, 0, 1.6, 1.0]]) {
+    add(`<rect class="crate" x="${f(mx(m))}" y="${Y(h + bh)}" width="${f(w * S)}" height="${f(bh * S)}"/>`);
+  }
+}
+// Hold crane: a ceiling rail the length of the storage area, its trolley parked over the open floor with the grab lowered.
+{
+  const railY = cgTop, tx = mx(127.5);
+  add(`<g class="gantry"><rect x="${mx(CG[0])}" y="${railY}" width="${f((LIFTS[0] - LW / 2 - CG[0]) * S)}" height="${f(0.7 * S)}"/>`);
+  add(`<rect x="${f(tx - 1.8 * S)}" y="${f(railY + 0.7 * S)}" width="${f(3.6 * S)}" height="${f(1.3 * S)}"/>`);
+  const gy = cgBot - 6 * S;
+  add(`<line x1="${f(tx)}" y1="${f(railY + 2 * S)}" x2="${f(tx)}" y2="${f(gy)}"/>`);
+  add(`<polyline points="${f(tx - 1.6 * S)},${f(gy + 1.3 * S)} ${f(tx - 1.6 * S)},${f(gy)} ${f(tx + 1.6 * S)},${f(gy)} ${f(tx + 1.6 * S)},${f(gy + 1.3 * S)}"/></g>`);
+}
+// A few crates stacked loose on the floor by the door.
+for (const [m, w, hgt] of [[141.5, 2.4, 2.0], [141.8, 1.8, 1.6], [144.05, 1.8, 1.4]]) {
+  const below = m === 141.8 ? 2.0 : 0;
+  add(`<rect class="crate" x="${f(mx(m))}" y="${f(cgBot - (below + hgt) * S)}" width="${f(w * S)}" height="${f(hgt * S)}"/>`);
+}
+add(`</g>`);
+// Ladder shaft from Airlock B straight down into the hold.
+add(`<rect class="shaft" x="${mx(146)}" y="${dy(10)}" width="${f(3 * S)}" height="${f(cgBot - dy(10))}"/>`);
+for (let y = dy(10) + S; y < cgBot - 0.5; y += S) add(`<line class="rung" x1="${f(mx(146) + 1.2)}" y1="${f(y)}" x2="${f(mx(149) - 1.2)}" y2="${f(y)}"/>`);
+// The hold floor runs solid under the foot of the ladder.
+add(`<line class="hold-floor" x1="${f(mx(146) - 1)}" y1="${cgBot}" x2="${f(mx(149) + 1)}" y2="${cgBot}"/>`);
+tags.push(tag(123.5, 9, 8, 1));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
 add(`<g class="here"><circle class="here-ring" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="6"/><circle class="here-dot" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="3"/></g>`);
-add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(dy(9) + DH / 2 + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
+add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
 tags.forEach(add);
 
@@ -321,6 +383,15 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .gantry line { stroke: var(--muted); stroke-width: 0.8; }
   .gantry polyline { fill: none; stroke: var(--muted); stroke-width: 1.4; }
   .platform { fill: var(--muted); }
+  .dock-leg { stroke: var(--muted); stroke-width: 1; }
+  .hold-floor { stroke: var(--muted); stroke-width: 1; }
+  .hold { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .racks .upright { stroke: var(--muted); stroke-width: 0.9; }
+  .racks .shelf { stroke: var(--muted); stroke-width: 0.9; }
+  .racks .chord { stroke: var(--muted); stroke-width: 0.5; }
+  .racks .web { fill: none; stroke: var(--muted); stroke-width: 0.4; }
+  .racks .brace { stroke: var(--muted); stroke-width: 0.4; stroke-opacity: 0.7; }
+  .racks .crate { fill: var(--line); stroke: var(--muted); stroke-width: 0.5; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
@@ -394,8 +465,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09: the boarding umbilical</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09, across the bay</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bay control room, Deck 09</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10, cargo door to the bay</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo platform, outside the cargo door</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
