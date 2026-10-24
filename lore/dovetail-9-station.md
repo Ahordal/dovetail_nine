@@ -97,6 +97,11 @@ related:
 - **[proposed] Docking control,** on Deck 10 from the bay wall to the right lift, under Airlock B's ready room: a **near floor-to-ceiling window** onto the bay and a long **control desk** facing it, with a traffic board on the back wall. It runs the **docking clamps, bay lights, gantry crane and docking traffic**. Pressurized, with no door to the bay. The right lift opens into it. From here the whole bay, and any docked ship, is in plain view.
 - **[proposed] Bay workshop,** on Deck 11 below docking control, at bay-floor level: a pressurized repair shop for docked ships and the bay's own gear (clamps, gantry, umbilicals), with a desk under a small **window** onto the bay, a workbench and tool board, a rolling tool chest, welding gas bottles, crated spares, a cable reel and a parts cabinet. It has **no door to the bay**, so it needs no airlock of its own; crews go out through Airlock B. The right lift opens into it.
 - **[proposed] The bay floor runs on under the cargo machinery** on Deck 11, to the left lift.
+- **[proposed] Door states as Quell finds them.** Every door is a game mechanism; the side view colours each one unlocked or locked. First-pass rule: doors onto vacuum are locked, except Airlock B's outer door, in use with the Mistral docked; doors inside the pressurized station are unlocked.
+  - **Unlocked:** Airlock B's outer and inner doors, Airlock A's inner door, the cargo airlock's inner door, and the lift doors into R&D, the Deck 06 lobbies, both ready rooms, the cargo hallway, docking control and the bay workshop.
+  - **Locked:** Airlock A's outer door and the cargo door.
+  - Off this drawing, the R&D lock into experiment control is **sealed** (Quell's log, [[tobias-quell]]).
+  - Which doors end up locked, and with what kind of lock (sealed, no power, clearance, as on the mockup's badges), is **[open]**.
 - **Fits "visible, unreachable"** ([[mistral]]): cut off from the umbilical, he can still see the Mistral in the bay, through the airlock windows or from docking control, but can't reach it without crossing vacuum. What cuts him off is **[open]**.
 - **Means Quell boards low in the station.** Most of what he needs is above him, so the lifts and climbs matter from the first move.
 - Reconciles "docking bay" ([[mistral]]) with "docking ring" (Quell's log): the ring is inside the bay.

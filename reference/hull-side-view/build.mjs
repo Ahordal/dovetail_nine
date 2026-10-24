@@ -229,7 +229,8 @@ add(`<rect class="umbilical" x="${bx}" y="${f(door9Mid - 1.7 * S)}" width="${f(2
 const AL = 6.5;
 add(`<rect class="room" x="${wall}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
 add(`<rect class="room" x="${f(bx - AL * S)}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
-for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
+// Door colours give each door's state as Quell finds it: B is in use with the Mistral docked, A opens on vacuum.
+for (const x of [wall, bx]) add(`<rect class="airlock ${x === wall ? "door-open" : "door-locked"}" x="${f(x - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
 // Room tags centred in the low rooms; B's sits toward the door to share with the you-are-here dot.
 const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
 const hereM = BAY[1] + AL - 1.6;
@@ -296,9 +297,6 @@ add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx
 // Sides only, redrawn over the hold's fill; the hallway's floor and ceiling run straight across.
 for (const m of [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2]) add(`<line class="lift" x1="${mx(m)}" y1="${dy(10)}" x2="${mx(m)}" y2="${dy(11)}"/>`);
 for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
-// The cargo door: Deck 10's full height, below Airlock A, opening onto the raised dock.
-// The cargo door runs the full deck, from the deck above's floor plate down to its own.
-add(`<rect class="airlock" x="${f(bx - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 // Storage: three empty shelving levels carried on a truss frame, posts tied by diagonal bracing between levels.
 add(`<g class="racks">`);
 {
@@ -346,7 +344,6 @@ add(`</g>`);
 // Cargo airlock inside the cargo door, so the hold stays pressurized while loading.
 const CA = BAY[0] - 8;
 add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
-add(`<rect class="airlock" x="${f(mx(CA) - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 tags.push(tag(CA + 3, 10, "C", -4));
 // Cargo ready room: the hallway's end, from the lift to the cargo airlock. Suits for working the dock.
 const CR = LIFTS[0] + LW / 2;
@@ -460,7 +457,11 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
     [r0, full(10)], [r0, full(11)], // docking control, bay workshop
   ];
-  for (const [m, [y0, y1]] of doors) add(`<rect class="door" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
+  // Cargo airlock doors, a full deck high: the cargo door opens on vacuum, so locked; the inner door is unlocked.
+  for (const [x, st] of [[bx, "door-locked"], [mx(CA), "door-open"]]) add(`<rect class="airlock ${st}" x="${f(x - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
+  // Inner pressure doors, ready room to airlock: inside the pressurized station, so unlocked.
+  for (const m of [BAY[0] - AL, BAY[1] + AL]) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
+  for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
 tags.forEach(add);
 add(hereMarker);
@@ -494,18 +495,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2;
+    --open: #9fc7c2; --locked: #e5534b;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -582,6 +583,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock, .door { fill: var(--ship); }
+  .door-open { fill: var(--open); }
+  .door-locked { fill: var(--locked); }
   .window { fill: var(--bg); stroke: var(--ship); stroke-width: 0.4; }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
   .arrow { fill: none; }
@@ -661,7 +664,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door door-open" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
@@ -669,6 +672,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
