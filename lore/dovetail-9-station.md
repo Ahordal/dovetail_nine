@@ -141,6 +141,33 @@ related:
   - **Waste plant (18),** past the right lift, which opens into it: a collection tank, a distiller that recovers water from urine (as on the ISS), a brine processor, a digester and a dryer for solids. The recovered water climbs the right core, crosses in the **Deck 04 service band** and joins the left drain into the wastewater tanks.
   - Maintenance runs it all ([[crew]]). On the side view every water line is a single turquoise line, with a hop where two cross without joining; tanks stand upright, unlike the fuel tanks lying on Deck 12. The risers run inside the lift cores.
 
+## The rest of the station **[proposed]**
+
+Placed on the side view; the numbers are its room tags. Every room is fed from the gold grid's risers along its deck's service band, and the water-using ones from the teal supply.
+
+- **Deck 01, command (28):** the bridge, built around the top of SIGMA's column as canon has it, consoles on both sides and wall displays. **Comms room (29)** beside it, under the taller spire: equipment racks and the **beacon transmitter**, whose feed rises through the roof to the spire. **Administration and records (30)** on the other side. **Lift machinery (27)** beside both lift cores.
+- **Deck 02:** **senior staff quarters (31)** (administrator, Science Director and other Level 6 staff), the **galley (32)** (the coffee machine of the galley echo sits on its counter), the **mess (33)**, a **recreation lounge (34)**, and **laundry and stores (35)**.
+- **Decks 03 and 04, hydroponics (36):** two bays at the outer ends, each two storeys high, tall grow racks with lights, a nutrient tank and terminal. Food, and part of the oxygen.
+- **Deck 03:** the **medical clinic (37)** (beds, a scanner, cabinets, a sink: Medical tracks radiation and harmonic exposure) and **science offices (38)**.
+- **Crew quarters (39):** on Decks 04, 08, 09 and 10, bunk units with lockers; room for all 166 and to spare.
+- **Deck 05, science labs (41):** four labs at the outer ends, beyond R&D and engineering.
+- **Deck 06, array access (42):** at both ends of the tram, where the hull meets the array: an airlock out to the truss (outer door locked, onto vacuum), suit racks and tool lockers. The tram stops at its inner wall. **Tram cars** wait at the two lobby stops.
+- **Deck 07, life support (43):** a plant at each end by the lifts (which open into them): **oxygen from water** by electrolysis (fed from the water supply), **carbon dioxide scrubber beds**, **air handlers** (the ventilation that carried argon-41 in the accident) and trace contaminant control. **Maintenance shops (44)** beyond them, with suit and tool stores.
+- **Deck 08:** **fire and emergency stores (46)** (suppression cylinders, hose reels), **security (45)** (office, armoury, holding cell; the left lift opens into it), more quarters, and a **gym (47)**.
+- **Deck 10, logistics stores (48);** **Deck 11, recycling and sorting (49)** beside the waste plant.
+- **Terminals:** SIGMA terminals in every major room, drawn as small screens on posts: each one reveals its deck's map to Quell's slate ([[site-frame]]).
+- **Water:** one crossing in Deck 02's service band serves the right half, down a riser beside the right lift to hydroponics and life support there; the left half branches straight off the supply riser.
+
+## Escape pods **[proposed]**
+
+- **Fourteen lifeboat pods of twelve seats (40),** at the outer ends of Decks 04 and 09, near the quarters: 168 seats for 166 crew. A pod is a sealed lifeboat with weeks of air and no FTL drive, made to keep people alive until a ship picks them up.
+- **Why the crew didn't use them:**
+  - **It wouldn't have saved them.** Everyone took a lethal dose in the first two seconds, and Medical's dosimeter readings showed it within hours. A pod would only have moved their deaths somewhere smaller.
+  - **There was nowhere to go.** The station slipped out of phase in the same two seconds: no stars on the sensors, no signal, and the first alignment window five months away, long after the last of them died.
+  - **SIGMA had them locked.** A classified incident triggers a lockdown under the Nashiro Corridor Integrity Act: no departures. SIGMA holds the pods exactly as it holds the crew's messages, for the same reason. The crew may have asked it to release them and been refused: a document worth finding.
+- **Why Quell can't use them:** the hatches are still under lockdown (drawn locked), and he could override them, but out here a pod is a coffin. K-17 is deep in the Trillium Arc, nobody watches it, and he was the only ship in range; a pod without FTL would drift for years with weeks of air. Launching would also mean abandoning the dump. A scene: he stands at the pods, works out air against distance, and walks away.
+- **Where the reader finds it:** the lockdown order and the crew's release requests in SIGMA's logs; the pods' status on the hatch panels.
+
 ## Defenses **[settled]**
 
 - **No external defenses.** Like every Dovetail station, it relies on secrecy and remoteness. Station security carries small arms for internal incidents only.
@@ -154,10 +181,7 @@ related:
   - ~~Harmonic shielding plant~~ Placed: Deck 07 in engineering (see Scale above).
   - ~~Experiment control~~ Placed: Deck 05, between R&D and engineering (see Scale above).
   - ~~SIGMA's core~~ Placed: a column from Deck 04 up into command on Deck 01 (see Scale above).
-  - **Array access at both ends:** airlocks, suit rooms and tool stores where the hull meets the array on Deck 06. The natural ends of the tram line.
-  - **Command and comms:** Deck 01 under the antennas (proposed above), including the emergency beacon Quell followed.
-  - **Life support plant:** air and thermal machinery (water and waste are placed on Deck 11). Its coolant loop ties to the radiators on the array arms, so likely along the spine too.
-  - **Hydroponics:** large floor area, possibly double-height.
+  - ~~Array access, command and comms, life support, hydroponics~~ Placed: see The rest of the station, below.
   - Rooms the logs already place: galley on Deck 2, hydroponics on Deck 3 ([[phase-mechanics]]), R&D on Deck 5 ([[tobias-quell]]). Logs write "DECK 2" where the tree writes "Deck 02"; whether that difference is deliberate is **[open]**.
   - Whether the ZK-Class failsafe's antimatter sits inside the X9 assembly or needs its own protected store (see [[dynex-t-core-x9-ignis]]).
 - **[idea, back burner] Suited routes outside the hull.** Quell suits up to get around the station from outside, for example out an array airlock and along the hull to skip the tram line, or across the bay to the Mistral. Details undecided. Things to check when it's picked up: his Protek-3A ([[ravel-protek-3a-eva-suit]]) is stowed in Airlock B; a suit doesn't stop gamma rays; no echoes in vacuum, since rings play out through air ([[phase-mechanics]]); whether the artificial gravity reaches outside the hull.

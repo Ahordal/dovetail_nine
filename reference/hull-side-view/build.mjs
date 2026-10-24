@@ -87,7 +87,7 @@ for (let k = 1; k <= 12; k++) {
 add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
 // The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
-const goldAt = svg.length, GOLD = [];
+const goldAt = svg.length, GOLD = [], EARLY = [];
 const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
@@ -122,10 +122,10 @@ for (const [m0, m1] of [[123, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 277]]) {
 const tramY = f(dy(7) - 1.6);
 // Faded wherever it runs through a room or section on Deck 06 (the lobbies, engineering, the lifts between).
 const TRAM_FADE = [123, 277];
-add(`<line class="tram" x1="${X0 + 4}" y1="${tramY}" x2="${mx(TRAM_FADE[0])}" y2="${tramY}"/>`);
+// The tram stops at the array-access airlocks at both ends.
+add(`<line class="tram" x1="${mx(6.5)}" y1="${tramY}" x2="${mx(TRAM_FADE[0])}" y2="${tramY}"/>`);
 add(`<line class="tram tram-behind" x1="${mx(TRAM_FADE[0])}" y1="${tramY}" x2="${mx(TRAM_FADE[1])}" y2="${tramY}"/>`);
-add(`<line class="tram" x1="${mx(TRAM_FADE[1])}" y1="${tramY}" x2="${X1 - 4}" y2="${tramY}"/>`);
-add(`<text class="t-label t-accent" x="${X1 - 6}" y="${f(dy(6) + 3 * S + 7.6)}" text-anchor="end">TRAM · FULL LENGTH</text>`);
+add(`<line class="tram" x1="${mx(TRAM_FADE[1])}" y1="${tramY}" x2="${mx(393.5)}" y2="${tramY}"/>`);
 
 // Engineering: the section around the Core Chamber, Decks 05 to 07.
 // Engineering runs out to meet both lift shafts.
@@ -135,7 +135,7 @@ add(`<rect class="section" x="${ex0}" y="${ey0}" width="${f(ex1 - ex0)}" height=
 // Conduits along the spine from the chamber out to both arrays.
 const cr = f(11 * S), ccx = mx(200);
 add(`<line class="conduit" x1="${X0}" y1="${f(midY)}" x2="${f(ccx - cr)}" y2="${f(midY)}"/><line class="conduit" x1="${f(ccx + cr)}" y1="${f(midY)}" x2="${X1}" y2="${f(midY)}"/>`);
-add(`<text class="t-note" x="${f(X0 + 30)}" y="${f(midY - 3)}">CONDUITS · KEEL</text>`);
+add(`<text class="t-note" x="${mx(24)}" y="${f(midY - 3)}">CONDUITS · KEEL</text>`);
 // Two vertical access shafts through engineering, midway between the chamber and the section edge.
 for (const m of [164.5, 235.5]) {
   add(`<rect class="shaft" x="${f(mx(m) - 1.5 * S)}" y="${ey0}" width="${f(3 * S)}" height="${f(ey1 - ey0)}"/>`);
@@ -733,6 +733,154 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   gold([[X(291.9), Yk(12, 2.8)], [X(291.9), FH(12)], [X(RB), FH(12)]]);
   tags.push(tag((SA[0] + SA[1]) / 2, 6, 25, -4.5), tag((SB[0] + SB[1]) / 2, 6, 26, -4.5));
 }
+// The rest of the station: command, living, science, life support, security, stores and the escape pods.
+{
+  const X = (m) => mx(m), Yk = (k, h) => dy(k + 1) - FL - h * S, FH = (k) => dy(k) + 1.4 * S;
+  const RA = 138.8, RB = 400 - 138.8, SX = 136.4, DX = 133.6, DBX = LIFTS[1] + LW / 2 - 0.6, RX = LIFTS[1] - LW / 2 + 0.6;
+  const room = (k, m0, m1, k1 = k) => add(`<rect class="room" x="${f(X(m0))}" y="${dy(k)}" width="${f((m1 - m0) * S)}" height="${f(dy(k1 + 1) - dy(k))}"/>`);
+  const box = (k, m0, m1, h0, h1, cls = "", rx = 0) => add(`<rect${cls ? ` class="${cls}"` : ""} x="${f(X(m0))}" y="${f(Yk(k, h1))}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${f(rx)}"` : ""}/>`);
+  const circ = (k, m, h, r) => add(`<circle cx="${f(X(m))}" cy="${f(Yk(k, h))}" r="${f(r * S)}"/>`);
+  const hl = (k, m0, m1, h) => add(`<line class="flange" x1="${f(X(m0))}" y1="${f(Yk(k, h))}" x2="${f(X(m1))}" y2="${f(Yk(k, h))}"/>`);
+  const term = (k, m) => { box(k, m - 0.08, m + 0.08, 0, 1.1, "term"); box(k, m - 0.45, m + 0.45, 1.1, 1.7, "term-screen"); };
+  const run = (x0, y, x1, hops, cls) => {   // a horizontal run that hops over the given x positions
+    const dir = x1 > x0 ? 1 : -1, h = 1.0; let d = `M ${f(x0)} ${f(y)}`;
+    for (const hx of hops.slice().sort((a, b) => dir * (a - b))) d += ` H ${f(hx - dir * h)} A ${h} ${h} 0 0 ${dir > 0 ? 1 : 0} ${f(hx + dir * h)} ${f(y)}`;
+    return d + ` H ${f(x1)}`;
+  };
+  const feed = (k, r, m, k2, h2) => gold([[X(r), FH(k)], [X(m), FH(k)], [X(m), Yk(k2, h2)]]);   // gold: riser to a load
+  // Water branches run at room-ceiling height, just under the service band, so they never ride alongside a gold feeder.
+  const WY = (k) => dy(k) + 3.2 * S;
+  const water = (k, m, k2, h2, hops = []) => GOLD.push(`<path class="water" d="${run(X(SX), WY(k), X(m), hops.map(X))} V ${f(Yk(k2, h2))}"/>`);
+  const T = [];
+  const tg = (m, k, n, off = 0) => T.push(tag(m, k, n, off));
+
+  // Room fit-outs by type. Each takes the deck and the span; everything is a closed shape.
+  const quarters = (k, m0, m1) => {
+    room(k, m0, m1); add(`<g class="racks">`);
+    for (let m = m0 + 0.8; m + 2.4 < m1 - 0.6; m += 3.2) { box(k, m, m + 2.4, 0, 2.4, "kit"); box(k, m + 0.15, m + 2.25, 0.35, 0.75, "crate"); box(k, m + 0.15, m + 2.25, 1.45, 1.85, "crate"); }
+    add(`</g>`); tg((m0 + m1) / 2, k, 39, -4.5);
+  };
+  const desks = (k, m0, m1, step = 4) => { add(`<g class="racks">`); for (let m = m0 + 1; m + 2.4 < m1 - 0.8; m += step) { box(k, m, m + 2.4, 0.75, 0.9, "kit"); box(k, m + 0.15, m + 0.35, 0, 0.75, "kit"); box(k, m + 2.05, m + 2.25, 0, 0.75, "kit"); } add(`</g>`); };
+  const lockers = (k, m0, m1, h = 2.2) => { add(`<g class="racks">`); for (let m = m0; m + 0.9 <= m1; m += 1.0) box(k, m, m + 0.9, 0, h, "kit"); add(`</g>`); };
+
+  // Deck 01: lift machinery either end, comms and the beacon, command around SIGMA's column, administration.
+  for (const [m0, m1] of [[LIFTS[0] + LW / 2, 145], [255, LIFTS[1] - LW / 2]]) {
+    room(1, m0, m1); add(`<g class="plant">`); const c = (m0 + m1) / 2;
+    box(1, c - 2, c + 1, 0, 1.4); circ(1, c + 2.2, 1.2, 1.1); add(`</g>`); tg(c, 1, 27, -4.5);
+  }
+  room(1, 145, 175); add(`<g class="plant">`); for (const m of [147, 149.6, 152.2, 154.8, 157.4]) { box(1, m, m + 2.2, 0, 2.8); box(1, m + 0.5, m + 1.7, 1.9, 2.4); }
+  box(1, 168.5, 172.5, 0, 3.6); box(1, 169.3, 171.7, 2.6, 3.2); add(`</g>`);
+  // The beacon's feed up through the roof to the taller spire.
+  add(`<line class="busbar" x1="${f(X(170.5))}" y1="${f(Yk(1, 3.6))}" x2="${f(X(170.5))}" y2="${Y0}"/>`);
+  term(1, 162); tg(160, 1, 29, -4.5);
+  room(1, 175, 225); add(`<g class="racks">`);
+  for (const [a, b] of [[178, 183], [184, 189], [191, 196.5], [203.5, 209], [211, 216], [217, 222]]) { box(1, a, b, 0, 0.8, "kit"); box(1, a + 0.3, b - 0.3, 0.8, 1.3, "crate"); }
+  box(1, 180, 194, 3.0, 4.4, "kit"); box(1, 206, 220, 3.0, 4.4, "kit"); add(`</g>`); term(1, 189.8); term(1, 210.2); tg(186, 1, 28, -4.5);
+  room(1, 225, 255); desks(1, 225, 245); lockers(1, 247, 254); term(1, 236); tg(240, 1, 30, -4.5);
+
+  // Deck 02: senior quarters, galley, mess, recreation, laundry.
+  room(2, 95, LIFTS[0] - LW / 2); add(`<g class="racks">`); for (const m of [98, 110, 122]) { box(2, m, m + 3.2, 0, 0.7, "kit"); box(2, m + 4, m + 6.4, 0.75, 0.9, "kit"); box(2, m + 8, m + 9.6, 0, 2.2, "kit"); } add(`</g>`); tg(114, 2, 31, -4.5);
+  room(2, LIFTS[0] + LW / 2, 158); add(`<g class="racks">`); box(2, 138, 154, 0, 0.9, "kit"); box(2, 141, 145, 2.2, 2.7, "kit"); box(2, 154.6, 157.2, 0, 2.2, "kit");
+  box(2, 148.5, 149.6, 0.9, 1.5, "crate"); add(`</g>`); tg(148, 2, 32, -4.5);   // the coffee machine on the counter
+  room(2, 158, 197.5); add(`<g class="racks">`); for (let m = 160; m < 195; m += 5) { box(2, m, m + 3, 0.75, 0.9, "kit"); box(2, m + 0.2, m + 0.4, 0, 0.75, "kit"); box(2, m + 2.6, m + 2.8, 0, 0.75, "kit"); } add(`</g>`); term(2, 196); tg(178, 2, 33, -4.5);
+  room(2, 202.5, LIFTS[1] - LW / 2); add(`<g class="racks">`); for (const m of [206, 216, 226, 236]) { box(2, m, m + 4.5, 0, 0.9, "kit"); box(2, m, m + 0.6, 0.9, 1.6, "kit"); } box(2, 248, 258, 2.0, 3.6, "kit"); add(`</g>`); tg(232, 2, 34, -4.5);
+  room(2, LIFTS[1] + LW / 2, 305); add(`<g class="plant">`); for (const m of [269, 272, 275, 278]) { box(2, m, m + 2.6, 0, 1.4); circ(2, m + 1.3, 0.7, 0.45); } add(`</g>`); lockers(2, 284, 302); tg(286, 2, 35, -4.5);
+
+  // Decks 03 and 04: hydroponics two storeys high at both ends; clinic and science offices on 03; quarters on 04.
+  for (const [m0, m1] of [[60, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 340]]) {
+    EARLY.push(`<rect class="hold-mask" x="${f(X(m0))}" y="${dy(3)}" width="${f((m1 - m0) * S)}" height="${f(dy(5) - dy(3))}"/>`);
+    room(3, m0, m1, 4); add(`<g class="racks">`);
+    for (let m = m0 + 3; m + 6 < m1 - 4; m += 9) {
+      box(4, m, m + 6, 0, 11.5, "kit");
+      for (let h = 1.2; h < 11; h += 1.6) { box(4, m + 0.3, m + 5.7, h, h + 0.35, "crate"); box(4, m + 0.8, m + 5.2, h + 1.05, h + 1.2, "grow"); }
+    }
+    add(`</g>`);
+    const nt = m0 < 200 ? m1 - 3.2 : m0 + 0.6; add(`<path class="tank-waste" d="M ${f(X(nt))} ${f(Yk(4, 0))} V ${f(Yk(4, 2.4))} Q ${f(X(nt))} ${f(Yk(4, 3))} ${f(X(nt + 1.3))} ${f(Yk(4, 3))} Q ${f(X(nt + 2.6))} ${f(Yk(4, 3))} ${f(X(nt + 2.6))} ${f(Yk(4, 2.4))} V ${f(Yk(4, 0))} Z"/>`);
+    term(4, m0 < 200 ? m1 - 4.2 : m0 + 4.2); tg((m0 + m1) / 2, 3, 36, 4);
+  }
+  room(3, LIFTS[0] + LW / 2, 197.5); add(`<g class="racks">`); for (const m of [140, 146, 152, 158]) { box(3, m, m + 3.6, 0.5, 0.75, "kit"); box(3, m, m + 0.3, 0.75, 1.4, "kit"); box(3, m + 0.4, m + 3.4, 0, 0.5, "kit"); }
+  box(3, 166, 172, 0.4, 1.6, "kit", 1.5); box(3, 162.6, 164.6, 0.8, 0.95, "kit"); box(3, 163.4, 163.8, 0, 0.8, "kit"); lockers(3, 176, 186); add(`</g>`); term(3, 189); tg(168, 3, 37, -4.5);
+  room(3, 202.5, LIFTS[1] - LW / 2); desks(3, 202.5, 255); term(3, 258); tg(232, 3, 38, -4.5);
+  quarters(4, LIFTS[0] + LW / 2, 197.5); quarters(4, 211.5, LIFTS[1] - LW / 2);
+
+  // Escape pods: 14 lifeboats of 12 seats, at the ends of Deck 04 and Deck 09, near the quarters. Their hatches are
+  // under SIGMA's incident lockdown, so drawn locked.
+  const pods = (k, m0, m1) => {
+    room(k, m0, m1); add(`<g class="ship">`);
+    const n = Math.floor((m1 - m0 - 1) / 7.5);
+    for (let i = 0; i < n; i++) { const m = m0 + 1 + i * 7.5; add(`<rect x="${f(X(m))}" y="${f(Yk(k, 3.2))}" width="${f(6.2 * S)}" height="${f(3.2 * S)}" rx="${f(1.4 * S)}"/>`); }
+    add(`</g>`);
+    for (let i = 0; i < n; i++) { const m = m0 + 1 + i * 7.5 + 2.6; add(`<rect class="door door-locked" x="${f(X(m))}" y="${f(Yk(k, 2.6))}" width="${f(1.0 * S)}" height="${f(2.0 * S)}"/>`); }
+    tg((m0 + m1) / 2, k, 40, -4.5);
+  };
+  pods(4, 25, 58); pods(4, 342, 375); pods(9, 12, 38); pods(9, 362, 388);
+
+  // Deck 05: science labs at both ends, beyond R&D and engineering.
+  for (const [m0, m1] of [[12, 60], [60, 112], [LIFTS[1] + LW / 2, 330], [330, 388]]) {
+    room(5, m0, m1); add(`<g class="racks">`);
+    for (let m = m0 + 2; m + 5 < m1 - 6; m += 8) { box(5, m, m + 5, 0, 0.9, "kit"); box(5, m + 1, m + 2.2, 0.9, 1.5, "crate"); }
+    box(5, m1 - 5, m1 - 2, 0, 3.0, "kit"); add(`</g>`); term(5, m0 + 1.2); tg((m0 + m1) / 2, 5, 41, -4.5);
+  }
+
+  // Deck 06: array access at both ends of the tram: airlock out to the truss, suits and tools. Tram cars at the stops.
+  for (const [m0, m1, d] of [[0, 20, -1], [380, 400, 1]]) {
+    room(6, m0, m1); const ow = d < 0 ? m0 : m1, aw = d < 0 ? m0 + 6.5 : m1 - 6.5;
+    add(`<rect class="room" x="${f(X(Math.min(ow, aw)))}" y="${f(Yk(6, 4.5))}" width="${f(6.5 * S)}" height="${f(4.5 * S)}"/>`);
+    add(`<rect class="airlock door-locked" x="${f(X(ow) - DW / 2)}" y="${f(Yk(6, 3))}" width="${DW}" height="${f(3 * S)}"/>`);
+    add(`<rect class="door door-open" x="${f(X(aw) - DW / 2)}" y="${f(Yk(6, 3))}" width="${DW}" height="${f(3 * S)}"/>`);
+    const s0 = d < 0 ? m0 + 7.5 : m1 - 14; add(`<g class="racks">`); for (let m = s0; m < s0 + 6.4; m += 1.6) { box(6, m, m + 1.2, 0.2, 2.0, "kit", 0.5); box(6, m + 0.3, m + 0.9, 2.0, 2.4, "kit", 0.6); } add(`</g>`);
+    lockers(6, d < 0 ? m0 + 15 : m1 - 19, d < 0 ? m0 + 19 : m1 - 15, 2.4);
+    term(6, d < 0 ? m0 + 14.4 : m1 - 14.4); tg((m0 + m1) / 2 - d * 3, 6, 42, -4.5);
+  }
+  add(`<g class="ship">`); for (const m of [124.5, 268.5]) add(`<rect x="${f(X(m))}" y="${f(Yk(6, 3.0))}" width="${f(8 * S)}" height="${f(2.6 * S)}" rx="2"/>`); add(`</g>`);
+
+  // Deck 07: life support at both ends by the lifts; maintenance shops beyond.
+  for (const [m0, m1, d] of [[70, LIFTS[0] - LW / 2, 1], [LIFTS[1] + LW / 2, 330, -1]]) {
+    room(7, m0, m1); add(`<g class="plant">`); const M = (u) => d > 0 ? m0 + u : m1 - u, A = (u0, u1) => [Math.min(M(u0), M(u1)), Math.max(M(u0), M(u1))];
+    // Oxygen from water (electrolysers), carbon dioxide scrubber beds, air handlers, trace contaminant control.
+    for (const u of [3, 8, 13]) { const [a, b] = A(u, u + 4); box(7, a, b, 0, 3.2); for (const h of [0.8, 1.6, 2.4]) hl(7, a + 0.3, b - 0.3, h); }
+    for (const u of [20, 22, 24, 26]) { const [a, b] = A(u, u + 1.4); box(7, a, b, 0, 3.4, "", 0.7 * S); }
+    for (const u of [31, 41]) { const [a, b] = A(u, u + 8); box(7, a, b, 0, 4.0); circ(7, (a + b) / 2, 2.0, 1.4); }
+    const [a, b] = A(52, 56); box(7, a, b, 0, 2.6); add(`</g>`);
+    term(7, M(59)); tg((m0 + m1) / 2, 7, 43, -4.5);
+  }
+  for (const [m0, m1] of [[5, 70], [330, 395]]) { room(7, m0, m1); desks(7, m0, m0 + 30, 6); lockers(7, m0 + 34, m1 - 4, 2.4); term(7, m0 + 32); tg((m0 + m1) / 2, 7, 44, -4.5); }
+
+  // Deck 08: fire and emergency stores, security; crew quarters and the gym on the right.
+  room(8, 10, 85); add(`<g class="plant">`); for (let m = 14; m < 50; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [56, 62, 68, 74]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 80); tg(48, 8, 46, -4.5);
+  room(8, 85, LIFTS[0] - LW / 2); desks(8, 85, 105); lockers(8, 107, 116, 2.4);
+  add(`<rect class="room" x="${f(X(119))}" y="${f(Yk(8, 4.5))}" width="${f(12 * S)}" height="${f(4.5 * S)}"/>`);
+  for (let m = 120; m < 131; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
+  term(8, 117.6); tg(100, 8, 45, -4.5);
+  quarters(8, LIFTS[1] + LW / 2, 330);
+  room(8, 330, 392); add(`<g class="racks">`); for (const m of [334, 342, 350, 358, 366, 374]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(361, 8, 47, -4.5);
+
+  // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
+  quarters(9, 38, 105); quarters(9, LIFTS[1] + LW / 2, 362);
+  room(10, 25, 105); add(`<g class="racks">`); for (let m = 28; m < 100; m += 9) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(65, 10, 48, -4.5);
+  quarters(10, LIFTS[1] + LW / 2, 375);
+  room(11, 305, 355); add(`<g class="plant">`); box(11, 309, 316, 0, 2.6); for (let m = 320; m < 348; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 351); tg(330, 11, 49, -4.5);
+
+  // Power feeders (gold) to every new major system, from the two risers along each deck's service band.
+  feed(1, RA, 141, 1, 1.4); feed(1, RA, 156, 1, 2.8); feed(1, RA, 185.5, 1, 1.3);
+  feed(1, RB, 259, 1, 1.4); feed(1, RB, 214.5, 1, 1.3); feed(1, RB, 236, 1, 1.7);
+  feed(2, RA, 139.5, 2, 0.9); feed(2, RB, 280.3, 2, 1.4);
+  feed(3, RA, 140.15, 3, 1.4); feed(3, RA, 100, 4, 11.5); feed(3, RB, 300, 4, 11.5);
+  feed(4, RA, 41.5, 4, 3.2); feed(4, RB, 358.5, 4, 3.2);
+  feed(5, RA, 86, 5, 1.5); feed(5, RB, 298, 5, 1.5);
+  feed(6, RA, 14.4, 6, 1.7); feed(6, RB, 385.6, 6, 1.7);
+  feed(7, RA, 124, 7, 2.6); feed(7, RB, 276, 7, 2.6);
+  feed(8, RA, 95, 8, 0.9);
+  // Water branches (teal) off the supply riser: galley, clinic, both hydroponics bays, both life support plants.
+  water(2, 146, 2, 0.9); water(3, 163.6, 3, 0.95);
+  water(3, LIFTS[0] - LW / 2 - 1.9, 4, 3.0, [DX]); water(7, 80, 7, 3.2, [DX]);
+  // The right half: one crossing in Deck 02's band, over the toilet drain, then a riser beside the right lift
+  // down to life support's electrolysers, teeing into the hydroponics nutrient tank on the way.
+  const WR = LIFTS[1] + LW / 2 + 4.5;
+  GOLD.push(`<path class="water" d="${run(X(SX), WY(2), X(WR), [X(DBX)])} V ${f(WY(7))} H ${f(X(320))} V ${f(Yk(7, 3.2))}"/>`);
+  GOLD.push(`<path class="water" d="M ${f(X(WR))} ${f(Yk(4, 2.0))} H ${f(X(LIFTS[1] + LW / 2 + 3.2))}"/>`);
+  T.forEach((t) => tags.push(t));
+}
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
 // the cargo hallway's are 4 m, for loads coming up from the hold.
 {
@@ -746,6 +894,8 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     [r0, door(10)], [r0, door(11)], // docking control, bay workshop
     [r0, door(5)], [l1, door(7)], [r0, door(7)], // trap auxiliaries, turbine hall, backup generator hall
     [l1, door(6)], [r0, door(6)], // switch rooms A and B
+    [l1, door(1)], [r0, door(1)], [l0, door(2)], [l1, door(2)], [r0, door(2)], [r1, door(2)], [l1, door(3)], [r0, door(3)], // decks 01 to 03
+    [l0, door(4)], [l1, door(4)], [r0, door(4)], [r1, door(4)], [r1, door(5)], [l0, door(7)], [r1, door(7)], [l0, door(8)], [r1, door(8)], [r1, door(9)], [r1, door(10)], // decks 04 to 10
     [l0, door(11)], [r1, door(11)], // Deck 11: water tanks, waste plant
     [l0, door(12)], [l1, door(12)], [r0, door(12)], [r1, door(12)], // Deck 12: fuel transfer, tank halls, switchgear
   ];
@@ -755,7 +905,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const m of [BAY[0] - AL, BAY[1] + AL]) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
-svg.splice(goldAt, 0, ...GOLD);
+svg.splice(goldAt, 0, ...EARLY, ...GOLD);
 tags.forEach(add);
 add(hereMarker);
 
@@ -860,6 +1010,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
   .ladder { fill: none; stroke: var(--muted); stroke-width: 0.7; }
   .room-wall { stroke: var(--muted); stroke-width: 1; }
+  .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
+  .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
+  .racks .grow { fill: var(--open); stroke: none; opacity: 0.5; }
   .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
   .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
   .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }
@@ -985,6 +1138,29 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">24</text></g></svg>Penetration vaults, Deck 06: conduits leave the dome; dampening coil drivers</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">25</text></g></svg>Switch room A, Deck 06: Bus A, the primary bus</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">26</text></g></svg>Switch room B, Deck 06: Bus B, backup and the X9's auxiliaries</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">27</text></g></svg>Lift machinery, Deck 01</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">28</text></g></svg>Command, Deck 01, around SIGMA's column</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">29</text></g></svg>Comms room and the beacon, Deck 01</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">30</text></g></svg>Administration and records, Deck 01</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">31</text></g></svg>Senior staff quarters, Deck 02</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">32</text></g></svg>Galley, Deck 02</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">33</text></g></svg>Mess, Deck 02</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">34</text></g></svg>Recreation lounge, Deck 02</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">35</text></g></svg>Laundry and stores, Deck 02</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">36</text></g></svg>Hydroponics, Decks 03 to 04, two storeys</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">37</text></g></svg>Medical clinic, Deck 03</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">38</text></g></svg>Science offices, Deck 03</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">39</text></g></svg>Crew quarters</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">40</text></g></svg>Escape pods: 14 lifeboats, hatches under lockdown</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">41</text></g></svg>Science labs, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">42</text></g></svg>Array access, Deck 06: airlock, suits, tools</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">43</text></g></svg>Life support, Deck 07: oxygen, CO₂ scrubbing, air handling</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">44</text></g></svg>Maintenance shops, Deck 07</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">45</text></g></svg>Security: office, armoury, holding cell, Deck 08</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">46</text></g></svg>Fire and emergency stores, Deck 08</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">47</text></g></svg>Gym, Deck 08</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">48</text></g></svg>Logistics stores, Deck 10</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">49</text></g></svg>Recycling and sorting, Deck 11</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -1003,6 +1179,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="emitter" x="12.8" y="5" width="2.4" height="2.2"/></svg>Harmonic emitter along the conduits</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="hot"><circle cx="14" cy="6" r="2.6"/><circle class="hot-hub" cx="14" cy="6" r="0.7"/></g></svg>Radiation hot spot, left by the accident</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="frost" d="M 8 4 l 3 3 m 0 -3 l -3 3 M 17 4 l 3 3 m 0 -3 l -3 3"/></svg>Frost on cryogenic lines</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="term" x="13.6" y="6" width="0.8" height="6"/><rect class="term-screen" x="10.5" y="1.5" width="7" height="4.5"/></svg>SIGMA terminal</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
@@ -1048,8 +1225,6 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <h2><span class="tag open">NOT PLACED YET</span></h2>
       <ul>
         <li><b>Access shaft</b> routes.</li>
-        <li><b>Needs a dedicated place:</b> array access at both ends, command and comms, life support, hydroponics.</li>
-        <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
     </section>
   </div>
