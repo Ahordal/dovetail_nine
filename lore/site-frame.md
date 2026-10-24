@@ -51,6 +51,7 @@ The whole experience works as a file tree:
 - **Opening a folder is Quell going there.**
 - **Decks are named by number [settled]:** Deck 01, Deck 02, up to Deck 12. Each deck's rooms sit in a sub-tree beneath it.
 - **[proposed] The story starts aboard the Mistral,** before Quell boards: the approach, the beacon, docking. The interface mockup currently starts at Airlock B (terminal DT9-T01B); the two fit if the Mistral is the opening and Airlock B the first station screen. How the Mistral part is told (its own interface, Quell's log, or something else) is **[open]**.
+- **[settled] Everything about the station is discoverable.** Every station fact in the lore (its systems, the X9 plant, water, power, the accident and its mechanism) should have an in-universe source the reader can find: manuals, schematics, maintenance logs, SIGMA's records, DYNEX and Nashiro paperwork, crew messages. The lore files stay the private master copy; their out-of-universe parts (what is invented, real-world parallels, design reasoning) never appear in the game.
 - **The station tree holds only places [settled].** `DOVETAIL-9/` at the top is the station overview, the starting screen.
 - **Quell's slate lives under TOOLS, outside the station tree [settled].** It's what he carries, so using it never moves him. The slate is one tool among several, and **each tool has one or more actions**.
 - A map, if added later, is a picture of the same folders.

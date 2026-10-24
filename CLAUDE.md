@@ -9,6 +9,7 @@ Dovetail-9: an interactive sci-fi narrative told through an in-universe web term
 - `canon.md`: settled facts and open questions. Wins any conflict with other files.
 - `lore/`: private, out-of-universe notes for the writer. Never shown on the site.
 - `documents/` (future): in-universe files the reader finds on the terminal.
+- Every station fact in `lore/` must be discoverable in the game through some in-universe source (see `lore/site-frame.md`). When adding station lore, note where the reader could find it. Out-of-universe notes (what's invented, real-world parallels, reasoning) stay private.
 
 ## Consistency rule
 
