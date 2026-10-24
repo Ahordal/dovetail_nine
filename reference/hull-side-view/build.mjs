@@ -86,6 +86,9 @@ for (let k = 1; k <= 12; k++) {
 }
 add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
+// The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
+const goldAt = svg.length, GOLD = [];
+const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
 // SIGMA's emblem: a white sigma in a broken ring, the ring's upper right arc in red.
@@ -159,9 +162,6 @@ for (const [m0, m1, n] of [[166, 187, 5], [213, 234, 6]]) {
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 7, n));
   // Charge from the chamber's Harvest Rings, out to the emitters along the Deck 06 conduits.
-  const inner = m0 < 200 ? m1 : m0, ry = dy(7) + 3 * S + (DH - 3 * S) / 2;
-  const edge = Math.sqrt((11 * S) ** 2 - (ry - midY) ** 2) * (m0 < 200 ? -1 : 1);
-  add(`<line class="power" x1="${f(mx(inner))}" y1="${f(ry)}" x2="${f(mx(200) + edge)}" y2="${f(ry)}"/>`);
   add(`<line class="power" x1="${f(mx((m0 + m1) / 2))}" y1="${dy(7)}" x2="${f(mx((m0 + m1) / 2))}" y2="${f(midY)}"/><circle class="power-node" cx="${f(mx((m0 + m1) / 2))}" cy="${f(midY)}" r="1.6"/>`);
 }
 // Core Chamber: a ~22 m sphere behind this face, black hole at the middle of Deck 06.
@@ -292,6 +292,7 @@ for (const [v0, v1] of [[BAY[1] + AL, LIFTS[1] - LW / 2], [LIFTS[0] + LW / 2, BA
 // into a two-storey storage area (Decks 09 and 10). Its floor sits a deck above the bay floor, level with the dock.
 const CG = [105, BAY[0]], cgTop = dy(9), cgBot = dy(11);
 const ST = LIFTS[0] - LW / 2;   // storage meets the lift shaft
+add(`<rect class="hold-mask" x="${mx(CG[0])}" y="${cgTop}" width="${f((ST - CG[0]) * S)}" height="${f(cgBot - cgTop)}"/>`);
 add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx(ST)},${dy(10)} ${bx},${dy(10)} ${bx},${cgBot} ${mx(CG[0])},${cgBot}"/>`);
 // The lift passes through the hallway only, with its one cargo stop there on Deck 10.
 // Sides only, redrawn over the hold's fill; the hallway's floor and ceiling run straight across.
@@ -500,13 +501,12 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   }
   for (const m of [286, 288.4, 290.8]) { box(m, m + 2.2, 0, 2.8); box(m + 0.5, m + 1.7, 1.9, 2.4); }
   add(`</g>`);
-  // Fuel cell power cables, in a tray near the ceiling, to the switchgear beyond the right lift; fainter behind the shaft.
+  // Fuel cell power cables, in a tray near the ceiling, to Bus B's riser.
   const CT = 4.6, gc = [GEN[0] + 4.2, GEN[1] + 1.8], sw = 287.1;
   const pl = (x1, y1, x2, y2, cls = "power") => add(`<line class="${cls}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`);
-  pl(X(gc[0]), Y(CT), X(r0), Y(CT));
-  pl(X(r0), Y(CT), X(r1), Y(CT), "power tram-behind");
-  pl(X(r1), Y(CT), X(sw), Y(CT));
-  pl(X(gc[0]), Y(CT), X(gc[0]), Y(2.1)); pl(X(gc[1]), Y(CT), X(gc[1]), Y(2.1)); pl(X(sw), Y(CT), X(sw), Y(2.8));
+  // The tray ends at Bus B's riser beside the right lift; the switchgear and batteries hang off the riser (grid block below).
+  pl(X(gc[0]), Y(CT), X(400 - 138.8), Y(CT));
+  pl(X(gc[0]), Y(CT), X(gc[0]), Y(2.1)); pl(X(gc[1]), Y(CT), X(gc[1]), Y(2.1));
   // Maintenance reaches the fuel cell section through a door from each tank hall.
   for (const m of FU) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${Y(DOOR)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   tags.push(tag((100 + l0) / 2, 12, 12), tag((l1 + FU[0]) / 2, 12, 13), tag((FU[1] + r0) / 2, 12, 13), tag(200, 12, 14), tag((r1 + 300) / 2, 12, 15));
@@ -680,6 +680,59 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     add(`<rect class="emitter" x="${f(x + 4.8)}" y="${f(midY - 1.6)}" width="2.4" height="3.2"/>`);
   }
 }
+// The station grid: Bus A from the main generator, Bus B from the backup set, risers beside both lift cores,
+// feeders along each deck's service band. Gold, behind everything (see GOLD above).
+{
+  const X = (m) => mx(m), FH = (k) => dy(k) + 1.4 * S;    // a feeder's height: in deck k's service band
+  const Yk = (k, h) => dy(k + 1) - FL - h * S;            // h metres above deck k's floor
+  const RA = 138.8, RB = 400 - 138.8;
+  // Risers, Deck 01 to Deck 12.
+  gold([[X(RA), FH(1)], [X(RA), FH(12)]]);
+  gold([[X(RB), FH(1)], [X(RB), Yk(12, 4.6)]]);   // down to the fuel cells' cable tray
+  // Switch rooms on Deck 06, above their generator halls: switchboards, a generator breaker, and the tie to the riser.
+  const SA = [LIFTS[0] + LW / 2, 163], SB = [237, LIFTS[1] - LW / 2];
+  for (const [m0, m1] of [SA, SB]) add(`<rect class="room" x="${f(X(m0))}" y="${dy(6)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  add(`<g class="plant">`);
+  for (const [cab, gen, r, d] of [[[141, 143.6, 146.2, 148.8, 151.4], 154.5, RA, 1], [[256.8, 254.2, 251.6, 249, 246.4], 245.5, RB, -1]]) {
+    for (const m of cab) { const a = d > 0 ? m : m - 2.2; add(`<rect x="${f(X(a))}" y="${f(Yk(6, 2.8))}" width="${f(2.2 * S)}" height="${f(2.8 * S)}"/><rect x="${f(X(a + 0.5))}" y="${f(Yk(6, 2.4))}" width="${f(1.2 * S)}" height="${f(0.5 * S)}"/>`); }
+    add(`<rect x="${f(X(gen - 1.1))}" y="${f(Yk(6, 3.2))}" width="${f(2.2 * S)}" height="${f(3.2 * S)}"/>`);
+    // Generator up through the floor into its breaker; switchboards out to the riser.
+    gold([[X(gen), Yk(7, 2.4)], [X(gen), Yk(6, 0)]]);
+    gold([[X(cab[0] - (d > 0 ? 0 : 0)), Yk(6, 2.0)], [X(r), Yk(6, 2.0)]]);
+  }
+  add(`</g>`);
+  // SIGMA's core takes both buses on Deck 03; its switchboard is also the tie between them.
+  gold([[X(RA), FH(3)], [X(197.5), FH(3)]]);
+  gold([[X(RB), FH(3)], [X(202.5), FH(3)]]);
+  // Deck 05, Bus B: the trap auxiliaries and the cryogenic plant.
+  gold([[X(RB), FH(5)], [X(229), FH(5)], [X(229), Yk(5, 2.4)]]);
+  gold([[X(240.1), FH(5)], [X(240.1), Yk(5, 2.8)]]);
+  // Deck 07: capacitor racks in both halls, bank A charged from Bus A, bank B from Bus B.
+  add(`<g class="plant">`);
+  for (const m of [167.5, 170, 172.5, 180.5, 183, 185.5]) for (const mm of [m, 400 - m - 2]) add(`<rect x="${f(X(mm))}" y="${f(Yk(7, 3.0))}" width="${f(2 * S)}" height="${f(3 * S)}"/><line class="flange" x1="${f(X(mm + 0.3))}" y1="${f(Yk(7, 2.0))}" x2="${f(X(mm + 1.7))}" y2="${f(Yk(7, 2.0))}"/>`);
+  add(`</g>`);
+  // These feeders hop over each generator's link up to its switch room: crossing, not connected.
+  for (const [r, gen, rack] of [[RA, 154.5, 171], [RB, 245.5, 229]]) {
+    const dir = rack > r ? 1 : -1, y = f(FH(7)), h = 1.0;
+    GOLD.push(`<path class="grid-power" d="M ${f(X(r))} ${y} H ${f(X(gen) - dir * h)} A ${h} ${h} 0 0 ${dir > 0 ? 1 : 0} ${f(X(gen) + dir * h)} ${y} H ${f(X(rack))} V ${f(Yk(7, 3.0))}"/>`);
+  }
+  // Deck 08: each airlock's machinery from its own side, into the cycle controls.
+  gold([[X(RA), dy(8) + 0.5 * S], [X(147.95), dy(8) + 0.5 * S], [X(147.95), dy(8) + 4.4 * S]]);
+  gold([[X(RB), dy(8) + 0.5 * S], [X(252.05), dy(8) + 0.5 * S], [X(252.05), dy(8) + 4.4 * S]]);
+  // Deck 10 band, Bus A: down into the water supply pump and the reverse-osmosis rack below.
+  gold([[X(RA), FH(10)], [X(75), FH(10)], [X(75), Yk(11, 2.3)]]);
+  gold([[X(114.25), FH(10)], [X(114.25), Yk(11, 1.6)]]);
+  // Deck 10, Bus B: docking control's traffic board.
+  gold([[X(RB), FH(10)], [X(260), FH(10)], [X(260), Yk(10, 2.6)]]);
+  // Deck 11: cargo airlock machinery (A); the workshop and the waste plant (B).
+  gold([[X(RA), FH(11)], [X(149.1), FH(11)]]);
+  gold([[X(RB), FH(11)], [X(256.3), FH(11)], [X(256.3), Yk(11, 2.9)]]);
+  gold([[X(RB), FH(11)], [X(283.9), FH(11)], [X(283.9), Yk(11, 2.4)]]);
+  // Deck 12: fuel transfer (A); the fuel cells' switchgear feeds Bus B as the emergency supply.
+  gold([[X(RA), FH(12)], [X(130.5), FH(12)], [X(130.5), Yk(12, 2.8)]]);
+  gold([[X(291.9), Yk(12, 2.8)], [X(291.9), FH(12)], [X(RB), FH(12)]]);
+  tags.push(tag((SA[0] + SA[1]) / 2, 6, 25, -4.5), tag((SB[0] + SB[1]) / 2, 6, 26, -4.5));
+}
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
 // the cargo hallway's are 4 m, for loads coming up from the hold.
 {
@@ -692,6 +745,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     [l0, door(10, 4)], [l1, door(10, 4)], // cargo hallway: storage one side, cargo ready room the other
     [r0, door(10)], [r0, door(11)], // docking control, bay workshop
     [r0, door(5)], [l1, door(7)], [r0, door(7)], // trap auxiliaries, turbine hall, backup generator hall
+    [l1, door(6)], [r0, door(6)], // switch rooms A and B
     [l0, door(11)], [r1, door(11)], // Deck 11: water tanks, waste plant
     [l0, door(12)], [l1, door(12)], [r0, door(12)], [r1, door(12)], // Deck 12: fuel transfer, tank halls, switchgear
   ];
@@ -701,6 +755,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const m of [BAY[0] - AL, BAY[1] + AL]) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
+svg.splice(goldAt, 0, ...GOLD);
 tags.forEach(add);
 add(hereMarker);
 
@@ -735,18 +790,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -782,8 +837,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
   @keyframes beacon { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   @media (prefers-reduced-motion: reduce) { .mast-light, .truss-light { animation: none; } }
   .tram { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 9 4; }
-  .power { stroke: var(--fg); stroke-width: 1; stroke-dasharray: 1.5 2; }
-  .power-node { fill: var(--fg); }
+  .power, .grid-power { fill: none; stroke: var(--gold); stroke-width: 0.6; stroke-linejoin: round; }
+  .power-node { fill: var(--gold); }
+  .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
@@ -817,7 +873,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .hot circle { fill: var(--accent); }
   .hot .hot-hub { fill: var(--bg); }
   .hold-floor { stroke: var(--muted); stroke-width: 1; }
-  .hold { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .hold { fill: none; stroke: var(--muted); stroke-width: 1; }
+  .hold-mask { fill: var(--bg); }
   .racks .upright { stroke: var(--muted); stroke-width: 0.9; }
   .racks .shelf { stroke: var(--muted); stroke-width: 0.9; }
   .racks .chord { stroke: var(--muted); stroke-width: 0.5; }
@@ -926,13 +983,15 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">22</text></g></svg>Harvest Ring turbine hall, Deck 07: the station's main power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">23</text></g></svg>Backup generator set, Deck 07: feeds the isolated backup bus</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">24</text></g></svg>Penetration vaults, Deck 06: conduits leave the dome; dampening coil drivers</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">25</text></g></svg>Switch room A, Deck 06: Bus A, the primary bus</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">26</text></g></svg>Switch room B, Deck 06: Bus B, backup and the X9's auxiliaries</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door door-open" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Power lines: shielding, and the fuel cells to their switchgear</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="grid-power" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Station power grid; a hop where two lines cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>

@@ -7,18 +7,18 @@
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -54,8 +54,9 @@
   @keyframes beacon { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   @media (prefers-reduced-motion: reduce) { .mast-light, .truss-light { animation: none; } }
   .tram { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 9 4; }
-  .power { stroke: var(--fg); stroke-width: 1; stroke-dasharray: 1.5 2; }
-  .power-node { fill: var(--fg); }
+  .power, .grid-power { fill: none; stroke: var(--gold); stroke-width: 0.6; stroke-linejoin: round; }
+  .power-node { fill: var(--gold); }
+  .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
@@ -89,7 +90,8 @@
   .hot circle { fill: var(--accent); }
   .hot .hot-hub { fill: var(--bg); }
   .hold-floor { stroke: var(--muted); stroke-width: 1; }
-  .hold { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .hold { fill: none; stroke: var(--muted); stroke-width: 1; }
+  .hold-mask { fill: var(--bg); }
   .racks .upright { stroke: var(--muted); stroke-width: 0.9; }
   .racks .shelf { stroke: var(--muted); stroke-width: 0.9; }
   .racks .chord { stroke: var(--muted); stroke-width: 0.5; }
@@ -269,6 +271,28 @@
       <text class="t-watermark t-deck-num" x="367" y="378.8">12</text>
       </g>
       <polygon class="hull-edge" points="768,150 768,169.2 852,169.2 852,188.4 936,188.4 936,207.6 1020,207.6 1020,226.8 1080,226.8 1080,246 1080,246 1080,265.2 1080,265.2 1080,284.4 1080,284.4 1080,303.6 1056,303.6 1056,322.8 1020,322.8 1020,342 972,342 972,361.2 840,361.2 840,380.4 360,380.4 360,361.2 228,361.2 228,342 180,342 180,322.8 144,322.8 144,303.6 120,303.6 120,284.4 120,284.4 120,265.2 120,265.2 120,246 120,246 120,226.8 180,226.8 180,207.6 264,207.6 264,188.4 348,188.4 348,169.2 432,169.2 432,150"/>
+      <polyline class="grid-power" points="453.1,153.4 453.1,364.6"/>
+      <polyline class="grid-power" points="746.9,153.4 746.9,368.9"/>
+      <polyline class="grid-power" points="490.8,278.1 490.8,264.7"/>
+      <polyline class="grid-power" points="458.4,259.9 453.1,259.9"/>
+      <polyline class="grid-power" points="709.2,278.1 709.2,264.7"/>
+      <polyline class="grid-power" points="736.3,259.9 746.9,259.9"/>
+      <polyline class="grid-power" points="453.1,191.8 594,191.8"/>
+      <polyline class="grid-power" points="746.9,191.8 606,191.8"/>
+      <polyline class="grid-power" points="746.9,230.2 669.6,230.2 669.6,239.7"/>
+      <polyline class="grid-power" points="696.2,230.2 696.2,238.8"/>
+      <path class="grid-power" d="M 453.1 268.6 H 489.8 A 1 1 0 0 1 491.8 268.6 H 530.4 V 276.7"/>
+      <path class="grid-power" d="M 746.9 268.6 H 710.2 A 1 1 0 0 0 708.2 268.6 H 669.6 V 276.7"/>
+      <polyline class="grid-power" points="453.1,285.6 475.1,285.6 475.1,295"/>
+      <polyline class="grid-power" points="746.9,285.6 724.9,285.6 724.9,295"/>
+      <polyline class="grid-power" points="453.1,326.2 300,326.2 300,355.2"/>
+      <polyline class="grid-power" points="394.2,326.2 394.2,356.9"/>
+      <polyline class="grid-power" points="746.9,326.2 744,326.2 744,335.3"/>
+      <polyline class="grid-power" points="453.1,345.4 477.8,345.4"/>
+      <polyline class="grid-power" points="746.9,345.4 735.1,345.4 735.1,353.7"/>
+      <polyline class="grid-power" points="746.9,345.4 801.4,345.4 801.4,354.9"/>
+      <polyline class="grid-power" points="453.1,364.6 433.2,364.6 433.2,373.2"/>
+      <polyline class="grid-power" points="820.6,373.2 820.6,364.6 746.9,364.6"/>
       <rect class="lift" x="439.2" y="150" width="9.6" height="230.4"/>
       <circle class="stop" cx="444" cy="159.6" r="1.8"/>
       <circle class="stop" cx="444" cy="178.8" r="1.8"/>
@@ -363,10 +387,8 @@
       <rect class="sigma-core" x="594" y="150" width="12" height="76.8"/>
       <rect class="room" x="606" y="207.6" width="21.6" height="19.2"/>
       <rect class="room" x="518.4" y="265.2" width="50.4" height="19.2"/>
-      <line class="power" x1="568.8" y1="278.4" x2="586.7" y2="278.4"/>
       <line class="power" x1="543.6" y1="265.2" x2="543.6" y2="255.6"/><circle class="power-node" cx="543.6" cy="255.6" r="1.6"/>
       <rect class="room" x="631.2" y="265.2" width="50.4" height="19.2"/>
-      <line class="power" x1="631.2" y1="278.4" x2="613.3" y2="278.4"/>
       <line class="power" x1="656.4" y1="265.2" x2="656.4" y2="255.6"/><circle class="power-node" cx="656.4" cy="255.6" r="1.6"/>
       <circle class="core" cx="600" cy="255.6" r="26.4"/><circle class="singularity" cx="600" cy="255.6" r="1.6"/>
       <text class="t-note t-ship" x="600" y="246.6" text-anchor="middle">CORE</text>
@@ -473,6 +495,7 @@
       </g>
       <rect class="room" x="733.2" y="312" width="18" height="10.8"/>
       <rect class="room" x="448.8" y="312" width="18" height="10.8"/>
+      <rect class="hold-mask" x="372" y="303.6" width="67.2" height="38.4"/>
       <polygon class="hold" points="372,303.6 439.2,303.6 439.2,322.8 482.4,322.8 482.4,342 372,342"/>
       <line class="lift" x1="439.2" y1="322.8" x2="439.2" y2="342"/>
       <line class="lift" x1="448.8" y1="322.8" x2="448.8" y2="342"/>
@@ -704,12 +727,9 @@
       <rect x="817.9" y="373.2" width="5.3" height="6.7"/>
       <rect x="819.1" y="374.1" width="2.9" height="1.2"/>
       </g>
-      <line class="power" x1="560.9" y1="368.9" x2="751.2" y2="368.9"/>
-      <line class="power tram-behind" x1="751.2" y1="368.9" x2="760.8" y2="368.9"/>
-      <line class="power" x1="760.8" y1="368.9" x2="809" y2="368.9"/>
+      <line class="power" x1="560.9" y1="368.9" x2="746.9" y2="368.9"/>
       <line class="power" x1="560.9" y1="368.9" x2="560.9" y2="374.9"/>
       <line class="power" x1="639.1" y1="368.9" x2="639.1" y2="374.9"/>
-      <line class="power" x1="809" y1="368.9" x2="809" y2="373.2"/>
       <rect class="door door-open" x="546.7" y="372.7" width="1" height="7.2"/>
       <rect class="door door-open" x="652.3" y="372.7" width="1" height="7.2"/>
       <rect class="room" x="228" y="342" width="84" height="19.2"/>
@@ -915,6 +935,36 @@
       <rect class="radiator" x="1158" y="238.6" width="12" height="6"/><rect class="radiator" x="1158" y="266.6" width="12" height="6"/>
       <line class="radiator" x1="1164" y1="244.6" x2="1164" y2="247.6"/><line class="radiator" x1="1164" y1="266.6" x2="1164" y2="263.6"/>
       <rect class="emitter" x="1162.8" y="254" width="2.4" height="3.2"/>
+      <rect class="room" x="448.8" y="246" width="62.4" height="19.2"/>
+      <rect class="room" x="688.8" y="246" width="62.4" height="19.2"/>
+      <g class="plant">
+      <rect x="458.4" y="258" width="5.3" height="6.7"/><rect x="459.6" y="258.9" width="2.9" height="1.2"/>
+      <rect x="464.6" y="258" width="5.3" height="6.7"/><rect x="465.8" y="258.9" width="2.9" height="1.2"/>
+      <rect x="470.9" y="258" width="5.3" height="6.7"/><rect x="472.1" y="258.9" width="2.9" height="1.2"/>
+      <rect x="477.1" y="258" width="5.3" height="6.7"/><rect x="478.3" y="258.9" width="2.9" height="1.2"/>
+      <rect x="483.4" y="258" width="5.3" height="6.7"/><rect x="484.6" y="258.9" width="2.9" height="1.2"/>
+      <rect x="488.2" y="257" width="5.3" height="7.7"/>
+      <rect x="731" y="258" width="5.3" height="6.7"/><rect x="732.2" y="258.9" width="2.9" height="1.2"/>
+      <rect x="724.8" y="258" width="5.3" height="6.7"/><rect x="726" y="258.9" width="2.9" height="1.2"/>
+      <rect x="718.6" y="258" width="5.3" height="6.7"/><rect x="719.8" y="258.9" width="2.9" height="1.2"/>
+      <rect x="712.3" y="258" width="5.3" height="6.7"/><rect x="713.5" y="258.9" width="2.9" height="1.2"/>
+      <rect x="706.1" y="258" width="5.3" height="6.7"/><rect x="707.3" y="258.9" width="2.9" height="1.2"/>
+      <rect x="706.6" y="257" width="5.3" height="7.7"/>
+      </g>
+      <g class="plant">
+      <rect x="522" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="522.7" y1="279.1" x2="526.1" y2="279.1"/>
+      <rect x="673.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="673.9" y1="279.1" x2="677.3" y2="279.1"/>
+      <rect x="528" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="528.7" y1="279.1" x2="532.1" y2="279.1"/>
+      <rect x="667.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="667.9" y1="279.1" x2="671.3" y2="279.1"/>
+      <rect x="534" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="534.7" y1="279.1" x2="538.1" y2="279.1"/>
+      <rect x="661.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="661.9" y1="279.1" x2="665.3" y2="279.1"/>
+      <rect x="553.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="553.9" y1="279.1" x2="557.3" y2="279.1"/>
+      <rect x="642" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="642.7" y1="279.1" x2="646.1" y2="279.1"/>
+      <rect x="559.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="559.9" y1="279.1" x2="563.3" y2="279.1"/>
+      <rect x="636" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="636.7" y1="279.1" x2="640.1" y2="279.1"/>
+      <rect x="565.2" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="565.9" y1="279.1" x2="569.3" y2="279.1"/>
+      <rect x="630" y="276.7" width="4.8" height="7.2"/><line class="flange" x1="630.7" y1="279.1" x2="634.1" y2="279.1"/>
+      </g>
       <rect class="airlock door-locked" x="481.9" y="323.3" width="1" height="18.2"/>
       <rect class="airlock door-open" x="462.7" y="323.3" width="1" height="18.2"/>
       <rect class="door door-open" x="466.3" y="315.1" width="1" height="7.2"/>
@@ -931,6 +981,8 @@
       <rect class="door door-open" x="750.7" y="238.3" width="1" height="7.2"/>
       <rect class="door door-open" x="448.3" y="276.7" width="1" height="7.2"/>
       <rect class="door door-open" x="750.7" y="276.7" width="1" height="7.2"/>
+      <rect class="door door-open" x="448.3" y="257.5" width="1" height="7.2"/>
+      <rect class="door door-open" x="750.7" y="257.5" width="1" height="7.2"/>
       <rect class="door door-open" x="438.7" y="353.5" width="1" height="7.2"/>
       <rect class="door door-open" x="760.3" y="353.5" width="1" height="7.2"/>
       <rect class="door door-open" x="438.7" y="372.7" width="1" height="7.2"/>
@@ -970,6 +1022,8 @@
       <g class="tag"><circle cx="656.4" cy="251.1" r="5"/><text x="656.4" y="253.4" text-anchor="middle">24</text></g>
       <g class="tag"><circle cx="480" cy="274.8" r="5"/><text x="480" y="277.1" text-anchor="middle">22</text></g>
       <g class="tag"><circle cx="720" cy="274.8" r="5"/><text x="720" y="277.1" text-anchor="middle">23</text></g>
+      <g class="tag"><circle cx="480" cy="251.1" r="5"/><text x="480" y="253.4" text-anchor="middle">25</text></g>
+      <g class="tag"><circle cx="720" cy="251.1" r="5"/><text x="720" y="253.4" text-anchor="middle">26</text></g>
       <g class="here"><circle class="here-ring" cx="725.4" cy="317.4" r="6"/></g>
       <line class="ruler" x1="120" y1="402.4" x2="1080" y2="402.4"/>
       <line class="ruler" x1="120" y1="398.4" x2="120" y2="406.4"/>
@@ -1031,13 +1085,15 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">22</text></g></svg>Harvest Ring turbine hall, Deck 07: the station's main power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">23</text></g></svg>Backup generator set, Deck 07: feeds the isolated backup bus</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">24</text></g></svg>Penetration vaults, Deck 06: conduits leave the dome; dampening coil drivers</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">25</text></g></svg>Switch room A, Deck 06: Bus A, the primary bus</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">26</text></g></svg>Switch room B, Deck 06: Bus B, backup and the X9's auxiliaries</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door door-open" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Power lines: shielding, and the fuel cells to their switchgear</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="grid-power" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Station power grid; a hop where two lines cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>

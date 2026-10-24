@@ -79,6 +79,17 @@ Order-of-magnitude, from the standard formulas.
 | **Shield capacitor banks A and B** (shielding plant, Deck 07) | Bridge the Valdez shielding through sub-second gaps | Sized to cover the switch to the backup bus, not to replace it |
 | **Fuel cells**, Deck 12 | Station loads during a long outage | Hours to days; play no part in fast transients |
 
+### The distribution grid
+
+- **Bus A, the primary bus:** the main Harvest Ring generator (Deck 07, left) feeds **switch room A** directly above it on Deck 06.
+- **Bus B, the isolated backup bus:** the separate backup generator set (Deck 07, right) feeds **switch room B** above it. Bus B normally carries the **X9's auxiliaries** (cryogenic plant, trap auxiliaries), and takes the Valdez shielding too if Bus A trips. That is why the two competed in the accident.
+- **Emergency supply:** the fuel cells (Deck 12) feed Bus B's riser; their switchgear and batteries hang off it.
+- **Risers:** Bus A rises beside the left lift core, Bus B beside the right, Deck 01 to Deck 12. Each deck's service band carries feeders from both.
+- **The tie:** the two buses meet at SIGMA's own switchboard at the base of its core, Deck 03, which can take either side; SIGMA never goes dark while either bus lives.
+- **Feeders as built:** SIGMA (both buses); trap auxiliaries and cryogenic plant (B); shield capacitor bank A (A) and bank B (B), which feed the emitters along the conduits; each airlock's machinery from its own side; cargo airlock machinery (A); docking control and the bay workshop (B); water recovery plant and supply pump (A); waste plant (B); fuel transfer (A). Decks 01 to 03 (command, galley, hydroponics) are fed the same way once placed.
+- **The X9's own output never touches this grid.** Its exawatts go down the conduits to the array.
+- **Where the reader finds it:** the electrical one-line diagram posted in both switch rooms, and SIGMA's load-shed table (Power Priority Matrix rev. 4).
+
 **The X9's auxiliaries** draw on the *station's* power, as a real reactor's pumps and control systems do, even though the reactor makes far more: the charge injectors, the cryogenic plant that keeps the superconducting coils cold, the dampening coil drivers, the position sensors, the primary coolant pumps. Tens of megawatts. If the cryogenic plant falters, the coils can lose superconductivity (a quench) and the trap fails. This is what the **containment-priority protocol** protects: in a transient it guarantees the auxiliaries every watt, ahead of everything else (**Power Priority Matrix rev. 4**). The Valdez shielding also needs tens of megawatts, so in a transient the two compete.
 
 ## 6. Safeguards
