@@ -31,6 +31,11 @@ Quell moves between **places**, not terminals. A terminal is one thing he can us
 **[proposed]**
 - The trip as a short sequence: the route on the slate (walking, lift or ladder), then Quell's first-person note on what he sees as he arrives. Mocked up in `reference/interface-mockup/`.
 - The slate's map starts mostly blank and fills in as he explores; linking the slate to a terminal by UDC can download a deck's layout, giving terminals a reason to be used beyond their files.
+- **[proposed] The map shows only what Quell has seen or downloaded.** At first, only the room he is standing in. Rooms he has been in stay drawn. Accessing a terminal reveals its part of the station: its deck.
+- **[proposed] Radiation is never on the map by default.** It appears only from:
+  - the **slate's Geiger counter**, for the room Quell is in, as he moves; or
+  - a **station radiation survey** run from command on Deck 01 (the crew's "bridge"), using the station's own sensors, whose results download to the slate's map: the hot spots along the conduit duct appear all at once.
+  - Until one of these, the reader walks the station blind to it; the Geiger counter's alarm on boarding is the first hint.
 
 ## The file-tree model **[settled]**
 
@@ -103,13 +108,13 @@ The station's records (crew files, emails, specs, logs) are the same under every
 - The site is a terminal the reader explores to learn about Dovetail-9.
 - The mystery is in the past: what happened to the crew in 2467.
 - **The station terminal is a generic SIGMA terminal [settled]:** SIGMA's system, as found anywhere aboard Dovetail-9. The boot and login are simply **logging onto the station's systems**, with no slate involved. It is one of several interfaces, opened by using a terminal in a place (see The place model).
-- **Terminals work like those in Alien: Isolation [settled].** Any terminal gives general access: the station map and general information. But some areas are **protected** and some documents are **scrambled**. Those are what the slate's tools are for.
+- **Terminals work like those in Alien: Isolation [settled].** Any terminal gives general access: its part of the station map (see the map rule above; changed from the whole map) and general information. But some areas are **protected** and some documents are **scrambled**. Those are what the slate's tools are for.
 - **Every terminal has its own ID and shows where it is [settled].**
 - **Terminals carry their own area's information and systems [settled]:** an engineering terminal has engineering systems, and so on. This sits on top of the general access every terminal gives.
 - **[proposed]** Public terminals in shared areas, restricted terminals in specialised areas, where some local systems need clearance.
-- **General terminals show the station layout and where you are [settled].** A navigation map is the goal once the station layout exists (see Navigation above). The layout itself is not yet decided.
+- **General terminals show their part of the station layout and where you are [settled; changed from the whole layout].** A navigation map is the goal once the station layout exists (see Navigation above). The layout itself is not yet decided.
 - **Quell's notes live on his slate, not on the terminals [settled].** Terminals show only station content.
-- **The scanner is a tool, or a function of certain devices [settled]**, such as the slate's corridor scans. Terminals don't show scan readings.
+- **The scanner is a tool, or a function of certain devices [settled]**, such as the slate's corridor scans. Terminals don't show scan readings. **[proposed]** The command radiation survey keeps to this: it is started from command, but its readings appear on the slate's map, not the terminal.
 - **Scanning works anywhere [settled].** It only reads its surroundings and doesn't act on the station, so it needs no UDC link (unlike spoof and override). `scan` is a room command. **[proposed]** The scan is Quell's Kestral RS-9V resonance scanner, the device that detects echoes, with its readings shown on the slate or on a screen of its own.
 - **No personal identification at login [settled].** SIGMA does not verify who is using a terminal.
 - **The slate is a tool, used on demand [settled].** When something is locked or restricted, the reader goes to TOOLS, picks the slate, **jacks in**, then chooses an ability (override, spoof, and so on). It is not plugged in by default and is not the screen.
