@@ -333,6 +333,10 @@ const CA = BAY[0] - 8;
 add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
 add(`<rect class="airlock" x="${f(mx(CA) - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 tags.push(tag(CA + 3, 10, "C", -4));
+// Cargo ready room: the hallway's end, from the lift to the cargo airlock. Suits for working the dock.
+const CR = LIFTS[0] + LW / 2;
+add(`<rect class="room" x="${mx(CR)}" y="${dy(10)}" width="${f((CA - CR) * S)}" height="${f(DH)}"/>`);
+tags.push(tag((CR + CA) / 2, 10, 7, 1));
 // Its machinery on Deck 11 below, sealed: tanks, pump, manifold, controls, and the ram the cargo door drops on.
 {
   const X = (m) => f(mx(CA + m)), Y = (h) => f(dy(11) + h * S);
@@ -545,7 +549,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank B capacitor hall, Deck 07</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09, its umbilical pulled back</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09: the umbilical to the Mistral</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Ready room, Deck 09, from the lift to each airlock</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Ready room, from the lift to each airlock: Deck 09, and Deck 10 for cargo</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
