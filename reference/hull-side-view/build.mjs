@@ -792,7 +792,11 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     room(3, m0, m1, 4); add(`<g class="racks">`);
     for (let m = m0 + 3; m + 6 < m1 - 4; m += 9) {
       box(4, m, m + 6, 0, 11.5, "kit");
-      for (let h = 1.2; h < 11; h += 1.6) { box(4, m + 0.3, m + 5.7, h, h + 0.35, "crate"); box(4, m + 0.8, m + 5.2, h + 1.05, h + 1.2, "grow"); }
+      // Each tray carries a row of leafy plants, bright green.
+      for (let h = 1.2; h < 10; h += 1.6) {
+        box(4, m + 0.3, m + 5.7, h, h + 0.35, "crate");
+        for (let u = m + 0.75; u < m + 5.4; u += 0.7) add(`<ellipse class="plant-leaf" cx="${f(X(u))}" cy="${f(Yk(4, h + 0.62))}" rx="${f(0.34 * S)}" ry="${f(0.3 * S)}"/>`);
+      }
     }
     add(`</g>`);
     const nt = m0 < 200 ? m1 - 3.2 : m0 + 0.6; add(`<path class="tank-waste" d="M ${f(X(nt))} ${f(Yk(4, 0))} V ${f(Yk(4, 2.4))} Q ${f(X(nt))} ${f(Yk(4, 3))} ${f(X(nt + 1.3))} ${f(Yk(4, 3))} Q ${f(X(nt + 2.6))} ${f(Yk(4, 3))} ${f(X(nt + 2.6))} ${f(Yk(4, 2.4))} V ${f(Yk(4, 0))} Z"/>`);
@@ -940,18 +944,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -1012,7 +1016,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .room-wall { stroke: var(--muted); stroke-width: 1; }
   .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
   .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
-  .racks .grow { fill: var(--open); stroke: none; opacity: 0.5; }
+  .plant-leaf { fill: var(--leaf); stroke: none; }
   .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
   .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
   .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }

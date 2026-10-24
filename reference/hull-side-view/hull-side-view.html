@@ -7,18 +7,18 @@
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -79,7 +79,7 @@
   .room-wall { stroke: var(--muted); stroke-width: 1; }
   .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
   .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
-  .racks .grow { fill: var(--open); stroke: none; opacity: 0.5; }
+  .plant-leaf { fill: var(--leaf); stroke: none; }
   .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
   .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
   .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }
@@ -1162,109 +1162,347 @@
       <g class="racks">
       <rect class="kit" x="271.2" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="271.9" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="271.9" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="271.9" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="271.9" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="271.9" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="271.9" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="271.9" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="273.1" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="273" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="274.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="276.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="278" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="279.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="281.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="283.1" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="292.8" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="293.5" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="293.5" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="293.5" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="293.5" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="293.5" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="293.5" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="293.5" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="294.7" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="294.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="296.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="298" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="299.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="301.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="303" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="304.7" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="314.4" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="315.1" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="315.1" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="315.1" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="315.1" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="315.1" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="315.1" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="315.1" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="316.3" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="316.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="317.9" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="319.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="321.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="322.9" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="324.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="326.3" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="336" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="336.7" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="336.7" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="336.7" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="336.7" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="336.7" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="336.7" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="336.7" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="337.9" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="337.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="339.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="341.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="342.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="344.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="346.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="347.9" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="357.6" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="358.3" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="358.3" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="358.3" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="358.3" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="358.3" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="358.3" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="358.3" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="359.5" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="359.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="361.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="362.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="364.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="366.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="367.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="369.5" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="379.2" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="379.9" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="379.9" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="379.9" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="379.9" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="379.9" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="379.9" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="379.9" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="381.1" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="381" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="382.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="384.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="386" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="387.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="389.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="391.1" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="400.8" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="401.5" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="401.5" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="401.5" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="401.5" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="401.5" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="401.5" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="401.5" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="402.7" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="402.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="404.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="406" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="407.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="409.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="411" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="412.7" cy="202.7" rx="0.8" ry="0.7"/>
       </g>
       <path class="tank-waste" d="M 431.5 226.3 V 220.5 Q 431.5 219.1 434.6 219.1 Q 437.8 219.1 437.8 220.5 V 226.3 Z"/>
       <rect class="term" x="428.9" y="223.7" width="0.4" height="2.6"/>
@@ -1273,109 +1511,347 @@
       <g class="racks">
       <rect class="kit" x="768" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="768.7" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="768.7" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="768.7" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="768.7" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="768.7" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="768.7" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="768.7" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="769.9" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="769.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="771.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="773.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="774.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="776.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="778.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="779.9" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="789.6" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="790.3" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="790.3" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="790.3" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="790.3" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="790.3" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="790.3" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="790.3" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="791.5" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="791.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="793.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="794.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="796.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="798.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="799.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="801.5" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="811.2" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="811.9" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="811.9" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="811.9" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="811.9" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="811.9" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="811.9" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="811.9" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="813.1" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="813" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="814.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="816.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="818" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="819.7" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="821.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="823.1" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="832.8" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="833.5" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="833.5" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="833.5" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="833.5" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="833.5" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="833.5" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="833.5" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="834.7" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="834.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="836.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="838" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="839.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="841.3" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="843" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="844.7" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="854.4" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="855.1" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="855.1" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="855.1" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="855.1" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="855.1" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="855.1" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="855.1" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="856.3" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="856.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="857.9" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="859.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="861.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="862.9" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="864.6" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="866.3" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="876" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="876.7" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="876.7" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="876.7" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="876.7" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="876.7" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="876.7" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="876.7" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="877.9" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="877.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="879.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="881.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="882.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="884.5" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="886.2" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="887.9" cy="202.7" rx="0.8" ry="0.7"/>
       <rect class="kit" x="897.6" y="198.7" width="14.4" height="27.6"/>
       <rect class="crate" x="898.3" y="222.6" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="220.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="221.9" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="221.9" rx="0.8" ry="0.7"/>
       <rect class="crate" x="898.3" y="218.7" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="216.7" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="218.1" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="218.1" rx="0.8" ry="0.7"/>
       <rect class="crate" x="898.3" y="214.9" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="212.9" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="214.3" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="214.3" rx="0.8" ry="0.7"/>
       <rect class="crate" x="898.3" y="211.1" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="209" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="210.4" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="210.4" rx="0.8" ry="0.7"/>
       <rect class="crate" x="898.3" y="207.2" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="205.2" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="206.6" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="206.6" rx="0.8" ry="0.7"/>
       <rect class="crate" x="898.3" y="203.4" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="201.3" width="10.6" height="0.4"/>
-      <rect class="crate" x="898.3" y="199.5" width="13" height="0.8"/>
-      <rect class="grow" x="899.5" y="197.5" width="10.6" height="0.4"/>
+      <ellipse class="plant-leaf" cx="899.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="901.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="902.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="904.4" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="906.1" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="907.8" cy="202.7" rx="0.8" ry="0.7"/>
+      <ellipse class="plant-leaf" cx="909.5" cy="202.7" rx="0.8" ry="0.7"/>
       </g>
       <path class="tank-waste" d="M 762.2 226.3 V 220.5 Q 762.2 219.1 765.4 219.1 Q 768.5 219.1 768.5 220.5 V 226.3 Z"/>
       <rect class="term" x="770.7" y="223.7" width="0.4" height="2.6"/>
