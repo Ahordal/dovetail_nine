@@ -287,7 +287,8 @@ const CG = [105, BAY[0]], cgTop = dy(9), cgBot = dy(11);
 const ST = LIFTS[0] - LW / 2;   // storage meets the lift shaft
 add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx(ST)},${dy(10)} ${bx},${dy(10)} ${bx},${cgBot} ${mx(CG[0])},${cgBot}"/>`);
 // The lift passes through the hallway only, with its one cargo stop there on Deck 10.
-add(`<rect class="lift" x="${f(mx(LIFTS[0] - LW / 2))}" y="${dy(10)}" width="${f(LW * S)}" height="${f(DH)}"/>`);
+// Sides only: the hallway runs in front of the shaft, so its floor and ceiling stay solid.
+for (const m of [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2]) add(`<line class="lift" x1="${mx(m)}" y1="${dy(10)}" x2="${mx(m)}" y2="${dy(11)}"/>`);
 for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
 // The cargo door: Deck 10's full height, below Airlock A, opening onto the raised dock.
 // The cargo door runs the full deck, from the deck above's floor plate down to its own.
