@@ -533,19 +533,19 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   add(`</g>`);
   tags.push(tag((WP[0] + WP[1]) / 2 + 6, 11, 16), tag((WT[0] + WT[1]) / 2, 11, 17), tag((WS[0] + WS[1]) / 2, 11, 18));
 }
-// Lift doorways: only where a room on this face meets the shaft, as tall as that room.
+// Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
+// the cargo hallway's are 4 m, for loads coming up from the hold.
 {
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
-  // Ready room doorways match the airlock doors beside them.
-  const full = (k) => [dy(k) + FL, dy(k + 1) - FL], low = [door9Top, doorBot(9)];
+  const door = (k, h = DOOR) => [dy(k + 1) - FL - h * S, dy(k + 1) - FL];
   const doors = [
-    [l0, full(5)],              // R&D, which wraps the shaft on Deck 05
-    [l0, full(6)], [r1, full(6)], // lift lobbies and tram stops
-    [l1, low], [r0, low],       // ready rooms A and B
-    [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
-    [r0, full(10)], [r0, full(11)], // docking control, bay workshop
-    [l0, full(12)], [l1, full(12)], [r0, full(12)], [r1, full(12)], // Deck 12: plants and tank halls
-    [l0, full(11)], [r1, full(11)], // Deck 11: water tanks, waste plant
+    [l0, door(5)],              // R&D, which wraps the shaft on Deck 05
+    [l0, door(6)], [r1, door(6)], // lift lobbies and tram stops
+    [l1, door(9)], [r0, door(9)], // ready rooms A and B
+    [l0, door(10, 4)], [l1, door(10, 4)], // cargo hallway: storage one side, cargo ready room the other
+    [r0, door(10)], [r0, door(11)], // docking control, bay workshop
+    [l0, door(11)], [r1, door(11)], // Deck 11: water tanks, waste plant
+    [l0, door(12)], [l1, door(12)], [r0, door(12)], [r1, door(12)], // Deck 12: fuel transfer, tank halls, switchgear
   ];
   // Cargo airlock doors, a full deck high: the cargo door opens on vacuum, so locked; the inner door is unlocked.
   for (const [x, st] of [[bx, "door-locked"], [mx(CA), "door-open"]]) add(`<rect class="airlock ${st}" x="${f(x - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
