@@ -480,7 +480,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
     for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
   }
-  // Backup generators: power for when the X9 is offline, burning the same fuel the bay hands out.
+  // Backup generators: station power when the X9's output can't reach it, burning the same fuel the bay hands out.
   for (const [m, out] of [[GEN[0], 1.4], [GEN[1], 4.6]]) {
     box(m, m + 6, 0, 2.6, 2);
     add(`<circle cx="${X(m + out)}" cy="${Y(1.3)}" r="${f(0.8 * S)}"/>`);
