@@ -107,16 +107,19 @@ related:
 - Reconciles "docking bay" ([[mistral]]) with "docking ring" (Quell's log): the ring is inside the bay.
 - **"Corridor" in both senses [settled].** A corridor inside the station is just a corridor. The routes through the Arc are **FTL corridors**; say "FTL corridor" wherever the two could be confused.
 
-## Deck 12 **[proposed]**
+## Deck 12 and the water deck **[proposed]**
 
-- **Under the bay, about 100 to 300 m along,** both lifts reaching it. The station's water lives here, the heaviest thing it keeps, as low as it can go.
-- **Water plant** at the left end, beyond the left lift: filter columns, a pump, treatment and controls.
-- **Water tank halls** either side of the middle: large reserve tanks on saddles, walked between for inspection.
-- **Waste plant** at the right end, beyond the right lift: a digester, a compactor and a pump.
-- **One water header** runs the deck, feeding every tank, filter and pump, behind the lift shafts where it crosses them. It stops short of the fuel section.
-- Maintenance runs it ([[crew]]); hydroponics on Deck 03 draws its water from here.
-- **Backup generators and fuel,** in the middle section under the Mistral, between the two tank halls: two **backup generators** that power the station when the X9 is offline, and **fuel tanks** on saddles. One fuel header feeds the generators and runs two **risers up through the bay floor** to **fuel hose stations** on the bay floor either side of the floor clamps, where docked ships are refuelled. The generators burn the same fuel the bay hands out. Laid out mirror-symmetric under the middle of the Mistral, generators at the ends and tanks in the middle. **Crew access:** Maintenance reaches it through a door from each tank hall; as Quell finds it both are unlocked, though as a fuel store it is a natural candidate for a restricted lock.
+- **Deck 12 is all fuel and backup power,** under the bay, about 100 to 300 m along, both lifts reaching it. Water is kept off this deck, away from the fuel.
+- **Fuel transfer** at the left end, beyond the left lift: filter columns, a transfer pump, the manifold and controls.
+- **Fuel tank halls** either side of the middle: large tanks on saddles, walked between for inspection.
+- **Backup generators and fuel,** in the middle section under the Mistral, between the two fuel tank halls: two **backup generators** that power the station when the X9 is offline, and **fuel tanks** on saddles. One fuel header feeds the generators and runs two **risers up through the bay floor** to **fuel hose stations** on the bay floor either side of the floor clamps, where docked ships are refuelled. The generators burn the same fuel the bay hands out. Laid out mirror-symmetric under the middle of the Mistral, generators at the ends and tanks in the middle. **Crew access:** Maintenance reaches it through a door from each tank hall; as Quell finds it both are unlocked, though as a fuel store it is a natural candidate for a restricted lock.
+- **Switchgear and batteries** at the right end, beyond the right lift: the generators' electrical side.
+- **One fuel header** runs from the transfer pumps through both tank halls and the generator section, behind the left lift where it crosses it.
 - **No radiation refuge anywhere aboard.** Nobody believed radiation could get inside the station, so none was built; when it did, the crew had nowhere to go ([[the-accident]]). A storm shelter against space weather was also considered and dropped: a 2400s hull shields ordinary space radiation, and K-17 is a dim star.
+- **Water and waste are on Deck 11,** either side of the bay, still low in the hull but a deck above the fuel:
+  - **Water plant** at the far left (filter columns, a pump, treatment) and a **water tank hall** running from it to the left lift, which opens into it.
+  - **Waste plant** past the right lift (a digester, a compactor, a pump), which the right lift opens into. Its water goes back to the water plant for recycling.
+  - Maintenance runs both ([[crew]]); hydroponics on Deck 03 draws its water from here.
 
 ## Defenses **[settled]**
 
@@ -133,7 +136,7 @@ related:
   - ~~SIGMA's core~~ Placed: a column from Deck 04 up into command on Deck 01 (see Scale above).
   - **Array access at both ends:** airlocks, suit rooms and tool stores where the hull meets the array on Deck 06. The natural ends of the tram line.
   - **Command and comms:** Deck 01 under the antennas (proposed above), including the emergency beacon Quell followed.
-  - **Life support plant:** air, water and thermal machinery. Its coolant loop ties to the radiators on the array arms, so likely along the spine too.
+  - **Life support plant:** air and thermal machinery (water and waste are placed on Deck 11). Its coolant loop ties to the radiators on the array arms, so likely along the spine too.
   - **Hydroponics:** large floor area, possibly double-height.
   - Rooms the logs already place: galley on Deck 2, hydroponics on Deck 3 ([[phase-mechanics]]), R&D on Deck 5 ([[tobias-quell]]). Logs write "DECK 2" where the tree writes "Deck 02"; whether that difference is deliberate is **[open]**.
   - Whether the ZK-Class failsafe's antimatter sits inside the X9 assembly or needs its own protected store (see [[dynex-t-core-x9-ignis]]).

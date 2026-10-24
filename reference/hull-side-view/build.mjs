@@ -447,37 +447,36 @@ const hereX = f(mx(BAY[1] + AL / 2)), hereY = f((ceil9 + dy(10)) / 2);
 const hereMarker = `<g class="here"><circle class="here-ring" cx="${hereX}" cy="${hereY}" r="6"/></g>`;   // drawn last, above everything
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
-// Deck 12, under the bay: water plant and tanks, backup generators and fuel under the Mistral, more water, waste plant.
+// Deck 12, under the bay: all fuel and backup power. Water and waste live a deck up, either side of the bay.
 {
   const X = (m) => f(mx(m)), Y = (h) => f(dy(13) - FL - h * S), Yb = (h) => f(dy(12) - FL - h * S);
   const room = (m0, m1) => add(`<rect class="room" x="${X(m0)}" y="${dy(12)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const ln = (m0, h0, m1, h1, cls) => add(`<line class="${cls}" x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
-  const FU = [178, 222], HD = 3.5;   // fuel section span, header height
+  const FU = [178, 222], HD = 3.5;   // generator section span, header height
   for (const [m0, m1] of [[100, l0], [l1, FU[0]], FU, [FU[1], r0], [r1, 300]]) room(m0, m1);
   add(`<g class="plant">`);
-  // Water header, hidden behind each lift shaft, tapped down into every tank, filter and pump.
+  // One fuel header from the transfer pumps through both tank halls, hidden behind the left lift.
   const tanks = [139, 152, 165, 224.5, 237.5, 250.5];
-  const runs = [`M ${X(108.6)} ${Y(HD)} H ${X(l0)}`, `M ${X(l1)} ${Y(HD)} H ${X(170.25)}`, `M ${X(229.75)} ${Y(HD)} H ${X(r0)}`, `M ${X(r1)} ${Y(HD)} H ${X(290)}`];
-  for (const m of tanks) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
-  for (const m of [108.6, 110.8, 113.0, 115.2]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
-  for (const [m, top] of [[119, 2.0], [124.75, 2.6], [275, 3.0], [290, 2.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
-  // Fuel header: tanks feed the generators, and two risers climb through the bay floor to the hose stations.
   // Laid out mirror-symmetric about 200 m, under the middle of the Mistral.
   const GEN = [179.5, 214.5], FT = [189.25, 200.5], RS = [187.4, 212.6];
-  runs.push(`M ${X(GEN[0] + 3)} ${Y(HD)} H ${X(GEN[1] + 3)}`);
+  const runs = [`M ${X(108.6)} ${Y(HD)} H ${X(l0)}`, `M ${X(l1)} ${Y(HD)} H ${X(255.75)}`];
+  for (const m of [...tanks, ...FT]) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const m of [108.6, 110.8, 113.0, 115.2]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const [m, top] of [[119, 2.0], [124.75, 2.6]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
   for (const m of GEN) runs.push(`M ${X(m + 3)} ${Y(HD)} V ${Y(2.6)}`);
-  for (const m of FT) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
+  // Two risers climb through the bay floor to the hose stations.
   for (const m of RS) runs.push(`M ${X(m)} ${Y(HD)} V ${Yb(0)}`);
   hollow(runs);
-  for (const [m0, m1] of [[l0, l1], [r0, r1]]) for (const h of [HD - PD / 2, HD + PD / 2]) add(`<line class="pipe hidden" x1="${X(m0)}" y1="${Y(h)}" x2="${X(m1)}" y2="${Y(h)}"/>`);
-  // Water plant: filter columns, a pump, treatment, controls.
+  for (const h of [HD - PD / 2, HD + PD / 2]) add(`<line class="pipe hidden" x1="${X(l0)}" y1="${Y(h)}" x2="${X(l1)}" y2="${Y(h)}"/>`);
+  // Fuel transfer: filter columns, a transfer pump, the manifold, controls.
   for (const m of [108.6, 110.8, 113.0, 115.2]) box(m - 0.6, m + 0.6, 0, 3.0, f(0.6 * S));
   add(`<circle cx="${X(119)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(117.7, 120.3, 0, 0.1);
   box(122, 127.5, 0, 2.6);
   box(129.5, 131.5, 0, 2.8);
-  // Tank halls: water reserve on saddles, walked between for inspection.
-  for (const m of tanks) {
+  // Fuel tank halls and the generator section's own tanks, all on saddles.
+  for (const m of [...tanks, ...FT]) {
     box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
     for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
   }
@@ -488,24 +487,51 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     const c = out < 3 ? m + 3 : m + 0.6;
     box(c, c + 2.4, 0.5, 2.1);
   }
-  // Fuel tanks on saddles.
-  for (const m of FT) {
-    box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
-    for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
-  }
-  // Waste plant: digester, compactor, pump.
-  box(270, 280, 0.4, 3.0, f(1.2 * S));
-  box(283, 287, 0, 2.6);
-  add(`<circle cx="${X(290)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(288.7, 291.3, 0, 0.1);
   // Fuel hose stations on the bay floor, either side of the floor clamps: a cabinet and its hose reel.
   for (const m of RS) {
     add(`<rect x="${X(m - 1.2)}" y="${Yb(1.6)}" width="${f(2.4 * S)}" height="${f(1.6 * S)}"/>`);
     add(`<circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.5 * S)}"/><circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.15 * S)}"/>`);
   }
+  // Switchgear and batteries: the generators' electrical side, beyond the right lift.
+  for (const m of [269, 273, 277, 281]) {
+    box(m, m + 3, 0, 2.4);
+    for (const h of [0.8, 1.6]) ln(m, h, m + 3, h, "flange");
+  }
+  for (const m of [286, 288.4, 290.8]) { box(m, m + 2.2, 0, 2.8); box(m + 0.5, m + 1.7, 1.9, 2.4); }
   add(`</g>`);
-  // Maintenance reaches the fuel section through a door from each tank hall.
+  // Maintenance reaches the generator section through a door from each tank hall.
   for (const m of FU) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${Y(DOOR)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   tags.push(tag((100 + l0) / 2, 12, 12), tag((l1 + FU[0]) / 2, 12, 13), tag((FU[1] + r0) / 2, 12, 13), tag(200, 12, 14), tag((r1 + 300) / 2, 12, 15));
+}
+// Deck 11 beyond the lifts: water plant and water tanks on the left, the waste plant on the right.
+{
+  const X = (m) => f(mx(m)), Y = (h) => f(dy(12) - FL - h * S);
+  const room = (m0, m1) => add(`<rect class="room" x="${X(m0)}" y="${dy(11)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const [l0, r1] = [LIFTS[0] - LW / 2, LIFTS[1] + LW / 2], HD = 3.5, WP = [45, 80], WT = [80, l0], WS = [r1, 305];
+  for (const [m0, m1] of [WP, WT, WS]) room(m0, m1);
+  add(`<g class="plant">`);
+  const tanks = [82, 95, 108, 121];
+  const runs = [`M ${X(60)} ${Y(HD)} H ${X(126.25)}`, `M ${X(277)} ${Y(HD)} H ${X(292)}`];
+  for (const m of tanks) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const m of [60, 62.2, 64.4, 66.6]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const [m, top] of [[70, 2.0], [75, 2.6], [277, 3.0], [292, 2.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
+  hollow(runs);
+  // Water plant: filter columns, a pump, treatment.
+  for (const m of [60, 62.2, 64.4, 66.6]) box(m - 0.6, m + 0.6, 0, 3.0, f(0.6 * S));
+  add(`<circle cx="${X(70)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(68.7, 71.3, 0, 0.1);
+  box(72.5, 77.5, 0, 2.6);
+  // Water tanks on saddles, walked between for inspection.
+  for (const m of tanks) {
+    box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
+    for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
+  }
+  // Waste plant: digester, compactor, pump.
+  box(272, 282, 0.4, 3.0, f(1.2 * S));
+  box(285, 289, 0, 2.6);
+  add(`<circle cx="${X(292)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(290.7, 293.3, 0, 0.1);
+  add(`</g>`);
+  tags.push(tag((WP[0] + WP[1]) / 2 + 6, 11, 16), tag((WT[0] + WT[1]) / 2, 11, 17), tag((WS[0] + WS[1]) / 2, 11, 18));
 }
 // Lift doorways: only where a room on this face meets the shaft, as tall as that room.
 {
@@ -519,6 +545,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
     [r0, full(10)], [r0, full(11)], // docking control, bay workshop
     [l0, full(12)], [l1, full(12)], [r0, full(12)], [r1, full(12)], // Deck 12: plants and tank halls
+    [l0, full(11)], [r1, full(11)], // Deck 11: water tanks, waste plant
   ];
   // Cargo airlock doors, a full deck high: the cargo door opens on vacuum, so locked; the inner door is unlocked.
   for (const [x, st] of [[bx, "door-locked"], [mx(CA), "door-open"]]) add(`<rect class="airlock ${st}" x="${f(x - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
@@ -723,10 +750,13 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Docking control, Deck 10: a wide window and control desk</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Bay workshop, Deck 11: bench, parts cabinet, a window onto the bay</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">12</text></g></svg>Water plant, Deck 12: filters, pump, treatment</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">13</text></g></svg>Water tank halls, Deck 12</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">12</text></g></svg>Fuel transfer pumps and filters, Deck 12</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">13</text></g></svg>Fuel tank halls, Deck 12</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">14</text></g></svg>Backup generators and fuel, Deck 12, piped up to hose stations in the bay</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">15</text></g></svg>Waste plant, Deck 12</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">15</text></g></svg>Switchgear and batteries, Deck 12</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">16</text></g></svg>Water plant, Deck 11</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">17</text></g></svg>Water tank hall, Deck 11</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">18</text></g></svg>Waste plant, Deck 11</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
