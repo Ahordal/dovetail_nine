@@ -211,20 +211,21 @@ const floor9 = dy(10), wall = f(bx + 98 * S);
 const FL = 0.5;
 const doorBot = (k) => dy(k + 1) - FL;
 // Airlocks and ready rooms get a 4.5 m ceiling; the rest of Deck 09 above them is service space.
-// Airlocks stay small so each cycle pumps out less air; people only, cargo uses the door below.
+// Airlocks stay small so each cycle pumps out less air; people only, cargo uses the cargo airlock below A.
 const DOOR = 3, ceil9 = dy(10) - RC * S, door9Top = doorBot(9) - DOOR * S;
 const door9Mid = (door9Top + doorBot(9)) / 2;
-// Floor to just over the door, centred on it and on the ship.
+// Floor to just over the door, centred on it and on the ship. B's reaches the Mistral; A's is pulled back to its wall.
 add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(door9Mid - 1.7 * S)}" width="${f(wall - sx - sw)}" height="${f(3.4 * S)}"/>`);
-// Airlock rooms, one in each end wall of the bay: A takes the umbilical on Deck 09, B faces it.
+add(`<rect class="umbilical" x="${bx}" y="${f(door9Mid - 1.7 * S)}" width="${f(2.5 * S)}" height="${f(3.4 * S)}"/>`);
+// Airlock rooms, one in each end wall of the bay: A on the left, B on the right, joined to the Mistral.
 const AL = 6.5;
 add(`<rect class="room" x="${wall}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
 add(`<rect class="room" x="${f(bx - AL * S)}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
 for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 0.8)}" y="${f(door9Top)}" width="1.6" height="${f(DOOR * S)}"/>`);
-// Room tags centred in the low rooms; A's sits toward the door to share with the you-are-here dot.
+// Room tags centred in the low rooms; B's sits toward the door to share with the you-are-here dot.
 const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
 const hereM = BAY[1] + AL - 1.6;
-tags.push(tag9(BAY[1] + 2.2, "A"), tag9(BAY[0] - AL / 2, "B"));
+tags.push(tag9(BAY[0] - AL / 2, "A"), tag9(BAY[1] + 2.2, "B"));
 // Airlock machinery on Deck 08 above each airlock and ready room: air recovery, pumps, valves, door ram. No access.
 const plant = (x0, flip) => {
   // x0 is the space's left edge in metres; flip mirrors the layout so the two sides differ.
@@ -280,7 +281,7 @@ add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx
 // The lift passes through the hallway only, with its one cargo stop there on Deck 10.
 add(`<rect class="lift" x="${f(mx(LIFTS[0] - LW / 2))}" y="${dy(10)}" width="${f(LW * S)}" height="${f(DH)}"/>`);
 for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
-// The cargo door: Deck 10's full height, below Airlock B, opening onto the raised dock.
+// The cargo door: Deck 10's full height, below Airlock A, opening onto the raised dock.
 // The cargo door runs the full deck, from the deck above's floor plate down to its own.
 add(`<rect class="airlock" x="${f(bx - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 // Storage: three empty shelving levels carried on a truss frame, posts tied by diagonal bracing between levels.
@@ -321,17 +322,47 @@ add(`<g class="racks">`);
   add(`<line x1="${f(tx)}" y1="${f(railY + 2 * S)}" x2="${f(tx)}" y2="${f(gy)}"/>`);
   add(`<polyline points="${f(tx - 1.6 * S)},${f(gy + 1.3 * S)} ${f(tx - 1.6 * S)},${f(gy)} ${f(tx + 1.6 * S)},${f(gy)} ${f(tx + 1.6 * S)},${f(gy + 1.3 * S)}"/></g>`);
 }
-// A few crates stacked loose on the floor by the door.
-for (const [m, w, hgt] of [[141.5, 2.4, 2.0], [141.8, 1.8, 1.6], [144.05, 1.8, 1.4]]) {
-  const below = m === 141.8 ? 2.0 : 0;
+// A few crates left loose in the cargo airlock.
+for (const [m, w, hgt] of [[145.5, 2.4, 2.0], [145.8, 1.8, 1.6], [148.05, 1.8, 1.4]]) {
+  const below = m === 145.8 ? 2.0 : 0;
   add(`<rect class="crate" x="${f(mx(m))}" y="${f(cgBot - (below + hgt) * S)}" width="${f(w * S)}" height="${f(hgt * S)}"/>`);
 }
 add(`</g>`);
-// Ladder shaft from Airlock B straight down into the hold.
-add(`<rect class="shaft" x="${mx(146)}" y="${dy(10)}" width="${f(3 * S)}" height="${f(cgBot - dy(10))}"/>`);
-for (let y = dy(10) + S; y < cgBot - 0.5; y += S) add(`<line class="rung" x1="${f(mx(146) + 1.2)}" y1="${f(y)}" x2="${f(mx(149) - 1.2)}" y2="${f(y)}"/>`);
-// The hold floor runs solid under the foot of the ladder.
-add(`<line class="hold-floor" x1="${f(mx(146) - 1)}" y1="${cgBot}" x2="${f(mx(149) + 1)}" y2="${cgBot}"/>`);
+// Ladder shaft from ready room A down into the hallway, landing between the lift and the cargo airlock.
+const LD = 139.5;
+add(`<rect class="shaft" x="${mx(LD)}" y="${dy(10)}" width="${f(3 * S)}" height="${f(cgBot - dy(10))}"/>`);
+for (let y = dy(10) + S; y < cgBot - 0.5; y += S) add(`<line class="rung" x1="${f(mx(LD) + 1.2)}" y1="${f(y)}" x2="${f(mx(LD + 3) - 1.2)}" y2="${f(y)}"/>`);
+// Floors run solid over the shaft at both ends: a closed hatch in the ready room, the hold floor at the foot.
+for (const y of [dy(10), cgBot]) add(`<line class="hold-floor" x1="${f(mx(LD) - 1)}" y1="${y}" x2="${f(mx(LD + 3) + 1)}" y2="${y}"/>`);
+// Cargo airlock inside the cargo door, so the hold stays pressurized while loading.
+const CA = BAY[0] - 8;
+add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
+add(`<rect class="airlock" x="${f(mx(CA) - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
+tags.push(tag(CA + 3, 10, "C", -4));
+// Its machinery on Deck 11 below, sealed: tanks, pump, manifold, controls, and the ram the cargo door drops on.
+{
+  const X = (m) => f(mx(CA + m)), Y = (h) => f(dy(11) + h * S);
+  const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h0)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const ln = (m0, h0, m1, h1, cls = "") => add(`<line${cls ? ` class="${cls}"` : ""} x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
+  add(`<g class="plant">`);
+  box(0.4, 3.4, 3.6, 5.4, 3); box(0.4, 3.4, 5.8, 7.6, 3);
+  box(3.9, 4.7, 3.4, 7.6);
+  ln(3.4, 4.5, 3.9, 4.5, "pipe"); ln(3.4, 6.7, 3.9, 6.7, "pipe");
+  for (const h of [4.5, 6.7]) add(`<circle cx="${X(4.3)}" cy="${Y(h)}" r="${f(0.35 * S)}"/>`);
+  add(`<circle cx="${X(5.8)}" cy="${Y(6.6)}" r="${f(0.9 * S)}"/>`);
+  box(5.0, 6.6, 7.5, 7.8);
+  ln(4.7, 6.6, 4.9, 6.6, "pipe");
+  box(5.1, 6.5, 3.6, 5.2);
+  ln(5.4, 4.2, 6.2, 4.2, "flange"); ln(5.4, 4.7, 6.2, 4.7, "flange");
+  // Supply pair in the service band, teeing into the riser up to a vent in the airlock floor.
+  ln(0, 1.2, 4.1, 1.2, "pipe"); ln(0, 1.7, 4.5, 1.7, "pipe");
+  ln(4.1, 3.4, 4.1, 0.5, "pipe"); ln(4.5, 3.4, 4.5, 0.5, "pipe");
+  box(3.6, 5.0, 0.1, 0.5);
+  // Door ram: rod up to the door's foot; the cargo door drops into this space when open.
+  box(7.0, 7.6, 3.6, 7.6);
+  ln(7.3, 3.6, 7.3, 0.7, "pipe"); ln(7.3, 0.7, 8, 0.7, "pipe");
+  add(`</g>`);
+}
 tags.push(tag(123.5, 9, 8, 1));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
 const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
@@ -504,7 +535,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <button type="button" data-zoom="fit" aria-label="Fit whole drawing">Fit</button>
       <output id="hull-zoom-level" aria-live="polite">100%</output>
     </div>
-    <svg id="hull" viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a full-deck-height boarding umbilical to Airlock A on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
+    <svg id="hull" viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a boarding umbilical to Airlock B on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
       ${svg.join('\n      ')}
     </svg>
     </div>
@@ -518,11 +549,12 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Lift lobby and tram stop, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Bank A capacitor hall, Deck 07</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank B capacitor hall, Deck 07</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09: the boarding umbilical</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09, across the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09, its umbilical pulled back</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09: the umbilical to the Mistral</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Ready room, Deck 09, from the lift to each airlock</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -565,7 +597,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
         <li><b>Docking bay</b> across Decks 08 to 11, centred along the hull under the superstructure, unpressurized, open to space, about 98 m long.</li>
         <li><b>Docking ring:</b> the clamps inside the bay that hold the ship.</li>
-        <li><b>Airlock A</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical. <b>Airlock B</b> faces it across the bay.</li>
+        <li><b>Airlock B</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical. <b>Airlock A</b> faces it across the bay, its own umbilical pulled back.</li>
       </ul>
     </section>
     <section>

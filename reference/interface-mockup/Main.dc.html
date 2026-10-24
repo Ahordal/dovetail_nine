@@ -693,7 +693,7 @@
           this.NODES = [
             { id: 'root', label: 'DOVETAIL-9', depth: 0, parent: null },
             { id: 'd1', label: 'Deck 01', depth: 1, parent: 'root' },
-            { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1' },
+            { id: 'd1a', label: 'Airlock B', depth: 2, parent: 'd1' },
             { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER' },
             { id: 'd2', label: 'Deck 02', depth: 1, parent: 'root' },
             { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2' },
@@ -708,7 +708,7 @@
           this.LOC = {
             root: { desc: 'SIGMA station directory.\n12 decks.', files: [] },
             d1: { desc: 'Docking ring. The Mistral is still at Bay A.\nCockpit lights on. I can see her through the port.', scan: 'no distortion', files: [] },
-            d1a: { desc: 'Airlock A. Where I came in.', scan: 'no distortion', files: [
+            d1a: { desc: 'Airlock B. Where I came in.', scan: 'no distortion', files: [
               { name: 'SIGMA_notice_0001.msg', body: 'SIGMA // NOTICE\n\nWelcome to Dovetail-9.\nAccess level: GENERAL.\nPlease remain within permitted areas.' }
             ] },
             d1b: { lockMsg: 'Terminal dark. No power to this section.' },

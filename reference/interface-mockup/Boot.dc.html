@@ -48,7 +48,7 @@ sc-if,sc-for{display:contents}
 <div style="position: relative; flex: 1 1 auto; min-height: 0; background: #0B0C0D; overflow: hidden; display: flex; flex-direction: column;">
 
 <div style="flex-shrink: 0; display: flex; align-items: center; gap: 8px; min-height: 41px; box-sizing: border-box; padding: 0 6px 0 20px; background: #0F1112; border-bottom: 1px solid #2A2D30; border-radius: 8px 8px 0 0;">
-<span style="flex-grow: 1; min-width: 0; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">TERMINAL DT9-T01A · 03:58</span>
+<span style="flex-grow: 1; min-width: 0; font-size: 11px; letter-spacing: 0.12em; color: #A8A49A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">TERMINAL DT9-T01B · 03:58</span>
 <button type="button" onClick="{{toggleMute}}" aria-label="{{muteLabel}}" aria-pressed="{{muted}}" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: none; border: 1px solid #2E3236; border-radius: 50%; color: #E8E4DA; cursor: pointer;">
 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
 <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"></path>
@@ -94,7 +94,7 @@ sc-if,sc-for{display:contents}
 <div ref="{{logRef}}" class="boot-log" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; border-top: 1px solid #2A2D30; padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;">
 <sc-if value="{{notStarted}}" hint-placeholder-val="{{false}}">
 <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 32px 0;">
-<span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.12em;">TERMINAL DT9-T01A · STANDBY</span>
+<span style="color: #A8A49A; font-size: 11px; letter-spacing: 0.12em;">TERMINAL DT9-T01B · STANDBY</span>
 <button type="button" onClick="{{begin}}" style="min-height: 44px; padding: 0 20px; background: none; border: 1px solid {{accent}}; border-radius: 4px; color: {{accent}}; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; cursor: pointer;">WAKE TERMINAL</button>
 <span style="color: #6F6C64; font-size: 11px;">Sound on. Use the speaker button to mute.</span>
 </div>
@@ -249,7 +249,7 @@ class Component extends DCLogic {
       // carries 4.2 PB, so a fixed station terminal sits in the TB to PB range.
       { stage: 'POWER' },
       { label: 'Station power bus', value: 'NOMINAL', tone: 'ok' },
-      { label: 'Terminal', value: 'DT9-T01A · DECK 01', tone: 'ok' },
+      { label: 'Terminal', value: 'DT9-T01B · DECK 01', tone: 'ok' },
       { stage: 'FIRMWARE' },
       { label: 'Nashiro terminal firmware', value: 'v7.2 · CHECKSUM OK', tone: 'ok' },
       { stage: 'POWER-ON SELF-TEST' },

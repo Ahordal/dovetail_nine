@@ -1014,7 +1014,7 @@
           this.NODES = [
             { id: 'root', label: 'DOVETAIL-9', depth: 0, parent: null },
             { id: 'd1', label: 'Deck 01', num: '01', fn: 'Docking ring', depth: 1, parent: 'root' },
-            { id: 'd1a', label: 'Airlock A', depth: 2, parent: 'd1', m: 60 },
+            { id: 'd1a', label: 'Airlock B', depth: 2, parent: 'd1', m: 60 },
             { id: 'd1b', label: 'Docking Control', depth: 2, parent: 'd1', lock: 'NO POWER', m: 35 },
             { id: 'd2', label: 'Deck 02', num: '02', fn: 'Habitation', depth: 1, parent: 'root' },
             { id: 'd2a', label: 'Corridor 2A', depth: 2, parent: 'd2', m: 20 },
@@ -1036,7 +1036,7 @@
           // Port states are spread out so each look can be seen in the mockup; none are canon.
           this.TERM = {
             d1: { id: 'DT9-T010', kind: 'PUBLIC', port: 'available' },
-            d1a: { id: 'DT9-T01A', kind: 'PUBLIC', port: 'available' },
+            d1a: { id: 'DT9-T01B', kind: 'PUBLIC', port: 'available' },
             d1b: { id: 'DT9-T01B', kind: 'RESTRICTED', port: 'damaged' },
             d2: { id: 'DT9-T020', kind: 'PUBLIC', port: 'available' },
             d2a: { id: 'DT9-T02A', kind: 'PUBLIC', port: 'none' },
@@ -1103,7 +1103,7 @@
           // What Quell sees on arrival, first visit then return. Kept for the place screen. Placeholder writing, not canon.
           this.NOTES = {
             d1: ['Docking ring hub. Lift doors on the far side, one jammed half open. Dust on everything, thick enough to write in.'],
-            d1a: ['Airlock A. The Mistral\'s umbilical ticking behind the inner door. Only warm air on this ring.', 'Back at the airlock. The Mistral is still there.'],
+            d1a: ['Airlock B. The Mistral\'s umbilical ticking behind the inner door. Only warm air on this ring.', 'Back at the airlock. The Mistral is still there.'],
             d1b: ['Docking control. Door shut, panel dark. No power this side.'],
             d2: ['Habitation hub. Deck signs still lit on emergency power. Someone\'s jacket on a rail by the lift.'],
             d2a: ['Corridor 2A. Doors down one side, a nameplate on each. Most are shut.'],
