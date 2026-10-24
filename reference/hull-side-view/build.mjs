@@ -87,7 +87,7 @@ for (let k = 1; k <= 12; k++) {
 add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
 // The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
-const goldAt = svg.length, GOLD = [], EARLY = [];
+const goldAt = svg.length, GOLD = [], EARLY = [], CRAWL = [];
 const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
@@ -137,11 +137,11 @@ const cr = f(11 * S), ccx = mx(200);
 add(`<line class="conduit" x1="${X0}" y1="${f(midY)}" x2="${f(ccx - cr)}" y2="${f(midY)}"/><line class="conduit" x1="${f(ccx + cr)}" y1="${f(midY)}" x2="${X1}" y2="${f(midY)}"/>`);
 add(`<text class="t-note" x="${mx(24)}" y="${f(midY - 3)}">CONDUITS · KEEL</text>`);
 // Two vertical access shafts through engineering, midway between the chamber and the section edge.
+// Each stands in a 3 m wall zone, built to the station's access standard: 1.2 m wide, a 0.5 m ladder.
 for (const m of [164.5, 235.5]) {
-  add(`<rect class="shaft" x="${f(mx(m) - 1.5 * S)}" y="${ey0}" width="${f(3 * S)}" height="${f(ey1 - ey0)}"/>`);
-  // A ladder down the shaft: two rails, rungs one per metre between them.
-  for (const x of [mx(m) - 1.5 * S + 1.2, mx(m) + 1.5 * S - 1.2]) add(`<line class="ladder" x1="${f(x)}" y1="${ey0}" x2="${f(x)}" y2="${ey1}"/>`);
-  for (let y = ey0 + S; y < ey1 - 0.5; y += S) add(`<line class="rung" x1="${f(mx(m) - 1.5 * S + 1.2)}" y1="${f(y)}" x2="${f(mx(m) + 1.5 * S - 1.2)}" y2="${f(y)}"/>`);
+  add(`<rect class="shaft" x="${f(mx(m) - 0.6 * S)}" y="${ey0}" width="${f(1.2 * S)}" height="${f(ey1 - ey0)}"/>`);
+  for (const x of [mx(m) - 0.25 * S, mx(m) + 0.25 * S]) add(`<line class="ladder" x1="${f(x)}" y1="${ey0}" x2="${f(x)}" y2="${ey1}"/>`);
+  for (let y = ey0 + 0.5 * S; y < ey1 - 0.3; y += 0.5 * S) add(`<line class="rung" x1="${f(mx(m) - 0.25 * S)}" y1="${f(y)}" x2="${f(mx(m) + 0.25 * S)}" y2="${f(y)}"/>`);
 }
 // Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
 for (const [m0, m1, n] of [[112, LIFTS[0] - LW / 2, 2], [LIFTS[0] + LW / 2, 163, 3]]) {
@@ -534,7 +534,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     return d + ` H ${f(x1)}`;
   };
   // Feed: drawn up from the first wastewater tank, overhead, and down into the strainer.
-  wl([[117, 4.33], [117, 6.2], [57.2, 6.2], [57.2, 1.6]]);
+  wl([[117, 4.33], [117, 5.1], [57.2, 5.1], [57.2, 1.6]]);
   wl([[121.5, 1.0], [124, 1.0]]);
   // Treatment train, left to right, then straight into the first potable tank; the potable tanks share a level line.
   wl([[57.2, 1.0], [81.5, 1.0]]);
@@ -755,13 +755,16 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const tg = (m, k, n, off = 0) => T.push(tag(m, k, n, off));
   // Two staggered ladder routes, Deck 12 to Deck 01, one either side of the middle: a short ladder between each pair of
   // decks, each set along from the last, standing in a crew room and opening by hatch into a crew room above.
-  const LADDERS = [
-    [12, 105.7], [11, 54], [10, 63], [9, 52.5], [8, 50.6], [7, 34.4], [6, 36.5], [5, 106], [4, 174], [3, 189], [2, 174],
-    [12, 275.75], [11, 318], [10, 330], [9, 340.5], [8, 348], [7, 353.2], [6, 362.5], [5, 323], [4, 238.7], [3, 242.7], [2, 245],
+  // Maintenance access ways. Vertical ways (1.2 m, a ladder) each pass up through one deck, from the crawlway in the
+  // service band below its floor to the crawlway at its ceiling; crawlways (0.9 m, too low to stand) run high in the
+  // bands. Two staggered routes, joined along Deck 12's band. [deck the vertical passes through, metres along].
+  const VERT = [
+    [11, 122.7], [10, 63], [9, 52.5], [8, 50.6], [7, 34.4], [6, 36.5], [5, 106], [4, 174], [3, 189], [2, 174],
+    [11, 285.9], [10, 330], [9, 340.5], [8, 348], [7, 353.2], [6, 362.5], [5, 323], [4, 238.7], [3, 242.7], [2, 245],
   ];
-  // Each ladder is in a tube 1.6 m wide. Bunks, desks and lockers step aside wherever a tube stands or its hatch opens.
-  const TW = 1.6;
-  const blocked = (k, a, b) => LADDERS.some(([lk, lm]) => (lk === k || lk === k + 1) && a < lm + TW / 2 + 0.2 && b > lm - TW / 2 - 0.2);
+  const LADDERS = VERT.concat([[12, 105.7], [12, 275.75]]);   // plus a room ladder up into Deck 12's crawlway on each side
+  const TW = 1.2;
+  const blocked = (k, a, b) => LADDERS.some(([lk, lm]) => lk === k && a < lm + TW / 2 + 0.2 && b > lm - TW / 2 - 0.2);
 
   // Room fit-outs by type. Each takes the deck and the span; everything is a closed shape.
   const quarters = (k, m0, m1) => {
@@ -892,16 +895,42 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const WR = LIFTS[1] + LW / 2 + 4.5;
   GOLD.push(`<path class="water" d="${run(X(SX), WY(2), X(WR), [X(DBX)])} V ${f(WY(7))} H ${f(X(320))} V ${f(Yk(7, 3.2))}"/>`);
   GOLD.push(`<path class="water" d="M ${f(X(WR))} ${f(Yk(4, 2.0))} H ${f(X(LIFTS[1] + LW / 2 + 3.2))}"/>`);
-  // Ladder tubes: an enclosed shaft from this deck's floor up through its service band, an access door at the foot,
-  // a hatch into the floor above.
-  for (const [k, m] of LADDERS) {
-    const top = dy(k), bot = Yk(k, 0) + FL;
+  // Crawlways run through each band; a junction box wherever a way meets them.
+  const CY = (k) => dy(k) + 2.25 * S, CH = 0.9;   // mid-band: between the gold feeders above and the water lines below
+  const crawl = (k, m0, m1) => CRAWL.push(`<rect class="crawl" x="${f(X(Math.min(m0, m1)))}" y="${f(CY(k) - CH / 2 * S)}" width="${f(Math.abs(m1 - m0) * S)}" height="${f(CH * S)}"/>`);
+  for (const route of [VERT.slice(0, 10), VERT.slice(10)]) {
+    // Each vertical's top meets its deck's band; the next vertical up rises from that same band.
+    for (let i = 0; i < route.length - 1; i++) crawl(route[i][0], route[i][1], route[i + 1][1]);
+    const [k2, m2] = route[route.length - 1]; crawl(k2, m2 - 1.0, m2 + 1.0);
+  }
+  crawl(12, 105.7, 285.9);                              // Deck 12's band, under the bay: the two halves meet here
+  crawl(5, 106, 164.5); crawl(5, 235.5, 238.7);         // into the top of engineering's two shafts
+  // Vertical ways: band below to band above, through the deck; an access door into the deck at its foot.
+  for (const [k, m] of VERT) {
+    const top = CY(k), bot = CY(k + 1);
     add(`<rect class="shaft" x="${f(X(m - TW / 2))}" y="${f(top)}" width="${f(TW * S)}" height="${f(bot - top)}"/>`);
-    for (const e of [m - 0.4, m + 0.4]) add(`<line class="ladder" x1="${f(X(e))}" y1="${f(top)}" x2="${f(X(e))}" y2="${f(bot)}"/>`);
-    for (let y = bot - 0.6 * S; y > top + 0.3 * S; y -= 0.6 * S) add(`<line class="rung" x1="${f(X(m - 0.4))}" y1="${f(y)}" x2="${f(X(m + 0.4))}" y2="${f(y)}"/>`);
-    add(`<rect class="door door-open" x="${f(X(m - 0.6))}" y="${f(top - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
+    for (const e of [m - 0.25, m + 0.25]) add(`<line class="ladder" x1="${f(X(e))}" y1="${f(top)}" x2="${f(X(e))}" y2="${f(bot)}"/>`);
+    for (let y = bot - 0.5 * S; y > top + 0.3 * S; y -= 0.5 * S) add(`<line class="rung" x1="${f(X(m - 0.25))}" y1="${f(y)}" x2="${f(X(m + 0.25))}" y2="${f(y)}"/>`);
     add(`<rect class="door door-open" x="${f(X(m + TW / 2) - DW / 2)}" y="${f(Yk(k, 1.8))}" width="${DW}" height="${f(1.8 * S)}"/>`);
   }
+  // Room ladders on Deck 12 up into its crawlway, through a ceiling hatch.
+  for (const m of [105.7, 275.75]) {
+    const top = CY(12) + CH / 2 * S, bot = Yk(12, 0) + FL;
+    for (const e of [m - 0.25, m + 0.25]) add(`<line class="ladder" x1="${f(X(e))}" y1="${f(top)}" x2="${f(X(e))}" y2="${f(bot)}"/>`);
+    for (let y = bot - 0.5 * S; y > top + 0.3 * S; y -= 0.5 * S) add(`<line class="rung" x1="${f(X(m - 0.25))}" y1="${f(y)}" x2="${f(X(m + 0.25))}" y2="${f(y)}"/>`);
+  }
+  // Junction boxes where ways meet crawlways, each with its hatch: locked by engineering and the core, open elsewhere.
+  const LOCKED = [[5, 164.5], [5, 235.5], [5, 174], [5, 238.7]];
+  const junction = (k, m) => {
+    const locked = LOCKED.some(([lk, lm]) => lk === k && Math.abs(lm - m) < 0.5);
+    add(`<rect class="junction" x="${f(X(m - 1.0))}" y="${f(CY(k) - 0.75 * S)}" width="${f(2.0 * S)}" height="${f(1.5 * S)}"/>`);
+    add(`<rect class="door ${locked ? "door-locked" : "door-open"}" x="${f(X(m - 0.45))}" y="${f(CY(k) - 0.35 * S)}" width="${f(0.9 * S)}" height="${f(0.7 * S)}"/>`);
+  };
+  for (const [k, m] of VERT) { junction(k, m); junction(k + 1, m); }
+  for (const m of [105.7, 275.75]) junction(12, m);
+  junction(5, 164.5); junction(5, 235.5);
+  // Deck 01 is reached through a floor hatch from the top crawlway on each side.
+  for (const m of [174, 245]) add(`<rect class="door door-open" x="${f(X(m - 0.6))}" y="${f(dy(2) - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
   T.forEach((t) => tags.push(t));
 }
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
@@ -928,7 +957,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const m of [BAY[0] - AL, BAY[1] + AL]) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
-svg.splice(goldAt, 0, ...EARLY, ...GOLD);
+svg.splice(goldAt, 0, ...EARLY, ...GOLD, ...CRAWL);
 tags.forEach(add);
 add(hereMarker);
 
@@ -1033,6 +1062,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
   .ladder { fill: none; stroke: var(--muted); stroke-width: 0.7; }
   .room-wall { stroke: var(--muted); stroke-width: 1; }
+  .crawl { fill: var(--panel); stroke: var(--muted); stroke-width: 0.7; }
+  .junction { fill: var(--panel); stroke: var(--fg); stroke-width: 0.5; }
   .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
   .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
   .plant-leaf { fill: var(--leaf); stroke: none; }
@@ -1191,8 +1222,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="grid-power" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Station power grid; a hop where two lines cross without joining</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9.5" y="0.5" width="9" height="11.5"/><rect class="door door-open" x="11" y="0" width="6" height="1"/><line class="ladder" x1="12" y1="1" x2="12" y2="12"/><line class="ladder" x1="16" y1="1" x2="16" y2="12"/><line class="rung" x1="12" y1="5" x2="16" y2="5"/><line class="rung" x1="12" y1="9" x2="16" y2="9"/><rect class="door door-open" x="18" y="7" width="1" height="5"/></svg>Ladder tube to the deck above: access door at the foot, hatch at the top</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder (engineering)</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="crawl" x="1" y="1" width="26" height="3"/><rect class="shaft" x="11.5" y="2.5" width="5" height="9.5"/><line class="ladder" x1="13" y1="3" x2="13" y2="12"/><line class="ladder" x1="15" y1="3" x2="15" y2="12"/><rect class="junction" x="10" y="0" width="8" height="5"/><rect class="door door-open" x="12" y="1.2" width="4" height="2.6"/></svg>Maintenance access: crawlway, vertical way, junction box and hatch</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
