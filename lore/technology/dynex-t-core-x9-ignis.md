@@ -52,7 +52,7 @@ The dome is three concentric shells, each about a deck tall. Named "shells", not
 
 - **Graviton Lattice Shell:** the trap itself. The rotating field array that grips the charged singularity and threads its ergosphere. (In DYNEX engineering slang, the "Penrose vortex lattice".)
 - **Magnetic Flux Confinement:** the field lines that carry the extracted spin power out of the ergosphere.
-- **Shell 1, inner: flux ring and thermal jacket.** Superconducting coils, and the **Quantum Coolant Matrix**: a high-velocity liquid-lithium loop that absorbs the Hawking glow and neutron flux.
+- **Shell 1, inner: flux ring and thermal jacket.** Superconducting coils, and the **Quantum Coolant Matrix**: a high-velocity liquid-lithium loop that absorbs the Hawking glow and neutron flux. The coolant is the one thing that touches the black hole's radiation and then leaves the shielding, pumped out along the Deck 06 spine to the radiators; its pipes are shielded for normal running.
 - **Shell 2, intermediate: radiation sponge.** Interlocking tungsten-carbide plates and thick borated polyethylene, slowing fast neutrons and stopping hard gamma rays.
 - **Shell 3, outer: structural sphere.** The **Argonax Fiber Shell** (proprietary DYNEX material), tied into the station's keel to carry the singularity's weight and gravity. Kinetic-absorber mounts isolate the station from vibration. The observation gallery's polarized lead-glass viewports are set into it.
 - **Hawking Harvest Rings:** collect the heat from the Hawking glow to run the station's own systems.
@@ -89,7 +89,7 @@ The dome is three concentric shells, each about a deck tall. Named "shells", not
 ## Role in the story
 
 - **Why it can't stop:** a pinned corridor has to stay pinned, and the reactor physically cannot be switched off. The failsafe is the only way to end it.
-- **The accident:** harmonic feedback from the Anchor Core made it surge toward its 7.8 EW threshold. The containment-priority protocol pulled every reserve, backups included, to hold containment, and the shielding dropped for two seconds. See [[the-accident]].
+- **The accident:** harmonic feedback from the Anchor Core made it surge toward its 7.8 EW threshold. The containment-priority protocol pulled every reserve, backups included, to hold containment, and the harmonic shielding dropped for two seconds. Containment itself held. The wavering field made Shell 1's coolant intensely radioactive, and the coolant loop carried that out along the spine; the X9's own shielding never failed. See [[the-accident]].
 - **Why containment outranks everything:** losing containment means the spin reserve discharging uncontrolled. The ZK-Class failsafe is the *good* outcome.
 - **The ending:** the failsafe is **never triggered**. The alignment window closes with Quell aboard. Had it been triggered, it would have permanently destabilized the Trillium Arc.
 - **Unit 002** is Quell's motive for the dump: Nashiro could try again.

@@ -56,7 +56,7 @@ Times from the moment the Anchor Core reaches full power.
 | T+0.058 s | Containment-priority protocol fires, correctly. SIGMA diverts all reserves, backup bus included, to containment. |
 | T+0.060 s | Shielding falls back on its capacitor banks. Under-charged bank B drains first. |
 | T+0.5 s | Capacitors exhausted. **Shielding down.** Harmonics enter along the conduit runs. |
-| T+0.6 to 2.0 s | Harmonic node cascade spreads through every deck. Nodes catch slivers of up to ~1.4 s. X9 containment shielding fails; radiation streams along the conduit runs. Every crew member takes a lethal dose. |
+| T+0.6 to 2.0 s | Harmonic node cascade spreads through every deck. Nodes catch slivers of up to ~1.4 s. The wavering field flings a particle burst into Shell 1; the coolant turns intensely radioactive and the pumps carry it out along the spine loop beside the conduits. Every crew member takes a lethal dose. |
 | T+2.1 s | Containment stabilizes. Protocol releases power. |
 | T+2.4 s | **Shielding restored.** About two seconds too late. The nodes persist. |
 
@@ -76,7 +76,7 @@ DYNEX's sealed technical dossier on the X9 tells a different story, and it's the
 - The containment protocol pulled every reserve to stiffen the fields, spiking toward the 7.8 EW ceiling.
 - Safety interlocks **cycled the primary radiation shutters open for two seconds** to vent overpressure, "exposing the adjacent core spaces".
 
-It is **half true**: radiation did kill the crew. What it hides is *why* the shielding failed. It never mentions the harmonic shielding, the backup bus, Power Priority Matrix rev. 4, capacitor bank B or the waiver, and it places the radiation at "shutters near the core", not streaming along the conduits to every deck. A reader who finds both this account and the station's own records can see what the official version leaves out.
+It is **half true**: radiation did kill the crew. What it hides is *why* the shielding failed. It never mentions the harmonic shielding, the backup bus, Power Priority Matrix rev. 4, capacitor bank B or the waiver, and it places the radiation at "shutters near the core", not streaming along the coolant loop to every deck. A reader who finds both this account and the station's own records can see what the official version leaves out.
 
 ## Real-world parallels
 

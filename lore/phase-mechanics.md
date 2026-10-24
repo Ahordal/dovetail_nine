@@ -97,7 +97,8 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 
 ## Why the crew died **[settled]**
 
-- **Radiation, not the harmonics.** In the surge, the X9's containment shielding failed. The black hole's glow (gamma rays and particles) **streamed out along the conduit runs** into the station: radiation streaming, a real reactor-safety term for radiation escaping along pipes and cable channels.
+- **Radiation, not the harmonics.** The X9's shielding never failed. While the containment field wavered, it flung a burst of particles into Shell 1 and made the flowing coolant intensely radioactive in an instant. The pumps kept running, so the coolant carried it straight out through the shells and along the **coolant loop on the Deck 06 spine, beside the conduits**, past every deck. Its pipes are shielded for normal running, not for that: radiation streaming, a real reactor-safety term for radiation escaping along pipes and cable channels.
+  - Real basis: reactor coolant becomes radioactive passing the core. In boiling-water reactors, short-lived nitrogen-16 makes the steam lines strong gamma sources while the plant runs, which is why they are shielded and off-limits.
 - **Every crew member took a lethal dose.** Not instantly: those near the core and the conduits collapsed within minutes to hours; those farther away lasted a day or two. Real high-dose cases follow this pattern.
 - **Machines survived.** Equipment near a black-hole reactor is radiation-hardened as standard, like real spacecraft and nuclear-plant electronics. The station stayed intact and running; its crew did not.
 - **The bodies remain aboard,** where each person finally fell. Where they died maps how the radiation spread and how long each had.
@@ -115,10 +116,10 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 ### Residual radiation **[proposed]**
 
 - **The flash itself didn't linger,** but the neutrons it knocked loose made metal radioactive (activation, real).
-- **After ten years most has decayed;** longer-lived products such as cobalt-60 (half-life about 5 years) are down to roughly a quarter. What remains is **hot spots**: worst near the Core Chamber and along the conduit runs where the radiation streamed.
+- **After ten years most has decayed;** longer-lived products such as cobalt-60 (half-life about 5 years) are down to roughly a quarter. What remains is **hot spots**: worst near the Core Chamber and along the coolant loop beside the conduit runs, where the pipe steel itself was made radioactive.
 - **Not like Chernobyl:** there is no fuel to scatter, so it's fixed in the station's metal, not in the air.
 - **For Quell:** he carries a dosimeter. Hot areas are survivable briefly, dangerous for long: a physical reason for restricted zones, and a cost for pushing into them. Ordinary areas are fairly safe; a day aboard is nowhere near a lethal dose unless he chooses to go deep.
-- **A clue in itself:** the hot spots trace the radiation's path along the conduits, not from "shutters near the core" as the official account claims.
+- **A clue in itself:** the hot spots trace the radiation's path along the coolant loop beside the conduits, not from "shutters near the core" as the official account claims.
 
 ## Effects on people
 
