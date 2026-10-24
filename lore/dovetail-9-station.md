@@ -113,12 +113,10 @@ related:
 - **Water plant** at the left end, beyond the left lift: filter columns, a pump, treatment and controls.
 - **Water tank halls** either side of the middle: large reserve tanks on saddles, walked between for inspection.
 - **Waste plant** at the right end, beyond the right lift: a digester, a compactor and a pump.
-- **One water header** runs the deck, feeding every tank, filter and pump, behind the lift shafts where it crosses them.
+- **One water header** runs the deck, feeding every tank, filter and pump, behind the lift shafts where it crosses them. It stops short of the fuel section.
 - Maintenance runs it ([[crew]]); hydroponics on Deck 03 draws its water from here.
-- **The middle section, under the Mistral, is [open].** Two options:
-  - **Containment refuge:** a room inside a water jacket, the most shielded place aboard and the farthest from the conduits, built for a slow X9 leak. In the accident the dose came in the first two seconds, so the survivors who reached it and sealed themselves in died there anyway: a safe room designed for the wrong disaster, like the shielding ([[the-accident]]). Their records could show the radiation came along the conduits.
-  - **Ship services:** propellant, water and air tanks for docked ships, piped up through the bay floor. No refuge at all, because nobody believed radiation could get inside; when it did, there was nowhere to go.
-  - A storm shelter against space weather was considered and dropped: a 2400s hull shields ordinary space radiation, and K-17 is a dim star.
+- **Backup generators and fuel,** in the middle section under the Mistral, between the two tank halls: two **backup generators** that power the station when the X9 is offline, and **fuel tanks** on saddles. One fuel header feeds the generators and runs two **risers up through the bay floor** to **fuel hose stations** on the bay floor either side of the floor clamps, where docked ships are refuelled. The generators burn the same fuel the bay hands out.
+- **No radiation refuge anywhere aboard.** Nobody believed radiation could get inside the station, so none was built; when it did, the crew had nowhere to go ([[the-accident]]). A storm shelter against space weather was also considered and dropped: a 2400s hull shields ordinary space radiation, and K-17 is a dim star.
 
 ## Defenses **[settled]**
 
