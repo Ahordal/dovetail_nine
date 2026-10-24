@@ -463,9 +463,12 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   for (const m of [108.6, 110.8, 113.0, 115.2]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
   for (const [m, top] of [[119, 2.0], [124.75, 2.6], [275, 3.0], [290, 2.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
   // Fuel header: tanks feed the generators, and two risers climb through the bay floor to the hose stations.
-  runs.push(`M ${X(182)} ${Y(HD)} H ${X(220)}`);
-  for (const [m, top] of [[182, 2.6], [190, 2.6], [201.25, 3.0], [213.25, 3.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
-  for (const m of [186, 220]) runs.push(`M ${X(m)} ${Y(HD)} V ${Yb(0)}`);
+  // Laid out mirror-symmetric about 200 m, under the middle of the Mistral.
+  const GEN = [179.5, 214.5], FT = [189.25, 200.5], RS = [187.4, 212.6];
+  runs.push(`M ${X(GEN[0] + 3)} ${Y(HD)} H ${X(GEN[1] + 3)}`);
+  for (const m of GEN) runs.push(`M ${X(m + 3)} ${Y(HD)} V ${Y(2.6)}`);
+  for (const m of FT) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const m of RS) runs.push(`M ${X(m)} ${Y(HD)} V ${Yb(0)}`);
   hollow(runs);
   for (const [m0, m1] of [[l0, l1], [r0, r1]]) for (const h of [HD - PD / 2, HD + PD / 2]) add(`<line class="pipe hidden" x1="${X(m0)}" y1="${Y(h)}" x2="${X(m1)}" y2="${Y(h)}"/>`);
   // Water plant: filter columns, a pump, treatment, controls.
@@ -479,13 +482,14 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
   }
   // Backup generators: power for when the X9 is offline, burning the same fuel the bay hands out.
-  for (const m of [179, 187]) {
+  for (const [m, out] of [[GEN[0], 1.4], [GEN[1], 4.6]]) {
     box(m, m + 6, 0, 2.6, 2);
-    add(`<circle cx="${X(m + 1.4)}" cy="${Y(1.3)}" r="${f(0.8 * S)}"/>`);
-    box(m + 3, m + 5.4, 0.5, 2.1);
+    add(`<circle cx="${X(m + out)}" cy="${Y(1.3)}" r="${f(0.8 * S)}"/>`);
+    const c = out < 3 ? m + 3 : m + 0.6;
+    box(c, c + 2.4, 0.5, 2.1);
   }
   // Fuel tanks on saddles.
-  for (const m of [196, 208]) {
+  for (const m of FT) {
     box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
     for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
   }
@@ -494,11 +498,13 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   box(283, 287, 0, 2.6);
   add(`<circle cx="${X(290)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(288.7, 291.3, 0, 0.1);
   // Fuel hose stations on the bay floor, either side of the floor clamps: a cabinet and its hose reel.
-  for (const m of [186, 220]) {
+  for (const m of RS) {
     add(`<rect x="${X(m - 1.2)}" y="${Yb(1.6)}" width="${f(2.4 * S)}" height="${f(1.6 * S)}"/>`);
     add(`<circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.5 * S)}"/><circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.15 * S)}"/>`);
   }
   add(`</g>`);
+  // Maintenance reaches the fuel section through a door from each tank hall.
+  for (const m of FU) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${Y(DOOR)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   tags.push(tag((100 + l0) / 2, 12, 12), tag((l1 + FU[0]) / 2, 12, 13), tag((FU[1] + r0) / 2, 12, 13), tag(200, 12, 14), tag((r1 + 300) / 2, 12, 15));
 }
 // Lift doorways: only where a room on this face meets the shaft, as tall as that room.
