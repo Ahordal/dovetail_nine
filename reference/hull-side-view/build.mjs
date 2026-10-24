@@ -384,19 +384,36 @@ tags.push(tag((CR + CA) / 2, 10, 7, 1));
 }
 // The bay floor runs on under the cargo machinery to the lift.
 add(`<line class="hold-floor" x1="${mx(CR)}" y1="${dy(12)}" x2="${bx}" y2="${dy(12)}"/>`);
-// Bottom right, wall to lift: the bay workshop on Deck 10 over the pod garage on Deck 11.
+// Bottom right, wall to lift: docking control on Deck 10 over the bay workshop on Deck 11.
 const GA = [BAY[1], LIFTS[1] - LW / 2];
 const gx = mx(GA[0]), gw = f((GA[1] - GA[0]) * S);
-// Workshop: pressurized, no door to the bay, only a window; crews go out through Airlock B above.
+// Docking control: a near floor-to-ceiling window onto the bay and a long control desk facing it.
 add(`<rect class="room" x="${gx}" y="${dy(10)}" width="${gw}" height="${f(DH)}"/>`);
-add(`<rect class="window" x="${f(gx - DW / 2)}" y="${f(dy(11) - 3.6 * S)}" width="${DW}" height="${f(2.2 * S)}"/>`);
-// Fitted out in the hold's line style, both floor hatches kept clear.
 {
   const X = (m) => f(mx(m)), Y = (h) => f(dy(11) - FL - h * S);
   const ln = (m0, h0, m1, h1, cls) => add(`<line class="${cls}" x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
   const box = (m0, m1, h0, h1, cls) => add(`<rect class="${cls}" x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"/>`);
+  add(`<rect class="window" x="${f(gx - DW / 2)}" y="${Y(7.2)}" width="${DW}" height="${f(6.8 * S)}"/>`);
   add(`<g class="racks">`);
-  // Desk and console under the window, looking out over the bay.
+  // Control desk: a long console under the window, screens along its top.
+  box(249.6, 256.0, 0, 0.9, "kit");
+  ln(249.6, 0.9, 256.0, 0.9, "shelf");
+  for (const m of [250.0, 251.6, 253.2, 254.8]) box(m, m + 1.1, 1.0, 1.7, "crate");
+  // Traffic board on the back wall: the bay, the clamps and what's inbound.
+  box(258.4, 262.4, 1.2, 2.6, "kit");
+  box(259.0, 261.8, 1.5, 2.3, "crate");
+  add(`</g>`);
+}
+tags.push(tag(260.2, 10, 10, -3.5));
+// Bay workshop at bay-floor level: pressurized, a window but no door to the bay; crews go out through Airlock B.
+add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/>`);
+{
+  const X = (m) => f(mx(m)), Y = (h) => f(dy(12) - FL - h * S);
+  const ln = (m0, h0, m1, h1, cls) => add(`<line class="${cls}" x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
+  const box = (m0, m1, h0, h1, cls) => add(`<rect class="${cls}" x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"/>`);
+  add(`<rect class="window" x="${f(gx - DW / 2)}" y="${Y(3.6)}" width="${DW}" height="${f(2.2 * S)}"/>`);
+  add(`<g class="racks">`);
+  // Desk and console under the window.
   ln(249.5, 0.9, 251.4, 0.9, "shelf");
   for (const m of [249.7, 251.2]) ln(m, 0, m, 0.9, "upright");
   box(249.8, 250.9, 0.9, 1.3, "crate");
@@ -407,25 +424,13 @@ add(`<rect class="window" x="${f(gx - DW / 2)}" y="${f(dy(11) - 3.6 * S)}" width
   box(256.2, 257.6, 1.0, 1.25, "crate");
   box(254.9, 257.7, 1.6, 2.9, "kit");
   for (const m of [255.5, 256.3, 257.1]) ln(m, 1.9, m, 2.6, "brace");
-  // Parts shelving against the lift wall, a few bins on each level.
   // A closed cabinet clear of the wall; bins sit on each shelf, not across it.
   box(260.6, 262.4, 0, 2.9, "kit");
   for (const h of [0.95, 1.9]) ln(260.6, h, 262.4, h, "shelf");
   for (const [m, h, w] of [[260.8, 0, 0.6], [261.6, 0, 0.5], [260.8, 0.95, 0.5], [261.5, 1.9, 0.6]]) box(m, m + w, h + 0.2, h + 0.6, "crate");
   add(`</g>`);
 }
-tags.push(tag(260.2, 10, 10, -3.5));
-// Pod garage: open to the bay behind a shutter, so no airlock. Pods hang from collars under hatches in the workshop floor.
-add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/>`);
-add(`<rect class="door" x="${f(gx - DW / 2)}" y="${f(dy(11) + FL)}" width="${DW}" height="${f(DH - 2 * FL)}"/>`);
-for (const [m, pod] of [[253, true], [259.5, false]]) {
-  add(`<rect class="door" x="${f(mx(m - 0.9))}" y="${f(dy(11) - DW / 2)}" width="${f(1.8 * S)}" height="${DW}"/>`);
-  add(`<g class="ship"><rect x="${f(mx(m - 0.6))}" y="${f(dy(11) + FL)}" width="${f(1.2 * S)}" height="${f(0.8 * S)}"/>`);
-  // The second berth stands empty.
-  if (pod) add(`<rect x="${f(mx(m - 2.2))}" y="${f(dy(11) + FL + 0.8 * S)}" width="${f(4.4 * S)}" height="${f(3 * S)}" rx="3"/>`);
-  add(`</g>`);
-}
-tags.push(tag(259.5, 11, 11, 2));
+tags.push(tag(260.2, 11, 11, -3.5));
 tags.push(tag(123.5, 9, 8, 1));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
 const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
@@ -441,7 +446,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l0, full(6)], [r1, full(6)], // lift lobbies and tram stops
     [l1, low], [r0, low],       // ready rooms A and B
     [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
-    [r0, full(10)],             // bay workshop
+    [r0, full(10)], [r0, full(11)], // docking control, bay workshop
   ];
   for (const [m, [y0, y1]] of doors) add(`<rect class="door" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
@@ -638,8 +643,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Bay workshop, Deck 10: bench, parts shelves, a window onto the bay</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Pod garage, Deck 11, open to the bay; one berth empty</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Docking control, Deck 10: a wide window and control desk</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Bay workshop, Deck 11: bench, parts cabinet, a window onto the bay</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
