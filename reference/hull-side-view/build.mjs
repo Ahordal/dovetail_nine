@@ -510,34 +510,63 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   for (const m of FU) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${Y(DOOR)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   tags.push(tag((100 + l0) / 2, 12, 12), tag((l1 + FU[0]) / 2, 12, 13), tag((FU[1] + r0) / 2, 12, 13), tag(200, 12, 14), tag((r1 + 300) / 2, 12, 15));
 }
-// Deck 11 beyond the lifts: water plant and water tanks on the left, the waste plant on the right.
+// Deck 11 beyond the lifts: the water system. Treatment and tanks on the left, the waste plant on the right.
+// Drains fall down the lift cores to here, the lowest living-side deck; potable water is pumped back up the left core.
 {
   const X = (m) => f(mx(m)), Y = (h) => f(dy(12) - FL - h * S);
   const room = (m0, m1) => add(`<rect class="room" x="${X(m0)}" y="${dy(11)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
-  const [l0, r1] = [LIFTS[0] - LW / 2, LIFTS[1] + LW / 2], HD = 3.5, WP = [45, 80], WT = [80, l0], WS = [r1, 305];
+  const wl = (pts, cls = "water") => add(`<polyline class="${cls}" points="${pts.map(([m, h]) => `${X(m)},${Y(h)}`).join(" ")}"/>`);
+  // An upright tank with a domed top, 6 m across and 4.4 m tall.
+  const tank = (m0, cls) => add(`<path class="${cls}" d="M ${X(m0)} ${Y(0)} V ${Y(3.6)} Q ${X(m0)} ${Y(4.4)} ${X(m0 + 3)} ${Y(4.4)} Q ${X(m0 + 6)} ${Y(4.4)} ${X(m0 + 6)} ${Y(3.6)} V ${Y(0)} Z"/>`);
+  const [l0, r1] = [LIFTS[0] - LW / 2, LIFTS[1] + LW / 2], WP = [45, 80], WT = [80, l0], WS = [r1, 305];
   for (const [m0, m1] of [WP, WT, WS]) room(m0, m1);
+  const POT = [81.5, 90, 98.5, 107], WW = [115.5, 124];
+  // Pipes first, so tanks and equipment sit over their ends.
+  // Feed: wastewater from the bottom of both wastewater tanks, behind the potable tanks and the plant, to the strainer.
+  wl([[127, 0.5], [57.2, 0.5]], "water-hidden");
+  // Treatment train, left to right, then straight into the first potable tank; the potable tanks share a level line.
+  wl([[57.2, 1.0], [81.5, 1.0]]);
+  for (const m of POT.slice(0, 3)) wl([[m + 6, 1.0], [m + 8.5, 1.0]]);
+  // Out of the last potable tank to the supply pump, up and across to the riser in the left lift core.
+  wl([[113, 1.0], [113.45, 1.0]]);
+  wl([[114.25, 1.6], [114.25, 5.6], [132.2, 5.6]]);
+  // Grey water and condensate come down the left core and fill the wastewater tanks from the top.
+  wl([[132.8, 5.0], [118.5, 5.0]], "water-waste");
+  for (const m of WW) wl([[m + 3, 5.0], [m + 3, 4.4]], "water-waste");
+  // Risers in the left lift core, inside its wall: supply up, drains down, the length of the station.
+  for (const [m, cls] of [[132.2, "water-hidden"], [132.8, "water-hidden"]]) add(`<line class="${cls}" x1="${X(m)}" y1="${dy(1)}" x2="${X(m)}" y2="${Y(m < 132.5 ? 5.6 : 5.0)}"/>`);
   add(`<g class="plant">`);
-  const tanks = [82, 95, 108, 121];
-  const runs = [`M ${X(60)} ${Y(HD)} H ${X(126.25)}`, `M ${X(277)} ${Y(HD)} H ${X(292)}`];
-  for (const m of tanks) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
-  for (const m of [60, 62.2, 64.4, 66.6]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
-  for (const [m, top] of [[70, 2.0], [75, 2.6], [277, 3.0], [292, 2.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
-  hollow(runs);
-  // Water plant: filter columns, a pump, treatment.
-  for (const m of [60, 62.2, 64.4, 66.6]) box(m - 0.6, m + 0.6, 0, 3.0, f(0.6 * S));
-  add(`<circle cx="${X(70)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(68.7, 71.3, 0, 0.1);
-  box(72.5, 77.5, 0, 2.6);
-  // Water tanks on saddles, walked between for inspection.
-  for (const m of tanks) {
-    box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
-    for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
-  }
-  // Waste plant: digester, compactor, pump.
-  box(272, 282, 0.4, 3.0, f(1.2 * S));
-  box(285, 289, 0, 2.6);
-  add(`<circle cx="${X(292)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(290.7, 293.3, 0, 0.1);
+  // Treatment: strainer, pump, filter beds, catalytic reactor, reverse osmosis rack, UV.
+  box(56.5, 58, 0, 1.6);
+  add(`<circle cx="${X(59.6)}" cy="${Y(1.0)}" r="${f(0.8 * S)}"/>`); box(58.7, 60.5, 0, 0.1);
+  for (const m of [61.4, 63, 64.6]) box(m, m + 1.2, 0, 2.6, f(0.6 * S));
+  box(67, 71, 0.5, 1.5, f(0.5 * S)); box(67.6, 68.2, 0, 0.5); box(69.8, 70.4, 0, 0.5);
+  box(72.5, 77.5, 0.3, 2.3);
+  for (const h of [0.7, 1.3, 1.9]) add(`<rect x="${X(72.8)}" y="${Y(h + 0.2)}" width="${f(4.4 * S)}" height="${f(0.4 * S)}" rx="${f(0.2 * S)}"/>`);
+  box(78.3, 79.3, 0.3, 2.2);
+  // The supply pump between the potable and wastewater tanks.
+  add(`<circle cx="${X(114.25)}" cy="${Y(0.8)}" r="${f(0.8 * S)}"/>`); box(113.4, 115.1, 0, 0.05);
   add(`</g>`);
+  for (const m of POT) tank(m, "tank-potable");
+  for (const m of WW) tank(m, "tank-waste");
+  // Waste plant: toilets come down the right core into a collection tank; a distiller recovers the urine's water,
+  // a brine processor takes the rest, solids go to a digester and dryer. Recovered water climbs the right core.
+  const BT = 269, DG = 286.5;
+  wl([[r1 + 0.4, 5.0], [BT + 3, 5.0], [BT + 3, 4.4]], "water-waste");
+  wl([[BT + 6, 1.0], [298.5, 1.0]], "water-waste");
+  wl([[298.5, 1.8], [298.5, 5.6], [r1 + 1.0, 5.6]]);
+  for (const [m, top] of [[r1 + 0.4, 5.0], [r1 + 1.0, 5.6]]) add(`<line class="water-hidden" x1="${X(m)}" y1="${dy(m < r1 + 0.7 ? 1 : 4) + (m < r1 + 0.7 ? 0 : 1.5 * S)}" x2="${X(m)}" y2="${Y(top)}"/>`);
+  add(`<g class="plant">`);
+  add(`<rect x="${X(276.5)}" y="${Y(2.0)}" width="${f(4.5 * S)}" height="${f(1.6 * S)}" rx="${f(0.8 * S)}"/>`); box(277, 277.6, 0, 0.4); box(280.4, 281, 0, 0.4);
+  box(282.5, 285.3, 0, 2.4);
+  box(DG + 7, DG + 10.5, 0, 2.2);
+  add(`<circle cx="${X(298.5)}" cy="${Y(1.0)}" r="${f(0.8 * S)}"/>`); box(297.6, 299.4, 0, 0.05);
+  add(`</g>`);
+  tank(BT, "tank-waste");
+  tank(DG, "tank-waste");
+  // Recovered water crosses to the left core in the Deck 04 service band and joins the drain into the wastewater tanks.
+  add(`<line class="water-hidden" x1="${X(r1 + 1.0)}" y1="${f(dy(4) + 1.5 * S)}" x2="${X(132.8)}" y2="${f(dy(4) + 1.5 * S)}"/>`);
   tags.push(tag((WP[0] + WP[1]) / 2 + 6, 11, 16), tag((WT[0] + WT[1]) / 2, 11, 17), tag((WS[0] + WS[1]) / 2, 11, 18));
 }
 // Engineering plant around the X9 (see lore x9-power-system): shells, penetrations, auxiliaries, heat and power halls.
@@ -762,6 +791,11 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
   .ladder { stroke: var(--muted); stroke-width: 0.7; }
   .room-wall { stroke: var(--muted); stroke-width: 1; }
+  .water { fill: none; stroke: var(--open); stroke-width: 0.6; }
+  .water-waste { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-dasharray: 1.6 0.8; }
+  .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.5; stroke-opacity: 0.5; stroke-dasharray: 1 1; }
+  .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
+  .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }
   .shell { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 2 2; }
   .trap { fill: var(--panel); stroke: var(--fg); stroke-width: 0.6; }
   .busbar { fill: none; stroke: var(--muted); stroke-width: 1.4; }
@@ -872,9 +906,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">13</text></g></svg>Fuel tank halls, Deck 12</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">14</text></g></svg>Backup fuel cells, hydrogen and oxygen, Deck 12, piped up to hose stations in the bay</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">15</text></g></svg>Switchgear and batteries, Deck 12</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">16</text></g></svg>Water plant, Deck 11</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">17</text></g></svg>Water tank hall, Deck 11</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">18</text></g></svg>Waste plant, Deck 11</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">16</text></g></svg>Water recovery plant, Deck 11: filters, reactor, reverse osmosis, UV</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">17</text></g></svg>Water tanks, Deck 11: four potable, two wastewater</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">18</text></g></svg>Waste plant, Deck 11: urine distiller, brine, digester</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">19</text></g></svg>Observation gallery, Deck 05, a viewport into the chamber</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">20</text></g></svg>Cryogenic plant, Deck 05: keeps the X9's coils cold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">21</text></g></svg>Trap auxiliaries, Deck 05: charge injectors, position control</li>
@@ -899,6 +933,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="emitter" x="12.8" y="5" width="2.4" height="2.2"/></svg>Harmonic emitter along the conduits</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="hot"><circle cx="14" cy="6" r="2.6"/><circle class="hot-hub" cx="14" cy="6" r="0.7"/></g></svg>Radiation hot spot, left by the accident</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="frost" d="M 8 4 l 3 3 m 0 -3 l -3 3 M 17 4 l 3 3 m 0 -3 l -3 3"/></svg>Frost on cryogenic lines</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="water" x1="2" y1="3" x2="26" y2="3"/><line class="water-waste" x1="2" y1="6.5" x2="26" y2="6.5"/><line class="water-hidden" x1="2" y1="10" x2="26" y2="10"/></svg>Water: potable, wastewater, hidden in walls</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>

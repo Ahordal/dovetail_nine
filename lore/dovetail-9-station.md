@@ -130,10 +130,15 @@ related:
   - **The fuel cells back up the station, not the core.** Containment draws 1.3 exawatts and the X9 powers its own trap from its spin ([[dynex-t-core-x9-ignis]]); no fuel cell comes close, and if the X9 itself stops, nothing aboard can replace it. They matter when the X9 runs but its power can't reach the station, as when the primary bus trips: they keep life support, lights, SIGMA, comms and the lifts alive. They also ran the station during construction, before the X9 was started. They play no part in the backup bus or the containment protocol of the accident ([[the-accident]]).
 - **One fuel header** runs from the transfer pumps through both tank halls and the fuel cell section, behind the left lift where it crosses it.
 - **No radiation refuge anywhere aboard.** Nobody believed radiation could get inside the station, so none was built; when it did, the crew had nowhere to go ([[the-accident]]). A storm shelter against space weather was also considered and dropped: a 2400s hull shields ordinary space radiation, and K-17 is a dim star.
-- **Water and waste are on Deck 11,** either side of the bay, still low in the hull but a deck above the fuel:
-  - **Water plant** at the far left (filter columns, a pump, treatment) and a **water tank hall** running from it to the left lift, which opens into it.
-  - **Waste plant** past the right lift (a digester, a compactor, a pump), which the right lift opens into. Its water goes back to the water plant for recycling.
-  - Maintenance runs both ([[crew]]); hydroponics on Deck 03 draws its water from here.
+- **The water system [proposed], on Deck 11,** either side of the bay, still low in the hull but a deck above the fuel. Modelled on the ISS and submarines, scaled to 166 crew.
+  - **Demand:** about 50 L per person per day (drinking, food, washing, laundry), roughly **8 m³ a day**. Hydroponics on Deck 03 recirculates far more, but most of it comes back as condensate from the air.
+  - **Recovery:** about 95 to 98%, as on the ISS. Supply ships top up the small losses, and the fuel cells add water whenever they run.
+  - **Collection:** drains fall down the lift cores to Deck 11, the lowest deck on the living side, so gravity does the work. Grey water (sinks, showers, laundry, galley) and air-conditioning condensate come down the **left core** into two wastewater tanks; toilets come down the **right core** to the waste plant.
+  - **Water recovery plant (16),** at the far left: strainer, pump, filter beds, a catalytic reactor that breaks down dissolved chemicals, a reverse-osmosis rack and UV disinfection, the same sequence the ISS uses. Treated water goes straight into the first potable tank.
+  - **Water tanks (17),** from the plant to the left lift: **four potable tanks** of about 125 m³ each, about two months of crew use with no recycling at all, then the supply pump and **two wastewater tanks**. The left lift opens into this hall.
+  - **Delivery:** the supply pump sends potable water up the left core; each deck's service band carries it across the station. Hot water is heated from the Harvest Ring secondary loop's waste heat.
+  - **Waste plant (18),** past the right lift, which opens into it: a collection tank, a distiller that recovers water from urine (as on the ISS), a brine processor, a digester and a dryer for solids. The recovered water climbs the right core, crosses in the **Deck 04 service band** and joins the left drain into the wastewater tanks.
+  - Maintenance runs it all ([[crew]]). On the side view water piping is teal, dashed for wastewater; tanks stand upright, unlike the fuel tanks lying on Deck 12.
 
 ## Defenses **[settled]**
 
