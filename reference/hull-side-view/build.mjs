@@ -339,28 +339,41 @@ tags.push(tag(CA + 3, 10, "C", -4));
 const CR = LIFTS[0] + LW / 2;
 add(`<rect class="room" x="${mx(CR)}" y="${dy(10)}" width="${f((CA - CR) * S)}" height="${f(DH)}"/>`);
 tags.push(tag((CR + CA) / 2, 10, 7, 1));
-// Its machinery on Deck 11 below, sealed: tanks, pump, manifold, controls, and the ram the cargo door drops on.
+// Cargo machinery on Deck 11, lift to bay wall: the same 14 m as the plant above Airlock A, and joined to it.
 {
-  const X = (m) => f(mx(CA + m)), Y = (h) => f(dy(11) + h * S);
+  const X = (u) => f(mx(CR + u)), Y = (h) => f(dy(11) + h * S);
   const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h0)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
   const ln = (m0, h0, m1, h1, cls = "") => add(`<line${cls ? ` class="${cls}"` : ""} x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
   add(`<g class="plant">`);
-  box(0.4, 3.4, 3.6, 5.4, 3); box(0.4, 3.4, 5.8, 7.6, 3);
-  box(3.9, 4.7, 3.4, 7.6);
-  ln(3.4, 4.5, 3.9, 4.5, "pipe"); ln(3.4, 6.7, 3.9, 6.7, "pipe");
-  for (const h of [4.5, 6.7]) add(`<circle cx="${X(4.3)}" cy="${Y(h)}" r="${f(0.35 * S)}"/>`);
-  add(`<circle cx="${X(5.8)}" cy="${Y(6.6)}" r="${f(0.9 * S)}"/>`);
-  box(5.0, 6.6, 7.5, 7.8);
-  ln(4.7, 6.6, 4.9, 6.6, "pipe");
-  box(5.1, 6.5, 3.6, 5.2);
-  ln(5.4, 4.2, 6.2, 4.2, "flange"); ln(5.4, 4.7, 6.2, 4.7, "flange");
-  // Supply pair in the service band, teeing into the riser up to a vent in the airlock floor.
-  ln(0, 1.2, 4.1, 1.2, "pipe"); ln(0, 1.7, 4.5, 1.7, "pipe");
-  ln(4.1, 3.4, 4.1, 0.5, "pipe"); ln(4.5, 3.4, 4.5, 0.5, "pipe");
-  box(3.6, 5.0, 0.1, 0.5);
-  // Door ram: rod up to the door's foot; the cargo door drops into this space when open.
-  box(7.0, 7.6, 3.6, 7.6);
-  ln(7.3, 3.6, 7.3, 0.7, "pipe"); ln(7.3, 0.7, 8, 0.7, "pipe");
+  // Bigger tanks than the crew plant's: the cargo airlock holds far more air.
+  box(0.6, 6.4, 3.3, 4.9, 3.5); box(0.6, 6.4, 5.3, 6.9, 3.5);
+  ln(6.4, 4.1, 11.0, 4.1, "pipe"); ln(6.4, 5.5, 11.0, 5.5, "pipe");
+  // Two pumps on the tank line, so a cycle this size doesn't take all day.
+  for (const u of [7.4, 9.4]) {
+    add(`<circle cx="${X(u)}" cy="${Y(6.7)}" r="${f(0.9 * S)}"/>`);
+    box(u - 0.8, u + 0.8, 7.55, 7.8);
+    ln(u, 5.8, u, 5.5, "pipe");
+  }
+  // Valve manifold, then controls and power.
+  box(11.0, 11.8, 3.2, 7.8);
+  for (const h of [4.1, 5.5]) add(`<circle cx="${X(11.4)}" cy="${Y(h)}" r="${f(0.35 * S)}"/>`);
+  box(12.1, 12.8, 4.4, 7.6);
+  ln(12.2, 5.2, 12.7, 5.2, "flange"); ln(12.2, 5.8, 12.7, 5.8, "flange");
+  // Riser up to a vent in the cargo airlock floor.
+  ln(11.2, 3.2, 11.2, 0.5, "pipe"); ln(11.6, 3.2, 11.6, 0.5, "pipe");
+  box(10.7, 12.1, 0.1, 0.5);
+  // The link pair from the Deck 08 plant arrives beside the lift and tees into the riser.
+  ln(1.1, 0, 1.1, 1.2, "pipe"); ln(1.1, 1.2, 11.2, 1.2, "pipe");
+  ln(0.6, 0, 0.6, 1.7, "pipe"); ln(0.6, 1.7, 11.6, 1.7, "pipe");
+  // Cargo door ram: the door drops into this space when open.
+  box(13.1, 13.7, 3.4, 7.6);
+  ln(13.4, 3.4, 13.4, 0.7, "pipe"); ln(13.4, 0.7, 14, 0.7, "pipe");
+  // The link itself: off the Deck 08 plant's supply pair, down inside the wall past both ready rooms.
+  for (const [u, h] of [[1.1, 10.1], [0.6, 10.6]]) {
+    const top = dy(8) + h * S;
+    add(`<line class="pipe" x1="${X(u)}" y1="${f(top)}" x2="${X(u)}" y2="${f(ceil9)}"/>`);
+    add(`<line class="pipe hidden" x1="${X(u)}" y1="${f(ceil9)}" x2="${X(u)}" y2="${dy(11)}"/>`);
+  }
   add(`</g>`);
 }
 tags.push(tag(123.5, 9, 8, 1));
@@ -479,6 +492,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .plant line { stroke: var(--muted); stroke-width: 0.5; }
   .plant .flange { stroke-width: 0.35; }
   .plant .pipe { stroke-width: 0.45; }
+  .plant .hidden { stroke-dasharray: 1.2 0.9; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
@@ -564,6 +578,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>

@@ -85,6 +85,7 @@
   .plant line { stroke: var(--muted); stroke-width: 0.5; }
   .plant .flange { stroke-width: 0.35; }
   .plant .pipe { stroke-width: 0.45; }
+  .plant .hidden { stroke-dasharray: 1.2 0.9; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
@@ -487,27 +488,36 @@
       <rect class="airlock" x="462.7" y="323.3" width="1" height="18.2"/>
       <rect class="room" x="448.8" y="322.8" width="14.4" height="19.2"/>
       <g class="plant">
-      <rect x="464.2" y="350.6" width="7.2" height="4.3" rx="3"/>
-      <rect x="464.2" y="355.9" width="7.2" height="4.3" rx="3"/>
-      <rect x="472.6" y="350.2" width="1.9" height="10.1"/>
-      <line class="pipe" x1="471.4" y1="352.8" x2="472.6" y2="352.8"/>
-      <line class="pipe" x1="471.4" y1="358.1" x2="472.6" y2="358.1"/>
-      <circle cx="473.5" cy="352.8" r="0.8"/>
-      <circle cx="473.5" cy="358.1" r="0.8"/>
-      <circle cx="477.1" cy="357.8" r="2.2"/>
-      <rect x="475.2" y="360" width="3.8" height="0.7"/>
-      <line class="pipe" x1="474.5" y1="357.8" x2="475" y2="357.8"/>
-      <rect x="475.4" y="350.6" width="3.4" height="3.8"/>
-      <line class="flange" x1="476.2" y1="352.1" x2="478.1" y2="352.1"/>
-      <line class="flange" x1="476.2" y1="353.3" x2="478.1" y2="353.3"/>
-      <line class="pipe" x1="463.2" y1="344.9" x2="473" y2="344.9"/>
-      <line class="pipe" x1="463.2" y1="346.1" x2="474" y2="346.1"/>
-      <line class="pipe" x1="473" y1="350.2" x2="473" y2="343.2"/>
-      <line class="pipe" x1="474" y1="350.2" x2="474" y2="343.2"/>
-      <rect x="471.8" y="342.2" width="3.4" height="1"/>
-      <rect x="480" y="350.6" width="1.4" height="9.6"/>
-      <line class="pipe" x1="480.7" y1="350.6" x2="480.7" y2="343.7"/>
-      <line class="pipe" x1="480.7" y1="343.7" x2="482.4" y2="343.7"/>
+      <rect x="450.2" y="349.9" width="13.9" height="3.8" rx="3.5"/>
+      <rect x="450.2" y="354.7" width="13.9" height="3.8" rx="3.5"/>
+      <line class="pipe" x1="464.2" y1="351.8" x2="475.2" y2="351.8"/>
+      <line class="pipe" x1="464.2" y1="355.2" x2="475.2" y2="355.2"/>
+      <circle cx="466.6" cy="358.1" r="2.2"/>
+      <rect x="464.6" y="360.1" width="3.8" height="0.6"/>
+      <line class="pipe" x1="466.6" y1="355.9" x2="466.6" y2="355.2"/>
+      <circle cx="471.4" cy="358.1" r="2.2"/>
+      <rect x="469.4" y="360.1" width="3.8" height="0.6"/>
+      <line class="pipe" x1="471.4" y1="355.9" x2="471.4" y2="355.2"/>
+      <rect x="475.2" y="349.7" width="1.9" height="11"/>
+      <circle cx="476.2" cy="351.8" r="0.8"/>
+      <circle cx="476.2" cy="355.2" r="0.8"/>
+      <rect x="477.8" y="352.6" width="1.7" height="7.7"/>
+      <line class="flange" x1="478.1" y1="354.5" x2="479.3" y2="354.5"/>
+      <line class="flange" x1="478.1" y1="355.9" x2="479.3" y2="355.9"/>
+      <line class="pipe" x1="475.7" y1="349.7" x2="475.7" y2="343.2"/>
+      <line class="pipe" x1="476.6" y1="349.7" x2="476.6" y2="343.2"/>
+      <rect x="474.5" y="342.2" width="3.4" height="1"/>
+      <line class="pipe" x1="451.4" y1="342" x2="451.4" y2="344.9"/>
+      <line class="pipe" x1="451.4" y1="344.9" x2="475.7" y2="344.9"/>
+      <line class="pipe" x1="450.2" y1="342" x2="450.2" y2="346.1"/>
+      <line class="pipe" x1="450.2" y1="346.1" x2="476.6" y2="346.1"/>
+      <rect x="480.2" y="350.2" width="1.4" height="10.1"/>
+      <line class="pipe" x1="481" y1="350.2" x2="481" y2="343.7"/>
+      <line class="pipe" x1="481" y1="343.7" x2="482.4" y2="343.7"/>
+      <line class="pipe" x1="451.4" y1="308.6" x2="451.4" y2="312"/>
+      <line class="pipe hidden" x1="451.4" y1="312" x2="451.4" y2="342"/>
+      <line class="pipe" x1="450.2" y1="309.8" x2="450.2" y2="312"/>
+      <line class="pipe hidden" x1="450.2" y1="312" x2="450.2" y2="342"/>
       </g>
       <text class="t-note t-ship" x="668.7" y="321.3" text-anchor="middle">UMBILICAL</text>
       <g class="tag"><circle cx="427.2" cy="255.6" r="5"/><text x="427.2" y="257.9" text-anchor="middle">4</text></g>
@@ -579,6 +589,7 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
