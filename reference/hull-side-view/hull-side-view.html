@@ -59,7 +59,8 @@
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
-  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
+  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; }
+  .behind { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .stop { fill: var(--muted); }
   .room { fill: none; stroke: var(--muted); stroke-width: 1; }
   .section { fill: none; stroke: var(--muted); stroke-width: 1; }
@@ -89,7 +90,7 @@
   .plant .hidden { stroke-dasharray: 1.2 0.9; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
-  .airlock { fill: var(--ship); }
+  .airlock, .door { fill: var(--ship); }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
   .arrow { fill: none; }
   .t-array { font-size: 6.8px; }
@@ -531,6 +532,13 @@
       <line class="pipe hidden" x1="450.2" y1="312" x2="450.2" y2="342"/>
       </g>
       <text class="t-note t-ship" x="668.7" y="321.3" text-anchor="middle">UMBILICAL</text>
+      <rect class="door" x="438.7" y="227.3" width="1" height="18.2"/>
+      <rect class="door" x="438.7" y="246.5" width="1" height="18.2"/>
+      <rect class="door" x="760.3" y="246.5" width="1" height="18.2"/>
+      <rect class="door" x="448.3" y="312.5" width="1" height="9.8"/>
+      <rect class="door" x="750.7" y="312.5" width="1" height="9.8"/>
+      <rect class="door" x="438.7" y="323.3" width="1" height="18.2"/>
+      <rect class="door" x="448.3" y="323.3" width="1" height="18.2"/>
       <g class="tag"><circle cx="427.2" cy="255.6" r="5"/><text x="427.2" y="257.9" text-anchor="middle">4</text></g>
       <g class="tag"><circle cx="772.8" cy="255.6" r="5"/><text x="772.8" y="257.9" text-anchor="middle">4</text></g>
       <g class="tag"><circle cx="418.8" cy="236.4" r="5"/><text x="418.8" y="238.7" text-anchor="middle">2</text></g>
@@ -593,8 +601,8 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
       </ul>
       <ul aria-label="Line styles">
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/></svg>Lift stop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
@@ -628,7 +636,7 @@
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 137 to 263 m along on Decks 05 to 07, meeting both lift shafts, with two vertical access shafts through it, one either side of the chamber.</li>
-        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks. Dashed: deeper in the hull than this face.</li>
+        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks.</li>
         <li><b>SIGMA&apos;s core</b>: a 5 m column on the chamber&apos;s axis, from Deck 04 up into command on Deck 01, operations room at its base.</li>
         <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>

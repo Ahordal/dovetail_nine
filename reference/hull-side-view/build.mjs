@@ -100,8 +100,8 @@ const sigmaLogo = (cx, cy, r) => {
 const tags = [];
 // Optional vertical offset lets a tag share a narrow room with the you-are-here marker.
 const tag = (m, k, n, off = 0) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 2.3)}" text-anchor="middle">${n}</text></g>`;
-// Lift shafts top to bottom, dashed since they sit deeper than this face. A dot marks each deck served;
-// which side the doors open on is left to the deck plans.
+// Lift shafts top to bottom, outlined solid. A dot marks each deck served;
+// doorways are drawn only where a room on this face meets the shaft.
 // Deck 09's stops sit mid-room, under the 4.5 m ceiling of the ready rooms.
 const RC = 4.5;
 for (const L of LIFTS) {
@@ -287,7 +287,7 @@ const CG = [105, BAY[0]], cgTop = dy(9), cgBot = dy(11);
 const ST = LIFTS[0] - LW / 2;   // storage meets the lift shaft
 add(`<polygon class="hold" points="${mx(CG[0])},${cgTop} ${mx(ST)},${cgTop} ${mx(ST)},${dy(10)} ${bx},${dy(10)} ${bx},${cgBot} ${mx(CG[0])},${cgBot}"/>`);
 // The lift passes through the hallway only, with its one cargo stop there on Deck 10.
-// Sides only: the hallway runs in front of the shaft, so its floor and ceiling stay solid.
+// Sides only, redrawn over the hold's fill; the hallway's floor and ceiling run straight across.
 for (const m of [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2]) add(`<line class="lift" x1="${mx(m)}" y1="${dy(10)}" x2="${mx(m)}" y2="${dy(11)}"/>`);
 for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
 // The cargo door: Deck 10's full height, below Airlock A, opening onto the raised dock.
@@ -389,6 +389,18 @@ const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
 const hereMarker = `<g class="here"><circle class="here-ring" cx="${hereX}" cy="${hereY}" r="6"/><circle class="here-dot" cx="${hereX}" cy="${hereY}" r="3"/></g>`;   // drawn last, above everything
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
+// Lift doorways: only where a room on this face meets the shaft, as tall as that room.
+{
+  const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
+  const full = (k) => [dy(k) + FL, dy(k + 1) - FL], low = [ceil9 + FL, dy(10) - FL];
+  const doors = [
+    [l0, full(5)],              // R&D, which wraps the shaft on Deck 05
+    [l0, full(6)], [r1, full(6)], // lift lobbies and tram stops
+    [l1, low], [r0, low],       // ready rooms A and B
+    [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
+  ];
+  for (const [m, [y0, y1]] of doors) add(`<rect class="door" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
+}
 tags.forEach(add);
 add(hereMarker);
 
@@ -473,7 +485,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.6; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
-  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
+  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; }
+  .behind { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .stop { fill: var(--muted); }
   .room { fill: none; stroke: var(--muted); stroke-width: 1; }
   .section { fill: none; stroke: var(--muted); stroke-width: 1; }
@@ -503,7 +516,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .plant .hidden { stroke-dasharray: 1.2 0.9; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
-  .airlock { fill: var(--ship); }
+  .airlock, .door { fill: var(--ship); }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
   .arrow { fill: none; }
   .t-array { font-size: 6.8px; }
@@ -579,8 +592,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
       </ul>
       <ul aria-label="Line styles">
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/></svg>Lift stop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="lift" x1="9" y1="0" x2="9" y2="12"/><line class="lift" x1="19" y1="0" x2="19" y2="12"/><circle class="stop" cx="14" cy="6" r="1.8"/><rect class="door" x="18.5" y="2" width="1" height="8"/></svg>Lift stop and doorway</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tram" x1="2" y1="6" x2="26" y2="6"/></svg>Tram, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
@@ -614,7 +627,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Core Chamber</b> at the middle of the hull, Decks 05 to 07, the black hole at the middle of Deck 06.</li>
         <li><b>Deck 06 is the spine:</b> keel, conduits out to both arrays, and the tram passing beside the chamber.</li>
         <li><b>Engineering</b> around the chamber, 137 to 263 m along on Decks 05 to 07, meeting both lift shafts, with two vertical access shafts through it, one either side of the chamber.</li>
-        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks. Dashed: deeper in the hull than this face.</li>
+        <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks.</li>
         <li><b>SIGMA&apos;s core</b>: a 5 m column on the chamber&apos;s axis, from Deck 04 up into command on Deck 01, operations room at its base.</li>
         <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
