@@ -34,6 +34,19 @@ Seven divisions. Headcounts add up to 166.
 - **The station administrator** heads the station and answers to Nashiro off-station (see [[the-secret]], Chain of command).
 - **[proposed]** The "director" named among the Level 6 senior staff in [[the-secret]] is the **Science Director**, head of the Science division: a different person from the administrator.
 
+## Science groups **[proposed]**
+
+Science designed the run and called it; Engineering ran the hardware. Its 45 people work in five groups under the Science Director's office, each studying something the anchor needs or something it does. Their rooms are placed in [[dovetail-9-station]].
+
+| Group | Crew | What they study | Why the station needs it |
+|---|---|---|---|
+| **Director's office** | 3 | The run plan, go/no-go, Level 6 records | Someone had to call the run |
+| **Corridor Harmonics** | 12 | The Trillium Arc's phase and drift: mapping, modelling, predicting when it lines up. Includes the Stratovan analysts | The run had to fall inside a narrow corridor window; the same science predicts the alignment windows the station still drifts through |
+| **Node Physics** | 10 | Phase nodes up close: arrest, what they retain, how they ring and dissolve | The anchor is a node: they study the thing the station makes |
+| **Time Standards** | 5 | Precision clocks on every deck, watching for time arresting | The early warning sign of clocks on different decks drifting milliseconds apart ([[phase-mechanics]]) |
+| **Materials** | 8 | How hull and shield materials behave under harmonic stress, and activation | The station is built of what the harmonics pass through |
+| **Exposure Biology** | 7 | Harmonic effects on living tissue and neural timing | The Dovetail-5 lesson. Medical watches the crew's exposure; this group researches it |
+
 ## Contractor teams **[proposed]**
 
 Some teams work for the program's contractors rather than Nashiro, embedded in a division:

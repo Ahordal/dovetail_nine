@@ -161,15 +161,28 @@ Placed on the side view; the numbers are its room tags. Every room is fed from t
 - **Deck 01, command (28):** the bridge, built around the top of SIGMA's column as canon has it, consoles on both sides and wall displays. **Comms room (29)** beside it, under the taller spire: equipment racks and the **beacon transmitter**, whose feed rises through the roof to the spire. **Administration and records (30)** on the other side. **Lift machinery (27)** beside both lift cores.
 - **Deck 02:** **senior staff quarters (31)** (administrator, Science Director and other Level 6 staff), the **galley (32)** (the coffee machine of the galley echo sits on its counter), the **mess (33)**, a **recreation lounge (34)**, and **laundry and stores (35)**.
 - **Decks 03 and 04, hydroponics (36):** two bays at the outer ends, each two storeys high, tall grow racks with lights, a nutrient tank and terminal. Food, and part of the oxygen.
-- **Deck 03:** the **medical clinic (37)** (beds, a scanner, cabinets, a sink: Medical tracks radiation and harmonic exposure) and **science offices (38)**.
+- **Deck 03:** the **medical clinic (37)** (beds, a scanner, cabinets, a sink: Medical tracks radiation and harmonic exposure), the **Exposure lab (53)** beside it and the **Science office (38)**. See Science below.
 - **Crew quarters (39):** on Decks 04, 08, 09 and 10, bunk units with lockers; room for all 166 and to spare.
-- **Deck 05, science labs (41):** four labs at the outer ends, beyond R&D and engineering.
+- **Deck 05 is Science's floor,** outside engineering: the Time standards lab (50), Materials lab (41) and R&D aft of the left lift; Corridor analysis (51) and the Array receiver room (52) forward of the right one. See Science below.
 - **Deck 06, array access (42):** at both ends of the tram, where the hull meets the array: an airlock out to the truss (outer door locked, onto vacuum), suit racks and tool lockers. The tram stops at its inner wall. **Tram cars** wait at the two lobby stops.
 - **Deck 07, life support (43):** a plant at each end by the lifts (which open into them): **oxygen from water** by electrolysis (fed from the water supply), **carbon dioxide scrubber beds**, **air handlers** (the ventilation that carried argon-41 in the accident) and trace contaminant control. **Maintenance shops (44)** beyond them, with suit and tool stores.
 - **Deck 08:** **fire and emergency stores (46)** (suppression cylinders, hose reels), **security (45)** (office, armoury, holding cell; the left lift opens into it), more quarters, and a **gym (47)**.
 - **Deck 10, logistics stores (48);** **Deck 11, recycling and sorting (49)** beside the waste plant.
 - **Terminals:** SIGMA terminals in every major room, drawn as small screens on posts: each one reveals its deck's map to Quell's slate ([[site-frame]]).
 - **Water:** one crossing in Deck 02's service band serves the right half, down a riser beside the right lift to hydroponics and life support there; the left half branches straight off the supply riser.
+
+## Science **[proposed]**
+
+The division's groups are in [[crew]]. Each has rooms where its work happens, on Deck 05 outside engineering and on Deck 03 beside the clinic.
+
+- **R&D (2), Deck 05, Node Physics.** Next door to experiment control and directly above the Deck 06 conduits, which is why it is there: a **damped test cell** is fed by a thin **tap** branching up from the conduits, switched from experiment control. During low-power tests a trickle of corridor harmonics forms micro-nodes in the cell, and its own dampening coils dissolve them, as damping always does ([[phase-mechanics]]). Inside the cell: precision clocks, high-speed microphones, pressure and temperature sensors. Also a sample glovebox and the control desk. The microphone that heard a sound before it happened was one of these. The R&D lock is still sealed as Quell finds it ([[tobias-quell]]).
+- **Materials lab (41), Deck 05.** A harmonic fatigue rig, racks of test coupons, a gamma spectrometer (for activation), a microscope bench and a sample saw.
+- **Time standards lab (50), Deck 05.** The master clock ensemble in vacuum housings, comparison racks and the fibre distribution out to a **reference clock on every deck**, mounted on the left access trunk, where the fibre runs. Comparing them is how clock drift between decks showed up in the test campaign.
+- **Corridor analysis (51), Deck 05.** Stratovan's corridor harmonics analyzers, a row of analyst consoles, a wall phase map of the Arc and model racks. Where the corridor window for the run was forecast.
+- **Array receiver room (52), Deck 05, the forward end,** nearest the node focus. The forward array's sensor feed comes up from the conduits into receiver racks. Also signal conditioning, a phase reference, data recorders and a bench for sensor modules.
+- **Exposure lab (53), Deck 03,** beside the clinic. A neural-rhythm (EEG) booth, cell culture incubators, a biosafety cabinet, plant growth chambers stocked from hydroponics and a sample freezer.
+- **Science office (38), Deck 03.** The Science Director's office (desk, Level 6 records safe), then the briefing room where the run was planned (table and wall display), and the division's records.
+- **Where the reader finds it:** each room's terminal and instrument records. The clock comparison logs, R&D's test-cell recordings, the corridor window forecasts, the Exposure lab's Dovetail-5 notes, and the Director's Level 6 files.
 
 ## Escape pods **[proposed]**
 

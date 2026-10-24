@@ -80,6 +80,9 @@
   .crawl { fill: var(--panel); stroke: var(--muted); stroke-width: 0.7; }
   .junction { fill: var(--panel); stroke: var(--fg); stroke-width: 0.5; }
   .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
+  .clock rect { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
+  .clock circle { fill: var(--accent); }
+  .tap { stroke: var(--muted); stroke-width: 0.9; }
   .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
   .plant-leaf { fill: var(--leaf); stroke: none; }
   .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
@@ -313,8 +316,9 @@
       <polyline class="grid-power" points="746.9,191.8 840,191.8 840,198.7"/>
       <polyline class="grid-power" points="453.1,211 219.6,211 219.6,218.6"/>
       <polyline class="grid-power" points="746.9,211 980.4,211 980.4,218.6"/>
-      <polyline class="grid-power" points="453.1,230.2 326.4,230.2 326.4,241.9"/>
-      <polyline class="grid-power" points="746.9,230.2 835.2,230.2 835.2,241.9"/>
+      <polyline class="grid-power" points="453.1,230.2 278.4,230.2 278.4,237.8"/>
+      <polyline class="grid-power" points="746.9,230.2 904.3,230.2 904.3,239.7"/>
+      <polyline class="grid-power" points="746.9,191.8 649.2,191.8 649.2,201.3"/>
       <polyline class="grid-power" points="453.1,249.4 154.6,249.4 154.6,260.6"/>
       <polyline class="grid-power" points="746.9,249.4 1045.4,249.4 1045.4,260.6"/>
       <polyline class="grid-power" points="453.1,268.6 417.6,268.6 417.6,277.7"/>
@@ -1942,50 +1946,59 @@
       </g>
       <rect class="term" x="585.4" y="204.5" width="0.4" height="2.6"/>
       <rect class="term-screen" x="584.5" y="203" width="2.2" height="1.4"/>
-      <rect class="room" x="606" y="188.4" width="145.2" height="19.2"/>
+      <rect class="room" x="606" y="188.4" width="70.8" height="19.2"/>
       <g class="racks">
-      <rect class="kit" x="608.4" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="608.8" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="613.3" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="618" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="618.4" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="622.9" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="627.6" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="628" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="632.5" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="637.2" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="637.6" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="642.1" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="646.8" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="647.2" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="651.7" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="656.4" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="656.8" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="661.3" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="666" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="666.4" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="670.9" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="675.6" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="676" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="680.5" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="685.2" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="685.6" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="690.1" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="694.8" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="695.2" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="699.7" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="704.4" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="704.8" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="709.3" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="714" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="714.4" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="718.9" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="723.6" y="204.9" width="5.8" height="0.4"/>
-      <rect class="kit" x="724" y="205.3" width="0.5" height="1.8"/>
-      <rect class="kit" x="728.5" y="205.3" width="0.5" height="1.8"/>
+      <rect class="kit" x="609.6" y="200.9" width="9.6" height="6.2"/>
+      <rect class="crate" x="613.2" y="204.7" width="2.9" height="2.4"/>
+      <rect class="kit" x="624" y="204.9" width="19.2" height="2.2"/>
+      <rect class="crate" x="624.7" y="202.3" width="3.8" height="2.6"/>
+      <rect class="crate" x="629.5" y="202.3" width="3.8" height="2.6"/>
+      <rect class="crate" x="634.3" y="202.3" width="3.8" height="2.6"/>
+      <rect class="kit" x="645.6" y="201.3" width="7.2" height="5.8"/>
+      <rect class="crate" x="646.3" y="202.8" width="5.8" height="1.9"/>
+      <rect class="kit" x="656.4" y="201.8" width="4.8" height="5.3"/>
+      <ellipse class="plant-leaf" cx="657.4" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="658.8" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="660.2" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="657.4" cy="203.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="658.8" cy="203.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="660.2" cy="203.7" rx="0.6" ry="0.5"/>
+      <rect class="kit" x="662.4" y="201.8" width="4.8" height="5.3"/>
+      <ellipse class="plant-leaf" cx="663.4" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="664.8" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="666.2" cy="205.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="663.4" cy="203.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="664.8" cy="203.7" rx="0.6" ry="0.5"/>
+      <ellipse class="plant-leaf" cx="666.2" cy="203.7" rx="0.6" ry="0.5"/>
+      <rect class="kit" x="668.4" y="202.5" width="5.5" height="4.6"/>
       </g>
-      <rect class="term" x="734.2" y="204.5" width="0.4" height="2.6"/>
-      <rect class="term-screen" x="733.3" y="203" width="2.2" height="1.4"/>
+      <rect class="term" x="621.6" y="204.5" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="620.8" y="203" width="2.2" height="1.4"/>
+      <rect class="room" x="676.8" y="188.4" width="24" height="19.2"/>
+      <g class="racks">
+      <rect class="kit" x="684" y="204.9" width="8.4" height="0.4"/>
+      <rect class="kit" x="684.5" y="205.3" width="0.5" height="1.8"/>
+      <rect class="kit" x="691.4" y="205.3" width="0.5" height="1.8"/>
+      <rect class="kit" x="694.8" y="204.2" width="4.8" height="2.9"/>
+      </g>
+      <rect class="term" x="680" y="204.5" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="679.1" y="203" width="2.2" height="1.4"/>
+      <rect class="room" x="700.8" y="188.4" width="50.4" height="19.2"/>
+      <g class="racks">
+      <rect class="kit" x="708" y="204.9" width="19.2" height="0.4"/>
+      <rect class="kit" x="708.7" y="205.3" width="0.5" height="1.8"/>
+      <rect class="kit" x="726" y="205.3" width="0.5" height="1.8"/>
+      <rect class="kit" x="710.4" y="199.4" width="14.4" height="2.9"/>
+      <rect class="crate" x="711.1" y="199.9" width="13" height="1.9"/>
+      </g>
+      <g class="racks">
+      <rect class="kit" x="729.6" y="201.8" width="2.2" height="5.3"/>
+      <rect class="kit" x="732" y="201.8" width="2.2" height="5.3"/>
+      <rect class="kit" x="734.4" y="201.8" width="2.2" height="5.3"/>
+      <rect class="kit" x="736.8" y="201.8" width="2.2" height="5.3"/>
+      </g>
+      <rect class="term" x="703.5" y="204.5" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="702.6" y="203" width="2.2" height="1.4"/>
       <rect class="room" x="448.8" y="207.6" width="145.2" height="19.2"/>
       <g class="racks">
       <rect class="kit" x="466.1" y="220.5" width="5.8" height="5.8"/>
@@ -2124,72 +2137,142 @@
       <rect class="door door-locked" x="1033.4" y="316.1" width="2.4" height="4.8"/>
       <rect class="room" x="148.8" y="226.8" width="115.2" height="19.2"/>
       <g class="racks">
-      <rect class="kit" x="153.6" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="156" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="172.8" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="175.2" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="192" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="194.4" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="211.2" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="213.6" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="230.4" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="232.8" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="252" y="238.3" width="7.2" height="7.2"/>
+      <rect class="kit" x="157.2" y="243.3" width="37.2" height="2.2"/>
+      <rect class="kit" x="158.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="159.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="164.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="165.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="170.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="171.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="176.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="177.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="182.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="183.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="188.4" y="239" width="3.8" height="4.3" rx="1.4"/>
+      <rect class="crate" x="189.4" y="240.5" width="1.9" height="1.4"/>
+      <rect class="kit" x="201.6" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="205" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="208.3" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="211.7" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="223.2" y="243.3" width="10.8" height="0.4"/>
+      <rect class="kit" x="223.7" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="233" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="253.2" y="238.3" width="4.8" height="7.2"/>
+      <line class="shelf" x1="253.2" y1="243.6" x2="258" y2="243.6"/>
+      <line class="shelf" x1="253.2" y1="241.7" x2="258" y2="241.7"/>
+      <line class="shelf" x1="253.2" y1="239.7" x2="258" y2="239.7"/>
       </g>
       <rect class="term" x="151.5" y="242.9" width="0.4" height="2.6"/>
       <rect class="term-screen" x="150.6" y="241.4" width="2.2" height="1.4"/>
       <rect class="room" x="264" y="226.8" width="124.8" height="19.2"/>
       <g class="racks">
-      <rect class="kit" x="268.8" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="271.2" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="288" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="290.4" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="307.2" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="309.6" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="326.4" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="328.8" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="345.6" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="348" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="376.8" y="238.3" width="7.2" height="7.2"/>
+      <rect class="kit" x="271.2" y="237.8" width="14.4" height="7.7"/>
+      <rect class="crate" x="276" y="240.2" width="4.8" height="2.9"/>
+      <line class="shelf" x1="271.2" y1="244.1" x2="285.6" y2="244.1"/>
+      <rect class="kit" x="292.8" y="239.7" width="9.6" height="5.8"/>
+      <line class="shelf" x1="292.8" y1="243.6" x2="302.4" y2="243.6"/>
+      <line class="shelf" x1="292.8" y1="241.7" x2="302.4" y2="241.7"/>
+      <rect class="kit" x="312" y="241.7" width="7.2" height="3.8" rx="1.2"/>
+      <rect class="crate" x="314.4" y="239.3" width="2.4" height="2.4"/>
+      <rect class="kit" x="328.8" y="243.3" width="12" height="0.4"/>
+      <rect class="kit" x="329.3" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="339.8" y="243.7" width="0.5" height="1.8"/>
+      <rect class="crate" x="332.4" y="241.4" width="1.9" height="1.9"/>
+      <rect class="kit" x="350.4" y="242.6" width="7.2" height="2.9"/>
+      <circle class="reel" cx="354" cy="241.9" r="1.4"/>
+      </g>
+      <g class="racks">
+      <rect class="kit" x="362.4" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="362.8" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="367.3" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="372" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="372.4" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="376.9" y="243.7" width="0.5" height="1.8"/>
       </g>
       <rect class="term" x="266.7" y="242.9" width="0.4" height="2.6"/>
       <rect class="term-screen" x="265.8" y="241.4" width="2.2" height="1.4"/>
+      <g class="racks">
+      <rect class="kit" x="391.2" y="240.7" width="9.6" height="2.6"/>
+      <rect class="kit" x="391.9" y="243.3" width="8.2" height="2.2"/>
+      <rect class="crate" x="392.6" y="241.2" width="6.7" height="1.7"/>
+      <rect class="kit" x="402.2" y="243.3" width="6" height="0.4"/>
+      <rect class="kit" x="402.7" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="407.3" y="243.7" width="0.5" height="1.8"/>
+      <rect class="crate" x="403.7" y="241.9" width="3.4" height="1.4"/>
+      <rect class="kit" x="415.7" y="237.3" width="15.4" height="8.2"/>
+      <rect class="crate" x="418.6" y="238.8" width="9.6" height="5.3"/>
+      <line class="shelf" x1="415.7" y1="242.9" x2="431" y2="242.9"/>
+      <line class="shelf" x1="415.7" y1="240" x2="431" y2="240"/>
+      </g>
+      <rect class="term" x="390" y="242.9" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="389.2" y="241.4" width="2.2" height="1.4"/>
+      <line class="tap" x1="417.1" y1="255.6" x2="417.1" y2="245.5"/>
       <rect class="room" x="760.8" y="226.8" width="151.2" height="19.2"/>
       <g class="racks">
-      <rect class="kit" x="765.6" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="768" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="804" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="806.4" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="823.2" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="825.6" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="842.4" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="844.8" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="861.6" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="864" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="880.8" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="883.2" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="900" y="238.3" width="7.2" height="7.2"/>
+      <rect class="kit" x="766.8" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="769.9" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="773" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="776.2" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="779.3" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="782.4" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="861.6" y="235.4" width="28.8" height="3.8"/>
+      <rect class="crate" x="862.6" y="236.1" width="26.9" height="2.4"/>
+      <rect class="kit" x="896.2" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="899.5" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="902.9" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="906.2" y="239.7" width="2.9" height="5.8"/>
+      <rect class="kit" x="909.6" y="239.7" width="2.9" height="5.8"/>
+      </g>
+      <g class="racks">
+      <rect class="kit" x="794.4" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="794.8" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="799.3" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="804" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="804.4" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="808.9" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="813.6" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="814" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="818.5" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="823.2" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="823.6" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="828.1" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="832.8" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="833.2" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="837.7" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="842.4" y="243.3" width="5.8" height="0.4"/>
+      <rect class="kit" x="842.8" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="847.3" y="243.7" width="0.5" height="1.8"/>
       </g>
       <rect class="term" x="763.5" y="242.9" width="0.4" height="2.6"/>
       <rect class="term-screen" x="762.6" y="241.4" width="2.2" height="1.4"/>
       <rect class="room" x="912" y="226.8" width="139.2" height="19.2"/>
       <g class="racks">
-      <rect class="kit" x="916.8" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="919.2" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="936" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="938.4" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="955.2" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="957.6" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="974.4" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="976.8" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="993.6" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="996" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="1012.8" y="243.3" width="12" height="2.2"/>
-      <rect class="crate" x="1015.2" y="241.9" width="2.9" height="1.4"/>
-      <rect class="kit" x="1039.2" y="238.3" width="7.2" height="7.2"/>
+      <rect class="kit" x="921.6" y="243.3" width="14.4" height="0.4"/>
+      <rect class="kit" x="922.1" y="243.7" width="0.5" height="1.8"/>
+      <rect class="kit" x="935" y="243.7" width="0.5" height="1.8"/>
+      <rect class="crate" x="924" y="242.1" width="3.4" height="1.2"/>
+      <rect class="crate" x="929.8" y="242.4" width="2.9" height="1"/>
+      <rect class="kit" x="943.2" y="242.1" width="4.3" height="3.4"/>
+      <circle class="reel" cx="945.4" cy="243.6" r="1"/>
+      <rect class="kit" x="948.5" y="242.1" width="4.3" height="3.4"/>
+      <circle class="reel" cx="950.6" cy="243.6" r="1"/>
+      <rect class="kit" x="953.8" y="242.1" width="4.3" height="3.4"/>
+      <circle class="reel" cx="955.9" cy="243.6" r="1"/>
+      <rect class="kit" x="966" y="241.7" width="6" height="3.8"/>
+      <circle class="reel" cx="969" cy="243.1" r="0.8"/>
+      <rect class="kit" x="979.2" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="982.8" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="986.4" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="990" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="993.6" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="997.2" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="1000.8" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="1004.4" y="239.3" width="3.4" height="6.2"/>
+      <rect class="kit" x="1009.2" y="241.2" width="7.2" height="4.3"/>
       </g>
       <rect class="term" x="914.7" y="242.9" width="0.4" height="2.6"/>
       <rect class="term-screen" x="913.8" y="241.4" width="2.2" height="1.4"/>
+      <line class="tap" x1="1012.8" y1="255.6" x2="1012.8" y2="245.5"/>
       <rect class="room" x="120" y="246" width="48" height="19.2"/>
       <rect class="room" x="120" y="253.9" width="15.6" height="10.8"/>
       <rect class="airlock door-locked" x="119.5" y="257.5" width="1" height="7.2"/>
@@ -3351,6 +3434,18 @@
       <rect class="door door-locked" x="684.1" y="231.4" width="2.2" height="1.7"/>
       <rect class="door door-open" x="455.8" y="168.7" width="2.9" height="1"/>
       <rect class="door door-open" x="741.4" y="168.7" width="2.9" height="1"/>
+      <g class="clock"><rect x="432.5" y="277.2" width="1.4" height="1.4"/><circle cx="433.2" cy="277.9" r="0.3"/></g>
+      <g class="clock"><rect x="432.5" y="296.4" width="1.4" height="1.4"/><circle cx="433.2" cy="297.1" r="0.3"/></g>
+      <g class="clock"><rect x="432.5" y="315.6" width="1.4" height="1.4"/><circle cx="433.2" cy="316.3" r="0.3"/></g>
+      <g class="clock"><rect x="432.5" y="334.8" width="1.4" height="1.4"/><circle cx="433.2" cy="335.5" r="0.3"/></g>
+      <g class="clock"><rect x="432.5" y="354" width="1.4" height="1.4"/><circle cx="433.2" cy="354.7" r="0.3"/></g>
+      <g class="clock"><rect x="413.5" y="238.8" width="1.4" height="1.4"/><circle cx="414.2" cy="239.5" r="0.3"/></g>
+      <g class="clock"><rect x="413.5" y="258" width="1.4" height="1.4"/><circle cx="414.2" cy="258.7" r="0.3"/></g>
+      <g class="clock"><rect x="453.8" y="181.2" width="1.4" height="1.4"/><circle cx="454.6" cy="181.9" r="0.3"/></g>
+      <g class="clock"><rect x="453.8" y="200.4" width="1.4" height="1.4"/><circle cx="454.6" cy="201.1" r="0.3"/></g>
+      <g class="clock"><rect x="453.8" y="219.6" width="1.4" height="1.4"/><circle cx="454.6" cy="220.3" r="0.3"/></g>
+      <g class="clock"><rect x="451.2" y="160.5" width="1.4" height="1.4"/><circle cx="451.9" cy="161.3" r="0.3"/></g>
+      <g class="clock"><rect x="424.1" y="371.3" width="1.4" height="1.4"/><circle cx="424.8" cy="372" r="0.3"/></g>
       <rect class="airlock door-locked" x="481.9" y="323.3" width="1" height="18.2"/>
       <rect class="airlock door-open" x="462.7" y="323.3" width="1" height="18.2"/>
       <rect class="door door-open" x="466.3" y="315.1" width="1" height="7.2"/>
@@ -3408,7 +3503,7 @@
       <rect class="door door-open" x="688.3" y="279.6" width="1" height="4.3"/>
       <g class="tag"><circle cx="427.2" cy="255.6" r="5"/><text x="427.2" y="257.9" text-anchor="middle">4</text></g>
       <g class="tag"><circle cx="772.8" cy="255.6" r="5"/><text x="772.8" y="257.9" text-anchor="middle">4</text></g>
-      <g class="tag"><circle cx="399.6" cy="236.4" r="5"/><text x="399.6" y="238.7" text-anchor="middle">2</text></g>
+      <g class="tag"><circle cx="399.6" cy="231.9" r="5"/><text x="399.6" y="234.2" text-anchor="middle">2</text></g>
       <g class="tag"><circle cx="480" cy="236.4" r="5"/><text x="480" y="238.7" text-anchor="middle">3</text></g>
       <g class="sigma-logo"><circle class="sl-bg" cx="600" cy="188.4" r="5.5"/><path class="sl-ring" d="M 605.5,188.8 A 5.5 5.5 0 1 1 601.2,183"/><path class="sl-red" d="M 602.1,183.3 A 5.5 5.5 0 0 1 605.5,188"/><polyline class="sl-sigma" points="602.4,186.5 602.4,185.7 597.6,185.7 600.4,188.4 597.6,191.2 602.4,191.2 602.4,190.3"/></g>
       <g class="tag"><circle cx="616.8" cy="217.2" r="5"/><text x="616.8" y="219.5" text-anchor="middle">1</text></g>
@@ -3454,17 +3549,18 @@
       <g class="tag"><circle cx="351.6" cy="202" r="5"/><text x="351.6" y="204.3" text-anchor="middle">36</text></g>
       <g class="tag"><circle cx="848.4" cy="202" r="5"/><text x="848.4" y="204.3" text-anchor="middle">36</text></g>
       <g class="tag"><circle cx="523.2" cy="193.5" r="5"/><text x="523.2" y="195.8" text-anchor="middle">37</text></g>
-      <g class="tag"><circle cx="676.8" cy="193.5" r="5"/><text x="676.8" y="195.8" text-anchor="middle">38</text></g>
+      <g class="tag"><circle cx="640.8" cy="193.5" r="5"/><text x="640.8" y="195.8" text-anchor="middle">53</text></g>
+      <g class="tag"><circle cx="717.6" cy="193.5" r="5"/><text x="717.6" y="195.8" text-anchor="middle">38</text></g>
       <g class="tag"><circle cx="521.4" cy="212.7" r="5"/><text x="521.4" y="215" text-anchor="middle">39</text></g>
       <g class="tag"><circle cx="689.4" cy="212.7" r="5"/><text x="689.4" y="215" text-anchor="middle">39</text></g>
       <g class="tag"><circle cx="219.6" cy="212.7" r="5"/><text x="219.6" y="215" text-anchor="middle">40</text></g>
       <g class="tag"><circle cx="980.4" cy="212.7" r="5"/><text x="980.4" y="215" text-anchor="middle">40</text></g>
       <g class="tag"><circle cx="180" cy="308.7" r="5"/><text x="180" y="311" text-anchor="middle">40</text></g>
       <g class="tag"><circle cx="1020" cy="308.7" r="5"/><text x="1020" y="311" text-anchor="middle">40</text></g>
-      <g class="tag"><circle cx="206.4" cy="231.9" r="5"/><text x="206.4" y="234.2" text-anchor="middle">41</text></g>
+      <g class="tag"><circle cx="206.4" cy="231.9" r="5"/><text x="206.4" y="234.2" text-anchor="middle">50</text></g>
       <g class="tag"><circle cx="326.4" cy="231.9" r="5"/><text x="326.4" y="234.2" text-anchor="middle">41</text></g>
-      <g class="tag"><circle cx="836.4" cy="231.9" r="5"/><text x="836.4" y="234.2" text-anchor="middle">41</text></g>
-      <g class="tag"><circle cx="981.6" cy="231.9" r="5"/><text x="981.6" y="234.2" text-anchor="middle">41</text></g>
+      <g class="tag"><circle cx="836.4" cy="231.9" r="5"/><text x="836.4" y="234.2" text-anchor="middle">51</text></g>
+      <g class="tag"><circle cx="981.6" cy="231.9" r="5"/><text x="981.6" y="234.2" text-anchor="middle">52</text></g>
       <g class="tag"><circle cx="151.2" cy="251.1" r="5"/><text x="151.2" y="253.4" text-anchor="middle">42</text></g>
       <g class="tag"><circle cx="1048.8" cy="251.1" r="5"/><text x="1048.8" y="253.4" text-anchor="middle">42</text></g>
       <g class="tag"><circle cx="363.6" cy="270.3" r="5"/><text x="363.6" y="272.6" text-anchor="middle">43</text></g>
@@ -3515,7 +3611,7 @@
       <ul aria-label="Room key">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="sigma-logo"><circle class="sl-bg" cx="14" cy="6" r="5.5"/><path class="sl-ring" d="M 19.5,6.4 A 5.5 5.5 0 1 1 15.2,0.6"/><path class="sl-red" d="M 16.1,0.9 A 5.5 5.5 0 0 1 19.5,5.6"/><polyline class="sl-sigma" points="16.4,4.1 16.4,3.3 11.6,3.3 14.4,6 11.6,8.8 16.4,8.8 16.4,7.9"/></g></svg>SIGMA&apos;s core, Decks 01 to 04</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">1</text></g></svg>SIGMA operations room, Deck 04</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>R&amp;D, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">2</text></g></svg>R&amp;D, Deck 05: Node Physics, the damped test cell</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">3</text></g></svg>Experiment control, Deck 05</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">4</text></g></svg>Lift lobby and tram stop, Deck 06</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">5</text></g></svg>Bank A capacitor hall, Deck 07</li>
@@ -3554,10 +3650,10 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">35</text></g></svg>Laundry and stores, Deck 02</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">36</text></g></svg>Hydroponics, Decks 03 to 04, two storeys</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">37</text></g></svg>Medical clinic, Deck 03</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">38</text></g></svg>Science offices, Deck 03</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">38</text></g></svg>Science office, Deck 03: the Director&apos;s office, briefing room, records</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">39</text></g></svg>Crew quarters</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">40</text></g></svg>Escape pods: 14 lifeboats, hatches under lockdown</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">41</text></g></svg>Science labs, Deck 05</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">41</text></g></svg>Materials lab, Deck 05: fatigue rig, spectrometer</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">42</text></g></svg>Array access, Deck 06: airlock, suits, tools</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">43</text></g></svg>Life support, Deck 07: oxygen, CO₂ scrubbing, air handling</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">44</text></g></svg>Maintenance shops, Deck 07</li>
@@ -3566,6 +3662,10 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">47</text></g></svg>Gym, Deck 08</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">48</text></g></svg>Logistics stores, Deck 10</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">49</text></g></svg>Recycling and sorting, Deck 11</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">50</text></g></svg>Time standards lab, Deck 05: the master clocks</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">51</text></g></svg>Corridor analysis, Deck 05: Stratovan analyzers, the phase map</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">52</text></g></svg>Array receiver room, Deck 05: the forward array&apos;s sensors</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">53</text></g></svg>Exposure lab, Deck 03: neural rhythms, cultures, growth chambers</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -3586,6 +3686,8 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="hot"><circle cx="14" cy="6" r="2.6"/><circle class="hot-hub" cx="14" cy="6" r="0.7"/></g></svg>Radiation hot spot, left by the accident</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="frost" d="M 8 4 l 3 3 m 0 -3 l -3 3 M 17 4 l 3 3 m 0 -3 l -3 3"/></svg>Frost on cryogenic lines</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="term" x="13.6" y="6" width="0.8" height="6"/><rect class="term-screen" x="10.5" y="1.5" width="7" height="4.5"/></svg>SIGMA terminal</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clock"><rect x="10" y="2" width="8" height="8"/><circle cx="14" cy="6" r="1.6"/></g></svg>Reference clock, one on every deck</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tap" x1="14" y1="0" x2="14" y2="12"/></svg>Branch up from the conduits: R&amp;D&apos;s tap, the receivers&apos; feed</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
