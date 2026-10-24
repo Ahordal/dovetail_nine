@@ -495,7 +495,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     add(`<circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.5 * S)}"/><circle cx="${X(m)}" cy="${Yb(0.85)}" r="${f(0.15 * S)}"/>`);
   }
   // Switchgear and batteries: the fuel cells' electrical side, beyond the right lift.
-  for (const m of [269, 273, 277, 281]) {
+  for (const m of [268.5, 277.2, 280.7]) {
     box(m, m + 3, 0, 2.4);
     for (const h of [0.8, 1.6]) ln(m, h, m + 3, h, "flange");
   }
@@ -753,15 +753,24 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const water = (k, m, k2, h2, hops = []) => GOLD.push(`<path class="water" d="${run(X(SX), WY(k), X(m), hops.map(X))} V ${f(Yk(k2, h2))}"/>`);
   const T = [];
   const tg = (m, k, n, off = 0) => T.push(tag(m, k, n, off));
+  // Two staggered ladder routes, Deck 12 to Deck 01, one either side of the middle: a short ladder between each pair of
+  // decks, each set along from the last, standing in a crew room and opening by hatch into a crew room above.
+  const LADDERS = [
+    [12, 105.7], [11, 54], [10, 63], [9, 52.5], [8, 50.6], [7, 34.4], [6, 36.5], [5, 106], [4, 174], [3, 189], [2, 174],
+    [12, 275.75], [11, 318], [10, 330], [9, 340.5], [8, 348], [7, 353.2], [6, 362.5], [5, 323], [4, 238.7], [3, 242.7], [2, 245],
+  ];
+  // Each ladder is in a tube 1.6 m wide. Bunks, desks and lockers step aside wherever a tube stands or its hatch opens.
+  const TW = 1.6;
+  const blocked = (k, a, b) => LADDERS.some(([lk, lm]) => (lk === k || lk === k + 1) && a < lm + TW / 2 + 0.2 && b > lm - TW / 2 - 0.2);
 
   // Room fit-outs by type. Each takes the deck and the span; everything is a closed shape.
   const quarters = (k, m0, m1) => {
     room(k, m0, m1); add(`<g class="racks">`);
-    for (let m = m0 + 0.8; m + 2.4 < m1 - 0.6; m += 3.2) { box(k, m, m + 2.4, 0, 2.4, "kit"); box(k, m + 0.15, m + 2.25, 0.35, 0.75, "crate"); box(k, m + 0.15, m + 2.25, 1.45, 1.85, "crate"); }
+    for (let m = m0 + 0.8; m + 2.4 < m1 - 0.6; m += 3.2) { if (blocked(k, m, m + 2.4)) continue; box(k, m, m + 2.4, 0, 2.4, "kit"); box(k, m + 0.15, m + 2.25, 0.35, 0.75, "crate"); box(k, m + 0.15, m + 2.25, 1.45, 1.85, "crate"); }
     add(`</g>`); tg((m0 + m1) / 2, k, 39, -4.5);
   };
-  const desks = (k, m0, m1, step = 4) => { add(`<g class="racks">`); for (let m = m0 + 1; m + 2.4 < m1 - 0.8; m += step) { box(k, m, m + 2.4, 0.75, 0.9, "kit"); box(k, m + 0.15, m + 0.35, 0, 0.75, "kit"); box(k, m + 2.05, m + 2.25, 0, 0.75, "kit"); } add(`</g>`); };
-  const lockers = (k, m0, m1, h = 2.2) => { add(`<g class="racks">`); for (let m = m0; m + 0.9 <= m1; m += 1.0) box(k, m, m + 0.9, 0, h, "kit"); add(`</g>`); };
+  const desks = (k, m0, m1, step = 4) => { add(`<g class="racks">`); for (let m = m0 + 1; m + 2.4 < m1 - 0.8; m += step) { if (blocked(k, m, m + 2.4)) continue; box(k, m, m + 2.4, 0.75, 0.9, "kit"); box(k, m + 0.15, m + 0.35, 0, 0.75, "kit"); box(k, m + 2.05, m + 2.25, 0, 0.75, "kit"); } add(`</g>`); };
+  const lockers = (k, m0, m1, h = 2.2) => { add(`<g class="racks">`); for (let m = m0; m + 0.9 <= m1; m += 1.0) if (!blocked(k, m, m + 0.9)) box(k, m, m + 0.9, 0, h, "kit"); add(`</g>`); };
 
   // Deck 01: lift machinery either end, comms and the beacon, command around SIGMA's column, administration.
   for (const [m0, m1] of [[LIFTS[0] + LW / 2, 145], [255, LIFTS[1] - LW / 2]]) {
@@ -803,7 +812,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     term(4, m0 < 200 ? m1 - 4.2 : m0 + 4.2); tg((m0 + m1) / 2, 3, 36, 4);
   }
   room(3, LIFTS[0] + LW / 2, 197.5); add(`<g class="racks">`); for (const m of [140, 146, 152, 158]) { box(3, m, m + 3.6, 0.5, 0.75, "kit"); box(3, m, m + 0.3, 0.75, 1.4, "kit"); box(3, m + 0.4, m + 3.4, 0, 0.5, "kit"); }
-  box(3, 166, 172, 0.4, 1.6, "kit", 1.5); box(3, 162.6, 164.6, 0.8, 0.95, "kit"); box(3, 163.4, 163.8, 0, 0.8, "kit"); lockers(3, 176, 186); add(`</g>`); term(3, 189); tg(168, 3, 37, -4.5);
+  box(3, 166, 172, 0.4, 1.6, "kit", 1.5); box(3, 162.6, 164.6, 0.8, 0.95, "kit"); box(3, 163.4, 163.8, 0, 0.8, "kit"); lockers(3, 176, 186); add(`</g>`); term(3, 194); tg(168, 3, 37, -4.5);
   room(3, 202.5, LIFTS[1] - LW / 2); desks(3, 202.5, 255); term(3, 258); tg(232, 3, 38, -4.5);
   quarters(4, LIFTS[0] + LW / 2, 197.5); quarters(4, 211.5, LIFTS[1] - LW / 2);
 
@@ -848,10 +857,10 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     const [a, b] = A(52, 56); box(7, a, b, 0, 2.6); add(`</g>`);
     term(7, M(59)); tg((m0 + m1) / 2, 7, 43, -4.5);
   }
-  for (const [m0, m1] of [[5, 70], [330, 395]]) { room(7, m0, m1); desks(7, m0, m0 + 30, 6); lockers(7, m0 + 34, m1 - 4, 2.4); term(7, m0 + 32); tg((m0 + m1) / 2, 7, 44, -4.5); }
+  for (const [m0, m1] of [[5, 70], [330, 395]]) { room(7, m0, m1); desks(7, m0, m0 + 30, 6); if (m0 < 200) { lockers(7, 39, 48, 2.4); lockers(7, 52, 66, 2.4); } else lockers(7, m0 + 34, m1 - 4, 2.4); term(7, m0 + 32); tg((m0 + m1) / 2, 7, 44, -4.5); }
 
   // Deck 08: fire and emergency stores, security; crew quarters and the gym on the right.
-  room(8, 10, 85); add(`<g class="plant">`); for (let m = 14; m < 50; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [56, 62, 68, 74]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 80); tg(48, 8, 46, -4.5);
+  room(8, 10, 85); add(`<g class="plant">`); for (let m = 14; m < 48; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [56, 62, 68, 74]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 80); tg(48, 8, 46, -4.5);
   room(8, 85, LIFTS[0] - LW / 2); desks(8, 85, 105); lockers(8, 107, 116, 2.4);
   add(`<rect class="room" x="${f(X(119))}" y="${f(Yk(8, 4.5))}" width="${f(12 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 120; m < 131; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
@@ -883,6 +892,16 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const WR = LIFTS[1] + LW / 2 + 4.5;
   GOLD.push(`<path class="water" d="${run(X(SX), WY(2), X(WR), [X(DBX)])} V ${f(WY(7))} H ${f(X(320))} V ${f(Yk(7, 3.2))}"/>`);
   GOLD.push(`<path class="water" d="M ${f(X(WR))} ${f(Yk(4, 2.0))} H ${f(X(LIFTS[1] + LW / 2 + 3.2))}"/>`);
+  // Ladder tubes: an enclosed shaft from this deck's floor up through its service band, an access door at the foot,
+  // a hatch into the floor above.
+  for (const [k, m] of LADDERS) {
+    const top = dy(k), bot = Yk(k, 0) + FL;
+    add(`<rect class="shaft" x="${f(X(m - TW / 2))}" y="${f(top)}" width="${f(TW * S)}" height="${f(bot - top)}"/>`);
+    for (const e of [m - 0.4, m + 0.4]) add(`<line class="ladder" x1="${f(X(e))}" y1="${f(top)}" x2="${f(X(e))}" y2="${f(bot)}"/>`);
+    for (let y = bot - 0.6 * S; y > top + 0.3 * S; y -= 0.6 * S) add(`<line class="rung" x1="${f(X(m - 0.4))}" y1="${f(y)}" x2="${f(X(m + 0.4))}" y2="${f(y)}"/>`);
+    add(`<rect class="door door-open" x="${f(X(m - 0.6))}" y="${f(top - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
+    add(`<rect class="door door-open" x="${f(X(m + TW / 2) - DW / 2)}" y="${f(Yk(k, 1.8))}" width="${DW}" height="${f(1.8 * S)}"/>`);
+  }
   T.forEach((t) => tags.push(t));
 }
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
@@ -1173,6 +1192,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="grid-power" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Station power grid; a hop where two lines cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9.5" y="0.5" width="9" height="11.5"/><rect class="door door-open" x="11" y="0" width="6" height="1"/><line class="ladder" x1="12" y1="1" x2="12" y2="12"/><line class="ladder" x1="16" y1="1" x2="16" y2="12"/><line class="rung" x1="12" y1="5" x2="16" y2="5"/><line class="rung" x1="12" y1="9" x2="16" y2="9"/><rect class="door door-open" x="18" y="7" width="1" height="5"/></svg>Ladder tube to the deck above: access door at the foot, hatch at the top</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
