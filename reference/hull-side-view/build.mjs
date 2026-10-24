@@ -780,10 +780,11 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const WASH = [], SUITE_WASH = [];   // washroom sinks and suite washrooms, for the water lines below
   const cabin = (k, lo, hi) => {
     room(k, lo, hi);
-    box(k, lo + 0.2, lo + 2.2, 0, 0.6, "kit"); box(k, lo + 0.3, lo + 0.8, 0.6, 0.75, "crate");
-    if (hi - lo < 3.5) { box(k, lo + 2.4, lo + 2.85, 0, 2.2, "kit"); return; }
-    box(k, lo + 0.2, lo + 2.2, 1.5, 1.8, "kit"); box(k, lo + 0.2, lo + 0.3, 0.6, 1.5, "kit"); box(k, lo + 2.1, lo + 2.2, 0.6, 1.5, "kit");
-    box(k, lo + 2.6, lo + 3.05, 0, 2.2, "kit"); box(k, lo + 3.35, lo + 3.8, 0, 2.2, "kit");
+    if (hi - lo < 3.5) { box(k, lo + 0.2, lo + 2.2, 0, 0.6, "kit"); box(k, lo + 0.3, lo + 0.8, 0.6, 0.75, "crate"); box(k, lo + 2.4, lo + 2.85, 0, 2.2, "kit"); return; }
+    // Bunk: two end posts from the floor, the mattresses fitted between them.
+    box(k, lo + 0.4, lo + 0.5, 0, 1.9, "kit"); box(k, lo + 2.3, lo + 2.4, 0, 1.9, "kit");
+    box(k, lo + 0.5, lo + 2.3, 0.3, 0.6, "kit"); box(k, lo + 0.5, lo + 2.3, 1.4, 1.7, "kit");
+    box(k, lo + 2.8, lo + 3.7, 0, 2.2, "kit");   // one double wardrobe
   };
   // Washroom (5 m): two toilet stalls, two showers, a sink counter. Common room (5 m): sofa, table, a wall screen.
   const washroom = (k, lo) => {
