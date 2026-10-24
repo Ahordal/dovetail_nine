@@ -34,6 +34,21 @@ Seven divisions. Headcounts add up to 166.
 - **The station administrator** heads the station and answers to Nashiro off-station (see [[the-secret]], Chain of command).
 - **[proposed]** The "director" named among the Level 6 senior staff in [[the-secret]] is the **Science Director**, head of the Science division: a different person from the administrator.
 
+## Housing by seniority **[proposed]**
+
+Level 6 staff have suites; senior grades a single cabin; juniors share a double. Rooms are placed in [[dovetail-9-station]] (Crew housing).
+
+| Division | Level 6 (suites) | Senior grades (singles) | Juniors (in doubles) |
+|---|---|---|---|
+| Command & Administration | 2: the administrator, the operations chief | 4 | 6 (3 doubles) |
+| Security | 1: the security chief | 3 | 10 (5) |
+| Medical | 1: the chief medical officer | 3 | 4 (2) |
+| Science | 6: the Science Director and the five group leads | 13 | 26 (13) |
+| Engineering | 2: the chief engineer, the DYNEX lead | 12 | 26 (13) |
+| Maintenance | 0 | 9 | 26 (13) |
+| Habitation services | 0 | 4 | 8 (4) |
+| **Total** | **12** | **48** | **106 (53 doubles)** |
+
 ## Science groups **[proposed]**
 
 Science designed the run and called it; Engineering ran the hardware. Its 45 people work in five groups under the Science Director's office, each studying something the anchor needs or something it does. Their rooms are placed in [[dovetail-9-station]].

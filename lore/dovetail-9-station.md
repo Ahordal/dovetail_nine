@@ -148,6 +148,8 @@ related:
   - **Demand:** about 50 L per person per day (drinking, food, washing, laundry), roughly **8 m³ a day**. Hydroponics on Deck 03 recirculates far more, but most of it comes back as condensate from the air.
   - **Recovery:** about 95 to 98%, as on the ISS. Supply ships top up the small losses, and the fuel cells add water whenever they run.
   - **Collection:** drains fall down the lift cores to Deck 11, the lowest deck on the living side, so gravity does the work. Grey water (sinks, showers, laundry, galley) and air-conditioning condensate come down the **left core** into two wastewater tanks; toilets come down the **right core** to the waste plant.
+  - **[proposed] Vacuum toilets,** as on ships and the ISS: suction, not gravity, carries the waste. Washrooms beside the right core drop straight into its toilet drain; those on the left side (the Deck 02 suites and Deck 04's left block) are drawn up into a line in the **Deck 03 service band** that crosses to the right core. Room drains are otherwise not drawn on the side view.
+  - **[proposed] Washroom supply:** the left washrooms branch off the supply riser; the right riser beside the right lift carries on below life support down to Deck 10 to feed the washrooms there.
   - **Water recovery plant (16),** at the far left: strainer, pump, filter beds, a catalytic reactor that breaks down dissolved chemicals, a reverse-osmosis rack and UV disinfection, the same sequence the ISS uses. Treated water goes straight into the first potable tank.
   - **Water tanks (17),** from the plant to the left lift: **four potable tanks** of about 125 m³ each, about two months of crew use with no recycling at all, then the supply pump and **two wastewater tanks**. The left lift opens into this hall.
   - **Delivery:** the supply pump sends potable water up the left core; each deck's service band carries it across the station. Hot water is heated from the Harvest Ring secondary loop's waste heat.
@@ -159,10 +161,11 @@ related:
 Placed on the side view; the numbers are its room tags. Every room is fed from the gold grid's risers along its deck's service band, and the water-using ones from the teal supply.
 
 - **Deck 01, command (28):** the bridge, built around the top of SIGMA's column as canon has it, consoles on both sides and wall displays. **Comms room (29)** beside it, under the taller spire: equipment racks and the **beacon transmitter**, whose feed rises through the roof to the spire. **Administration and records (30)** on the other side. **Lift machinery (27)** beside both lift cores.
-- **Deck 02:** **senior staff quarters (31)** (administrator, Science Director and other Level 6 staff), the **galley (32)** (the coffee machine of the galley echo sits on its counter), the **mess (33)**, a **recreation lounge (34)**, and **laundry and stores (35)**.
+- **Deck 02:** **senior staff suites (31)** (administrator, Science Director and other Level 6 staff; see Crew housing below), the **galley (32)** (the coffee machine of the galley echo sits on its counter), the **mess (33)**, a **recreation lounge (34)**, and **laundry and stores (35)**.
 - **Decks 03 and 04, hydroponics (36):** two bays at the outer ends, each two storeys high, tall grow racks with lights, a nutrient tank and terminal. Food, and part of the oxygen.
 - **Deck 03:** the **medical clinic (37)** (beds, a scanner, cabinets, a sink: Medical tracks radiation and harmonic exposure), the **Exposure lab (53)** beside it and the **Science office (38)**. See Science below.
-- **Crew quarters (39):** on Decks 04, 08, 09 and 10, bunk units with lockers; room for all 166 and to spare.
+- **Crew cabins (39):** on Decks 04, 08, 09 and 10. See Crew housing below.
+- **Pod muster station (56),** Deck 09 beside the pods: benches, emergency suit and ration lockers, and the pod status board. Where the crew gather before boarding, and where the lockdown on the pods would be felt.
 - **Deck 05 is Science's floor:** the Time standards lab (50) and Materials lab (41) aft of the left lift, R&D just inside engineering beside experiment control, and Corridor analysis (51) and the Array receiver room (52) forward of the right lift. See Science below.
 - **Deck 06, array access (42):** at both ends of the tram, where the hull meets the array: an airlock out to the truss (outer door locked, onto vacuum), suit racks and tool lockers. The tram stops at its inner wall. **Tram cars** wait at the two lobby stops.
 - **Deck 07, life support (43):** a plant at each end by the lifts (which open into them): **oxygen from water** by electrolysis (fed from the water supply), **carbon dioxide scrubber beds**, **air handlers** (the ventilation that carried argon-41 in the accident) and trace contaminant control. **Maintenance shops (44)** beyond them, with suit and tool stores.
@@ -170,6 +173,19 @@ Placed on the side view; the numbers are its room tags. Every room is fed from t
 - **Deck 10, logistics stores (48);** **Deck 11, recycling and sorting (49)** beside the waste plant.
 - **Terminals:** SIGMA terminals in every major room, drawn as small screens on posts: each one reveals its deck's map to Quell's slate ([[site-frame]]).
 - **Water:** one crossing in Deck 02's service band serves the right half, down a riser beside the right lift to hydroponics and life support there; the left half branches straight off the supply riser.
+
+## Crew housing **[proposed]**
+
+Who sleeps where follows seniority (counts in [[crew]]). Room for all 166 and to spare: the spare cabins take contractor rotations and visiting ship crews.
+
+- **Suites (31), Deck 02,** for the twelve Level 6 staff: bed, wardrobe, a desk and a private washroom.
+- **Single cabins** (3 m: bed and wardrobe) for senior grades; **doubles** (4 m: bunk beds, two wardrobes) for juniors, two to a room.
+- **Blocks by division,** near their work, each laid out from its lift-core end: a landing where the lift and access trunk open, a **washroom (54)** (toilets, showers, sinks), a **common room (55)** (sofa, table, wall screen, terminal), the singles, then the doubles, with spares at the far end. The side view cuts one row of cabins; a second faces it across the block's corridor.
+  - **Deck 04, left:** Science. **Deck 04, right:** Science's overflow and visiting crews.
+  - **Deck 08:** Command & Administration, Security, Medical.
+  - **Deck 09:** Engineering, with the DYNEX and Valdez teams.
+  - **Deck 10:** Maintenance and Habitation services.
+- **Where the reader finds it:** the housing roster in SIGMA's records (who had which cabin), and each cabin itself: the place where its occupant lived, and often near where they died.
 
 ## Science **[proposed]**
 
