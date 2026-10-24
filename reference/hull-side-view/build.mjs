@@ -461,7 +461,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   const tanks = [139, 152, 165, 224.5, 237.5, 250.5];
   // Laid out mirror-symmetric about 200 m, under the middle of the Mistral.
   const GEN = [179.5, 214.5], FT = [189.25, 200.5], RS = [187.4, 212.6];
-  const runs = [`M ${X(108.6)} ${Y(HD)} H ${X(l0)}`, `M ${X(l1)} ${Y(HD)} H ${X(255.75)}`];
+  const runs = [`M ${X(108.6)} ${Y(HD)} H ${X(l0)}`, `M ${X(l1)} ${Y(HD)} H ${X(r0)}`];
   for (const m of [...tanks, ...FT]) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
   for (const m of [108.6, 110.8, 113.0, 115.2]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
   for (const [m, top] of [[119, 2.0], [124.75, 2.6]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
