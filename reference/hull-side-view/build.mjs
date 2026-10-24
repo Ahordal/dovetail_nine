@@ -424,6 +424,18 @@ add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/
   box(256.2, 257.6, 1.0, 1.25, "crate");
   box(254.9, 257.7, 1.6, 2.9, "kit");
   for (const m of [255.5, 256.3, 257.1]) ln(m, 1.9, m, 2.6, "brace");
+  // Rolling tool chest: drawers, on castors.
+  box(252.0, 253.3, 0.25, 1.25, "kit");
+  for (const h of [0.5, 0.75, 1.0]) ln(252.0, h, 253.3, h, "brace");
+  for (const m of [252.1, 252.95]) box(m, m + 0.25, 0, 0.25, "crate");
+  // Welding gas, two bottles chained beside the bench.
+  for (const m of [253.55, 254.0]) {
+    add(`<rect class="kit" x="${X(m)}" y="${Y(1.5)}" width="${f(0.4 * S)}" height="${f(1.5 * S)}" rx="${f(0.2 * S)}"/>`);
+    box(m + 0.12, m + 0.28, 1.5, 1.65, "crate");
+  }
+  // Spare parts crated by the cabinet, a cable reel on the wall above.
+  box(258.4, 259.7, 0, 0.9, "crate"); box(258.6, 259.4, 0.9, 1.5, "crate");
+  add(`<circle class="reel" cx="${X(259.1)}" cy="${Y(2.5)}" r="${f(0.5 * S)}"/><circle class="reel" cx="${X(259.1)}" cy="${Y(2.5)}" r="${f(0.15 * S)}"/>`);
   // A closed cabinet clear of the wall; bins sit on each shelf, not across it.
   box(260.6, 262.4, 0, 2.9, "kit");
   for (const h of [0.95, 1.9]) ln(260.6, h, 262.4, h, "shelf");
@@ -559,6 +571,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .racks .brace { stroke: var(--muted); stroke-width: 0.4; stroke-opacity: 0.7; }
   .racks .crate { fill: var(--line); stroke: var(--muted); stroke-width: 0.5; }
   .racks .kit { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .racks .reel { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
   .plant rect, .plant circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
   .plant line { stroke: var(--muted); stroke-width: 0.5; }
   .plant .flange { stroke-width: 0.35; }
