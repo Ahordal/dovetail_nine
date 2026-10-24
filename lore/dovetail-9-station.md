@@ -61,6 +61,7 @@ related:
 - **[proposed] Reinforcement rings:** the bracket-shaped coil housings above, seen as octagonal frames that wrap the truss at intervals, as in the exterior image, with at least one close to the hull at each end. They carry amber marker lights (the radiator markers, see Radiators above) that blink faster than the spires' red beacons, and no antennas.
 - **How it works:** the structure lies **along** the corridor. The emitters channel resonance down its length and focus it at a point **just beyond the forward end**, where the primary node was meant to form: in the corridor, beside the station, not inside it.
 - **The aft end is a counter-resonator,** balancing the forward focus so the structure doesn't tear itself apart. Both tips glow; only the forward one forms a node.
+- **Forward is the right-hand end [settled],** as the side view is drawn (the face where the bay opens). The node focus lies just beyond the right end of the array; the left end is the counter-resonator.
 - **Why the array is big:** like a radio antenna, it must be sized to what it resonates with. To engage a corridor it has to be built at the corridor's scale.
 - **Fits the program's stated aim:** the Experiment note says a stable anchor could create "an entry/exit node" in the corridor.
 - Visual reference: `reference/dovetail-9-exterior.png`. Side view of the hull, drawn from this file: `reference/hull-side-view/`.

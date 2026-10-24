@@ -571,11 +571,13 @@ for (let m = 0; m <= L; m += 50) {
   add(`<text class="t-scale" x="${mx(m)}" y="${f(ry + 16)}" text-anchor="middle">${m === L ? '400 m' : m}</text>`);
 }
 // The ruler carries on past a small gap at each end, arrows pointing on along the array.
-for (const [x0, x1] of [[X0 - 8, 8], [X1 + 8, X1 + 152]]) {
+// Forward is the right end, where the array focuses its node; the aft end is the counter-resonator.
+for (const [x0, x1, end] of [[X0 - 8, 8, "Aft · counter-resonator"], [X1 + 8, X1 + 152, "Forward · node focus"]]) {
   const d = x1 > x0 ? 1 : -1;
   add(`<line class="ruler" x1="${x0}" y1="${ry}" x2="${x1}" y2="${ry}"/><polyline class="ruler arrow" points="${x1 - 5 * d},${f(ry - 3)} ${x1},${ry} ${x1 - 5 * d},${f(ry + 3)}"/>`);
   // Fixed length (the shorter left extension) so both labels fit and match, whatever font loads.
   add(`<text class="t-note t-array" x="${f((x0 + x1) / 2)}" y="${f(ry - 5)}" text-anchor="middle" textLength="${f(X0 - 20)}" lengthAdjust="spacingAndGlyphs">Array continues ~650 metres</text>`);
+  add(`<text class="t-note t-array t-strong" x="${f((x0 + x1) / 2)}" y="${f(ry - 13)}" text-anchor="middle">${end}</text>`);
 }
 const hx = X1 + 110;
 add(`<line class="ruler" x1="${hx}" y1="${Y0}" x2="${hx}" y2="${f(Y1)}"/><line class="ruler" x1="${hx - 4}" y1="${Y0}" x2="${hx + 4}" y2="${Y0}"/><line class="ruler" x1="${hx - 4}" y1="${f(Y1)}" x2="${hx + 4}" y2="${f(Y1)}"/>`);
@@ -819,7 +821,6 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <ul>
         <li><b>Observation gallery</b>, where in engineering it looks into the chamber.</li>
         <li><b>Access shaft</b> routes.</li>
-        <li><b>Which end is forward</b>, where the array focuses its node.</li>
         <li><b>Needs a dedicated place:</b> array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
       </ul>
