@@ -119,6 +119,7 @@ The pseudo-science behind FTL corridors, the Dovetail anchor, and the echoes. Ev
 - **The flash itself didn't linger,** but the neutrons it knocked loose made metal radioactive (activation, real). It also made the air briefly radioactive (argon-41), which life support carried to every deck; that faded within hours.
 - **After ten years most has decayed;** longer-lived products such as cobalt-60 (half-life about 5 years) are down to roughly a quarter. What remains is **hot spots**: worst near the Core Chamber and along the conduit duct on the Deck 06 spine, where the beams ran.
 - **Not like Chernobyl:** there is no fuel to scatter, so it's fixed in the station's metal, not in the air.
+- **[proposed] His Geiger counter alarms as soon as he's inside the station.** Its alarm is set just above normal background, and the whole station still carries faint activation from the accident, so it goes off at the airlock even though the area is safe. A cue to the reader before anything is explained.
 - **For Quell:** he carries a dosimeter. Hot areas are survivable briefly, dangerous for long: a physical reason for restricted zones, and a cost for pushing into them. Ordinary areas are fairly safe; a day aboard is nowhere near a lethal dose unless he chooses to go deep.
 - **A clue in itself:** the hot spots trace the radiation's path down the conduit duct, not from "shutters near the core" as the official account claims.
 

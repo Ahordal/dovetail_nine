@@ -28,6 +28,17 @@ related:
 - **[proposed] The tram passes engineering in a shielded tube** along the side of Deck 06, sealed off from the reactor spaces, with no stop between the two lift cores. The tube was built to be the safe way past the chamber; with the shielding down it became a run of hot spots.
 - **[proposed] The tram line is the most dangerous route aboard.** The radiation hot spots are worst near the chamber and along the conduit runs ([[phase-mechanics]]), and the tram follows both.
 - **[proposed] Engineering** is the section around the Core Chamber, about **137 to 263 m along on Decks 05 to 07**, running out to meet both lift cores: reactor support, the Hawking Harvest Rings' heat systems, the coolant loop, and the observation gallery. Directly above the docking bay. **Two vertical access shafts** run through it, one either side of the chamber, roughly midway between the chamber and the section's edge (about 164 and 236 m).
+  - **[proposed] The X9's plant, placed** (design in [[x9-power-system]]):
+    - **Inside the dome:** the three shells, the trap housing at the centre, dog-leg power penetrations each side (no straight line out), and the primary heat exchangers, so radioactive coolant never leaves the dome.
+    - **Observation gallery,** Deck 05, between the left access shaft and the chamber, with a viewport into it and the restricted engineering terminal.
+    - **Cryogenic plant,** Deck 05, right of the chamber: keeps the trap's superconducting coils at about -250 °C. Frost forms on its lines into the dome.
+    - **Trap auxiliaries,** Deck 05, from the right shaft to the right lift (which opens into it): charge injector supplies and position control.
+    - **Penetration vaults,** Deck 06, either side of the chamber, where the conduits leave the dome; they hold the dampening coil drivers.
+    - **Harvest Ring turbine hall,** Deck 07, from the left lift (which opens into it) to the left shaft: the station's main power, a turbine and generator with a catwalk and ladder to the valve gallery above.
+    - **Backup generator set,** Deck 07, from the right shaft to the right lift (which opens into it): the separate set that feeds the isolated backup bus, laid out the same way.
+    - **Secondary loop** from the dome's heat exchangers to both halls, behind the capacitor halls; **radiator loop** from the halls up to the spine and out along the conduits to the trusses.
+    - **Harmonic emitters** along the conduits the whole length of the spine.
+    - **Radiation hot spots** from the accident along the conduit duct, worst beside the dome.
 - **[proposed] Experiment control** is a shared Science and Engineering room on **Deck 05**, just inside engineering's edge, with **R&D** (Science's lab, on Deck 5 per [[tobias-quell]]) next door outside engineering. It has **two doors**: one from R&D (the sealed lock in Quell's log) and one from engineering. A **hatch** on its far side opens into the left vertical access shaft: a way in that skips the sealed lock.
   - Science designed and called the run; Engineering ran the X9, the array and the shielding from here; SIGMA executed. The DYNEX, Valdez and Stratovan contractors had their own stations ([[crew]]).
   - **Everyone was in the room** at the moment of the accident, including the administrator who signed the bank B waiver. Its records, and the bodies still at their stations, show who sat where and who gave the go-ahead ([[the-secret]]).
@@ -47,7 +58,7 @@ related:
   - **Valdez's own section,** with its own door and clearance inside Nashiro's engineering ([[crew]], contractor teams).
   - **The shield's edge runs along the docking bay's ceiling.** The bay is outside it, which is why a docked ship sits unshielded in the field ([[the-secret]]).
   - Next to the chamber and the conduits, so among the worst radiation hot spots ([[phase-mechanics]]): reaching the room where the accident began costs Quell.
-- **Radiators:** the station sheds its waste heat (the X9's ~360 MW Hawking glow plus ordinary systems) through radiator panels along the Anchor Core array arms. The amber lights along the trusses in the exterior image can be read as their markers.
+- **Radiators:** the station sheds its waste heat (the X9's ~360 MW Hawking glow plus ordinary systems) through radiator panels along the Anchor Core array arms, mounted on struts beside the emitter housings, fed by the radiator loop out along the conduits. The amber lights along the trusses in the exterior image can be read as their markers.
 - **Ways of moving through the station [settled]:**
   - **Lifts:** vertical, between the 12 decks.
   - **Tram:** the horizontal lift, running the length of the hull on **one main deck only, Deck 06**. Crossing the hull end to end means getting to that deck first. At 400 m, walking end to end takes five minutes or more, longer hauling gear or suited.

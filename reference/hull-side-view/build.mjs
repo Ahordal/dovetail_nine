@@ -540,6 +540,100 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   add(`</g>`);
   tags.push(tag((WP[0] + WP[1]) / 2 + 6, 11, 16), tag((WT[0] + WT[1]) / 2, 11, 17), tag((WS[0] + WS[1]) / 2, 11, 18));
 }
+// Engineering plant around the X9 (see lore x9-power-system): shells, penetrations, auxiliaries, heat and power halls.
+{
+  const X = (m) => f(mx(m)), cy = midY;
+  const Yk = (k, h) => f(dy(k + 1) - FL - h * S);   // h metres above deck k's floor
+  const room = (m0, m1, k) => add(`<rect class="room" x="${X(m0)}" y="${dy(k)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  const box = (m0, m1, k, h0, h1, rx = 0, cls = "") => add(`<rect${cls ? ` class="${cls}"` : ""} x="${X(m0)}" y="${Yk(k, h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const ln = (m0, k0, h0, m1, k1, h1, cls) => add(`<line class="${cls}" x1="${X(m0)}" y1="${Yk(k0, h0)}" x2="${X(m1)}" y2="${Yk(k1, h1)}"/>`);
+  // Inside the dome: Shell 2 and Shell 1 inside the outer structural shell, the trap housing at the centre.
+  add(`<circle class="shell" cx="${ccx}" cy="${f(cy)}" r="${f(8.5 * S)}"/><circle class="shell" cx="${ccx}" cy="${f(cy)}" r="${f(6.5 * S)}"/>`);
+  add(`<rect class="trap" x="${f(ccx - 2.25 * S)}" y="${f(cy - 1.15 * S)}" width="${f(4.5 * S)}" height="${f(2.3 * S)}" rx="1.5"/>`);
+  add(`<circle class="singularity" cx="${ccx}" cy="${f(cy)}" r="1.6"/>`);
+  // Power leaves Shell 1 by dog-leg penetrations, no straight line out, then runs on as the conduits.
+  for (const d of [-1, 1]) {
+    const x = (m) => f(ccx + d * m * S);
+    add(`<polyline class="busbar" points="${x(6.5)},${f(cy)} ${x(8)},${f(cy)} ${x(8)},${f(cy - 1.6 * S)} ${x(9.5)},${f(cy - 1.6 * S)} ${x(9.5)},${f(cy)} ${x(11)},${f(cy)}"/>`);
+    // Primary heat exchanger in the outer band: radioactive coolant stays in the dome, heat crosses to a clean loop.
+    add(`<rect class="trap" x="${f(ccx + d * 9.8 * S - 0.6 * S)}" y="${f(cy + 5.2 * S)}" width="${f(1.2 * S)}" height="${f(2.4 * S)}"/>`);
+  }
+  // Deck 05: observation gallery, cryogenic plant, trap auxiliaries.
+  const GAL = [166.5, 190.5], CRY = [209.5, 234], AUX = [237, LIFTS[1] - LW / 2];
+  for (const [m0, m1] of [GAL, CRY, AUX]) room(m0, m1, 5);
+  add(`<rect class="window" x="${f(mx(GAL[1]) - DW / 2)}" y="${Yk(5, 3.6)}" width="${DW}" height="${f(2.6 * S)}"/>`);
+  add(`<g class="racks">`);
+  box(168, 171, 5, 0, 1.1, 0, "kit"); box(168.4, 170.6, 5, 1.1, 1.8, 0, "crate");   // restricted engineering terminal
+  for (const m of [174, 178, 182]) { ln(m, 5, 0.45, m + 2.4, 5, 0.45, "shelf"); for (const e of [m + 0.2, m + 2.2]) ln(e, 5, 0, e, 5, 0.45, "upright"); }   // benches facing the viewport
+  add(`</g>`);
+  add(`<g class="plant">`);
+  // Cryogenic plant: cold box and compressors; its lines run into the dome to keep the coils at about -250 C.
+  box(222, 226.5, 5, 0, 3.0, 2); box(227.5, 230.5, 5, 0, 2.4);
+  for (const m of [214, 218]) { add(`<circle cx="${X(m)}" cy="${Yk(5, 1.0)}" r="${f(1.0 * S)}"/>`); box(m - 1.3, m + 1.3, 5, 0, 0.1); }
+  // Trap auxiliaries: charge injector supplies, position control, the dampening coils' power.
+  for (const m of [239, 242, 245, 248, 251]) { box(m, m + 2.2, 5, 0, 2.8); box(m + 0.5, m + 1.7, 5, 1.9, 2.4); }
+  box(254.5, 261.5, 5, 0, 1.0);
+  hollow([`M ${X(224.25)} ${Yk(5, 3.0)} V ${Yk(5, 3.6)} H ${X(207.2)}`]);
+  add(`</g>`);
+  // Frost on the cryogenic line.
+  for (const m of [209.6, 211.6, 213.6, 215.6]) add(`<path class="frost" d="M ${X(m)} ${f(+Yk(5, 3.6) - 2)} l 1.2 1.2 m 0 -1.2 l -1.2 1.2"/>`);
+  // Charge-injector and control cables from the auxiliaries into the dome.
+  add(`<line class="power" x1="${X(237)}" y1="${Yk(5, 4.4)}" x2="${X(207.4)}" y2="${Yk(5, 4.4)}"/>`);
+  // Deck 06: penetration vaults either side of the chamber, where the conduits leave the dome; dampening coil drivers.
+  const VL = [167.5, 188.6], VR = [211.4, 232.5];
+  for (const [m0, m1] of [VL, VR]) room(m0, m1, 6);
+  add(`<g class="plant">`);
+  for (const [m0, m1] of [VL, VR]) for (let m = m0 + 2; m < m1 - 2.5; m += 4.5) box(m, m + 2.4, 6, 3.6, 5.4);
+  add(`</g>`);
+  // Valdez harmonic emitters along the conduits, the whole length of the spine.
+  for (let m = 8; m < 400; m += 16) if (m < 165 || m > 235) add(`<rect class="emitter" x="${f(mx(m) - 1.2)}" y="${f(cy - 3.2)}" width="2.4" height="2.2"/>`);
+  // Deck 07: the main Harvest Ring turbine hall and the isolated backup generator set, each with a catwalk and ladder.
+  const HL = [LIFTS[0] + LW / 2, 163], HR = [236.8, LIFTS[1] - LW / 2];
+  for (const [m0, m1] of [HL, HR]) room(m0, m1, 7);
+  add(`<g class="plant">`);
+  const runs = [];
+  for (const [[m0, m1], flip] of [[HL, false], [HR, true]]) {
+    const M = (u) => flip ? m1 - u : m0 + u;
+    const a = (u0, u1) => [Math.min(M(u0), M(u1)), Math.max(M(u0), M(u1))];
+    // Turbine and generator on the floor; the catwalk above reaches the valve gallery.
+    const [t0, t1] = a(3, 14); box(t0, t1, 7, 0.3, 2.6, f(1.0 * S));
+    const [g0, g1] = a(15, 20); box(g0, g1, 7, 0, 2.4);
+    const [c0, c1] = a(1, 24); box(c0, c1, 7, 3.4, 3.6);
+    // Ladder from the floor up to the catwalk.
+    const lx = M(23);
+    for (const e of [lx - 0.4, lx + 0.4]) add(`<line class="ladder" x1="${X(e)}" y1="${Yk(7, 3.4)}" x2="${X(e)}" y2="${Yk(7, 0)}"/>`);
+    for (let h = 0.4; h < 3.3; h += 0.5) add(`<line class="rung" x1="${X(lx - 0.4)}" y1="${Yk(7, h)}" x2="${X(lx + 0.4)}" y2="${Yk(7, h)}"/>`);
+    runs.push(`M ${X(M(8.5))} ${Yk(7, 2.6)} V ${Yk(7, 4.6)}`);
+  }
+  // Clean secondary loop from the dome's heat exchangers to both halls, behind the capacitor halls on the way.
+  runs.push(`M ${X(HL[0] + 8.5)} ${Yk(7, 4.6)} H ${X(HL[1])}`, `M ${X(HR[0])} ${Yk(7, 4.6)} H ${X(HR[1] - 8.5)}`);
+  hollow(runs);
+  for (const [m0, m1] of [[HL[1], 192.2], [207.8, HR[0]]]) for (const h of [4.6 - PD / 2, 4.6 + PD / 2]) add(`<line class="pipe hidden" x1="${X(m0)}" y1="${Yk(7, h)}" x2="${X(m1)}" y2="${Yk(7, h)}"/>`);
+  add(`</g>`);
+  // Radiator loop: from each hall up to the spine, out along the conduits and onto the trusses.
+  for (const [x0, x1, up] of [[mx(HL[0] + 2), 24, mx(HL[0] + 2)], [mx(HR[1] - 2), X1 + 96, mx(HR[1] - 2)]]) {
+    add(`<polyline class="radline" points="${f(up)},${Yk(7, 3.6)} ${f(up)},${f(cy + 2.2)} ${f(x1)},${f(cy + 2.2)}"/>`);
+  }
+  // Radiation hot spots left by the accident, worst near the dome and along the conduit duct.
+  for (const m of [150, 172, 186, 214, 228, 250, 115, 285, 70, 330]) {
+    const x = mx(m), y = cy - 6.4;
+    add(`<g class="hot"><circle cx="${f(x)}" cy="${f(y)}" r="2.1"/><circle class="hot-hub" cx="${f(x)}" cy="${f(y)}" r="0.55"/></g>`);
+  }
+  tags.push(tag((GAL[0] + GAL[1]) / 2, 5, 19), tag((CRY[0] + CRY[1]) / 2, 5, 20), tag((AUX[0] + AUX[1]) / 2, 5, 21));
+  tags.push(tag((VL[0] + VL[1]) / 2, 6, 24, -4.5), tag((VR[0] + VR[1]) / 2, 6, 24, -4.5));
+  tags.push(tag((HL[0] + HL[1]) / 2, 7, 22), tag((HR[0] + HR[1]) / 2, 7, 23));
+}
+// The trusses: conduits and the radiator loop run out to emitter housings and radiator panels.
+for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
+  add(`<line class="conduit" x1="${a}" y1="${f(midY)}" x2="${b}" y2="${f(midY)}"/>`);
+  for (let x = a + 6; x < b - 6; x += 24) {
+    if (Math.abs(x - (a < X0 ? 72 : X1 + 48)) < 10) continue;
+    add(`<rect class="radiator" x="${f(x)}" y="${f(midY - 17)}" width="12" height="6"/><rect class="radiator" x="${f(x)}" y="${f(midY + 11)}" width="12" height="6"/>`);
+    // Each panel stands on a strut from the truss chord.
+    add(`<line class="radiator" x1="${f(x + 6)}" y1="${f(midY - 11)}" x2="${f(x + 6)}" y2="${f(midY - 8)}"/><line class="radiator" x1="${f(x + 6)}" y1="${f(midY + 11)}" x2="${f(x + 6)}" y2="${f(midY + 8)}"/>`);
+    add(`<rect class="emitter" x="${f(x + 4.8)}" y="${f(midY - 1.6)}" width="2.4" height="3.2"/>`);
+  }
+}
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
 // the cargo hallway's are 4 m, for loads coming up from the hold.
 {
@@ -551,6 +645,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l1, door(9)], [r0, door(9)], // ready rooms A and B
     [l0, door(10, 4)], [l1, door(10, 4)], // cargo hallway: storage one side, cargo ready room the other
     [r0, door(10)], [r0, door(11)], // docking control, bay workshop
+    [r0, door(5)], [l1, door(7)], [r0, door(7)], // trap auxiliaries, turbine hall, backup generator hall
     [l0, door(11)], [r1, door(11)], // Deck 11: water tanks, waste plant
     [l0, door(12)], [l1, door(12)], [r0, door(12)], [r1, door(12)], // Deck 12: fuel transfer, tank halls, switchgear
   ];
@@ -662,6 +757,15 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .platform { fill: var(--muted); }
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
   .ladder { stroke: var(--muted); stroke-width: 0.7; }
+  .shell { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 2 2; }
+  .trap { fill: var(--panel); stroke: var(--fg); stroke-width: 0.6; }
+  .busbar { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  .emitter { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .radiator { fill: none; stroke: var(--muted); stroke-width: 0.5; }
+  .radline { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 4 1 1 1; }
+  .frost { fill: none; stroke: var(--open); stroke-width: 0.4; }
+  .hot circle { fill: var(--accent); }
+  .hot .hot-hub { fill: var(--bg); }
   .hold-floor { stroke: var(--muted); stroke-width: 1; }
   .hold { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .racks .upright { stroke: var(--muted); stroke-width: 0.9; }
@@ -766,6 +870,12 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">16</text></g></svg>Water plant, Deck 11</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">17</text></g></svg>Water tank hall, Deck 11</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">18</text></g></svg>Waste plant, Deck 11</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">19</text></g></svg>Observation gallery, Deck 05, a viewport into the chamber</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">20</text></g></svg>Cryogenic plant, Deck 05: keeps the X9's coils cold</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">21</text></g></svg>Trap auxiliaries, Deck 05: charge injectors, position control</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">22</text></g></svg>Harvest Ring turbine hall, Deck 07: the station's main power</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">23</text></g></svg>Backup generator set, Deck 07: feeds the isolated backup bus</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">24</text></g></svg>Penetration vaults, Deck 06: conduits leave the dome; dampening coil drivers</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -777,6 +887,13 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><circle class="shell" cx="14" cy="6" r="5"/><rect class="trap" x="11" y="4.5" width="6" height="3" rx="1"/></svg>Core shells and the trap housing</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><polyline class="busbar" points="2,8 9,8 9,4 19,4 19,8 26,8"/></svg>Dog-leg power penetration</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="radline" x1="2" y1="6" x2="26" y2="6"/></svg>Radiator coolant loop</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="radiator" x="4" y="1" width="9" height="4"/><rect class="radiator" x="15" y="1" width="9" height="4"/><rect class="emitter" x="12.8" y="6" width="2.4" height="4"/></svg>Radiator panels and emitters on the array</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="emitter" x="12.8" y="5" width="2.4" height="2.2"/></svg>Harmonic emitter along the conduits</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="hot"><circle cx="14" cy="6" r="2.6"/><circle class="hot-hub" cx="14" cy="6" r="0.7"/></g></svg>Radiation hot spot, left by the accident</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="frost" d="M 8 4 l 3 3 m 0 -3 l -3 3 M 17 4 l 3 3 m 0 -3 l -3 3"/></svg>Frost on cryogenic lines</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
@@ -819,7 +936,6 @@ const html = `<title>Dovetail-9 Hull Section</title>
     <section>
       <h2><span class="tag open">NOT PLACED YET</span></h2>
       <ul>
-        <li><b>Observation gallery</b>, where in engineering it looks into the chamber.</li>
         <li><b>Access shaft</b> routes.</li>
         <li><b>Needs a dedicated place:</b> array access at both ends, command and comms, life support, hydroponics.</li>
         <li><b>Everything else</b>: R&amp;D, quarters, galley, medical, hydroponics, administration.</li>
