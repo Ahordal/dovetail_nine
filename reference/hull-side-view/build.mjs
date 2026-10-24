@@ -154,7 +154,7 @@ tags.push(sigmaLogo(mx(200), dy(3), 5.5));
 add(`<rect class="room" x="${mx(cx0 + CW)}" y="${dy(4)}" width="${f(9 * S)}" height="${f(DH)}"/>`);
 tags.push(tag(cx0 + CW + 4.5, 4, 1));
 // Shielding plant on Deck 07: capacitor halls from each shaft in toward the chamber.
-for (const [m0, m1, n] of [[166, 188, 5], [212, 234, 6]]) {
+for (const [m0, m1, n] of [[166, 189, 5], [211, 234, 6]]) {
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(7)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 7, n));
   // Charge from the chamber's Harvest Rings, out to the emitters along the Deck 06 conduits.
@@ -547,6 +547,8 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   const room = (m0, m1, k) => add(`<rect class="room" x="${X(m0)}" y="${dy(k)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   const box = (m0, m1, k, h0, h1, rx = 0, cls = "") => add(`<rect${cls ? ` class="${cls}"` : ""} x="${X(m0)}" y="${Yk(k, h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
   const ln = (m0, k0, h0, m1, k1, h1, cls) => add(`<line class="${cls}" x1="${X(m0)}" y1="${Yk(k0, h0)}" x2="${X(m1)}" y2="${Yk(k1, h1)}"/>`);
+  // The dome's own straight walls, Deck 05 to Deck 07.
+  for (const m of [189, 211]) add(`<line class="room-wall" x1="${X(m)}" y1="${dy(5)}" x2="${X(m)}" y2="${dy(8)}"/>`);
   // Inside the dome: Shell 2 and Shell 1 inside the outer structural shell, the trap housing at the centre.
   add(`<circle class="shell" cx="${ccx}" cy="${f(cy)}" r="${f(8.5 * S)}"/><circle class="shell" cx="${ccx}" cy="${f(cy)}" r="${f(6.5 * S)}"/>`);
   add(`<rect class="trap" x="${f(ccx - 2.25 * S)}" y="${f(cy - 1.15 * S)}" width="${f(4.5 * S)}" height="${f(2.3 * S)}" rx="1.5"/>`);
@@ -559,7 +561,9 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     add(`<rect class="trap" x="${f(ccx + d * 9.8 * S - 0.6 * S)}" y="${f(cy + 5.2 * S)}" width="${f(1.2 * S)}" height="${f(2.4 * S)}"/>`);
   }
   // Deck 05: observation gallery, cryogenic plant, trap auxiliaries.
-  const GAL = [166.5, 190.5], CRY = [209.5, 234], AUX = [237, LIFTS[1] - LW / 2];
+  // Rooms against the dome all stop on its two straight walls, at 189 m and 211 m.
+  const CW0 = 189, CW1 = 211;
+  const GAL = [166.5, CW0], CRY = [CW1, 234], AUX = [237, LIFTS[1] - LW / 2];
   for (const [m0, m1] of [GAL, CRY, AUX]) room(m0, m1, 5);
   add(`<rect class="window" x="${f(mx(GAL[1]) - DW / 2)}" y="${Yk(5, 3.6)}" width="${DW}" height="${f(2.6 * S)}"/>`);
   add(`<g class="racks">`);
@@ -576,11 +580,11 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   hollow([`M ${X(224.25)} ${Yk(5, 3.0)} V ${Yk(5, 3.6)} H ${X(207.2)}`]);
   add(`</g>`);
   // Frost on the cryogenic line.
-  for (const m of [209.6, 211.6, 213.6, 215.6]) add(`<path class="frost" d="M ${X(m)} ${f(+Yk(5, 3.6) - 2)} l 1.2 1.2 m 0 -1.2 l -1.2 1.2"/>`);
+  for (const m of [211.6, 213.6, 215.6, 217.6]) add(`<path class="frost" d="M ${X(m)} ${f(+Yk(5, 3.6) - 2)} l 1.2 1.2 m 0 -1.2 l -1.2 1.2"/>`);
   // Charge-injector and control cables from the auxiliaries into the dome.
   add(`<line class="power" x1="${X(237)}" y1="${Yk(5, 4.4)}" x2="${X(207.4)}" y2="${Yk(5, 4.4)}"/>`);
   // Deck 06: penetration vaults either side of the chamber, where the conduits leave the dome; dampening coil drivers.
-  const VL = [167.5, 188.6], VR = [211.4, 232.5];
+  const VL = [167.5, CW0], VR = [CW1, 232.5];
   for (const [m0, m1] of [VL, VR]) room(m0, m1, 6);
   add(`<g class="plant">`);
   for (const [m0, m1] of [VL, VR]) for (let m = m0 + 2; m < m1 - 2.5; m += 4.5) box(m, m + 2.4, 6, 3.6, 5.4);
@@ -757,6 +761,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .platform { fill: var(--muted); }
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
   .ladder { stroke: var(--muted); stroke-width: 0.7; }
+  .room-wall { stroke: var(--muted); stroke-width: 1; }
   .shell { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 2 2; }
   .trap { fill: var(--panel); stroke: var(--fg); stroke-width: 0.6; }
   .busbar { fill: none; stroke: var(--muted); stroke-width: 1.4; }
