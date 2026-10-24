@@ -146,11 +146,12 @@ for (const m of [164.5, 235.5]) {
 // Doors from each shaft into the rooms either side of its wall zone, on every engineering deck: inspection and
 // module replacement reach the generator, switch and capacitor halls without the lifts. Drawn with the lift doors below.
 const SHAFT_DOORS = [163, 166, 234, 237].flatMap((m) => [5, 6, 7].map((k) => [m, k]));
-// Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
-for (const [m0, m1, n] of [[112, LIFTS[0] - LW / 2, 2], [LIFTS[0] + LW / 2, 163, 3]]) {
+// R&D and experiment control on Deck 05, just inside engineering, sharing a wall and the sealed lock.
+const RD = [LIFTS[0] + LW / 2, 150];
+for (const [m0, m1, n] of [[RD[0], RD[1], 2], [RD[1], 163, 3]]) {
   const w = (m1 - m0) * S;
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
-  tags.push(n === 2 ? tag(116.5, 5, n, -4.5) : tag((m0 + m1) / 2, 5, n));   // R&D's tag stands clear of the trunk and the glovebox
+  tags.push(n === 2 ? tag(147, 5, n, -4.5) : tag((m0 + m1) / 2, 5, n));   // R&D's tag rides above the test cell, clear of the trunk's junction
 }
 // SIGMA's core: a 5 m column from Deck 04 up into command on Deck 01, on the chamber's axis.
 const CW = 5, cx0 = 200 - CW / 2;
@@ -868,21 +869,24 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   box(5, 55.5, 57.5, 0, 3.0, "kit"); for (const h of [0.8, 1.6, 2.4]) sh(5, 55.5, 57.5, h);
   add(`</g>`); term(5, 13.2); tg(36, 5, 50, -4.5);
   // Materials lab: harmonic fatigue rig, coupon racks, gamma spectrometer, microscope bench, sample saw.
-  room(5, 60, 112); add(`<g class="racks">`);
+  room(5, 60, LIFTS[0] - LW / 2); add(`<g class="racks">`);
   box(5, 63, 69, 0, 3.2, "kit"); box(5, 65, 67, 1.0, 2.2, "crate"); sh(5, 63, 69, 0.6);
   box(5, 72, 76, 0, 2.4, "kit"); for (const h of [0.8, 1.6]) sh(5, 72, 76, h);
   box(5, 80, 83, 0, 1.6, "kit", 0.5 * S); box(5, 81, 82, 1.6, 2.6, "crate");
   box(5, 87, 92, 0.75, 0.9, "kit"); box(5, 87.2, 87.4, 0, 0.75, "kit"); box(5, 91.6, 91.8, 0, 0.75, "kit"); box(5, 88.5, 89.3, 0.9, 1.7, "crate");
   box(5, 96, 99, 0, 1.2, "kit"); add(`<circle class="reel" cx="${f(X(97.5))}" cy="${f(Yk(5, 1.5))}" r="${f(0.6 * S)}"/>`);
-  add(`</g>`); desks(5, 100, 112); term(5, 61.2); tg(86, 5, 41, -4.5);
-  // R&D, Node Physics: a damped test cell fed by a tap from the conduits below, a glovebox, the control desk.
+  // Out to the lift: write-up desks and the sample store, shelved coupons and cut sections.
+  add(`</g>`); desks(5, 100, 120); lockers(5, 124, 131, 2.4); term(5, 61.2); tg(86, 5, 41, -4.5);
+  // R&D, Node Physics: the control desk, a glovebox, and the damped test cell beside the lock into experiment control.
   add(`<g class="racks">`);
-  box(5, 113, 117, 0.9, 2.0, "kit"); box(5, 113.3, 116.7, 0, 0.9, "kit"); box(5, 113.6, 116.4, 1.1, 1.8, "crate");
-  box(5, 117.6, 120.1, 0.75, 0.9, "kit"); box(5, 117.8, 118, 0, 0.75, "kit"); box(5, 119.7, 119.9, 0, 0.75, "kit"); box(5, 118.2, 119.6, 0.9, 1.5, "crate");
-  box(5, 123.2, 129.6, 0, 3.4, "kit"); box(5, 124.4, 128.4, 0.6, 2.8, "crate"); for (const h of [1.1, 2.3]) sh(5, 123.2, 129.6, h);
-  add(`</g>`); term(5, 112.6);
-  // The tap: a branch of the Deck 06 conduits up into the cell, switched from experiment control.
-  add(`<line class="tap" x1="${f(X(123.8))}" y1="${f(midY)}" x2="${f(X(123.8))}" y2="${f(Yk(5, 0))}"/>`);
+  box(5, 138.4, 140.6, 0.75, 0.9, "kit"); box(5, 138.6, 138.8, 0, 0.75, "kit"); box(5, 140.2, 140.4, 0, 0.75, "kit"); box(5, 138.9, 140.1, 0.9, 1.5, "crate");
+  box(5, 141.2, 144.2, 0.9, 2.0, "kit"); box(5, 141.5, 143.9, 0, 0.9, "kit"); box(5, 141.7, 143.7, 1.1, 1.8, "crate");
+  box(5, 144.8, 148.8, 0, 3.4, "kit"); box(5, 145.4, 148.2, 0.6, 2.8, "crate"); for (const h of [1.1, 2.3]) sh(5, 144.8, 148.8, h);
+  add(`</g>`);
+  // The tap: a branch of the Deck 06 conduits up through switch room A into the cell, switched from experiment control.
+  add(`<line class="tap" x1="${f(X(145.4))}" y1="${f(midY)}" x2="${f(X(145.4))}" y2="${f(Yk(5, 0))}"/>`);
+  // The lock into experiment control, sealed as Quell finds it.
+  add(`<rect class="door door-locked" x="${f(X(150) - DW / 2)}" y="${f(Yk(5, DOOR))}" width="${DW}" height="${f(DOOR * S)}"/>`);
   // Corridor analysis: Stratovan analyzers, a row of analyst consoles, the wall phase map, model racks.
   room(5, LIFTS[1] + LW / 2, 330); add(`<g class="racks">`);
   for (let m = 269.5; m < 277; m += 1.3) box(5, m, m + 1.2, 0, 2.4, "kit");
@@ -1017,7 +1021,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
   const door = (k, h = DOOR) => [dy(k + 1) - FL - h * S, dy(k + 1) - FL];
   const doors = [
-    [l0, door(5)],              // R&D
+    [l0, door(5)], [l1, door(5)], // Materials lab; R&D
     [l0, door(6)], [r1, door(6)], // lift lobbies and tram stops
     [l1, door(9)], [r0, door(9)], // ready rooms A and B
     [l0, door(10, 4)], [l1, door(10, 4)], // cargo hallway: storage one side, cargo ready room the other
@@ -1356,7 +1360,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Engineering</b> around the chamber, 137 to 263 m along on Decks 05 to 07, meeting both lift shafts, with two vertical access shafts through it, one either side of the chamber.</li>
         <li><b>Two lift cores</b> at about 135 m and 265 m, the only positions that reach all 12 decks.</li>
         <li><b>SIGMA&apos;s core</b>: a 5 m column on the chamber&apos;s axis, from Deck 04 up into command on Deck 01, operations room at its base.</li>
-        <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D next door and a door from each.</li>
+        <li><b>Experiment control</b> on Deck 05, a shared Science and Engineering room just inside engineering, with R&amp;D beside it across a sealed lock.</li>
         <li><b>Shielding plant</b> on Deck 07 in engineering: capacitor Banks A and B either side of the chamber, Valdez&apos;s own section. Emitters spread along the conduits and around the crewed sections; the bay sits outside the shield.</li>
         <li><b>Stepped profile.</b> Decks 05 to 08 run the full 400 m; decks above and below get shorter. Exact lengths are a first guess.</li>
         <li><b>Docking bay</b> across Decks 08 to 11, centred along the hull under the superstructure, unpressurized, open to space, about 98 m long.</li>
