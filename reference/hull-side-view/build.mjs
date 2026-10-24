@@ -449,7 +449,8 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
 // Lift doorways: only where a room on this face meets the shaft, as tall as that room.
 {
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
-  const full = (k) => [dy(k) + FL, dy(k + 1) - FL], low = [ceil9 + FL, dy(10) - FL];
+  // Ready room doorways match the airlock doors beside them.
+  const full = (k) => [dy(k) + FL, dy(k + 1) - FL], low = [door9Top, doorBot(9)];
   const doors = [
     [l0, full(5)],              // R&D, which wraps the shaft on Deck 05
     [l0, full(6)], [r1, full(6)], // lift lobbies and tram stops
