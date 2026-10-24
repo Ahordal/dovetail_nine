@@ -170,6 +170,9 @@ add(`<text class="t-note t-ship" x="${ccx}" y="${f(midY + 14)}" text-anchor="mid
 // Faint watermark across Deck 05, drawn last so the chamber and shafts don't hide letters.
 add(`<text class="t-watermark" x="${f(ex0 + 8)}" y="${f(ey0 + 16)}" textLength="${f(ex1 - ex0 - 16)}" lengthAdjust="spacing">ENGINEERING</text>`);
 
+// Floor lines are 1 unit thick, centred on the deck line: doors stop flush against them, above and below.
+// Doors are drawn at wall thickness, told apart from walls by colour alone.
+const FL = 0.5, DW = 1;
 // Docking bay: Decks 08 to 11, centred under the superstructure.
 const bx = mx(BAY[0]), bw = f((BAY[1] - BAY[0]) * S), by = dy(8), bh = f(4 * DH);
 add(`<rect class="bay" x="${bx}" y="${by}" width="${bw}" height="${bh}"/>`);
@@ -189,8 +192,9 @@ const grabY = dy(11) - 7 * S;
 add(`<line x1="${f(tx)}" y1="${f(railY + 2.5 * S)}" x2="${f(tx)}" y2="${f(grabY)}"/>`);
 add(`<polyline points="${f(tx - 2 * S)},${f(grabY + 1.6 * S)} ${f(tx - 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY)} ${f(tx + 2 * S)},${f(grabY + 1.6 * S)}"/></g>`);
 // Cargo dock: a raised platform outside the cargo door, a deck above the bay floor, where the gantry sets loads down.
-add(`<rect class="platform" x="${bx}" y="${dy(11)}" width="${f(10 * S)}" height="${f(0.7 * S)}"/>`);
-for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1="${f(dy(11) + 0.7 * S)}" x2="${f(mx(BAY[0] + m))}" y2="${dy(12)}"/>`);
+// It carries the cargo airlock's floor straight out: same level, same thickness.
+add(`<rect class="platform" x="${bx}" y="${f(dy(11) - FL)}" width="${f(10 * S)}" height="${2 * FL}"/>`);
+for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1="${f(dy(11) + FL)}" x2="${f(mx(BAY[0] + m))}" y2="${dy(12)}"/>`);
 tags.push(tag(BAY[0] + 5, 10, 9, 3.2));
 // Docking clamps 1 to 4: two arms down from the bay ceiling, two up from the floor, each ending in a pad on the hull.
 add(`<g class="clamp">`);
@@ -207,8 +211,6 @@ add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-an
 
 // Boarding umbilical, and the airlock doors.
 const floor9 = dy(10), wall = f(bx + 98 * S);
-// Floor lines are 1 unit thick, centred on the deck line: doors stop flush against them, above and below.
-const FL = 0.5;
 const doorBot = (k) => dy(k + 1) - FL;
 // Airlocks and ready rooms get a 4.5 m ceiling; the rest of Deck 09 above them is service space.
 // Airlocks stay small so each cycle pumps out less air; people only, cargo uses the cargo airlock below A.
@@ -221,7 +223,7 @@ add(`<rect class="umbilical" x="${bx}" y="${f(door9Mid - 1.7 * S)}" width="${f(2
 const AL = 6.5;
 add(`<rect class="room" x="${wall}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
 add(`<rect class="room" x="${f(bx - AL * S)}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
-for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 0.8)}" y="${f(door9Top)}" width="1.6" height="${f(DOOR * S)}"/>`);
+for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
 // Room tags centred in the low rooms; B's sits toward the door to share with the you-are-here dot.
 const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
 const hereM = BAY[1] + AL - 1.6;
@@ -283,7 +285,7 @@ add(`<rect class="lift" x="${f(mx(LIFTS[0] - LW / 2))}" y="${dy(10)}" width="${f
 for (const k of [10]) add(`<circle class="stop" cx="${mx(LIFTS[0])}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
 // The cargo door: Deck 10's full height, below Airlock A, opening onto the raised dock.
 // The cargo door runs the full deck, from the deck above's floor plate down to its own.
-add(`<rect class="airlock" x="${f(bx - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
+add(`<rect class="airlock" x="${f(bx - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 // Storage: three empty shelving levels carried on a truss frame, posts tied by diagonal bracing between levels.
 add(`<g class="racks">`);
 {
@@ -331,7 +333,7 @@ add(`</g>`);
 // Cargo airlock inside the cargo door, so the hold stays pressurized while loading.
 const CA = BAY[0] - 8;
 add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
-add(`<rect class="airlock" x="${f(mx(CA) - 0.8)}" y="${f(dy(10) + FL)}" width="1.6" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
+add(`<rect class="airlock" x="${f(mx(CA) - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
 tags.push(tag(CA + 3, 10, "C", -4));
 // Cargo ready room: the hallway's end, from the lift to the cargo airlock. Suits for working the dock.
 const CR = LIFTS[0] + LW / 2;
