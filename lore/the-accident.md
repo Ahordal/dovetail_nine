@@ -14,14 +14,19 @@ Framework: the **Swiss cheese model** (James Reason). Every safety layer has hol
 
 ## The safety layers
 
+The full plant and every safeguard are in [[x9-power-system]]. The layers whose holes lined up:
+
 | Layer | Purpose | Its hole |
 |---|---|---|
-| Valdez active harmonic shielding | Blocks harmonics from entering crewed sections | Designed against **prolonged** exposure (the Dovetail-5 lesson), not a sudden full-power transient |
-| Primary power bus | Powers the shielding | Trips on surge, by design |
+| Array throttle-back | SIGMA throttles the Anchor Core back to holding power to cut harmonic feedback at its source | The array is a resonator: it rings down over **about two seconds**, and stopping it fully would drop the pin |
+| Valdez active harmonic shielding | Keeps harmonics out of crewed sections and away from the conduits | Designed against **prolonged** exposure (the Dovetail-5 lesson), not a sudden full-power transient |
+| Primary power bus | Powers the shielding | Trips on a surge, by design |
 | Isolated backup bus | Takes over within milliseconds | Isolated from electrical faults, but **not from the station's power authority** |
 | Shield capacitor banks | Bridge sub-second gaps | Bank B under-charged on the day, waived |
-| Containment-priority protocol | Diverts every reserve to X9 containment if it wavers | Ranks shielding below containment (Power Priority Matrix rev. 4) |
-| X9 containment | Holds the singularity | DYNEX's own notes: destabilizes under prolonged harmonic exposure |
+| Containment-priority protocol | Gives the X9's auxiliaries (cryogenics, charge injectors, dampening coils) every watt in a transient | Ranks shielding below them (Power Priority Matrix rev. 4) |
+| Dampening coils | Cancel harmonic feedback at the trap | Sized for the residual feedback behind working Valdez shielding, not the full flood |
+| Radiation shielding | Three shells, offset penetrations | Proof against any source short of one that would destroy the station, **unless a path opens** |
+| Ventilation | Recirculates air station-wide | No isolation for airborne radioactivity: radiation inside the crewed station was considered impossible |
 
 **Why containment outranks shielding:** losing containment means the singularity's stored spin energy (~2.6 × 10²⁸ J) discharging uncontrolled, with no known limit to the damage (see [[dynex-t-core-x9-ignis]]). The ZK-Class failsafe (antimatter injection, ~3.2 km destruction radius) is the *controlled* worst case. Protecting containment at all costs is a defensible engineering call.
 
@@ -51,14 +56,45 @@ Times from the moment the Anchor Core reaches full power.
 | Time | Event |
 |---|---|
 | T+0.000 s | Primary node forms in the corridor. Harmonic feedback travels back through the conduits into the X9. |
-| T+0.040 s | X9 output surges toward its 7.8 EW threshold. Containment field wavers. |
-| T+0.052 s | Primary bus breakers trip, correctly. Shielding switches to the backup bus. |
-| T+0.058 s | Containment-priority protocol fires, correctly. SIGMA diverts all reserves, backup bus included, to containment. |
+| T+0.040 s | X9 output surges toward its 7.8 EW threshold. Containment field wavers. The wavering field induces surges in the station's wiring. |
+| T+0.052 s | Primary bus breakers trip on the induced surge, correctly. Shielding switches to the backup bus. |
+| T+0.055 s | SIGMA throttles the array back to holding power, correctly. It begins ringing down, and feedback keeps coming until it settles. |
+| T+0.058 s | Containment-priority protocol fires, correctly. The X9's auxiliaries are fighting the wavering field at full demand, and SIGMA gives them every watt, backup bus included. |
 | T+0.060 s | Shielding falls back on its capacitor banks. Under-charged bank B drains first. |
-| T+0.5 s | Capacitors exhausted. **Shielding down.** Harmonics enter along the conduit runs. |
-| T+0.6 to 2.0 s | Harmonic node cascade spreads through every deck. Nodes catch slivers of up to ~1.4 s. The wavering field flings a particle burst into Shell 1; the coolant turns intensely radioactive and the pumps carry it out along the spine loop beside the conduits. Every crew member takes a lethal dose. |
-| T+2.1 s | Containment stabilizes. Protocol releases power. |
-| T+2.4 s | **Shielding restored.** About two seconds too late. The nodes persist. |
+| T+0.5 s | Capacitors exhausted. **Shielding down.** Harmonics flood along the conduit runs, into the crewed sections and into the X9's dome where the conduits pass through its shells. The dampening coils are overwhelmed. |
+| T+0.5 to 0.6 s | Secondary nodes form across every deck, and inside the shells around the conduit penetrations, where the harmonics are strongest and the nodes largest. |
+| T+0.6 to 2.0 s | Inside those nodes the shield material is held still, and **light passes straight through**. Straight paths open through the shells. The black hole's glow, and a far bigger burst of gamma rays thrown off by the wavering field, pour out along them: down the conduit duct fore and aft, and out through the structure. Every crew member takes a lethal dose. |
+| T+2.0 s | The array settles at holding power. Feedback stops. The pin holds, and the station is caught in it. |
+| T+2.1 s | Containment stabilizes. The dampening coils catch up and dissolve the nodes inside the dome; the shells are whole again. Protocol releases power. |
+| T+2.4 s | **Shielding restored.** About two seconds too late. The nodes on the decks, beyond the coils' reach, persist. |
+
+## How the radiation got out
+
+- **Solid shielding can't fail in two seconds,** and it cuts radiation by a fixed factor: to kill through it, the source would have to be about ten billion times stronger, enough to destroy the station. So the radiation must have bypassed it.
+- **The nodes opened the path.** A node holds anything with mass and lets light through ([[phase-mechanics]]). Nodes that formed inside the shells made those sections transparent to gamma rays for as long as they stood.
+- **They lined up with the conduits,** because that is where the harmonics came in. The beams went down the conduit duct along the Deck 06 spine, which is why the hot spots follow the conduit runs.
+- **The dose:** through an open path, the glow alone gives about 7 Gy at 100 m and far more nearer in. The glow itself is constant, but the wavering field threw off a burst of gamma rays many times stronger (a tiny fraction of the surge, harmless to the station's structure), enough to be lethal through the decks across the hull.
+- **It spread after the flash.** Gamma rays striking steel knock out neutrons, which made the station's metal radioactive along the beam paths and the air radioactive with argon-41. Life support carried that air to every deck. Argon-41 fades within hours; the metal stays radioactive for years.
+- **Why the dying took a day or two:** nobody escaped the dose. There was no ship, no refuge, and the station had slipped out of phase. Those in the beams died within minutes to hours; the rest took a lower but lethal dose from the flash, the air and the walls.
+- **Why it stopped:** once containment steadied, the dampening coils dissolved the nodes inside the dome and the shells became solid again. Without that, the glow would still be pouring out.
+
+## Cross-check
+
+| Safeguard | Did it work as designed? | Why it didn't stop the deaths |
+|---|---|---|
+| Array throttle-back | Yes, at T+0.055 s | Ring-down takes about two seconds; the window was those two seconds |
+| Primary bus breakers | Yes | They removed the shielding's main supply |
+| Backup bus | Yes, electrically | SIGMA's power authority redirected it, as the protocol required |
+| Capacitor banks | Partly | Bank B, under-charged and waived, drained first; even full banks were sized for a switchover, not two seconds |
+| Containment-priority protocol | Yes | It protected containment by starving the shielding |
+| Dampening coils | Yes | Overwhelmed by the flood they were never sized for, then cleared the dome's nodes once they caught up |
+| Radiation shielding | Yes: it never failed | Nodes made sections of it transparent |
+| Radiation monitors | Yes | Detection only; nowhere to go |
+| Ventilation | Yes | No isolation for airborne radioactivity, so it spread argon-41 everywhere |
+| ZK-Class Override | Yes, correctly not triggered | Containment control was never lost beyond recovery |
+| Containment | Held | That was the point: the protocol worked |
+
+**Without Power Priority Matrix rev. 4,** the backup bus keeps the Valdez shielding up, the harmonics never flood the conduits, the dampening coils cope, no nodes form in the shells, and the crew lives. That is why rev. 4 matters, and why the cover-up hides it.
 
 To the crew, the whole thing felt like a single instant: a flash. Then the alarms. Those nearest the core and conduits collapsed within minutes to hours; the rest lasted a day or two, cut off, writing messages that could not leave the station (see [[phase-mechanics]]).
 
@@ -75,8 +111,9 @@ DYNEX's sealed technical dossier on the X9 tells a different story, and it's the
 - An "unforeseen resonance wave" from the corridor synced with the containment coils and the magnetic bottle oscillated.
 - The containment protocol pulled every reserve to stiffen the fields, spiking toward the 7.8 EW ceiling.
 - Safety interlocks **cycled the primary radiation shutters open for two seconds** to vent overpressure, "exposing the adjacent core spaces".
+- There are no such shutters in the design. The invention explains a two-second radiation release without admitting what really opened the shells.
 
-It is **half true**: radiation did kill the crew. What it hides is *why* the shielding failed. It never mentions the harmonic shielding, the backup bus, Power Priority Matrix rev. 4, capacitor bank B or the waiver, and it places the radiation at "shutters near the core", not streaming along the coolant loop to every deck. A reader who finds both this account and the station's own records can see what the official version leaves out.
+It is **half true**: radiation did kill the crew. What it hides is *why* the shielding failed. It never mentions the harmonic shielding, the backup bus, Power Priority Matrix rev. 4, capacitor bank B or the waiver, and it places the radiation at "shutters near the core", not pouring through nodes in the shells and down the conduit duct to every deck. A reader who finds both this account and the station's own records can see what the official version leaves out.
 
 ## Real-world parallels
 

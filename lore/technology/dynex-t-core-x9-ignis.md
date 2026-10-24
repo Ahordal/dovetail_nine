@@ -4,6 +4,7 @@ type: power-system
 related:
   - "[[dynex-industries]]"
   - "[[the-accident]]"
+  - "[[x9-power-system]]"
   - "[[phase-mechanics]]"
   - "[[dovetail-9-station]]"
   - "[[canon]]"
@@ -13,7 +14,7 @@ related:
 
 **Rotating micro black hole held in a magnetic trap. Power source of Dovetail-9 and its Anchor Core.**
 
-Built on published theoretical physics wherever possible (see Science basis below). The one invented element is the corridor itself, which is where the X9's output goes (see [[phase-mechanics]]).
+Built on published theoretical physics wherever possible (see Science basis below). Three things are invented: the corridor physics, the near-lossless coupling of the X9's output into the corridor, and tapping a femtometre black hole's spin at exawatt rates (the Graviton Lattice). The whole plant, from containment to the station's own electricity, is in [[x9-power-system]].
 
 ## The name
 
@@ -52,15 +53,15 @@ The dome is three concentric shells, each about a deck tall. Named "shells", not
 
 - **Graviton Lattice Shell:** the trap itself. The rotating field array that grips the charged singularity and threads its ergosphere. (In DYNEX engineering slang, the "Penrose vortex lattice".)
 - **Magnetic Flux Confinement:** the field lines that carry the extracted spin power out of the ergosphere.
-- **Shell 1, inner: flux ring and thermal jacket.** Superconducting coils, and the **Quantum Coolant Matrix**: a high-velocity liquid-lithium loop that absorbs the Hawking glow and neutron flux. The coolant is the one thing that touches the black hole's radiation and then leaves the shielding, pumped out along the Deck 06 spine to the radiators; its pipes are shielded for normal running.
+- **Shell 1, inner: flux ring and thermal jacket.** Superconducting coils, which catch the spinning field like a generator's stator, and the **Quantum Coolant Matrix**: a liquid lead-lithium blanket that absorbs the Hawking glow (the lead stops gamma rays, the lithium catches neutrons). This coolant becomes radioactive and never leaves the dome; a heat exchanger inside Shell 3 passes its heat to a clean secondary loop.
 - **Shell 2, intermediate: radiation sponge.** Interlocking tungsten-carbide plates and thick borated polyethylene, slowing fast neutrons and stopping hard gamma rays.
 - **Shell 3, outer: structural sphere.** The **Argonax Fiber Shell** (proprietary DYNEX material), tied into the station's keel to carry the singularity's weight and gravity. Kinetic-absorber mounts isolate the station from vibration. The observation gallery's polarized lead-glass viewports are set into it.
-- **Hawking Harvest Rings:** collect the heat from the Hawking glow to run the station's own systems.
+- **Hawking Harvest Rings:** turbines on the secondary loop that turn the glow's heat into the station's own electricity, about 100 MW. The rest goes to the radiators.
 - **Phase-conjugate dampening coils:** adjust the trap's field in real time against harmonic feedback arriving from the corridor along the array conduits.
 
 ## Failsafes & limitations
 
-- **Containment draw:** 1.3 exawatts continuous, about 37% of output. Holding a billion tonnes still while the corridor pushes back through the conduits takes constant active correction.
+- **Containment draw:** 1.3 exawatts continuous, about 37% of output. No arrangement of steady fields can hold a charge stably (Earnshaw's theorem), so the trap's fields must change constantly, and holding a billion tonnes still while the corridor pushes back through the conduits takes constant active correction. Charge injectors keep the black hole charged so the fields can grip it.
 - **Shutdown option:** none. A black hole cannot stop glowing, and the field that holds it is the field that taps its spin. Releasing one releases the other.
 - **No physical access** during runtime.
 - **ZK-Class Override:** a 2 kg antimatter injection, about 85 megatons. It **cannot destroy the black hole**; nothing can (antimatter only adds energy). It vaporizes the trap, the station and the array within ~3.2 km, cutting every connection at once so the spin energy cannot discharge uncontrolled. The bare black hole is left drifting and faintly glowing, for trillions of years. The controlled worst case.
@@ -89,7 +90,7 @@ The dome is three concentric shells, each about a deck tall. Named "shells", not
 ## Role in the story
 
 - **Why it can't stop:** a pinned corridor has to stay pinned, and the reactor physically cannot be switched off. The failsafe is the only way to end it.
-- **The accident:** harmonic feedback from the Anchor Core made it surge toward its 7.8 EW threshold. The containment-priority protocol pulled every reserve, backups included, to hold containment, and the harmonic shielding dropped for two seconds. Containment itself held. The wavering field made Shell 1's coolant intensely radioactive, and the coolant loop carried that out along the spine; the X9's own shielding never failed. See [[the-accident]].
+- **The accident:** harmonic feedback from the Anchor Core made it surge toward its 7.8 EW threshold. The containment-priority protocol gave the X9's auxiliaries every watt, backups included, and the harmonic shielding dropped for two seconds. Containment itself held. The harmonics flooded into the dome along the conduits, nodes formed inside the shells and made them transparent to gamma rays, and the glow poured out down the conduit duct. The shielding never failed; it was held still. See [[the-accident]].
 - **Why containment outranks everything:** losing containment means the spin reserve discharging uncontrolled. The ZK-Class failsafe is the *good* outcome.
 - **The ending:** the failsafe is **never triggered**. The alignment window closes with Quell aboard. Had it been triggered, it would have permanently destabilized the Trillium Arc.
 - **Unit 002** is Quell's motive for the dump: Nashiro could try again.
