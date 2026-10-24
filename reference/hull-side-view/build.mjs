@@ -235,45 +235,51 @@ const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
 const hereM = BAY[1] + AL - 1.6;
 tags.push(tag9(BAY[0] - AL / 2, "A"), tag9(BAY[1] + 2.2, "B"));
 // Airlock machinery on Deck 08 above each airlock and ready room: air recovery, pumps, valves, door ram. No access.
-const plant = (x0, flip) => {
+// Big pipes are hollow: every outer edge first, then every fill, so tees and bends merge cleanly.
+const PD = 0.5;
+const hollow = (runs) => {
+  for (const d of runs) add(`<path class="pipe-o" d="${d}"/>`);
+  for (const d of runs) add(`<path class="pipe-i" d="${d}"/>`);
+};
+// Floor-to-ceiling height of Deck 09's low rooms, in metres below Deck 08's top.
+const H9 = (ceil9 - dy(8)) / S;
+const plant = (x0, flip, link) => {
   // x0 is the space's left edge in metres; flip mirrors the layout so the two sides differ.
   const X = (m) => f(mx(flip ? x0 + 14 - m : x0 + m)), Y = (h) => f(dy(8) + h * S);
   const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${f(Math.min(+X(m0), +X(m1)))}" y="${Y(h0)}" width="${f(Math.abs(m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
   const ln = (m0, h0, m1, h1, cls = "") => add(`<line${cls ? ` class="${cls}"` : ""} x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
   add(`<g class="plant">`);
+  // Riser from the manifold down to the airlock's ceiling vent; the station supply tees into it.
+  const runs = [`M ${X(9.1)} ${Y(8.0)} V ${Y(11.1)}`, `M ${X(0)} ${Y(10.35)} H ${X(9.1)}`];
+  // The link to the cargo machinery leaves the supply downward, into the wall beside the lift.
+  if (link) runs.push(`M ${X(0.85)} ${Y(10.35)} V ${Y(H9)}`);
+  hollow(runs);
+  add(`<circle cx="${X(3.6)}" cy="${Y(10.35)}" r="${f(0.4 * S)}"/>`);
   // Air recovery tanks: air pumped out of the airlock is stored here, not vented.
   box(0.5, 6.4, 0.9, 2.7, 3.5);
   box(0.5, 6.4, 3.1, 4.9, 3.5);
   // Depressurisation pump on its base.
   add(`<circle cx="${X(2.8)}" cy="${Y(6.3)}" r="${f(1.0 * S)}"/>`);
   box(1.4, 4.2, 7.3, 7.7);
-  // Valve manifold: tanks and pump feed a riser that drops through the floor into the airlock.
+  // Valve manifold: tanks and pump feed it, the riser drops from its foot.
   ln(6.4, 1.8, 8.6, 1.8, "pipe"); ln(6.4, 4.0, 8.6, 4.0, "pipe"); ln(3.8, 6.3, 8.6, 6.3, "pipe");
   box(8.6, 9.6, 1.2, 8.0);
   for (const h of [1.8, 4.0, 6.3]) add(`<circle cx="${X(9.1)}" cy="${Y(h)}" r="${f(0.4 * S)}"/>`);
+  box(8.3, 9.9, 11.1, 11.5);
   // Controls and power for the cycle.
   box(10.2, 11.7, 4.4, 7.7);
   ln(10.5, 5.2, 11.4, 5.2, "flange"); ln(10.5, 5.8, 11.4, 5.8, "flange");
-  // Outer door ram above the bay wall: cylinder, rod down to the door head.
-  box(12.3, 13.4, 0.9, 5.8);
-  ln(12.85, 5.8, 12.85, 8.0, "pipe");
-  // Below Deck 08's floor, the service space over the airlock and ready room (h 8 to 11.5).
-  // Return duct from the station's air system, coming in past the lift, up into the tanks.
+  // Return duct from the station's air system, below Deck 08's floor, feeding the tanks past the pump.
   box(0, 6.0, 8.5, 9.6);
   for (const m of [2.0, 4.0]) ln(m, 8.5, m, 9.6, "flange");
-  ln(5.4, 4.9, 5.4, 8.5, "pipe");
-  // Supply pair in from the station side, teeing into the riser.
-  ln(0, 10.1, 8.85, 10.1, "pipe"); ln(0, 10.6, 9.35, 10.6, "pipe");
-  add(`<circle cx="${X(3.6)}" cy="${Y(10.35)}" r="${f(0.4 * S)}"/>`);
-  // The manifold's riser continues down to a vent in the airlock ceiling.
-  ln(8.85, 8.0, 8.85, 11.1, "pipe"); ln(9.35, 8.0, 9.35, 11.1, "pipe");
-  box(8.3, 9.9, 11.1, 11.5);
-  // Ram rod on down to the door head; the outer door lifts into this space when open.
-  ln(12.85, 8.0, 12.85, 10.9, "pipe"); ln(12.85, 10.9, 14, 10.9, "pipe");
-  box(13.4, 14, 10.4, 11.5);
+  ln(1.1, 4.8, 1.1, 8.5, "pipe");
+  // Outer door ram above the bay wall, its rod straight down to the door head; the door lifts into this space.
+  box(12.3, 13.4, 0.9, 5.8);
+  ln(12.85, 5.8, 12.85, 10.4, "pipe");
+  box(12.3, 14, 10.4, 11.5);
   add(`</g>`);
 };
-plant(LIFTS[0] + LW / 2, false);
+plant(LIFTS[0] + LW / 2, false, true);
 plant(BAY[1], true);
 
 // Ready rooms on Deck 09, from each lift to its airlock: the level, walk-in way to the airlocks.
@@ -352,6 +358,11 @@ tags.push(tag((CR + CA) / 2, 10, 7, 1));
   const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h0)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
   const ln = (m0, h0, m1, h1, cls = "") => add(`<line${cls ? ` class="${cls}"` : ""} x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
   add(`<g class="plant">`);
+  // The link, hidden in the wall past both ready rooms: its two edges, dashed.
+  for (const u of [0.85 - PD / 2, 0.85 + PD / 2]) add(`<line class="pipe hidden" x1="${X(u)}" y1="${f(ceil9)}" x2="${X(u)}" y2="${dy(11)}"/>`);
+  // It surfaces here, bends, and tees into the riser that rises to the cargo airlock's floor vent.
+  hollow([`M ${X(11.4)} ${Y(0.5)} V ${Y(3.2)}`, `M ${X(0.85)} ${Y(0)} V ${Y(1.45)} H ${X(11.4)}`]);
+  box(10.7, 12.1, 0.1, 0.5);
   // Bigger tanks than the crew plant's: the cargo airlock holds far more air.
   box(0.6, 6.4, 3.3, 4.9, 3.5); box(0.6, 6.4, 5.3, 6.9, 3.5);
   ln(6.4, 4.1, 11.0, 4.1, "pipe"); ln(6.4, 5.5, 11.0, 5.5, "pipe");
@@ -359,28 +370,16 @@ tags.push(tag((CR + CA) / 2, 10, 7, 1));
   for (const u of [7.4, 9.4]) {
     add(`<circle cx="${X(u)}" cy="${Y(6.7)}" r="${f(0.9 * S)}"/>`);
     box(u - 0.8, u + 0.8, 7.55, 7.8);
-    ln(u, 5.8, u, 5.5, "pipe");
   }
   // Valve manifold, then controls and power.
   box(11.0, 11.8, 3.2, 7.8);
   for (const h of [4.1, 5.5]) add(`<circle cx="${X(11.4)}" cy="${Y(h)}" r="${f(0.35 * S)}"/>`);
   box(12.1, 12.8, 4.4, 7.6);
   ln(12.2, 5.2, 12.7, 5.2, "flange"); ln(12.2, 5.8, 12.7, 5.8, "flange");
-  // Riser up to a vent in the cargo airlock floor.
-  ln(11.2, 3.2, 11.2, 0.5, "pipe"); ln(11.6, 3.2, 11.6, 0.5, "pipe");
-  box(10.7, 12.1, 0.1, 0.5);
-  // The link pair from the Deck 08 plant arrives beside the lift and tees into the riser.
-  ln(1.1, 0, 1.1, 1.2, "pipe"); ln(1.1, 1.2, 11.2, 1.2, "pipe");
-  ln(0.6, 0, 0.6, 1.7, "pipe"); ln(0.6, 1.7, 11.6, 1.7, "pipe");
-  // Cargo door ram: the door drops into this space when open.
+  // Cargo door ram, its rod straight up to the door's foot; the door drops into this space when open.
   box(13.1, 13.7, 3.4, 7.6);
-  ln(13.4, 3.4, 13.4, 0.7, "pipe"); ln(13.4, 0.7, 14, 0.7, "pipe");
-  // The link itself: off the Deck 08 plant's supply pair, down inside the wall past both ready rooms.
-  for (const [u, h] of [[1.1, 10.1], [0.6, 10.6]]) {
-    const top = dy(8) + h * S;
-    add(`<line class="pipe" x1="${X(u)}" y1="${f(top)}" x2="${X(u)}" y2="${f(ceil9)}"/>`);
-    add(`<line class="pipe hidden" x1="${X(u)}" y1="${f(ceil9)}" x2="${X(u)}" y2="${dy(11)}"/>`);
-  }
+  ln(13.4, 3.4, 13.4, 0.9, "pipe");
+  box(13.0, 14, 0.1, 0.9);
   add(`</g>`);
 }
 tags.push(tag(123.5, 9, 8, 1));
@@ -514,6 +513,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .plant .flange { stroke-width: 0.35; }
   .plant .pipe { stroke-width: 0.45; }
   .plant .hidden { stroke-dasharray: 1.2 0.9; }
+  .plant .pipe-o { fill: none; stroke: var(--muted); stroke-width: 1.65; }
+  .plant .pipe-i { fill: none; stroke: var(--panel); stroke-width: 0.75; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock, .door { fill: var(--ship); }
