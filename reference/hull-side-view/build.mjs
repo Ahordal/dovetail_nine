@@ -102,9 +102,11 @@ const tags = [];
 const tag = (m, k, n, off = 0) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 2.3)}" text-anchor="middle">${n}</text></g>`;
 // Lift shafts top to bottom, dashed since they sit deeper than this face. A dot marks each deck served;
 // which side the doors open on is left to the deck plans.
+// Deck 09's stops sit mid-room, under the 4.5 m ceiling of the airlock vestibules.
+const RC = 4.5;
 for (const L of LIFTS) {
   add(`<rect class="lift" x="${f(mx(L - LW / 2))}" y="${Y0}" width="${f(LW * S)}" height="${f(Y1 - Y0)}"/>`);
-  for (let k = 1; k <= 12; k++) add(`<circle class="stop" cx="${mx(L)}" cy="${f(dy(k) + DH / 2)}" r="1.8"/>`);
+  for (let k = 1; k <= 12; k++) add(`<circle class="stop" cx="${mx(L)}" cy="${f(k === 9 ? dy(10) - RC * S / 2 : dy(k) + DH / 2)}" r="1.8"/>`);
   add(`<text class="t-note" x="${mx(L)}" y="${Y0 - 4}" text-anchor="middle">LIFT</text>`);
 }
 // Lift lobbies on Deck 06: where the lifts meet the tram, its two main stops.
@@ -203,25 +205,73 @@ add(`</g>`);
 const r = f(12.5 * S);
 add(`<text class="t-note t-ship" x="${f(cx - r - 6)}" y="${f(cy + 2.6)}" text-anchor="end">MISTRAL →</text>`);
 
-// Boarding umbilical, and the airlock doors at the full height of Deck 09.
+// Boarding umbilical, and the airlock doors.
 const floor9 = dy(10), wall = f(bx + 98 * S);
-// Half a deck tall, centred on Deck 09 and the ship.
-// Airlock and cargo doors fill a deck's room height only: below the service band, above the floor plate.
 // Floor lines are 1 unit thick, centred on the deck line: doors stop flush against them, above and below.
 const FL = 0.5;
-const doorTop = (k) => dy(k) + 3 * S, doorBot = (k) => dy(k + 1) - FL;
-const door9Mid = (doorTop(9) + doorBot(9)) / 2;
-add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(door9Mid - DH / 4)}" width="${f(wall - sx - sw)}" height="${f(DH / 2)}"/>`);
+const doorBot = (k) => dy(k + 1) - FL;
+// Airlocks and vestibules get a 4.5 m ceiling; the rest of Deck 09 above them is service space.
+// Airlocks stay small so each cycle pumps out less air; people only, cargo uses the door below.
+const DOOR = 3, ceil9 = dy(10) - RC * S, door9Top = doorBot(9) - DOOR * S;
+const door9Mid = (door9Top + doorBot(9)) / 2;
+// Floor to just over the door, centred on it and on the ship.
+add(`<rect class="umbilical" x="${f(sx + sw)}" y="${f(door9Mid - 1.7 * S)}" width="${f(wall - sx - sw)}" height="${f(3.4 * S)}"/>`);
 // Airlock rooms, one in each end wall of the bay: A takes the umbilical on Deck 09, B faces it.
 const AL = 6.5;
-add(`<rect class="room" x="${wall}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
-add(`<rect class="room" x="${f(bx - AL * S)}" y="${dy(9)}" width="${f(AL * S)}" height="${f(DH)}"/>`);
-for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 0.8)}" y="${f(doorTop(9))}" width="1.6" height="${f(doorBot(9) - doorTop(9))}"/>`);
-tags.push(tag(BAY[1] + AL / 2, 9, "A", -3.6), tag(BAY[0] - AL / 2, 9, "B"));
-// Bay control: from Airlock A to the lift, looking into the bay.
-const bc0 = BAY[1] + AL, bc1 = LIFTS[1] - LW / 2;
-add(`<rect class="room" x="${f(mx(bc0))}" y="${dy(9)}" width="${f((bc1 - bc0) * S)}" height="${f(DH)}"/>`);
-tags.push(tag((bc0 + bc1) / 2, 9, 7));
+add(`<rect class="room" x="${wall}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
+add(`<rect class="room" x="${f(bx - AL * S)}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
+for (const x of [wall, bx]) add(`<rect class="airlock" x="${f(x - 0.8)}" y="${f(door9Top)}" width="1.6" height="${f(DOOR * S)}"/>`);
+// Room tags centred in the low rooms; A's sits toward the door to share with the you-are-here dot.
+const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
+const hereM = BAY[1] + AL - 1.6;
+tags.push(tag9(BAY[1] + 2.2, "A"), tag9(BAY[0] - AL / 2, "B"));
+// Airlock machinery on Deck 08 above each airlock and vestibule: air recovery, pumps, valves, door ram. No access.
+const plant = (x0, flip) => {
+  // x0 is the space's left edge in metres; flip mirrors the layout so the two sides differ.
+  const X = (m) => f(mx(flip ? x0 + 14 - m : x0 + m)), Y = (h) => f(dy(8) + h * S);
+  const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${f(Math.min(+X(m0), +X(m1)))}" y="${Y(h0)}" width="${f(Math.abs(m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const ln = (m0, h0, m1, h1, cls = "") => add(`<line${cls ? ` class="${cls}"` : ""} x1="${X(m0)}" y1="${Y(h0)}" x2="${X(m1)}" y2="${Y(h1)}"/>`);
+  add(`<g class="plant">`);
+  // Air recovery tanks: air pumped out of the airlock is stored here, not vented.
+  box(0.5, 6.4, 0.9, 2.7, 3.5);
+  box(0.5, 6.4, 3.1, 4.9, 3.5);
+  // Depressurisation pump on its base.
+  add(`<circle cx="${X(2.8)}" cy="${Y(6.3)}" r="${f(1.0 * S)}"/>`);
+  box(1.4, 4.2, 7.3, 7.7);
+  // Valve manifold: tanks and pump feed a riser that drops through the floor into the airlock.
+  ln(6.4, 1.8, 8.6, 1.8, "pipe"); ln(6.4, 4.0, 8.6, 4.0, "pipe"); ln(3.8, 6.3, 8.6, 6.3, "pipe");
+  box(8.6, 9.6, 1.2, 8.0);
+  for (const h of [1.8, 4.0, 6.3]) add(`<circle cx="${X(9.1)}" cy="${Y(h)}" r="${f(0.4 * S)}"/>`);
+  // Controls and power for the cycle.
+  box(10.2, 11.7, 4.4, 7.7);
+  ln(10.5, 5.2, 11.4, 5.2, "flange"); ln(10.5, 5.8, 11.4, 5.8, "flange");
+  // Outer door ram above the bay wall: cylinder, rod down to the door head.
+  box(12.3, 13.4, 0.9, 5.8);
+  ln(12.85, 5.8, 12.85, 8.0, "pipe");
+  // Below Deck 08's floor, the service space over the airlock and vestibule (h 8 to 11.5).
+  // Return duct from the station's air system, coming in past the lift, up into the tanks.
+  box(0, 6.0, 8.5, 9.6);
+  for (const m of [2.0, 4.0]) ln(m, 8.5, m, 9.6, "flange");
+  ln(5.4, 4.9, 5.4, 8.5, "pipe");
+  // Supply pair in from the station side, teeing into the riser.
+  ln(0, 10.1, 8.85, 10.1, "pipe"); ln(0, 10.6, 9.35, 10.6, "pipe");
+  add(`<circle cx="${X(3.6)}" cy="${Y(10.35)}" r="${f(0.4 * S)}"/>`);
+  // The manifold's riser continues down to a vent in the airlock ceiling.
+  ln(8.85, 8.0, 8.85, 11.1, "pipe"); ln(9.35, 8.0, 9.35, 11.1, "pipe");
+  box(8.3, 9.9, 11.1, 11.5);
+  // Ram rod on down to the door head; the outer door lifts into this space when open.
+  ln(12.85, 8.0, 12.85, 10.9, "pipe"); ln(12.85, 10.9, 14, 10.9, "pipe");
+  box(13.4, 14, 10.4, 11.5);
+  add(`</g>`);
+};
+plant(LIFTS[0] + LW / 2, false);
+plant(BAY[1], true);
+
+// Airlock vestibules on Deck 09, from each lift to its airlock: the level, walk-in way to the airlocks.
+for (const [v0, v1] of [[BAY[1] + AL, LIFTS[1] - LW / 2], [LIFTS[0] + LW / 2, BAY[0] - AL]]) {
+  add(`<rect class="room" x="${f(mx(v0))}" y="${f(ceil9)}" width="${f((v1 - v0) * S)}" height="${f(RC * S)}"/>`);
+  tags.push(tag9((v0 + v1) / 2, 7));
+}
 // Cargo hold: the cargo door opens into a one-deck hallway on Deck 10, which runs past the lift and opens
 // into a two-storey storage area (Decks 09 and 10). Its floor sits a deck above the bay floor, level with the dock.
 const CG = [105, BAY[0]], cgTop = dy(9), cgBot = dy(11);
@@ -284,10 +334,12 @@ for (let y = dy(10) + S; y < cgBot - 0.5; y += S) add(`<line class="rung" x1="${
 add(`<line class="hold-floor" x1="${f(mx(146) - 1)}" y1="${cgBot}" x2="${f(mx(149) + 1)}" y2="${cgBot}"/>`);
 tags.push(tag(123.5, 9, 8, 1));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
-add(`<g class="here"><circle class="here-ring" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="6"/><circle class="here-dot" cx="${f(mx(BAY[1] + AL / 2))}" cy="${f(dy(9) + DH / 2 + 5)}" r="3"/></g>`);
+const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
+const hereMarker = `<g class="here"><circle class="here-ring" cx="${hereX}" cy="${hereY}" r="6"/><circle class="here-dot" cx="${hereX}" cy="${hereY}" r="3"/></g>`;   // drawn last, above everything
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
 tags.forEach(add);
+add(hereMarker);
 
 // Scale: length ruler and hull height.
 const ry = f(Y1 + 22);
@@ -392,6 +444,10 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .racks .web { fill: none; stroke: var(--muted); stroke-width: 0.4; }
   .racks .brace { stroke: var(--muted); stroke-width: 0.4; stroke-opacity: 0.7; }
   .racks .crate { fill: var(--line); stroke: var(--muted); stroke-width: 0.5; }
+  .plant rect, .plant circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .plant line { stroke: var(--muted); stroke-width: 0.5; }
+  .plant .flange { stroke-width: 0.35; }
+  .plant .pipe { stroke-width: 0.45; }
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock { fill: var(--ship); }
@@ -464,7 +520,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">6</text></g></svg>Bank B capacitor hall, Deck 07</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">A</text></g></svg>Airlock A, Deck 09: the boarding umbilical</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">B</text></g></svg>Airlock B, Deck 09, across the bay</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Bay control room, Deck 09</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">7</text></g></svg>Airlock vestibule, Deck 09, from the lift to each airlock</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
       </ul>
@@ -475,6 +531,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="conduit" x1="2" y1="6" x2="26" y2="6"/></svg>Conduits and keel</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="power" x1="2" y1="6" x2="26" y2="6"/></svg>Shielding power</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
