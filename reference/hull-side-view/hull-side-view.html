@@ -7,18 +7,18 @@
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -95,7 +95,7 @@
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock, .door { fill: var(--ship); }
-  .door-open { fill: var(--open); }
+  .door-open { fill: var(--unlocked); }
   .door-locked { fill: var(--locked); }
   .window { fill: var(--bg); stroke: var(--ship); stroke-width: 0.4; }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
