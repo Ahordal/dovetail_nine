@@ -31,6 +31,12 @@ Quell moves between **places**, not terminals. A terminal is one thing he can us
 **[proposed]**
 - The trip as a short sequence: the route on the slate (walking, lift or ladder), then Quell's first-person note on what he sees as he arrives. Mocked up in `reference/interface-mockup/`.
 - The slate's map starts mostly blank and fills in as he explores; linking the slate to a terminal by UDC can download a deck's layout, giving terminals a reason to be used beyond their files.
+- **[proposed] The map lives on the slate, and travel is chosen from it.** It's Quell's own record, out of SIGMA's reach: what he has seen stays seen. A terminal shows only its own deck's layout, as SIGMA presents it; downloading copies that deck to the slate. SIGMA's version of a deck could leave something out, and Quell's own map or a scan could show the difference. The interface mockup's navigation (station layout and travel on the terminal) needs to move to the slate.
+- **[proposed] A download gives the plan, not the state.** Linking to a terminal by UDC gives the deck as built: rooms, corridors, doors, lifts, ladders and terminal locations. What it's like now has to be found out:
+  - radiation: the slate's Geiger counter (the room he's in) or the command survey (the whole station);
+  - echoes: the resonance scanner, `scan`, room by room;
+  - door lock states: at the door itself, from its panel;
+  - everything else (bodies, damage, frost, failed lights): only by going there.
 - **[proposed] The map shows only what Quell has seen or downloaded.** At first, only the room he is standing in. Rooms he has been in stay drawn. Accessing a terminal reveals its part of the station: its deck.
 - **[proposed] Radiation is never on the map by default.** It appears only from:
   - the **slate's Geiger counter**, for the room Quell is in, as he moves; or
