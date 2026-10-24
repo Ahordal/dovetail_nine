@@ -328,12 +328,6 @@ for (const [m, w, hgt] of [[145.5, 2.4, 2.0], [145.8, 1.8, 1.6], [148.05, 1.8, 1
   add(`<rect class="crate" x="${f(mx(m))}" y="${f(cgBot - (below + hgt) * S)}" width="${f(w * S)}" height="${f(hgt * S)}"/>`);
 }
 add(`</g>`);
-// Ladder shaft from ready room A down into the hallway, landing between the lift and the cargo airlock.
-const LD = 139.5;
-add(`<rect class="shaft" x="${mx(LD)}" y="${dy(10)}" width="${f(3 * S)}" height="${f(cgBot - dy(10))}"/>`);
-for (let y = dy(10) + S; y < cgBot - 0.5; y += S) add(`<line class="rung" x1="${f(mx(LD) + 1.2)}" y1="${f(y)}" x2="${f(mx(LD + 3) - 1.2)}" y2="${f(y)}"/>`);
-// Floors run solid over the shaft at both ends: a closed hatch in the ready room, the hold floor at the foot.
-for (const y of [dy(10), cgBot]) add(`<line class="hold-floor" x1="${f(mx(LD) - 1)}" y1="${y}" x2="${f(mx(LD + 3) + 1)}" y2="${y}"/>`);
 // Cargo airlock inside the cargo door, so the hold stays pressurized while loading.
 const CA = BAY[0] - 8;
 add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
