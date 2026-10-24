@@ -201,7 +201,7 @@ for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1
   for (const x of [l0, l1]) add(`<line class="ladder" x1="${x}" y1="${f(top)}" x2="${x}" y2="${bot}"/>`);
   for (let y = dy(11) + FL + S; y < bot - 0.5; y += S) add(`<line class="rung" x1="${l0}" y1="${f(y)}" x2="${l1}" y2="${f(y)}"/>`);
 }
-tags.push(tag(BAY[0] + 5, 10, 9, 3.2));
+tags.push(tag(BAY[0] + 5, 10, 9));
 // Docking clamps 1 to 4: two arms down from the bay ceiling, two up from the floor, each ending in a pad on the hull.
 add(`<g class="clamp">`);
 for (const [n, side, m] of [[1, -1, -4.5], [2, -1, 4.5], [3, 1, -4.5], [4, 1, 4.5]]) {
@@ -231,10 +231,9 @@ add(`<rect class="room" x="${wall}" y="${f(ceil9)}" width="${f(AL * S)}" height=
 add(`<rect class="room" x="${f(bx - AL * S)}" y="${f(ceil9)}" width="${f(AL * S)}" height="${f(RC * S)}"/>`);
 // Door colours give each door's state as Quell finds it: B is in use with the Mistral docked, A opens on vacuum.
 for (const x of [wall, bx]) add(`<rect class="airlock ${x === wall ? "door-open" : "door-locked"}" x="${f(x - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
-// Room tags centred in the low rooms; B's sits toward the door to share with the you-are-here dot.
+// Room tags centred in the low rooms.
 const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
-const hereM = BAY[1] + AL - 1.6;
-tags.push(tag9(BAY[0] - AL / 2, "A"), tag9(BAY[1] + 2.2, "B"));
+tags.push(tag9(BAY[0] - AL / 2, "A"), tag9(BAY[1] + AL / 2, "B"));
 // Airlock machinery on Deck 08 above each airlock and ready room: air recovery, pumps, valves, door ram. No access.
 // Big pipes are hollow: every outer edge first, then every fill, so tees and bends merge cleanly.
 const PD = 0.5;
@@ -344,11 +343,11 @@ add(`</g>`);
 // Cargo airlock inside the cargo door, so the hold stays pressurized while loading.
 const CA = BAY[0] - 8;
 add(`<rect class="room" x="${mx(CA)}" y="${dy(10)}" width="${f(8 * S)}" height="${f(DH)}"/>`);
-tags.push(tag(CA + 3, 10, "C", -4));
+tags.push(tag(CA + 4, 10, "C"));
 // Cargo ready room: the hallway's end, from the lift to the cargo airlock. Suits for working the dock.
 const CR = LIFTS[0] + LW / 2;
 add(`<rect class="room" x="${mx(CR)}" y="${dy(10)}" width="${f((CA - CR) * S)}" height="${f(DH)}"/>`);
-tags.push(tag((CR + CA) / 2, 10, 7, 1));
+tags.push(tag((CR + CA) / 2, 10, 7));
 // Cargo machinery on Deck 11, lift to bay wall: the same 14 m as the plant above Airlock A, and joined to it.
 {
   const X = (u) => f(mx(CR + u)), Y = (h) => f(dy(11) + h * S);
@@ -401,7 +400,7 @@ add(`<rect class="room" x="${gx}" y="${dy(10)}" width="${gw}" height="${f(DH)}"/
   box(259.0, 261.8, 1.5, 2.3, "crate");
   add(`</g>`);
 }
-tags.push(tag(260.2, 10, 10, -3.5));
+tags.push(tag((GA[0] + GA[1]) / 2, 10, 10));
 // Bay workshop at bay-floor level: pressurized, a window but no door to the bay; crews go out through Airlock B.
 add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/>`);
 {
@@ -439,13 +438,66 @@ add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/
   for (const [m, h, w] of [[260.8, 0, 0.6], [261.6, 0, 0.5], [260.8, 0.95, 0.5], [261.5, 1.9, 0.6]]) box(m, m + w, h + 0.2, h + 0.6, "crate");
   add(`</g>`);
 }
-tags.push(tag(260.2, 11, 11, -3.5));
-tags.push(tag(123.5, 9, 8, 1));
+tags.push(tag((GA[0] + GA[1]) / 2, 11, 11));
+// The hold's tag sits mid-storage, at the middle of its two storeys.
+tags.push(tag((CG[0] + ST) / 2, 9, 8, DH / 2));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
-const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
-const hereMarker = `<g class="here"><circle class="here-ring" cx="${hereX}" cy="${hereY}" r="6"/><circle class="here-dot" cx="${hereX}" cy="${hereY}" r="3"/></g>`;   // drawn last, above everything
+// A pinging ring around Airlock B's tag, so the tag can stay centred.
+const hereX = f(mx(BAY[1] + AL / 2)), hereY = f((ceil9 + dy(10)) / 2);
+const hereMarker = `<g class="here"><circle class="here-ring" cx="${hereX}" cy="${hereY}" r="6"/></g>`;   // drawn last, above everything
 add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid + 2.6)}" text-anchor="middle">UMBILICAL</text>`);
 
+// Deck 12, under the bay: water plant, tank halls either side of a water-jacketed storm shelter, waste plant.
+{
+  const X = (m) => f(mx(m)), Y = (h) => f(dy(13) - FL - h * S);
+  const room = (m0, m1) => add(`<rect class="room" x="${X(m0)}" y="${dy(12)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
+  const box = (m0, m1, h0, h1, rx = 0) => add(`<rect x="${X(m0)}" y="${Y(h1)}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${rx}"` : ""}/>`);
+  const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
+  const SH = [178, 222], JK = 1.6, HD = 3.5;   // shelter span, water jacket thickness, header height
+  for (const [m0, m1] of [[100, l0], [l1, SH[0]], [SH[1], r0], [r1, 300]]) room(m0, m1);
+  add(`<g class="plant">`);
+  // One water header along the deck; hidden behind each lift shaft, tapped down into every tank and filter.
+  const tanks = [139, 152, 165, 224.5, 237.5, 250.5];
+  const runs = [`M ${X(108.6)} ${Y(HD)} H ${X(l0)}`, `M ${X(l1)} ${Y(HD)} H ${X(SH[0])}`, `M ${X(SH[1])} ${Y(HD)} H ${X(r0)}`, `M ${X(r1)} ${Y(HD)} H ${X(290)}`];
+  for (const m of tanks) runs.push(`M ${X(m + 5.25)} ${Y(HD)} V ${Y(3.0)}`);
+  for (const m of [108.6, 110.8, 113.0, 115.2]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(3.0)}`);
+  // Pumps, treatment and the digester each draw off the header too.
+  for (const [m, top] of [[119, 2.0], [124.75, 2.6], [275, 3.0], [290, 2.0]]) runs.push(`M ${X(m)} ${Y(HD)} V ${Y(top)}`);
+  hollow(runs);
+  for (const [m0, m1] of [[l0, l1], [r0, r1]]) for (const h of [HD - PD / 2, HD + PD / 2]) add(`<line class="pipe hidden" x1="${X(m0)}" y1="${Y(h)}" x2="${X(m1)}" y2="${Y(h)}"/>`);
+  // Water plant: filter columns, a pump, treatment, controls.
+  for (const m of [108.6, 110.8, 113.0, 115.2]) box(m - 0.6, m + 0.6, 0, 3.0, f(0.6 * S));
+  add(`<circle cx="${X(119)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(117.7, 120.3, 0, 0.1);
+  box(122, 127.5, 0, 2.6);
+  box(129.5, 131.5, 0, 2.8);
+  // Tank halls: water reserve on saddles, walked between for inspection.
+  for (const m of tanks) {
+    box(m, m + 10.5, 0.6, 3.0, f(1.2 * S));
+    for (const o of [1.5, 8.2]) box(m + o, m + o + 0.8, 0, 0.6);
+  }
+  // Waste plant: digester, compactor, pump.
+  box(270, 280, 0.4, 3.0, f(1.2 * S));
+  box(283, 287, 0, 2.6);
+  add(`<circle cx="${X(290)}" cy="${Y(1.0)}" r="${f(1.0 * S)}"/>`); box(288.7, 291.3, 0, 0.1);
+  add(`</g>`);
+  // Undecided middle section, drawn as a refuge: a room inside a water jacket, far from the conduits.
+  add(`<rect class="jacket" x="${X(SH[0])}" y="${dy(12)}" width="${f((SH[1] - SH[0]) * S)}" height="${f(DH)}"/>`);
+  add(`<rect class="room shelter" x="${X(SH[0] + JK)}" y="${Y(8 - JK - FL / S)}" width="${f((SH[1] - SH[0] - 2 * JK) * S)}" height="${f(Y1 - FL - +Y(8 - JK - FL / S))}"/>`);
+  add(`<g class="racks">`);
+  // Triple bunks along the shelter, a locker and a table.
+  for (const m of [182, 186, 190, 194, 206, 210, 214]) {
+    for (const h of [0.4, 1.3, 2.2]) add(`<line class="shelf" x1="${X(m)}" y1="${Y(h)}" x2="${X(m + 3)}" y2="${Y(h)}"/>`);
+    for (const e of [m, m + 3]) add(`<line class="upright" x1="${X(e)}" y1="${Y(0)}" x2="${X(e)}" y2="${Y(2.6)}"/>`);
+  }
+  add(`<rect class="kit" x="${X(198.2)}" y="${Y(2.6)}" width="${f(1.6 * S)}" height="${f(2.6 * S)}"/>`);
+  add(`<line class="shelf" x1="${X(200.6)}" y1="${Y(0.9)}" x2="${X(204)}" y2="${Y(0.9)}"/>`);
+  for (const e of [200.8, 203.8]) add(`<line class="upright" x1="${X(e)}" y1="${Y(0)}" x2="${X(e)}" y2="${Y(0.9)}"/>`);
+  add(`</g>`);
+  // Heavy doors through the jacket at each end: sealed from inside.
+  for (const m of [SH[0], SH[1] - JK]) add(`<rect class="door door-locked" x="${X(m)}" y="${Y(2.6)}" width="${f(JK * S)}" height="${f(2.6 * S)}"/>`);
+  const shY = (+Y(8 - JK - FL / S) + Y1 - FL) / 2;
+  tags.push(tag((100 + l0) / 2, 12, 12), tag((l1 + SH[0]) / 2, 12, 13), tag((SH[1] + r0) / 2, 12, 13), tag(200, 12, 14, shY - dy(12) - DH / 2), tag((r1 + 300) / 2, 12, 15));
+}
 // Lift doorways: only where a room on this face meets the shaft, as tall as that room.
 {
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
@@ -457,6 +509,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l1, low], [r0, low],       // ready rooms A and B
     [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
     [r0, full(10)], [r0, full(11)], // docking control, bay workshop
+    [l0, full(12)], [l1, full(12)], [r0, full(12)], [r1, full(12)], // Deck 12: plants and tank halls
   ];
   // Cargo airlock doors, a full deck high: the cargo door opens on vacuum, so locked; the inner door is unlocked.
   for (const [x, st] of [[bx, "door-locked"], [mx(CA), "door-open"]]) add(`<rect class="airlock ${st}" x="${f(x - DW / 2)}" y="${f(dy(10) + FL)}" width="${DW}" height="${f(doorBot(10) - dy(10) - FL)}"/>`);
@@ -573,6 +626,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .racks .brace { stroke: var(--muted); stroke-width: 0.4; stroke-opacity: 0.7; }
   .racks .crate { fill: var(--line); stroke: var(--muted); stroke-width: 0.5; }
   .racks .kit { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .jacket { fill: var(--line); stroke: var(--muted); stroke-width: 1; }
+  .shelter { fill: var(--bg); }
   .racks .reel { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
   .plant rect, .plant circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
   .plant line { stroke: var(--muted); stroke-width: 0.5; }
@@ -610,7 +665,6 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
   .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
   .sheet .swatch { display: inline-block; width: 28px; min-width: 0; height: 12px; flex: none; overflow: visible; }
-  .here-dot { fill: #9fc7c2; }
   .here-ring { fill: none; stroke: #9fc7c2; stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: here-ping 2.4s ease-out infinite; }
   @keyframes here-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .here-ring { animation: none; opacity: 0.35; } }
@@ -662,6 +716,10 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Docking control, Deck 10: a wide window and control desk</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Bay workshop, Deck 11: bench, parts cabinet, a window onto the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">12</text></g></svg>Water plant, Deck 12: filters, pump, treatment</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">13</text></g></svg>Water tank halls, Deck 12</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">14</text></g></svg>Undecided, Deck 12: containment refuge or ship services</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">15</text></g></svg>Waste plant, Deck 12</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -678,7 +736,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/><circle class="here-dot" cx="14" cy="6" r="2.5"/></g></svg>You are here</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="4"/></g><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/></g></svg>You are here</li>
       </ul>
     </div>
     <figcaption class="caption">Each deck: about 5 m floor to ceiling (dark band) plus about 3 m of service space above it (lighter band); floors sit on the deck lines. Doors between rooms are left to the deck plans. Each capacitor hall charges from the chamber and feeds the emitters along the Deck 06 conduits. Heights come from the exterior image. Lengths don't: the image sees the hull at an angle, so how long each deck runs and where the masts stand are first guesses. The bay is centred under the superstructure.</figcaption>

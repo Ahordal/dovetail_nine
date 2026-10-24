@@ -107,6 +107,19 @@ related:
 - Reconciles "docking bay" ([[mistral]]) with "docking ring" (Quell's log): the ring is inside the bay.
 - **"Corridor" in both senses [settled].** A corridor inside the station is just a corridor. The routes through the Arc are **FTL corridors**; say "FTL corridor" wherever the two could be confused.
 
+## Deck 12 **[proposed]**
+
+- **Under the bay, about 100 to 300 m along,** both lifts reaching it. The station's water lives here, the heaviest thing it keeps, as low as it can go.
+- **Water plant** at the left end, beyond the left lift: filter columns, a pump, treatment and controls.
+- **Water tank halls** either side of the middle: large reserve tanks on saddles, walked between for inspection.
+- **Waste plant** at the right end, beyond the right lift: a digester, a compactor and a pump.
+- **One water header** runs the deck, feeding every tank, filter and pump, behind the lift shafts where it crosses them.
+- Maintenance runs it ([[crew]]); hydroponics on Deck 03 draws its water from here.
+- **The middle section, under the Mistral, is [open].** Two options:
+  - **Containment refuge:** a room inside a water jacket, the most shielded place aboard and the farthest from the conduits, built for a slow X9 leak. In the accident the dose came in the first two seconds, so the survivors who reached it and sealed themselves in died there anyway: a safe room designed for the wrong disaster, like the shielding ([[the-accident]]). Their records could show the radiation came along the conduits.
+  - **Ship services:** propellant, water and air tanks for docked ships, piped up through the bay floor. No refuge at all, because nobody believed radiation could get inside; when it did, there was nowhere to go.
+  - A storm shelter against space weather was considered and dropped: a 2400s hull shields ordinary space radiation, and K-17 is a dim star.
+
 ## Defenses **[settled]**
 
 - **No external defenses.** Like every Dovetail station, it relies on secrecy and remoteness. Station security carries small arms for internal incidents only.
