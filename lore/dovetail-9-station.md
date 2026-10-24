@@ -138,7 +138,7 @@ related:
   - **Water tanks (17),** from the plant to the left lift: **four potable tanks** of about 125 m³ each, about two months of crew use with no recycling at all, then the supply pump and **two wastewater tanks**. The left lift opens into this hall.
   - **Delivery:** the supply pump sends potable water up the left core; each deck's service band carries it across the station. Hot water is heated from the Harvest Ring secondary loop's waste heat.
   - **Waste plant (18),** past the right lift, which opens into it: a collection tank, a distiller that recovers water from urine (as on the ISS), a brine processor, a digester and a dryer for solids. The recovered water climbs the right core, crosses in the **Deck 04 service band** and joins the left drain into the wastewater tanks.
-  - Maintenance runs it all ([[crew]]). On the side view water piping is teal, dashed for wastewater; tanks stand upright, unlike the fuel tanks lying on Deck 12.
+  - Maintenance runs it all ([[crew]]). On the side view every water line is a single turquoise line, with a hop where two cross without joining; tanks stand upright, unlike the fuel tanks lying on Deck 12. The risers run inside the lift cores.
 
 ## Defenses **[settled]**
 

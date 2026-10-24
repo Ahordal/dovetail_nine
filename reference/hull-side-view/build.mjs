@@ -136,11 +136,12 @@ add(`<text class="t-note" x="${f(X0 + 30)}" y="${f(midY - 3)}">CONDUITS · KEEL<
 // Two vertical access shafts through engineering, midway between the chamber and the section edge.
 for (const m of [164.5, 235.5]) {
   add(`<rect class="shaft" x="${f(mx(m) - 1.5 * S)}" y="${ey0}" width="${f(3 * S)}" height="${f(ey1 - ey0)}"/>`);
-  // Ladder rungs, drawn one per metre.
+  // A ladder down the shaft: two rails, rungs one per metre between them.
+  for (const x of [mx(m) - 1.5 * S + 1.2, mx(m) + 1.5 * S - 1.2]) add(`<line class="ladder" x1="${f(x)}" y1="${ey0}" x2="${f(x)}" y2="${ey1}"/>`);
   for (let y = ey0 + S; y < ey1 - 0.5; y += S) add(`<line class="rung" x1="${f(mx(m) - 1.5 * S + 1.2)}" y1="${f(y)}" x2="${f(mx(m) + 1.5 * S - 1.2)}" y2="${f(y)}"/>`);
 }
 // Experiment control on Deck 05, just inside engineering, with R&D next door outside it.
-for (const [m0, m1, n] of [[112, 137, 2], [137, 163, 3]]) {
+for (const [m0, m1, n] of [[112, LIFTS[0] - LW / 2, 2], [LIFTS[0] + LW / 2, 163, 3]]) {
   const w = (m1 - m0) * S;
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 5, n));
@@ -198,7 +199,7 @@ for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1
 // Open ladder from the dock down to the bay floor, in the gap by the wall; grab rails rise above the deck.
 {
   const l0 = mx(BAY[0] + 1), l1 = mx(BAY[0] + 2), top = dy(11) - FL - 1 * S, bot = dy(12);
-  for (const x of [l0, l1]) add(`<line class="ladder" x1="${x}" y1="${f(top)}" x2="${x}" y2="${bot}"/>`);
+  add(`<path class="ladder" d="M ${l0} ${bot} V ${f(top)} H ${l1} V ${bot}"/>`);
   for (let y = dy(11) + FL + S; y < bot - 0.5; y += S) add(`<line class="rung" x1="${l0}" y1="${f(y)}" x2="${l1}" y2="${f(y)}"/>`);
 }
 tags.push(tag(BAY[0] + 5, 10, 9));
@@ -272,7 +273,7 @@ const plant = (x0, flip, link) => {
   // Return duct from the station's air system, below Deck 08's floor, feeding the tanks past the pump.
   box(0, 6.0, 8.5, 9.6);
   for (const m of [2.0, 4.0]) ln(m, 8.5, m, 9.6, "flange");
-  ln(1.1, 4.8, 1.1, 8.5, "pipe");
+  ln(1.1, 4.72, 1.1, 8.5, "pipe");
   // Outer door ram above the bay wall, its rod straight down to the door head; the door lifts into this space.
   box(12.3, 13.4, 0.9, 5.8);
   ln(12.85, 5.8, 12.85, 10.4, "pipe");
@@ -522,20 +523,28 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   const [l0, r1] = [LIFTS[0] - LW / 2, LIFTS[1] + LW / 2], WP = [45, 80], WT = [80, l0], WS = [r1, 305];
   for (const [m0, m1] of [WP, WT, WS]) room(m0, m1);
   const POT = [81.5, 90, 98.5, 107], WW = [115.5, 124];
-  // Pipes first, so tanks and equipment sit over their ends.
-  // Feed: wastewater from the bottom of both wastewater tanks, behind the potable tanks and the plant, to the strainer.
-  wl([[127, 0.5], [57.2, 0.5]], "water-hidden");
+  // Pipes first, so tanks and equipment sit over their ends. Every water line is a single line; where two must cross,
+  // the one on top hops over the other (no connection).
+  const DX = 133.6, SX = 136.4, DBX = LIFTS[1] + LW / 2 - 0.6, RX = LIFTS[1] - LW / 2 + 0.6;   // risers inside the lift cores
+  const y4 = f(dy(4) + 1.5 * S), HOP = 1.0;
+  // A horizontal run that hops over the given x positions.
+  const run = (x0, y, x1, hops) => {
+    const dir = x1 > x0 ? 1 : -1; let d = "";
+    for (const hx of hops.slice().sort((a, b) => dir * (a - b))) d += ` H ${f(hx - dir * HOP)} A ${HOP} ${HOP} 0 0 ${dir > 0 ? 1 : 0} ${f(hx + dir * HOP)} ${y}`;
+    return d + ` H ${f(x1)}`;
+  };
+  // Feed: drawn up from the first wastewater tank, overhead, and down into the strainer.
+  wl([[117, 4.33], [117, 6.2], [57.2, 6.2], [57.2, 1.6]]);
+  wl([[121.5, 1.0], [124, 1.0]]);
   // Treatment train, left to right, then straight into the first potable tank; the potable tanks share a level line.
   wl([[57.2, 1.0], [81.5, 1.0]]);
   for (const m of POT.slice(0, 3)) wl([[m + 6, 1.0], [m + 8.5, 1.0]]);
-  // Out of the last potable tank to the supply pump, up and across to the riser in the left lift core.
+  // Out of the last potable tank to the supply pump, then low behind the wastewater tanks and up the left core.
   wl([[113, 1.0], [113.45, 1.0]]);
-  wl([[114.25, 1.6], [114.25, 5.6], [132.2, 5.6]]);
+  add(`<path class="water" d="M ${X(115.0)} ${Y(0.6)} H ${X(SX)} V ${dy(1)}"/>`);
   // Grey water and condensate come down the left core and fill the wastewater tanks from the top.
-  wl([[132.8, 5.0], [118.5, 5.0]], "water-waste");
-  for (const m of WW) wl([[m + 3, 5.0], [m + 3, 4.4]], "water-waste");
-  // Risers in the left lift core, inside its wall: supply up, drains down, the length of the station.
-  for (const [m, cls] of [[132.2, "water-hidden"], [132.8, "water-hidden"]]) add(`<line class="${cls}" x1="${X(m)}" y1="${dy(1)}" x2="${X(m)}" y2="${Y(m < 132.5 ? 5.6 : 5.0)}"/>`);
+  add(`<path class="water" d="M ${X(DX)} ${dy(1)} V ${Y(5.0)} H ${X(WW[0] + 3)} V ${Y(4.4)}"/>`);
+  wl([[WW[1] + 3, 5.0], [WW[1] + 3, 4.4]]);
   add(`<g class="plant">`);
   // Treatment: strainer, pump, filter beds, catalytic reactor, reverse osmosis rack, UV.
   box(56.5, 58, 0, 1.6);
@@ -553,10 +562,11 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   // Waste plant: toilets come down the right core into a collection tank; a distiller recovers the urine's water,
   // a brine processor takes the rest, solids go to a digester and dryer. Recovered water climbs the right core.
   const BT = 269, DG = 286.5;
-  wl([[r1 + 0.4, 5.0], [BT + 3, 5.0], [BT + 3, 4.4]], "water-waste");
-  wl([[BT + 6, 1.0], [298.5, 1.0]], "water-waste");
-  wl([[298.5, 1.8], [298.5, 5.6], [r1 + 1.0, 5.6]]);
-  for (const [m, top] of [[r1 + 0.4, 5.0], [r1 + 1.0, 5.6]]) add(`<line class="water-hidden" x1="${X(m)}" y1="${dy(m < r1 + 0.7 ? 1 : 4) + (m < r1 + 0.7 ? 0 : 1.5 * S)}" x2="${X(m)}" y2="${Y(top)}"/>`);
+  add(`<path class="water" d="M ${X(DBX)} ${dy(1)} V ${Y(5.0)} H ${X(BT + 3)} V ${Y(4.4)}"/>`);
+  wl([[BT + 6, 1.0], [298.5, 1.0]]);
+  // Recovered water: up from the pump, over the toilet drain, up the right core, across in the Deck 04 service band,
+  // over the left core's supply riser, and into the grey-water drain.
+  add(`<path class="water" d="M ${X(298.5)} ${Y(1.8)} V ${Y(5.6)}${run(+X(298.5), Y(5.6), +X(RX), [+X(DBX)])} V ${y4}${run(+X(RX), y4, +X(DX), [+X(SX)])}"/>`);
   add(`<g class="plant">`);
   add(`<rect x="${X(276.5)}" y="${Y(2.0)}" width="${f(4.5 * S)}" height="${f(1.6 * S)}" rx="${f(0.8 * S)}"/>`); box(277, 277.6, 0, 0.4); box(280.4, 281, 0, 0.4);
   box(282.5, 285.3, 0, 2.4);
@@ -565,8 +575,6 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   add(`</g>`);
   tank(BT, "tank-waste");
   tank(DG, "tank-waste");
-  // Recovered water crosses to the left core in the Deck 04 service band and joins the drain into the wastewater tanks.
-  add(`<line class="water-hidden" x1="${X(r1 + 1.0)}" y1="${f(dy(4) + 1.5 * S)}" x2="${X(132.8)}" y2="${f(dy(4) + 1.5 * S)}"/>`);
   tags.push(tag((WP[0] + WP[1]) / 2 + 6, 11, 16), tag((WT[0] + WT[1]) / 2, 11, 17), tag((WS[0] + WS[1]) / 2, 11, 18));
 }
 // Engineering plant around the X9 (see lore x9-power-system): shells, penetrations, auxiliaries, heat and power halls.
@@ -592,7 +600,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   // Deck 05: observation gallery, cryogenic plant, trap auxiliaries.
   // Rooms against the dome all stop on its two straight walls, at 187 m and 213 m, clear of the shells.
   const CW0 = 187, CW1 = 213;
-  const GAL = [166.5, CW0], CRY = [CW1, 234], AUX = [237, LIFTS[1] - LW / 2];
+  const GAL = [166, CW0], CRY = [CW1, 234], AUX = [237, LIFTS[1] - LW / 2];
   for (const [m0, m1] of [GAL, CRY, AUX]) room(m0, m1, 5);
   add(`<rect class="window" x="${f(mx(GAL[1]) - DW / 2)}" y="${Yk(5, 3.6)}" width="${DW}" height="${f(2.6 * S)}"/>`);
   add(`<g class="racks">`);
@@ -606,22 +614,22 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   // Trap auxiliaries: charge injector supplies, position control, the dampening coils' power.
   for (const m of [239, 242, 245, 248, 251]) { box(m, m + 2.2, 5, 0, 2.8); box(m + 0.5, m + 1.7, 5, 1.9, 2.4); }
   box(254.5, 261.5, 5, 0, 1.0);
-  hollow([`M ${X(224.25)} ${Yk(5, 3.0)} V ${Yk(5, 3.6)} H ${X(207.2)}`]);
+  hollow([`M ${X(224.25)} ${Yk(5, 3.0)} V ${Yk(5, 3.6)} H ${f(ccx + Math.sqrt(cr * cr - (+Yk(5, 3.6) - cy) ** 2))}`]);
   add(`</g>`);
   // Frost on the cryogenic line.
   for (const m of [213.6, 215.6, 217.6, 219.6]) add(`<path class="frost" d="M ${X(m)} ${f(+Yk(5, 3.6) - 2)} l 1.2 1.2 m 0 -1.2 l -1.2 1.2"/>`);
   // Charge-injector and control cables from the auxiliaries into the dome.
-  add(`<line class="power" x1="${X(237)}" y1="${Yk(5, 4.4)}" x2="${X(207.4)}" y2="${Yk(5, 4.4)}"/>`);
+  add(`<line class="power" x1="${X(237)}" y1="${Yk(5, 4.4)}" x2="${f(ccx + Math.sqrt(cr * cr - (+Yk(5, 4.4) - cy) ** 2))}" y2="${Yk(5, 4.4)}"/>`);
   // Deck 06: penetration vaults either side of the chamber, where the conduits leave the dome; dampening coil drivers.
-  const VL = [167.5, CW0], VR = [CW1, 232.5];
+  const VL = [166, CW0], VR = [CW1, 234];
   for (const [m0, m1] of [VL, VR]) room(m0, m1, 6);
   add(`<g class="plant">`);
   for (const [m0, m1] of [VL, VR]) for (let m = m0 + 2; m < m1 - 2.5; m += 4.5) box(m, m + 2.4, 6, 3.6, 5.4);
   add(`</g>`);
   // Valdez harmonic emitters along the conduits, the whole length of the spine.
-  for (let m = 8; m < 400; m += 16) if (m < 165 || m > 235) add(`<rect class="emitter" x="${f(mx(m) - 1.2)}" y="${f(cy - 3.2)}" width="2.4" height="2.2"/>`);
+  for (let m = 8; m < 400; m += 16) if (m < 165 || m > 235) add(`<rect class="emitter" x="${f(mx(m) - 1.2)}" y="${f(cy - 2.9)}" width="2.4" height="2.2"/>`);
   // Deck 07: the main Harvest Ring turbine hall and the isolated backup generator set, each with a catwalk and ladder.
-  const HL = [LIFTS[0] + LW / 2, 163], HR = [236.8, LIFTS[1] - LW / 2];
+  const HL = [LIFTS[0] + LW / 2, 163], HR = [237, LIFTS[1] - LW / 2];
   for (const [m0, m1] of [HL, HR]) room(m0, m1, 7);
   add(`<g class="plant">`);
   const runs = [];
@@ -641,7 +649,12 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
   // Clean secondary loop from the dome's heat exchangers to both halls, behind the capacitor halls on the way.
   runs.push(`M ${X(HL[0] + 8.5)} ${Yk(7, 4.6)} H ${X(HL[1])}`, `M ${X(HR[0])} ${Yk(7, 4.6)} H ${X(HR[1] - 8.5)}`);
   hollow(runs);
-  for (const [m0, m1] of [[HL[1], 192.2], [207.8, HR[0]]]) for (const h of [4.6 - PD / 2, 4.6 + PD / 2]) add(`<line class="pipe hidden" x1="${X(m0)}" y1="${Yk(7, h)}" x2="${X(m1)}" y2="${Yk(7, h)}"/>`);
+  // Where a level line meets the dome's outer circle.
+  const domeEdge = (y, d) => f(ccx + d * Math.sqrt(cr * cr - (y - cy) ** 2));
+  for (const h of [4.6 - PD / 2, 4.6 + PD / 2]) {
+    const y = +Yk(7, h);
+    add(`<line class="pipe hidden" x1="${X(HL[1])}" y1="${y}" x2="${domeEdge(y, -1)}" y2="${y}"/><line class="pipe hidden" x1="${domeEdge(y, 1)}" y1="${y}" x2="${X(HR[0])}" y2="${y}"/>`);
+  }
   add(`</g>`);
   // Radiator loop: from each hall up to the spine, out along the conduits and onto the trusses.
   for (const [x0, x1, up] of [[mx(HL[0] + 2), 24, mx(HL[0] + 2)], [mx(HR[1] - 2), X1 + 96, mx(HR[1] - 2)]]) {
@@ -673,7 +686,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const [l0, l1] = [LIFTS[0] - LW / 2, LIFTS[0] + LW / 2], [r0, r1] = [LIFTS[1] - LW / 2, LIFTS[1] + LW / 2];
   const door = (k, h = DOOR) => [dy(k + 1) - FL - h * S, dy(k + 1) - FL];
   const doors = [
-    [l0, door(5)],              // R&D, which wraps the shaft on Deck 05
+    [l0, door(5)],              // R&D
     [l0, door(6)], [r1, door(6)], // lift lobbies and tram stops
     [l1, door(9)], [r0, door(9)], // ready rooms A and B
     [l0, door(10, 4)], [l1, door(10, 4)], // cargo hallway: storage one side, cargo ready room the other
@@ -789,11 +802,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .gantry polyline { fill: none; stroke: var(--muted); stroke-width: 1.4; }
   .platform { fill: var(--muted); }
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
-  .ladder { stroke: var(--muted); stroke-width: 0.7; }
+  .ladder { fill: none; stroke: var(--muted); stroke-width: 0.7; }
   .room-wall { stroke: var(--muted); stroke-width: 1; }
-  .water { fill: none; stroke: var(--open); stroke-width: 0.6; }
-  .water-waste { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-dasharray: 1.6 0.8; }
-  .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.5; stroke-opacity: 0.5; stroke-dasharray: 1 1; }
+  .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
   .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
   .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }
   .shell { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 2 2; }
@@ -933,7 +944,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="emitter" x="12.8" y="5" width="2.4" height="2.2"/></svg>Harmonic emitter along the conduits</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="hot"><circle cx="14" cy="6" r="2.6"/><circle class="hot-hub" cx="14" cy="6" r="0.7"/></g></svg>Radiation hot spot, left by the accident</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="frost" d="M 8 4 l 3 3 m 0 -3 l -3 3 M 17 4 l 3 3 m 0 -3 l -3 3"/></svg>Frost on cryogenic lines</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="water" x1="2" y1="3" x2="26" y2="3"/><line class="water-waste" x1="2" y1="6.5" x2="26" y2="6.5"/><line class="water-hidden" x1="2" y1="10" x2="26" y2="10"/></svg>Water: potable, wastewater, hidden in walls</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
