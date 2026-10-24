@@ -382,6 +382,26 @@ tags.push(tag((CR + CA) / 2, 10, 7, 1));
   box(13.0, 14, 0.1, 0.9);
   add(`</g>`);
 }
+// The bay floor runs on under the cargo machinery to the lift.
+add(`<line class="hold-floor" x1="${mx(CR)}" y1="${dy(12)}" x2="${bx}" y2="${dy(12)}"/>`);
+// Bottom right, wall to lift: the bay workshop on Deck 10 over the pod garage on Deck 11.
+const GA = [BAY[1], LIFTS[1] - LW / 2];
+const gx = mx(GA[0]), gw = f((GA[1] - GA[0]) * S);
+// Workshop: pressurized, no door to the bay, only a window; crews go out through Airlock B above.
+add(`<rect class="room" x="${gx}" y="${dy(10)}" width="${gw}" height="${f(DH)}"/>`);
+add(`<rect class="window" x="${f(gx - DW / 2)}" y="${f(dy(11) - 3.6 * S)}" width="${DW}" height="${f(2.2 * S)}"/>`);
+tags.push(tag(256, 10, 10, 1));
+// Pod garage: open to the bay behind a shutter, so no airlock. Pods hang from collars under hatches in the workshop floor.
+add(`<rect class="room" x="${gx}" y="${dy(11)}" width="${gw}" height="${f(DH)}"/>`);
+add(`<rect class="door" x="${f(gx - DW / 2)}" y="${f(dy(11) + FL)}" width="${DW}" height="${f(DH - 2 * FL)}"/>`);
+for (const [m, pod] of [[253, true], [259.5, false]]) {
+  add(`<rect class="door" x="${f(mx(m - 0.9))}" y="${f(dy(11) - DW / 2)}" width="${f(1.8 * S)}" height="${DW}"/>`);
+  add(`<g class="ship"><rect x="${f(mx(m - 0.6))}" y="${f(dy(11) + FL)}" width="${f(1.2 * S)}" height="${f(0.8 * S)}"/>`);
+  // The second berth stands empty.
+  if (pod) add(`<rect x="${f(mx(m - 2.2))}" y="${f(dy(11) + FL + 0.8 * S)}" width="${f(4.4 * S)}" height="${f(3 * S)}" rx="3"/>`);
+  add(`</g>`);
+}
+tags.push(tag(259.5, 11, 11, 2));
 tags.push(tag(123.5, 9, 8, 1));
 // You are here: Quell's current place, same pinging dot as the terminal's current location box.
 const hereX = f(mx(hereM)), hereY = f((ceil9 + dy(10)) / 2);
@@ -397,6 +417,7 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     [l0, full(6)], [r1, full(6)], // lift lobbies and tram stops
     [l1, low], [r0, low],       // ready rooms A and B
     [l0, full(10)], [l1, full(10)], // cargo hallway: storage one side, cargo ready room the other
+    [r0, full(10)],             // bay workshop
   ];
   for (const [m, [y0, y1]] of doors) add(`<rect class="door" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
@@ -518,6 +539,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock, .door { fill: var(--ship); }
+  .window { fill: var(--bg); stroke: var(--ship); stroke-width: 0.4; }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
   .arrow { fill: none; }
   .t-array { font-size: 6.8px; }
@@ -591,6 +613,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Bay workshop, Deck 10, with a window onto the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Pod garage, Deck 11, open to the bay; one berth empty</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -601,6 +625,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>

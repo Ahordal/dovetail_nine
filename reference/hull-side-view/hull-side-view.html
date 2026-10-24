@@ -93,6 +93,7 @@
   .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
   .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
   .airlock, .door { fill: var(--ship); }
+  .window { fill: var(--bg); stroke: var(--ship); stroke-width: 0.4; }
   .ruler { stroke: var(--muted); stroke-width: 0.9; }
   .arrow { fill: none; }
   .t-array { font-size: 6.8px; }
@@ -525,6 +526,18 @@
       <line class="pipe" x1="481" y1="350.2" x2="481" y2="344.2"/>
       <rect x="480" y="342.2" width="2.4" height="1.9"/>
       </g>
+      <line class="hold-floor" x1="448.8" y1="361.2" x2="482.4" y2="361.2"/>
+      <rect class="room" x="717.6" y="322.8" width="33.6" height="19.2"/>
+      <rect class="window" x="717.1" y="333.4" width="1" height="5.3"/>
+      <rect class="room" x="717.6" y="342" width="33.6" height="19.2"/>
+      <rect class="door" x="717.1" y="342.5" width="1" height="18.2"/>
+      <rect class="door" x="725" y="341.5" width="4.3" height="1"/>
+      <g class="ship"><rect x="725.8" y="342.5" width="2.9" height="1.9"/>
+      <rect x="721.9" y="344.4" width="10.6" height="7.2" rx="3"/>
+      </g>
+      <rect class="door" x="740.6" y="341.5" width="4.3" height="1"/>
+      <g class="ship"><rect x="741.4" y="342.5" width="2.9" height="1.9"/>
+      </g>
       <text class="t-note t-ship" x="668.7" y="321.3" text-anchor="middle">UMBILICAL</text>
       <rect class="door" x="438.7" y="227.3" width="1" height="18.2"/>
       <rect class="door" x="438.7" y="246.5" width="1" height="18.2"/>
@@ -533,6 +546,7 @@
       <rect class="door" x="750.7" y="312.5" width="1" height="9.8"/>
       <rect class="door" x="438.7" y="323.3" width="1" height="18.2"/>
       <rect class="door" x="448.3" y="323.3" width="1" height="18.2"/>
+      <rect class="door" x="750.7" y="323.3" width="1" height="18.2"/>
       <g class="tag"><circle cx="427.2" cy="255.6" r="5"/><text x="427.2" y="257.9" text-anchor="middle">4</text></g>
       <g class="tag"><circle cx="772.8" cy="255.6" r="5"/><text x="772.8" y="257.9" text-anchor="middle">4</text></g>
       <g class="tag"><circle cx="418.8" cy="236.4" r="5"/><text x="418.8" y="238.7" text-anchor="middle">2</text></g>
@@ -548,6 +562,8 @@
       <g class="tag"><circle cx="457.8" cy="317.4" r="5"/><text x="457.8" y="319.7" text-anchor="middle">7</text></g>
       <g class="tag"><circle cx="470.4" cy="328.4" r="5"/><text x="470.4" y="330.7" text-anchor="middle">C</text></g>
       <g class="tag"><circle cx="456" cy="333.4" r="5"/><text x="456" y="335.7" text-anchor="middle">7</text></g>
+      <g class="tag"><circle cx="734.4" cy="333.4" r="5"/><text x="734.4" y="335.7" text-anchor="middle">10</text></g>
+      <g class="tag"><circle cx="742.8" cy="353.6" r="5"/><text x="742.8" y="355.9" text-anchor="middle">11</text></g>
       <g class="tag"><circle cx="416.4" cy="314.2" r="5"/><text x="416.4" y="316.5" text-anchor="middle">8</text></g>
       <g class="here"><circle class="here-ring" cx="729.4" cy="317.4" r="6"/><circle class="here-dot" cx="729.4" cy="317.4" r="3"/></g>
       <line class="ruler" x1="120" y1="402.4" x2="1080" y2="402.4"/>
@@ -593,6 +609,8 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">8</text></g></svg>Cargo hold, Decks 09 to 10: truss shelving, a ceiling crane</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">9</text></g></svg>Cargo dock, raised a deck above the bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">C</text></g></svg>Cargo airlock, Deck 10, inside the cargo door</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">10</text></g></svg>Bay workshop, Deck 10, with a window onto the bay</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">11</text></g></svg>Pod garage, Deck 11, open to the bay; one berth empty</li>
       </ul>
       <ul aria-label="Line styles">
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="behind" x1="2" y1="6" x2="26" y2="6"/></svg>Deeper in the hull than this face</li>
@@ -603,6 +621,7 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
