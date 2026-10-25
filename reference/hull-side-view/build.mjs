@@ -923,15 +923,18 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
 
   // Escape pods: 14 lifeboats of 12 seats, at the ends of Deck 04 and Deck 09, near the quarters. Their hatches are
   // under SIGMA's incident lockdown, so drawn locked.
-  const pods = (k, m0, m1) => {
+  // Pods sit centred floor to ceiling, packed toward the hull end; the tag takes the inboard end.
+  const pods = (k, m0, m1, out, n) => {
     room(k, m0, m1); add(`<g class="ship">`);
-    const n = Math.floor((m1 - m0 - 1) / 7.5);
-    for (let i = 0; i < n; i++) { const m = m0 + 1 + i * 7.5; add(`<rect x="${f(X(m))}" y="${f(Yk(k, 3.2))}" width="${f(6.2 * S)}" height="${f(3.2 * S)}" rx="${f(1.4 * S)}"/>`); }
+    const cy = (dy(k) + dy(k + 1) - FL) / 2;
+    const ms = Array.from({ length: n }, (_, i) => out < 0 ? m0 + 0.3 + i * 7.1 : m1 - 0.3 - 6.2 - i * 7.1);
+    for (const m of ms) add(`<rect x="${f(X(m))}" y="${f(cy - 1.6 * S)}" width="${f(6.2 * S)}" height="${f(3.2 * S)}" rx="${f(1.4 * S)}"/>`);
     add(`</g>`);
-    for (let i = 0; i < n; i++) { const m = m0 + 1 + i * 7.5 + 2.6; add(`<rect class="door door-locked" x="${f(X(m))}" y="${f(Yk(k, 2.6))}" width="${f(1.0 * S)}" height="${f(2.0 * S)}"/>`); }
-    tg((m0 + m1) / 2, k, 40, -4.5);
+    for (const m of ms) add(`<rect class="door door-locked" x="${f(X(m + 2.6))}" y="${f(cy - 1.0 * S)}" width="${f(1.0 * S)}" height="${f(2.0 * S)}"/>`);
+    const inner = out < 0 ? [Math.max(...ms) + 6.2, m1] : [m0, Math.min(...ms)];
+    tg((inner[0] + inner[1]) / 2, k, 40, -FL / 2);
   };
-  pods(4, 25, 58); pods(4, 342, 375); pods(9, 12, 38); pods(9, 362, 388);
+  pods(4, 25, 58, -1, 4); pods(4, 342, 375, 1, 4); pods(9, 12, 38, -1, 3); pods(9, 362, 388, 1, 3);
 
   // Deck 05: Science's floor. Node Physics, Materials and Time Standards aft of the left lift; Corridor Harmonics
   // forward of the right one, its receiver room at the end nearest the node focus.
