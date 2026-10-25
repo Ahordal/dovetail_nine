@@ -239,7 +239,7 @@ for (const x of [wall, bx]) add(`<rect class="airlock ${x === wall ? "door-open"
 // Room tags centred in the low rooms.
 const tag9 = (m, n) => tag(m, 9, n, (ceil9 + dy(10)) / 2 - dy(9) - DH / 2);
 tags.push(tag9(BAY[0] - AL / 2, "A"), tag9(BAY[1] + AL / 2, "B"));
-// Airlock machinery on Deck 08 above each airlock and ready room: air recovery, pumps, valves, door ram. No access.
+// Airlock machinery on Deck 08 above each airlock and ready room: air recovery, pumps, valves, door ram. Locked hatch from the ready room.
 // Big pipes are hollow: every outer edge first, then every fill, so tees and bends merge cleanly.
 const PD = 0.5;
 const hollow = (runs) => {
@@ -363,19 +363,19 @@ tags.push(tag((CR + CA) / 2, 10, 7));
   // The link, hidden in the wall past both ready rooms: its two edges, dashed.
   for (const u of [0.85 - PD / 2, 0.85 + PD / 2]) add(`<line class="pipe hidden" x1="${X(u)}" y1="${f(ceil9)}" x2="${X(u)}" y2="${dy(11)}"/>`);
   // It surfaces here, bends, and tees into the riser that rises to the cargo airlock's floor vent.
-  hollow([`M ${X(11.4)} ${Y(0.5)} V ${Y(3.2)}`, `M ${X(0.85)} ${Y(0)} V ${Y(1.45)} H ${X(11.4)}`]);
+  hollow([`M ${X(11.4)} ${Y(0.5)} V ${Y(2.5)}`, `M ${X(0.85)} ${Y(0)} V ${Y(1.45)} H ${X(11.4)}`]);
   box(10.7, 12.1, 0.1, 0.5);
-  // Bigger tanks than the crew plant's: the cargo airlock holds far more air.
-  box(0.6, 6.4, 3.3, 4.9, 3.5); box(0.6, 6.4, 5.3, 6.9, 3.5);
-  ln(6.4, 4.1, 11.0, 4.1, "pipe"); ln(6.4, 5.5, 11.0, 5.5, "pipe");
-  // Two pumps on the tank line, so a cycle this size doesn't take all day.
+  // Three short tanks, stacked to leave the maintenance ladder a clear way down beside them.
+  const TANKS = [[1.95, 3.65], [3.9, 5.6], [5.85, 7.55]];
+  for (const [h0, h1] of TANKS) { box(2.9, 6.4, h0, h1, 3.5); const h = (h0 + h1) / 2; ln(6.4, h, 11.0, h, "pipe"); }
+  // Two pumps on the bottom tank's line, so a cycle this size doesn't take all day.
   for (const u of [7.4, 9.4]) {
     add(`<circle cx="${X(u)}" cy="${Y(6.7)}" r="${f(0.9 * S)}"/>`);
     box(u - 0.8, u + 0.8, 7.55, 7.8);
   }
   // Valve manifold, then controls and power.
-  box(11.0, 11.8, 3.2, 7.8);
-  for (const h of [4.1, 5.5]) add(`<circle cx="${X(11.4)}" cy="${Y(h)}" r="${f(0.35 * S)}"/>`);
+  box(11.0, 11.8, 2.5, 7.8);
+  for (const [h0, h1] of TANKS) add(`<circle cx="${X(11.4)}" cy="${Y((h0 + h1) / 2)}" r="${f(0.35 * S)}"/>`);
   box(12.1, 12.8, 4.4, 7.6);
   ln(12.2, 5.2, 12.7, 5.2, "flange"); ln(12.2, 5.8, 12.7, 5.8, "flange");
   // Cargo door ram, its rod straight up to the door's foot; the door drops into this space when open.
@@ -383,6 +383,18 @@ tags.push(tag((CR + CA) / 2, 10, 7));
   ln(13.4, 3.4, 13.4, 0.9, "pipe");
   box(13.0, 14, 0.1, 0.9);
   add(`</g>`);
+}
+// Maintenance ladders into each airlock plant from its ready room, through a locked hatch: pumps and rams need servicing.
+{
+  const ladder = (m, top, bot, hatchY) => {
+    for (const e of [m - 0.25, m + 0.25]) add(`<line class="ladder" x1="${f(mx(e))}" y1="${f(top)}" x2="${f(mx(e))}" y2="${f(bot)}"/>`);
+    for (let y = bot - 0.5 * S; y > top + 0.3 * S; y -= 0.5 * S) add(`<line class="rung" x1="${f(mx(m - 0.25))}" y1="${f(y)}" x2="${f(mx(m + 0.25))}" y2="${f(y)}"/>`);
+    add(`<rect class="door door-locked" x="${f(mx(m - 0.6))}" y="${f(hatchY - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
+  };
+  // Crew plants: up through the ready room ceiling and the service space to Deck 08's floor.
+  for (const m of [LIFTS[0] + LW / 2 + 6.6, BAY[1] + 7.4]) ladder(m, dy(9) + FL, doorBot(9), ceil9);
+  // Cargo plant: down through the cargo ready room floor, between the power line and the tanks.
+  ladder(CR + 2.3, dy(11) + FL, dy(12) - FL, dy(11));
 }
 // The bay floor runs on under the cargo machinery to the lift.
 add(`<line class="hold-floor" x1="${mx(CR)}" y1="${dy(12)}" x2="${bx}" y2="${dy(12)}"/>`);
@@ -1435,7 +1447,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="grid-power" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Station power grid; a hop where two lines cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="shaft" x="9" y="0" width="10" height="12"/><line class="rung" x1="10" y1="4" x2="18" y2="4"/><line class="rung" x1="10" y1="8" x2="18" y2="8"/></svg>Access shaft with ladder (engineering)</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="crawl" x="1" y="1" width="26" height="3"/><rect class="shaft" x="11.5" y="2.5" width="5" height="9.5"/><line class="ladder" x1="13" y1="3" x2="13" y2="12"/><line class="ladder" x1="15" y1="3" x2="15" y2="12"/><rect class="junction" x="10" y="0" width="8" height="5"/><rect class="door door-open" x="12" y="1.2" width="4" height="2.6"/></svg>Maintenance access: crawlway, vertical way, junction box and hatch</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, no access</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><rect x="2" y="1" width="24" height="3"/><line class="flange" x1="10" y1="1" x2="10" y2="4"/><line class="flange" x1="18" y1="1" x2="18" y2="4"/><rect x="4" y="6" width="6" height="5.5" rx="1.5"/><circle cx="16" cy="9" r="2.2"/><line class="pipe" x1="21" y1="6" x2="21" y2="12"/></g></svg>Airlock machinery, locked hatch from each ready room</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="plant"><line class="pipe hidden" x1="2" y1="5" x2="26" y2="5"/><line class="pipe hidden" x1="2" y1="7.5" x2="26" y2="7.5"/></g></svg>Pipes hidden inside a wall</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="window" x="13.5" y="1" width="1" height="10"/></svg>Window</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><circle class="shell" cx="14" cy="6" r="5"/><rect class="trap" x="11" y="4.5" width="6" height="3" rx="1"/></svg>Core shells and the trap housing</li>
