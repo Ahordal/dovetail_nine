@@ -176,18 +176,18 @@ Placed on the side view; the numbers are its room tags. Every room is fed from t
 
 ## Crew housing **[proposed]**
 
-Who sleeps where follows seniority (counts in [[crew]]). Room for all 166 and about 30 spare berths, for contractor rotations and visiting ship crews.
+Who sleeps where follows seniority (counts in [[crew]]). Room for all 166 and about 60 spare berths, for contractor rotations and visiting ship crews.
 
 - **Suites (31), Deck 02,** for the twelve Level 6 staff: bed, wardrobe, a desk and a private washroom.
 - **Single cabins** (3 m: bed and wardrobe) for senior grades; **doubles** (4 m: bunk beds, a double wardrobe) for juniors, two to a room.
 - **Stacked two high:** cabins, suites, block washrooms and common rooms are about **2.3 m** to the ceiling, so the deck's 5 m holds two tiers. The upper tier opens onto a **gallery** along the corridor; washrooms stack so both tiers share one water drop. Air ducts run in the service band above, as for every other room.
 - **Two ways out of every cabin:** a **stair** at each end of a block, one by the landing where the lift and access trunk open (the landing stays full height), one at the far end. Each block's second row and its gallery sit behind the cut; only the stairs show.
-- **Blocks by division,** near their work, each laid out from its lift-core end: a landing where the lift and access trunk open, a **washroom (54)** (toilets, showers, sinks), a **common room (55)** (sofa, table, wall screen, terminal), the singles, then the doubles, with spares at the far end. The side view cuts one row of cabins; a second faces it across the block's corridor, so each cabin drawn stands for four.
+- **Blocks by division,** near their work, each laid out from its lift-core end: a landing where the lift and access trunk open, a **washroom (54)** (toilets, showers, sinks), a **common room (55)** (sofa, table, wall screen, terminal), the singles, then the doubles, with spares at the far end. Decks 08 to 10 share one plan, so their walls, stairs and washrooms stack. The side view cuts one row of cabins; a second faces it across the block's corridor, so each cabin drawn stands for four.
   - **Deck 04, left:** Science.
   - **Deck 08:** Command & Administration, Security, Medical.
   - **Deck 09:** Engineering, with the DYNEX and Valdez teams.
   - **Deck 10:** Maintenance and Habitation services.
-- **Freed by stacking [open]:** the stretches the blocks no longer need are unassigned rooms, to plan one at a time: Deck 02 at the left end of the suites (95 to 104 m), Deck 04 beyond the Science block (188.5 to 197.5 m) and from the right lift's landing to engineering's edge (211.5 to 257.5 m), and the far ends of Decks 08 (311 to 330 m), 09 (315 to 362 m) and 10 (322 to 375 m).
+- **Freed by stacking [open]:** the stretches the blocks no longer need are unassigned rooms, to plan one at a time: Deck 02 at the left end of the suites (95 to 104 m), Deck 04 beyond the Science block (188.5 to 197.5 m) and from the right lift's landing to engineering's edge (211.5 to 257.5 m), and the far ends of Decks 08 (322 to 330 m), 09 (322 to 362 m) and 10 (322 to 375 m).
 - **Where the reader finds it:** the housing roster in SIGMA's records (who had which cabin), and each cabin itself: the place where its occupant lived, and often near where they died.
 
 ## Science **[proposed]**

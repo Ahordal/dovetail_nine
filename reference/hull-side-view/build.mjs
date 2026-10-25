@@ -1012,7 +1012,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   add(`<rect class="room" x="${f(X(116.8))}" y="${f(Yk(8, 4.5))}" width="${f(11 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 117.6; m < 127.7; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
   term(8, 115.8); tg(100, 8, 45, -4.5);
-  room(8, block(8, LIFTS[1] + LW / 2, 1, 5, 3, 3, 297), 330);   // Command, Security, Medical; 297 stacks the 39 tags on Decks 08 to 10
+  room(8, block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 330);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
   room(8, 330, 392); add(`<g class="racks">`); for (const m of [334, 342, 350, 358, 366, 374]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(361, 8, 47, -4.5);
 
   // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
@@ -1023,7 +1023,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   box(9, 87, 95, 0, 1.2, "kit"); for (const h of [0.4, 0.8]) sh(9, 87, 95, h);
   box(9, 97.5, 102.5, 2.0, 3.2, "kit"); box(9, 97.8, 102.2, 2.2, 3.0, "crate");
   add(`</g>`); term(9, 104); tg(71.5, 9, 56, -4.5);
-  room(9, block(9, LIFTS[1] + LW / 2, 1, 5, 3, 4, 297), 362);   // Engineering, with the DYNEX and Valdez teams
+  room(9, block(9, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 362);   // Engineering, with the DYNEX and Valdez teams
   room(10, 25, 105); add(`<g class="racks">`); for (let m = 28; m < 100; m += 9) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(65, 10, 48, -4.5);
   room(10, block(10, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 375);   // Maintenance, Habitation services
   room(11, 305, 355); add(`<g class="plant">`); box(11, 309, 316, 0, 2.6); for (let m = 320; m < 348; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 351); tg(330, 11, 49, -4.5);
