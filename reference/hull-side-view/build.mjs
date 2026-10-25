@@ -102,7 +102,7 @@ const sigmaLogo = (cx, cy, r) => {
 // Tags are drawn last so they sit solid over the conduits and lift lines.
 const tags = [];
 // Optional vertical offset lets a tag share a narrow room with the you-are-here marker.
-const tag = (m, k, n, off = 0) => `<g class="tag sm"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="3.8"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 1.8)}" text-anchor="middle">${n}</text></g>`;
+const tag = (m, k, n, off = 0) => `<g class="tag sm"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="4.8"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 1.75)}" text-anchor="middle">${n}</text></g>`;
 // Lift shafts top to bottom, outlined solid. A dot marks each deck served;
 // doorways are drawn only where a room on this face meets the shaft.
 // Deck 09's stops sit mid-room, under the 4.5 m ceiling of the ready rooms.
@@ -1273,7 +1273,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .sl-red { fill: none; stroke: #c81c19; stroke-width: 0.9; }
   .sl-sigma { fill: none; stroke: var(--fg); stroke-width: 1.1; stroke-linejoin: miter; }
   .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
-  .tag.sm text { font-size: 5px; }
+  .tag.sm text { font-size: 5px; letter-spacing: 0; }   /* inherited spacing pushes text-anchor off centre */
   .tag.sm circle { stroke-width: 0.7; }
   .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
   .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
