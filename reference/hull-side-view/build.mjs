@@ -151,7 +151,7 @@ const RD = [LIFTS[0] + LW / 2, 150];
 for (const [m0, m1, n] of [[RD[0], RD[1], 2], [RD[1], 163, 3]]) {
   const w = (m1 - m0) * S;
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(5)}" width="${f(w)}" height="${f(DH)}"/>`);
-  tags.push(n === 2 ? tag(147, 5, n, -4.5) : tag((m0 + m1) / 2, 5, n));   // R&D's tag rides above the test cell, clear of the trunk's junction
+  tags.push(tag((m0 + m1) / 2, 5, n));
 }
 // SIGMA's core: a 5 m column from Deck 04 up into command on Deck 01, on the chamber's axis.
 const CW = 5, cx0 = 200 - CW / 2;
@@ -826,7 +826,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // A block from its lift-core end: a landing where the lift and access trunk open, a stair, the washroom and common
   // room, the singles, the doubles, and a second stair at the far end, running away from the core in direction d.
   // Returns where it ends.
-  const block = (k, core, d, landing, singles, doubles, tm) => {
+  const block = (k, core, d, landing, singles, doubles) => {
     let p = core + d * landing;
     const seg = (len) => { const a = p, b = p + d * len; p = b; return [Math.min(a, b), Math.max(a, b)]; };
     room(k, Math.min(core, core + d * landing), Math.max(core, core + d * landing));
@@ -838,7 +838,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     for (let i = 0; i < doubles; i++) { const [lo, hi] = seg(4); cabin(k, lo, hi); }
     slab(k, Math.min(t0, p), Math.max(t0, p));
     const [f0, f1] = seg(4); stair(k, f0, f1, -d);
-    add(`</g>`); tg(tm ?? (c0 + p) / 2, k, 39, -4.5);
+    add(`</g>`); T.push(tag((c0 + p) / 2, k, 39, -4.5).replace("tag sm", "tag sm keep"));   // centred on the cabins, not one cabin
     return p;
   };
   const desks = (k, m0, m1, step = 4) => { add(`<g class="racks">`); for (let m = m0 + 1; m + 2.4 < m1 - 0.8; m += step) { if (blocked(k, m, m + 2.4)) continue; box(k, m, m + 2.4, 0.75, 0.9, "kit"); box(k, m + 0.15, m + 0.35, 0, 0.75, "kit"); box(k, m + 2.05, m + 2.25, 0, 0.75, "kit"); } add(`</g>`); };
@@ -923,18 +923,18 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
 
   // Escape pods: 14 lifeboats of 12 seats, at the ends of Deck 04 and Deck 09, near the quarters. Their hatches are
   // under SIGMA's incident lockdown, so drawn locked.
-  // Pods sit centred floor to ceiling, packed toward the hull end; the tag takes the inboard end.
+  // Pods sit centred in the room, either side of its centred tag; the larger group goes to the hull end.
   const pods = (k, m0, m1, out, n) => {
     room(k, m0, m1); add(`<g class="ship">`);
-    const cy = (dy(k) + dy(k + 1) - FL) / 2;
-    const ms = Array.from({ length: n }, (_, i) => out < 0 ? m0 + 0.3 + i * 7.1 : m1 - 0.3 - 6.2 - i * 7.1);
+    const cy = dy(k) + DH / 2, c = (m0 + m1) / 2, big = Math.ceil(n / 2), small = n - big;
+    const [nl, nr] = out < 0 ? [big, small] : [small, big];
+    const ms = [...Array.from({ length: nl }, (_, i) => c - 2.3 - 6.2 - i * 7.1), ...Array.from({ length: nr }, (_, i) => c + 2.3 + i * 7.1)];
     for (const m of ms) add(`<rect x="${f(X(m))}" y="${f(cy - 1.6 * S)}" width="${f(6.2 * S)}" height="${f(3.2 * S)}" rx="${f(1.4 * S)}"/>`);
     add(`</g>`);
     for (const m of ms) add(`<rect class="door door-locked" x="${f(X(m + 2.6))}" y="${f(cy - 1.0 * S)}" width="${f(1.0 * S)}" height="${f(2.0 * S)}"/>`);
-    const inner = out < 0 ? [Math.max(...ms) + 6.2, m1] : [m0, Math.min(...ms)];
-    tg((inner[0] + inner[1]) / 2, k, 40, -FL / 2);
+    tg(c, k, 40, -4.5);
   };
-  pods(4, 25, 58, -1, 4); pods(4, 342, 375, 1, 4); pods(9, 12, 38, -1, 3); pods(9, 362, 388, 1, 3);
+  pods(4, 25, 58, -1, 4); pods(4, 342, 375, 1, 4); pods(9, 12, 43, -1, 3); pods(9, 357, 388, 1, 3);
 
   // Deck 05: Science's floor. Node Physics, Materials and Time Standards aft of the left lift; Corridor Harmonics
   // forward of the right one, its receiver room at the end nearest the node focus.
@@ -1012,20 +1012,20 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   add(`<rect class="room" x="${f(X(116.8))}" y="${f(Yk(8, 4.5))}" width="${f(11 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 117.6; m < 127.7; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
   term(8, 115.8); tg(100, 8, 45, -4.5);
-  room(8, block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 330);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
+  room(8, block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5), 330);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
   room(8, 330, 392); add(`<g class="racks">`); for (const m of [334, 342, 350, 358, 366, 374]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(361, 8, 47, -4.5);
 
   // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
   // Pod muster station beside the Deck 09 pods: benches, emergency suit and ration lockers, the pod status board.
-  room(9, 38, 105); add(`<g class="racks">`);
-  for (let m = 42; m < 64; m += 5) { box(9, m, m + 3, 0.4, 0.5, "kit"); box(9, m + 0.2, m + 0.3, 0, 0.4, "kit"); box(9, m + 2.7, m + 2.8, 0, 0.4, "kit"); }
+  room(9, 43, 105); add(`<g class="racks">`);
+  for (let m = 46; m < 64; m += 5) { box(9, m, m + 3, 0.4, 0.5, "kit"); box(9, m + 0.2, m + 0.3, 0, 0.4, "kit"); box(9, m + 2.7, m + 2.8, 0, 0.4, "kit"); }
   add(`</g>`); lockers(9, 68, 84, 2.4); add(`<g class="racks">`);
   box(9, 87, 95, 0, 1.2, "kit"); for (const h of [0.4, 0.8]) sh(9, 87, 95, h);
   box(9, 97.5, 102.5, 2.0, 3.2, "kit"); box(9, 97.8, 102.2, 2.2, 3.0, "crate");
   add(`</g>`); term(9, 104); tg(71.5, 9, 56, -4.5);
-  room(9, block(9, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 362);   // Engineering, with the DYNEX and Valdez teams
+  room(9, block(9, LIFTS[1] + LW / 2, 1, 5, 4, 5), 357);   // Engineering, with the DYNEX and Valdez teams
   room(10, 25, 105); add(`<g class="racks">`); for (let m = 28; m < 100; m += 9) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(65, 10, 48, -4.5);
-  room(10, block(10, LIFTS[1] + LW / 2, 1, 5, 4, 5, 297), 375);   // Maintenance, Habitation services
+  room(10, block(10, LIFTS[1] + LW / 2, 1, 5, 4, 5), 375);   // Maintenance, Habitation services
   room(11, 305, 355); add(`<g class="plant">`); box(11, 309, 316, 0, 2.6); for (let m = 320; m < 348; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 351); tg(330, 11, 49, -4.5);
 
   // Power feeders (gold) to every new major system, from the two risers along each deck's service band.
@@ -1142,6 +1142,21 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
 svg.splice(goldAt, 0, ...EARLY, ...GOLD, ...CRAWL);
+// Centre each room tag side to side in the smallest room outline that holds it. Full-height rooms put it in one row
+// per deck, near the top, clear of the kit; low rooms keep theirs centred.
+{
+  const rooms = [...svg.join("").matchAll(/<rect class="room" x="([-0-9.]+)" y="([-0-9.]+)" width="([0-9.]+)" height="([0-9.]+)"/g)].map((r) => r.slice(1).map(Number));
+  for (let i = 0; i < tags.length; i++) {
+    const t = tags[i].match(/^<g class="tag sm"><circle cx="([-0-9.]+)" cy="([-0-9.]+)"/);
+    if (!t) continue;
+    const [cx, cy] = [+t[1], +t[2]];
+    const hits = rooms.filter(([x, y, w, h]) => cx > x && cx < x + w && cy > y && cy < y + h).sort((a, b) => a[2] * a[3] - b[2] * b[3]);
+    if (!hits.length) { console.warn("no room for tag at", cx, cy); continue; }
+    const [x, y, w, h] = hits[0], nx = x + w / 2, ny = h > DH * 0.9 ? y + DH / 2 - 4.5 : cy;
+    if (process.env.TAGLOG && (Math.abs(nx - cx) > 0.5 || Math.abs(ny - cy) > 0.5)) console.log(tags[i].match(/>([^<]+)<\/text>/)[1], f(cx), f(cy), "->", f(nx), f(ny));
+    tags[i] = tags[i].replace(/cx="[-0-9.]+" cy="[-0-9.]+"/, `cx="${f(nx)}" cy="${f(ny)}"`).replace(/<text x="[-0-9.]+" y="[-0-9.]+"/, `<text x="${f(nx)}" y="${f(ny + 1.75)}"`);
+  }
+}
 tags.forEach(add);
 add(hereMarker);
 
