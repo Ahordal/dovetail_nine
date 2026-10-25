@@ -102,7 +102,7 @@ const sigmaLogo = (cx, cy, r) => {
 // Tags are drawn last so they sit solid over the conduits and lift lines.
 const tags = [];
 // Optional vertical offset lets a tag share a narrow room with the you-are-here marker.
-const tag = (m, k, n, off = 0) => `<g class="tag"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="5"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 2.3)}" text-anchor="middle">${n}</text></g>`;
+const tag = (m, k, n, off = 0) => `<g class="tag sm"><circle cx="${f(mx(m))}" cy="${f(dy(k) + DH / 2 + off)}" r="3.8"/><text x="${f(mx(m))}" y="${f(dy(k) + DH / 2 + off + 1.8)}" text-anchor="middle">${n}</text></g>`;
 // Lift shafts top to bottom, outlined solid. A dot marks each deck served;
 // doorways are drawn only where a room on this face meets the shaft.
 // Deck 09's stops sit mid-room, under the 4.5 m ceiling of the ready rooms.
@@ -802,7 +802,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   };
   // A block from its lift-core end: a landing where the lift and access trunk open, the washroom and common room,
   // then the singles, then doubles to the far end. Spare cabins at the far end take contractor rotations and visitors.
-  const block = (k, core, far, landing, singles) => {
+  const block = (k, core, far, landing, singles, tm) => {
     const d = far > core ? 1 : -1; let p = core + d * landing;
     const seg = (len) => { const a = p, b = p + d * len; p = b; return [Math.min(a, b), Math.max(a, b)]; };
     room(k, Math.min(core, core + d * landing), Math.max(core, core + d * landing));
@@ -812,7 +812,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     for (let i = 0; i < singles; i++) { const [lo, hi] = seg(3); cabin(k, lo, hi); }
     while (Math.abs(far - p) >= 8) { const [lo, hi] = seg(4); cabin(k, lo, hi); }
     const [lo, hi] = seg(Math.abs(far - p)); cabin(k, lo, hi);
-    add(`</g>`); tg((c0 + far) / 2, k, 39, -4.5);
+    add(`</g>`); tg(tm ?? (c0 + far) / 2, k, 39, -4.5);
   };
   const desks = (k, m0, m1, step = 4) => { add(`<g class="racks">`); for (let m = m0 + 1; m + 2.4 < m1 - 0.8; m += step) { if (blocked(k, m, m + 2.4)) continue; box(k, m, m + 2.4, 0.75, 0.9, "kit"); box(k, m + 0.15, m + 0.35, 0, 0.75, "kit"); box(k, m + 2.05, m + 2.25, 0, 0.75, "kit"); } add(`</g>`); };
   const lockers = (k, m0, m1, h = 2.2) => { add(`<g class="racks">`); for (let m = m0; m + 0.9 <= m1; m += 1.0) if (!blocked(k, m, m + 0.9)) box(k, m, m + 0.9, 0, h, "kit"); add(`</g>`); };
@@ -976,7 +976,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   add(`<rect class="room" x="${f(X(116.8))}" y="${f(Yk(8, 4.5))}" width="${f(11 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 117.6; m < 127.7; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
   term(8, 115.8); tg(100, 8, 45, -4.5);
-  block(8, LIFTS[1] + LW / 2, 330, 5, 5);   // Command, Security, Medical
+  block(8, LIFTS[1] + LW / 2, 330, 5, 5, 314);   // Command, Security, Medical; 314 stacks the 39 tags on Decks 08 to 10
   room(8, 330, 392); add(`<g class="racks">`); for (const m of [334, 342, 350, 358, 366, 374]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(361, 8, 47, -4.5);
 
   // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
@@ -987,9 +987,9 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   box(9, 87, 95, 0, 1.2, "kit"); for (const h of [0.4, 0.8]) sh(9, 87, 95, h);
   box(9, 97.5, 102.5, 2.0, 3.2, "kit"); box(9, 97.8, 102.2, 2.2, 3.0, "crate");
   add(`</g>`); term(9, 104); tg(71.5, 9, 56, -4.5);
-  block(9, LIFTS[1] + LW / 2, 362, 5, 6);   // Engineering, with the DYNEX and Valdez teams
+  block(9, LIFTS[1] + LW / 2, 362, 5, 6, 314);   // Engineering, with the DYNEX and Valdez teams
   room(10, 25, 105); add(`<g class="racks">`); for (let m = 28; m < 100; m += 9) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(65, 10, 48, -4.5);
-  block(10, LIFTS[1] + LW / 2, 375, 5, 7);   // Maintenance, Habitation services
+  block(10, LIFTS[1] + LW / 2, 375, 5, 7, 314);   // Maintenance, Habitation services
   room(11, 305, 355); add(`<g class="plant">`); box(11, 309, 316, 0, 2.6); for (let m = 320; m < 348; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 351); tg(330, 11, 49, -4.5);
 
   // Power feeders (gold) to every new major system, from the two risers along each deck's service band.
@@ -1273,6 +1273,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .sl-red { fill: none; stroke: #c81c19; stroke-width: 0.9; }
   .sl-sigma { fill: none; stroke: var(--fg); stroke-width: 1.1; stroke-linejoin: miter; }
   .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
+  .tag.sm text { font-size: 5px; }
+  .tag.sm circle { stroke-width: 0.7; }
   .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
   .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
   .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
