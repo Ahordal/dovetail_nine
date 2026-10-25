@@ -878,7 +878,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   room(2, LIFTS[0] + LW / 2, 158); add(`<g class="racks">`); box(2, 142, 155.2, 0, 0.9, "kit"); box(2, 144, 148, 2.2, 2.7, "kit"); box(2, 155.6, 157.6, 0, 2.2, "kit");
   box(2, 150, 151.1, 0.9, 1.5, "crate"); add(`</g>`); tg(148, 2, 32, -4.5);   // the coffee machine on the counter
   room(2, 158, 197.5); add(`<g class="racks">`); for (let m = 160; m < 195; m += 5) { box(2, m, m + 3, 0.75, 0.9, "kit"); box(2, m + 0.2, m + 0.4, 0, 0.75, "kit"); box(2, m + 2.6, m + 2.8, 0, 0.75, "kit"); } add(`</g>`); term(2, 196); tg(178, 2, 33, -4.5);
-  room(2, 202.5, LIFTS[1] - LW / 2); add(`<g class="racks">`); for (const m of [206, 216, 226, 236]) { box(2, m, m + 4.5, 0, 0.9, "kit"); box(2, m, m + 0.6, 0.9, 1.6, "kit"); } box(2, 248, 258, 2.0, 3.6, "kit"); add(`</g>`); tg(232, 2, 34, -4.5);
+  room(2, 202.5, 233); room(2, 233, LIFTS[1] - LW / 2); add(`<g class="racks">`); for (const m of [235, 241]) { box(2, m, m + 4.5, 0, 0.9, "kit"); box(2, m, m + 0.6, 0.9, 1.6, "kit"); } box(2, 251, 260, 2.0, 3.6, "kit"); add(`</g>`); tg(248, 2, 34, -4.5);   // 202.5 to 233 unassigned
   room(2, LIFTS[1] + LW / 2, 305); add(`<g class="plant">`); for (const m of [269, 272, 275, 278]) { box(2, m, m + 2.6, 0, 1.4); circ(2, m + 1.3, 0.7, 0.45); } add(`</g>`); lockers(2, 284, 302); tg(286, 2, 35, -4.5);
 
   // Decks 03 and 04: hydroponics two storeys high at both ends; clinic and science offices on 03; quarters on 04.
@@ -897,8 +897,8 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     const nt = m0 < 200 ? m1 - 3.2 : m0 + 0.6; add(`<path class="tank-waste" d="M ${f(X(nt))} ${f(Yk(4, 0))} V ${f(Yk(4, 2.4))} Q ${f(X(nt))} ${f(Yk(4, 3))} ${f(X(nt + 1.3))} ${f(Yk(4, 3))} Q ${f(X(nt + 2.6))} ${f(Yk(4, 3))} ${f(X(nt + 2.6))} ${f(Yk(4, 2.4))} V ${f(Yk(4, 0))} Z"/>`);
     term(4, m0 < 200 ? m1 - 4.2 : m0 + 4.2); tg((m0 + m1) / 2, 3, 36, 4);
   }
-  room(3, LIFTS[0] + LW / 2, 197.5); add(`<g class="racks">`); for (const m of [143, 148.3, 153.6, 158.9]) { box(3, m, m + 3.6, 0.5, 0.75, "kit"); box(3, m, m + 0.3, 0.75, 1.4, "kit"); box(3, m + 0.4, m + 3.4, 0, 0.5, "kit"); }
-  box(3, 166, 172, 0.4, 1.6, "kit", 1.5); box(3, 162.6, 164.6, 0.8, 0.95, "kit"); box(3, 163.4, 163.8, 0, 0.8, "kit"); lockers(3, 176, 186); add(`</g>`); term(3, 194); tg(168, 3, 37, -4.5);
+  room(3, LIFTS[0] + LW / 2, 181); room(3, 181, 197.5); add(`<g class="racks">`);   // 181 to 197.5 unassigned for (const m of [143, 148.3, 153.6, 158.9]) { box(3, m, m + 3.6, 0.5, 0.75, "kit"); box(3, m, m + 0.3, 0.75, 1.4, "kit"); box(3, m + 0.4, m + 3.4, 0, 0.5, "kit"); }
+  box(3, 166, 172, 0.4, 1.6, "kit", 1.5); box(3, 162.6, 164.6, 0.8, 0.95, "kit"); box(3, 163.4, 163.8, 0, 0.8, "kit"); lockers(3, 174.5, 180.4); add(`</g>`); term(3, 173.2); tg(168, 3, 37, -4.5);
   // Exposure lab beside the clinic: EEG booth, incubators, biosafety cabinet, growth chambers, sample freezer.
   room(3, 202.5, 232); add(`<g class="racks">`);
   box(3, 204, 208, 0, 2.6, "kit"); box(3, 205.5, 206.7, 0, 1.0, "crate");
@@ -940,22 +940,22 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // forward of the right one, its receiver room at the end nearest the node focus.
   const sh = (k, m0, m1, h) => add(`<line class="shelf" x1="${f(X(m0))}" y1="${f(Yk(k, h))}" x2="${f(X(m1))}" y2="${f(Yk(k, h))}"/>`);
   // Time standards lab: the master clock ensemble in vacuum housings, comparison racks, fibre out to every deck.
-  room(5, 12, 60); add(`<g class="racks">`);
+  room(5, 12, 48); room(5, 48, 85); add(`<g class="racks">`);   // 48 to 85 unassigned
   box(5, 15.5, 31, 0, 0.9, "kit");
   for (let m = 16; m < 30; m += 2.5) { box(5, m, m + 1.6, 0.9, 2.7, "kit", 0.6 * S); box(5, m + 0.4, m + 1.2, 1.5, 2.1, "crate"); }
-  for (let m = 34; m < 39; m += 1.4) box(5, m, m + 1.2, 0, 2.4, "kit");
-  box(5, 43, 47.5, 0.75, 0.9, "kit"); box(5, 43.2, 43.4, 0, 0.75, "kit"); box(5, 47.1, 47.3, 0, 0.75, "kit");
-  box(5, 55.5, 57.5, 0, 3.0, "kit"); for (const h of [0.8, 1.6, 2.4]) sh(5, 55.5, 57.5, h);
+  for (let m = 32.5; m < 37; m += 1.4) box(5, m, m + 1.2, 0, 2.4, "kit");
+  box(5, 39.5, 44, 0.75, 0.9, "kit"); box(5, 39.7, 39.9, 0, 0.75, "kit"); box(5, 43.6, 43.8, 0, 0.75, "kit");
+  box(5, 45, 47, 0, 3.0, "kit"); for (const h of [0.8, 1.6, 2.4]) sh(5, 45, 47, h);
   add(`</g>`); term(5, 13.2); tg(36, 5, 50, -4.5);
   // Materials lab: harmonic fatigue rig, coupon racks, gamma spectrometer, microscope bench, sample saw.
-  room(5, 60, LIFTS[0] - LW / 2); add(`<g class="racks">`);
-  box(5, 63, 69, 0, 3.2, "kit"); box(5, 65, 67, 1.0, 2.2, "crate"); sh(5, 63, 69, 0.6);
-  box(5, 72, 76, 0, 2.4, "kit"); for (const h of [0.8, 1.6]) sh(5, 72, 76, h);
-  box(5, 80, 83, 0, 1.6, "kit", 0.5 * S); box(5, 81, 82, 1.6, 2.6, "crate");
-  box(5, 87, 92, 0.75, 0.9, "kit"); box(5, 87.2, 87.4, 0, 0.75, "kit"); box(5, 91.6, 91.8, 0, 0.75, "kit"); box(5, 88.5, 89.3, 0.9, 1.7, "crate");
-  box(5, 96, 99, 0, 1.2, "kit"); add(`<circle class="reel" cx="${f(X(97.5))}" cy="${f(Yk(5, 1.5))}" r="${f(0.6 * S)}"/>`);
+  room(5, 85, LIFTS[0] - LW / 2); add(`<g class="racks">`);
+  box(5, 87, 93, 0, 3.2, "kit"); box(5, 89, 91, 1.0, 2.2, "crate"); sh(5, 87, 93, 0.6);
+  box(5, 94.5, 98.5, 0, 2.4, "kit"); for (const h of [0.8, 1.6]) sh(5, 94.5, 98.5, h);
+  box(5, 100, 103, 0, 1.6, "kit", 0.5 * S); box(5, 101, 102, 1.6, 2.6, "crate");
+  box(5, 104.5, 109.5, 0.75, 0.9, "kit"); box(5, 104.7, 104.9, 0, 0.75, "kit"); box(5, 109.1, 109.3, 0, 0.75, "kit"); box(5, 106, 106.8, 0.9, 1.7, "crate");
+  box(5, 111, 114, 0, 1.2, "kit"); add(`<circle class="reel" cx="${f(X(112.5))}" cy="${f(Yk(5, 1.5))}" r="${f(0.6 * S)}"/>`);
   // Out to the lift: write-up desks and the sample store, shelved coupons and cut sections.
-  add(`</g>`); desks(5, 100, 120); lockers(5, 124, 131, 2.4); term(5, 61.2); tg(86, 5, 41, -4.5);
+  add(`</g>`); desks(5, 114, 127); lockers(5, 127.5, 132, 2.4); term(5, 86.2); tg(86, 5, 41, -4.5);
   // R&D, Node Physics: the control desk, a glovebox, and the damped test cell beside the lock into experiment control.
   add(`<g class="racks">`);
   box(5, 138.4, 140.6, 0.75, 0.9, "kit"); box(5, 138.6, 138.8, 0, 0.75, "kit"); box(5, 140.2, 140.4, 0, 0.75, "kit"); box(5, 138.9, 140.1, 0.9, 1.5, "crate");
@@ -967,19 +967,19 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // The lock into experiment control, sealed as Quell finds it.
   add(`<rect class="door door-locked" x="${f(X(150) - DW / 2)}" y="${f(Yk(5, DOOR))}" width="${DW}" height="${f(DOOR * S)}"/>`);
   // Corridor analysis: Stratovan analyzers, a row of analyst consoles, the wall phase map, model racks.
-  room(5, LIFTS[1] + LW / 2, 330); add(`<g class="racks">`);
+  room(5, LIFTS[1] + LW / 2, 318.5); room(5, 318.5, 341); add(`<g class="racks">`);   // 318.5 to 341 unassigned
   for (let m = 269.5; m < 277; m += 1.3) box(5, m, m + 1.2, 0, 2.4, "kit");
-  box(5, 309, 321, 2.6, 4.2, "kit"); box(5, 309.4, 320.6, 2.9, 3.9, "crate");
-  for (let m = 323.4; m < 329; m += 1.4) box(5, m, m + 1.2, 0, 2.4, "kit");
-  add(`</g>`); desks(5, 280, 308); term(5, 268.2); tg(298.5, 5, 51, -4.5);
+  box(5, 300, 312, 2.6, 4.2, "kit"); box(5, 300.4, 311.6, 2.9, 3.9, "crate");
+  for (let m = 312.4; m < 317; m += 1.4) box(5, m, m + 1.2, 0, 2.4, "kit");
+  add(`</g>`); desks(5, 278, 300); term(5, 268.2); tg(298.5, 5, 51, -4.5);
   // Array receiver room: the forward array's sensors come up from the conduits into the receivers.
-  room(5, 330, 388); add(`<g class="racks">`);
-  box(5, 334, 340, 0.75, 0.9, "kit"); box(5, 334.2, 334.4, 0, 0.75, "kit"); box(5, 339.6, 339.8, 0, 0.75, "kit"); box(5, 335, 336.4, 0.9, 1.4, "crate"); box(5, 337.4, 338.6, 0.9, 1.3, "crate");
-  for (let m = 343; m < 349; m += 2.2) { box(5, m, m + 1.8, 0, 1.4, "kit"); add(`<circle class="reel" cx="${f(X(m + 0.9))}" cy="${f(Yk(5, 0.8))}" r="${f(0.4 * S)}"/>`); }
-  box(5, 352.5, 355, 0, 1.6, "kit"); add(`<circle class="reel" cx="${f(X(353.75))}" cy="${f(Yk(5, 1.0))}" r="${f(0.35 * S)}"/>`);
+  room(5, 341, 388); add(`<g class="racks">`);
+  box(5, 344, 350, 0.75, 0.9, "kit"); box(5, 344.2, 344.4, 0, 0.75, "kit"); box(5, 349.6, 349.8, 0, 0.75, "kit"); box(5, 345, 346.4, 0.9, 1.4, "crate"); box(5, 347.4, 348.6, 0.9, 1.3, "crate");
+  for (let m = 351.5; m < 357; m += 2.2) { box(5, m, m + 1.8, 0, 1.4, "kit"); add(`<circle class="reel" cx="${f(X(m + 0.9))}" cy="${f(Yk(5, 0.8))}" r="${f(0.4 * S)}"/>`); }
+  box(5, 374.5, 377, 0, 1.6, "kit"); add(`<circle class="reel" cx="${f(X(375.75))}" cy="${f(Yk(5, 1.0))}" r="${f(0.35 * S)}"/>`);
   for (let m = 358; m < 369; m += 1.5) box(5, m, m + 1.4, 0, 2.6, "kit");
   box(5, 370.5, 373.5, 0, 1.8, "kit");
-  add(`</g>`); term(5, 331.2); tg(359, 5, 52, -4.5);
+  add(`</g>`); term(5, 342.2); tg(359, 5, 52, -4.5);
   add(`<line class="tap" x1="${f(X(372))}" y1="${f(midY)}" x2="${f(X(372))}" y2="${f(Yk(5, 0))}"/>`);
 
   // Deck 06: array access at both ends of the tram: airlock out to the truss, suits and tools. Tram cars at the stops.
@@ -1007,34 +1007,34 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const [m0, m1] of [[5, 70], [330, 395]]) { room(7, m0, m1); desks(7, m0, m0 + 30, 6); if (m0 < 200) { lockers(7, 39, 48, 2.4); lockers(7, 52, 66, 2.4); } else lockers(7, m0 + 34, m1 - 4, 2.4); term(7, m0 + 32); tg((m0 + m1) / 2, 7, 44, -4.5); }
 
   // Deck 08: fire and emergency stores, security; crew quarters and the gym on the right.
-  room(8, 10, 85); add(`<g class="plant">`); for (let m = 14; m < 48; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [56, 62, 68, 74]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 80); tg(48, 8, 46, -4.5);
+  room(8, 10, 45); room(8, 45, 85); add(`<g class="plant">`); for (let m = 47; m < 63; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [66.5, 71.5, 76.5]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 81.5); tg(65, 8, 46, -4.5);   // 10 to 45 unassigned
   room(8, 85, LIFTS[0] - LW / 2); desks(8, 85, 105); lockers(8, 106.5, 115, 2.4);
   add(`<rect class="room" x="${f(X(116.8))}" y="${f(Yk(8, 4.5))}" width="${f(11 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 117.6; m < 127.7; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
   term(8, 115.8); tg(100, 8, 45, -4.5);
-  room(8, block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5), 330);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
-  room(8, 330, 392); add(`<g class="racks">`); for (const m of [334, 342, 350, 358, 366, 374]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(361, 8, 47, -4.5);
+  block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
+  room(8, 322, 352); room(8, 352, 392); add(`<g class="racks">`); for (const m of [325, 331, 337, 343]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(337, 8, 47, -4.5);   // 352 to 392 unassigned
 
   // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
   // Pod muster station beside the Deck 09 pods: benches, emergency suit and ration lockers, the pod status board.
-  room(9, 43, 105); add(`<g class="racks">`);
-  for (let m = 46; m < 64; m += 5) { box(9, m, m + 3, 0.4, 0.5, "kit"); box(9, m + 0.2, m + 0.3, 0, 0.4, "kit"); box(9, m + 2.7, m + 2.8, 0, 0.4, "kit"); }
-  add(`</g>`); lockers(9, 68, 84, 2.4); add(`<g class="racks">`);
-  box(9, 87, 95, 0, 1.2, "kit"); for (const h of [0.4, 0.8]) sh(9, 87, 95, h);
-  box(9, 97.5, 102.5, 2.0, 3.2, "kit"); box(9, 97.8, 102.2, 2.2, 3.0, "crate");
-  add(`</g>`); term(9, 104); tg(71.5, 9, 56, -4.5);
+  room(9, 43, 76); room(9, 76, 105); add(`<g class="racks">`);   // 76 to 105 unassigned
+  for (let m = 45; m < 58; m += 5) { box(9, m, m + 3, 0.4, 0.5, "kit"); box(9, m + 0.2, m + 0.3, 0, 0.4, "kit"); box(9, m + 2.7, m + 2.8, 0, 0.4, "kit"); }
+  add(`</g>`); lockers(9, 59, 67, 2.4); add(`<g class="racks">`);
+  box(9, 68, 74, 0, 1.2, "kit"); for (const h of [0.4, 0.8]) sh(9, 68, 74, h);
+  box(9, 68.5, 73.5, 2.0, 3.2, "kit"); box(9, 68.8, 73.2, 2.2, 3.0, "crate");
+  add(`</g>`); term(9, 75); tg(60, 9, 56, -4.5);
   room(9, block(9, LIFTS[1] + LW / 2, 1, 5, 4, 5), 357);   // Engineering, with the DYNEX and Valdez teams
-  room(10, 25, 105); add(`<g class="racks">`); for (let m = 28; m < 100; m += 9) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(65, 10, 48, -4.5);
+  room(10, 25, 55); room(10, 55, 105); add(`<g class="racks">`); for (const m of [57, 66, 84, 93]) { box(10, m, m + 7, 0, 4.0, "kit"); for (const h of [1.3, 2.6]) hl(10, m, m + 7, h); box(10, m + 1, m + 3, 0, 1.0, "crate"); box(10, m + 4, m + 5.5, 1.3, 2.1, "crate"); } add(`</g>`); term(10, 102); tg(80, 10, 48, -4.5);   // 25 to 55 unassigned
   room(10, block(10, LIFTS[1] + LW / 2, 1, 5, 4, 5), 375);   // Maintenance, Habitation services
-  room(11, 305, 355); add(`<g class="plant">`); box(11, 309, 316, 0, 2.6); for (let m = 320; m < 348; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 351); tg(330, 11, 49, -4.5);
+  room(11, 305, 332); room(11, 332, 355); add(`<g class="plant">`); box(11, 307, 314, 0, 2.6); for (let m = 316; m < 327; m += 3.5) box(11, m, m + 2.6, 0, 1.6); add(`</g>`); term(11, 330.8); tg(318, 11, 49, -4.5);   // 332 to 355 unassigned
 
   // Power feeders (gold) to every new major system, from the two risers along each deck's service band.
   feed(1, RA, 143.1, 1, 1.4); feed(1, RA, 156, 1, 2.8); feed(1, RA, 185.5, 1, 1.3);
   feed(1, RB, 256.9, 1, 1.4); feed(1, RB, 214.5, 1, 1.3); feed(1, RB, 236, 1, 1.7);
   feed(2, RA, 143, 2, 0.9); feed(2, RB, 280.3, 2, 1.4);
   feed(3, RA, 140.15, 3, 1.4); feed(3, RA, 100, 4, 11.5); feed(3, RB, 300, 4, 11.5);
-  feed(4, RA, 41.5, 4, 3.2); feed(4, RB, 358.5, 4, 3.2);
-  feed(5, RA, 66, 5, 3.2); feed(5, RB, 326.8, 5, 2.4); feed(3, RB, 220.5, 3, 2.4);
+  feed(4, RA, 36.1, 4, 5.4); feed(4, RB, 363.9, 4, 5.4);   // onto a pod, clear of the centred tag
+  feed(5, RA, 90, 5, 3.2); feed(5, RB, 315.8, 5, 2.4); feed(3, RB, 220.5, 3, 2.4);
   feed(6, RA, 14.4, 6, 1.7); feed(6, RB, 385.6, 6, 1.7);
   feed(7, RA, 124, 7, 2.6); feed(7, RB, 276, 7, 2.6);
   feed(8, RA, 95, 8, 0.9);

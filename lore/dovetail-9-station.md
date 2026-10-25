@@ -187,7 +187,15 @@ Who sleeps where follows seniority (counts in [[crew]]). Room for all 166 and ab
   - **Deck 08:** Command & Administration, Security, Medical.
   - **Deck 09:** Engineering, with the DYNEX and Valdez teams.
   - **Deck 10:** Maintenance and Habitation services.
-- **Freed by stacking [open]:** the stretches the blocks no longer need are unassigned rooms, to plan one at a time: Deck 02 at the left end of the suites (95 to 104 m), Deck 04 beyond the Science block (188.5 to 197.5 m) and from the right lift's landing to engineering's edge (211.5 to 257.5 m), and the far ends of Decks 08 (322 to 330 m), 09 (322 to 362 m) and 10 (322 to 375 m).
+- **Unassigned space [open]:** freed by stacking the housing and by sizing other rooms to what they hold, drawn as empty rooms, to plan one at a time:
+  - **Deck 02:** 95 to 104 m (left of the suites), 202.5 to 233 m (between SIGMA's column and the lounge).
+  - **Deck 03:** 181 to 197.5 m (past the clinic).
+  - **Deck 04:** 188.5 to 197.5 m (beyond the Science block), 211.5 to 257.5 m (from SIGMA's column to the right lift's landing).
+  - **Deck 05:** 48 to 85 m (between the Time standards and Materials labs), 318.5 to 341 m (between Corridor analysis and the Array receiver room).
+  - **Deck 08:** 10 to 45 m (past the fire stores), 352 to 392 m (past the gym).
+  - **Deck 09:** 76 to 105 m (past the muster station), 322 to 357 m (between the housing block and the pods).
+  - **Deck 10:** 25 to 55 m (past logistics stores), 322 to 375 m (past the housing block).
+  - **Deck 11:** 332 to 355 m (past recycling).
 - **Where the reader finds it:** the housing roster in SIGMA's records (who had which cabin), and each cabin itself: the place where its occupant lived, and often near where they died.
 
 ## Science **[proposed]**
