@@ -778,8 +778,12 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // Crew housing by seniority: suites for Level 6 staff, single cabins (3 m) for senior grades, doubles (4 m, bunk
   // beds) for juniors. The section cuts one row of cabins; a second row faces it across the block's corridor.
   const WASH = [], SUITE_WASH = [];   // washroom sinks and suite washrooms, for the water lines below
+  // Living rooms are low rooms (2.6 m), not the deck's 5 m; the space over them is service void, kept for air ducts.
+  const LOW = 2.6;
+  const lowRoom = (k, lo, hi) => add(`<rect class="room" x="${f(X(lo))}" y="${f(Yk(k, LOW))}" width="${f((hi - lo) * S)}" height="${f(dy(k + 1) - Yk(k, LOW))}"/>`);
+  const lowVoid = (k, lo, hi) => { room(k, lo, hi); EARLY.push(`<rect class="service" x="${f(X(lo))}" y="${f(dy(k) + 3 * S)}" width="${f((hi - lo) * S)}" height="${f(Yk(k, LOW) - dy(k) - 3 * S)}"/>`); };
   const cabin = (k, lo, hi) => {
-    room(k, lo, hi);
+    lowRoom(k, lo, hi);
     if (hi - lo < 3.5) { box(k, lo + 0.2, lo + 2.2, 0, 0.6, "kit"); box(k, lo + 0.3, lo + 0.8, 0.6, 0.75, "crate"); box(k, lo + 2.4, lo + 2.85, 0, 2.2, "kit"); return; }
     // Bunk: two end posts from the floor, the mattresses fitted between them.
     box(k, lo + 0.4, lo + 0.5, 0, 1.9, "kit"); box(k, lo + 2.3, lo + 2.4, 0, 1.9, "kit");
@@ -788,7 +792,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   };
   // Washroom (5 m): two toilet stalls, two showers, a sink counter. Common room (5 m): sofa, table, a wall screen.
   const washroom = (k, lo) => {
-    room(k, lo, lo + 5);
+    lowRoom(k, lo, lo + 5);
     for (const m of [lo + 1.0, lo + 2.0]) box(k, m - 0.05, m + 0.05, 0, 2.0, "kit");
     for (const m of [lo + 0.2, lo + 1.2]) box(k, m, m + 0.6, 0, 0.5, "crate");
     for (const m of [lo + 2.1, lo + 2.9]) box(k, m, m + 0.7, 0, 2.1, "kit");
@@ -796,9 +800,9 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     WASH.push([k, lo + 4.3]); T.push(tag(lo + 2.5, k, 54, -4.5));
   };
   const common = (k, lo) => {
-    room(k, lo, lo + 5);
+    lowRoom(k, lo, lo + 5);
     box(k, lo + 0.3, lo + 2.5, 0, 0.8, "kit"); box(k, lo + 2.9, lo + 4.1, 0.6, 0.7, "kit"); box(k, lo + 3.45, lo + 3.55, 0, 0.6, "kit");
-    box(k, lo + 0.6, lo + 2.2, 2.0, 3.0, "crate"); term(k, lo + 4.6); T.push(tag(lo + 2.5, k, 55, -4.5));
+    box(k, lo + 0.6, lo + 2.2, 1.3, 2.2, "crate"); term(k, lo + 4.6); T.push(tag(lo + 2.5, k, 55, -4.5));
   };
   // A block from its lift-core end: a landing where the lift and access trunk open, the washroom and common room,
   // then the singles, then doubles to the far end. Spare cabins at the far end take contractor rotations and visitors.
@@ -806,7 +810,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     const d = far > core ? 1 : -1; let p = core + d * landing;
     const seg = (len) => { const a = p, b = p + d * len; p = b; return [Math.min(a, b), Math.max(a, b)]; };
     room(k, Math.min(core, core + d * landing), Math.max(core, core + d * landing));
-    add(`<g class="racks">`);
+    lowVoid(k, Math.min(p, far), Math.max(p, far)); add(`<g class="racks">`);
     washroom(k, seg(5)[0]); common(k, seg(5)[0]);
     const c0 = p;
     for (let i = 0; i < singles; i++) { const [lo, hi] = seg(3); cabin(k, lo, hi); }
@@ -835,9 +839,9 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
 
   // Deck 02: senior quarters, galley, mess, recreation, laundry.
   // Senior staff suites, Level 6: bed, wardrobe, a desk, and a private washroom. A landing by the lift.
-  room(2, 129, LIFTS[0] - LW / 2); add(`<g class="racks">`);
+  room(2, 129, LIFTS[0] - LW / 2); lowVoid(2, 95, 129); add(`<g class="racks">`);
   for (let i = 0; i < 6; i++) {
-    const lo = 95 + i * 34 / 6, hi = lo + 34 / 6; room(2, lo, hi);
+    const lo = 95 + i * 34 / 6, hi = lo + 34 / 6; lowRoom(2, lo, hi);
     box(2, lo + 0.2, lo + 2.2, 0, 0.6, "kit"); box(2, lo + 0.3, lo + 0.8, 0.6, 0.75, "crate"); box(2, lo + 2.35, lo + 2.8, 0, 2.2, "kit");
     box(2, lo + 3.0, lo + 4.2, 0.75, 0.9, "kit"); box(2, lo + 3.1, lo + 3.2, 0, 0.75, "kit"); box(2, lo + 4.0, lo + 4.1, 0, 0.75, "kit");
     box(2, hi - 1.1, hi - 0.1, 0, 2.4, "kit"); SUITE_WASH.push(hi - 0.6);

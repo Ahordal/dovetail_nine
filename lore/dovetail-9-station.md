@@ -179,7 +179,8 @@ Placed on the side view; the numbers are its room tags. Every room is fed from t
 Who sleeps where follows seniority (counts in [[crew]]). Room for all 166 and to spare: the spare cabins take contractor rotations and visiting ship crews.
 
 - **Suites (31), Deck 02,** for the twelve Level 6 staff: bed, wardrobe, a desk and a private washroom.
-- **Single cabins** (3 m: bed and wardrobe) for senior grades; **doubles** (4 m: bunk beds, two wardrobes) for juniors, two to a room.
+- **Single cabins** (3 m: bed and wardrobe) for senior grades; **doubles** (4 m: bunk beds, a double wardrobe) for juniors, two to a room.
+- **Low rooms:** cabins, suites, block washrooms and common rooms are about **2.6 m** to the ceiling, not the deck's full 5 m. The space above them is service void, joined to the deck's service band: room for the air ducts living space needs most. The landings stay full height, where the lift and access trunk open.
 - **Blocks by division,** near their work, each laid out from its lift-core end: a landing where the lift and access trunk open, a **washroom (54)** (toilets, showers, sinks), a **common room (55)** (sofa, table, wall screen, terminal), the singles, then the doubles, with spares at the far end. The side view cuts one row of cabins; a second faces it across the block's corridor.
   - **Deck 04, left:** Science. **Deck 04, right:** Science's overflow and visiting crews.
   - **Deck 08:** Command & Administration, Security, Medical.
