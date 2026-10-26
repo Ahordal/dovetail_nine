@@ -173,6 +173,7 @@ Placed on the side view; the numbers are its room tags. Every room is fed from t
 - **Deck 08:** **fire and emergency stores (46)** (suppression cylinders, hose reels), **security (45)** (office, armoury, holding cell; the left lift opens into it), more quarters, and a **gym (47)**.
 - **Deck 10, logistics stores (48);** **Deck 11, recycling and sorting (49)** beside the waste plant.
 - **Terminals:** SIGMA terminals in every major room, drawn as small screens on posts: each one reveals its deck's map to Quell's slate ([[site-frame]]).
+- **[proposed] Air:** each life support plant serves its own half of the station. A riser beside each lift's outer wall runs from Deck 12 to Deck 01 and feeds a duct along every deck's service band, supply and return side by side in one split casing. The ducts stop short of the middle, at SIGMA's column, the chamber and the bay, so the two halves never join. Engineering's decks are on the same ducts as the rest of their half, which is how the argon-41 spread. The bay, the airlock machinery and the cargo rooms have no service band and no duct. Where the reader finds it: life support's terminal and its maintenance records.
 - **Water:** one crossing in Deck 02's service band serves the right half, down a riser beside the right lift to hydroponics and life support there; the left half branches straight off the supply riser.
 
 ## Crew housing **[proposed]**

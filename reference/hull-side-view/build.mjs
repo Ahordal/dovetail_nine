@@ -1153,6 +1153,32 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const [m, k] of SHAFT_DOORS) doors.push([m, [dy(k + 1) - FL - 1.8 * S, dy(k + 1) - FL]]);
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
+// Air: a life support plant at each end of Deck 07 serves its own half. A riser beside each lift's outer wall,
+// Deck 12 to 01, feeds a duct along every deck's service band. Each duct carries supply and return side by side.
+{
+  // Midway between the deck line and the power feeders; risers clear of the lift walls and the trunks' junction boxes.
+  const DY = (k) => dy(k) + 0.8 * S, RIS = [131.6, 268.2];
+  // Where each half's duct stops short of the middle: SIGMA's column, the chamber, the bay.
+  const mid = (k) => (k <= 4 ? [197.5, 202.5] : k <= 7 ? [186, 214] : k <= 11 ? [BAY[0], BAY[1]] : [198.5, 201.5]);
+  // Spans with no service band to run through: airlock plants, the two-storey hold and hydroponics, the cargo rooms.
+  const SKIP = { 4: [[60, 133], [267, 340]], 8: [[133, 151], [249, 267]], 9: [[133, 151], [249, 267]], 10: [[105, 151]], 11: [[133, 151]] };
+  const runs = [];
+  for (let k = 1; k <= 12; k++) {
+    const [c0, c1] = mid(k);
+    for (const [a0, a1] of [[SPAN[k][0] + 1.5, c0], [c1, SPAN[k][1] - 1.5]]) {
+      let segs = [[a0, a1]];
+      for (const [s0, s1] of SKIP[k] || []) segs = segs.flatMap(([u, v]) => [[u, Math.min(v, s0)], [Math.max(u, s1), v]].filter(([p, q]) => q - p > 0.5));
+      for (const [u, v] of segs) runs.push(`M ${f(mx(u))} ${f(DY(k))} H ${f(mx(v))}`);
+    }
+  }
+  for (const m of RIS) runs.push(`M ${f(mx(m))} ${f(DY(1))} V ${f(DY(12))}`);
+  // Drops from Deck 07's duct into the air handlers' tops.
+  for (const m of [105, 115, 285, 295]) runs.push(`M ${f(mx(m))} ${f(DY(7))} V ${f(dy(8) - FL - 4.0 * S)}`);
+  for (const d of runs) GOLD.push(`<path class="duct duct-o" d="${d}"/>`);
+  for (const d of runs) GOLD.push(`<path class="duct duct-i" d="${d}"/>`);
+  // The left riser runs behind the two-storey hold, which hides it: dashed, as for anything deeper in the hull.
+  for (const e of [-0.23, 0.23]) add(`<line class="duct-behind" x1="${f(mx(RIS[0] + e))}" y1="${dy(9)}" x2="${f(mx(RIS[0] + e))}" y2="${dy(11)}"/>`);
+}
 svg.splice(goldAt, 0, ...EARLY, ...GOLD, ...CRAWL);
 // Centre each room tag side to side in the smallest room outline that holds it. Full-height rooms put it in one row
 // per deck, near the top, clear of the kit; low rooms keep theirs centred.
@@ -1203,18 +1229,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -1239,6 +1265,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .layers input { margin: 0; accent-color: var(--accent); }
   /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
   #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-air :is(.duct, .duct-behind),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
   #hull.hide-doors :is(.door, .airlock),
@@ -1265,6 +1292,10 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.3; }
+  .duct { fill: none; stroke-linecap: square; }
+  .duct-o { stroke: var(--air); stroke-width: 1.1; }
+  .duct-i { stroke: var(--bg); stroke-width: 0.4; }
+  .duct-behind { stroke: var(--air); stroke-width: 0.35; stroke-dasharray: 1.2 0.9; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
   .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; }
   .behind { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
@@ -1389,6 +1420,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <legend>LAYERS</legend>
       <label><input type="checkbox" value="power" checked>Power</label>
       <label><input type="checkbox" value="water" checked>Water</label>
+      <label><input type="checkbox" value="air" checked>Air</label>
       <label><input type="checkbox" value="access" checked>Maintenance access</label>
       <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
       <label><input type="checkbox" value="equipment" checked>Equipment</label>
@@ -1479,6 +1511,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clock"><rect x="10" y="2" width="8" height="8"/><circle cx="14" cy="6" r="1.6"/></g></svg>Reference clock, one on every deck</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tap" x1="14" y1="0" x2="14" y2="12"/></svg>Branch up from the conduits: R&amp;D&apos;s tap, the receivers&apos; feed</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="duct duct-o" d="M 3 6 H 25"/><path class="duct duct-i" d="M 3 6 H 25"/></svg>Air duct, supply and return in one casing; dashed behind the hold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
