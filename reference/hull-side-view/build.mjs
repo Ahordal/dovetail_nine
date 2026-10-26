@@ -89,6 +89,7 @@ add(`<polygon class="hull-edge" points="${outline}"/>`);
 // The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
 const goldAt = svg.length, GOLD = [], EARLY = [], CRAWL = [], TERMS = [];   // TERMS: every SIGMA terminal, for the data network
 const FIRE_PLANTS = [];   // fire suppression plants' outlets and tank inlets, for the red network
+const LANDING_DOORS = [];   // [metres along, deck]: housing landings out to their stair and corridor
 const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
@@ -843,6 +844,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     let p = core + d * landing;
     const seg = (len) => { const a = p, b = p + d * len; p = b; return [Math.min(a, b), Math.max(a, b)]; };
     room(k, Math.min(core, core + d * landing), Math.max(core, core + d * landing));
+    LANDING_DOORS.push([core + d * landing, k]);
     add(`<g class="racks">`);
     const [s0, s1] = seg(4); stair(k, s0, s1, d);
     const t0 = p; washroom(k, seg(5)[0]); common(k, seg(5)[0]);
@@ -876,7 +878,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // Deck 02: senior quarters, galley, mess, recreation, laundry.
   // Senior staff suites, Level 6: bed, wardrobe, a desk, and a private washroom. Stacked like the cabins, a landing by
   // the lift, a stair at each end. 95 to 104 is freed by the stacking, unassigned.
-  room(2, 129, LIFTS[0] - LW / 2); room(2, 95, 104); add(`<g class="racks">`);
+  room(2, 129, LIFTS[0] - LW / 2); room(2, 95, 104); LANDING_DOORS.push([129, 2]); add(`<g class="racks">`);
   stair(2, 125, 129, -1); stair(2, 104, 108, 1); slab(2, 108, 125);
   for (let i = 0; i < 3; i++) {
     const lo = 108 + i * 17 / 3, hi = lo + 17 / 3; room(2, lo, hi);
@@ -1201,6 +1203,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // Inner pressure doors, ready room to airlock: inside the pressurized station, so unlocked.
   for (const m of [BAY[0] - AL, BAY[1] + AL]) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(door9Top)}" width="${DW}" height="${f(DOOR * S)}"/>`);
   for (const [m, k] of SHAFT_DOORS) doors.push([m, [dy(k + 1) - FL - 1.8 * S, dy(k + 1) - FL]]);
+  for (const [m, k] of LANDING_DOORS) doors.push([m, door(k)]);
   for (const [m, [y0, y1]] of doors) add(`<rect class="door door-open" x="${f(mx(m) - DW / 2)}" y="${f(y0)}" width="${DW}" height="${f(y1 - y0)}"/>`);
 }
 // Air: a life support plant at each end of Deck 07 serves its own half. A riser beside each lift's outer wall,
