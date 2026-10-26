@@ -88,6 +88,7 @@ add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
 // The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
 const goldAt = svg.length, GOLD = [], EARLY = [], CRAWL = [], TERMS = [];   // TERMS: every SIGMA terminal, for the data network
+const FIRE_PLANTS = [];   // fire suppression plants' outlets and tank inlets, for the red network
 const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
@@ -1019,13 +1020,25 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   for (const [m0, m1] of [[5, 70], [330, 395]]) { room(7, m0, m1); desks(7, m0, m0 + 30, 6); if (m0 < 200) { lockers(7, 39, 48, 2.4); lockers(7, 52, 66, 2.4); } else lockers(7, m0 + 34, m1 - 4, 2.4); term(7, m0 + 32); tg((m0 + m1) / 2, 7, 44, -4.5); }
 
   // Deck 08: fire and emergency stores, security; crew quarters and the gym on the right.
-  room(8, 10, 45); room(8, 45, 85); add(`<g class="plant">`); for (let m = 47; m < 63; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [66.5, 71.5, 76.5]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 81.5); tg(65, 8, 46, -4.5);   // 10 to 45 unassigned
+  room(8, 10, 45); room(8, 45, 85); add(`<g class="plant">`); for (let m = 47; m < 63; m += 1.6) box(8, m, m + 1.1, 0, 2.2, "", 0.5 * S); for (const m of [66.5, 71.5, 76.5]) { circ(8, m, 1.0, 0.8); box(8, m - 0.9, m + 0.9, 0, 0.1); } add(`</g>`); term(8, 81.5); tg(65, 8, 46, -4.5);
   room(8, 85, LIFTS[0] - LW / 2); desks(8, 85, 105); lockers(8, 106.5, 115, 2.4);
   add(`<rect class="room" x="${f(X(116.8))}" y="${f(Yk(8, 4.5))}" width="${f(11 * S)}" height="${f(4.5 * S)}"/>`);
   for (let m = 117.6; m < 127.7; m += 0.8) add(`<line class="flange" x1="${f(X(m))}" y1="${f(Yk(8, 4.5))}" x2="${f(X(m))}" y2="${f(Yk(8, 0))}"/>`);
   term(8, 115.8); tg(100, 8, 45, -4.5);
   block(8, LIFTS[1] + LW / 2, 1, 5, 4, 5);   // Command, Security, Medical. Decks 08 to 10 share one plan, so walls stack
-  room(8, 322, 352); room(8, 352, 392); add(`<g class="racks">`); for (const m of [325, 331, 337, 343]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(337, 8, 47, -4.5);   // 352 to 392 unassigned
+  room(8, 322, 352); room(8, 352, 392); add(`<g class="racks">`); for (const m of [325, 331, 337, 343]) { box(8, m, m + 5, 0, 0.6, "kit"); box(8, m + 1, m + 1.4, 0.6, 1.8, "kit"); } add(`</g>`); tg(337, 8, 47, -4.5);
+  // Fire suppression plants at both outer ends of Deck 08: a mist water tank and pumps, an inert gas cylinder bank.
+  for (const [m0, m1, d] of [[10, 45, 1], [352, 392, -1]]) {
+    const M = (u) => d > 0 ? m0 + u : m1 - u, A = (u0, u1) => [Math.min(M(u0), M(u1)), Math.max(M(u0), M(u1))];
+    add(`<g class="plant">`);
+    { const [a, b] = A(2, 12); box(8, a, b, 0, 3.2, "", 1.0 * S); hl(8, a + 0.4, b - 0.4, 1.6); }
+    for (const u of [14, 17]) { const [a, b] = A(u, u + 2.4); box(8, a, b, 0, 1.4); circ(8, (a + b) / 2, 0.7, 0.45); }
+    for (let u = 21; u < 31; u += 1.2) { const [a, b] = A(u, u + 0.8); box(8, a, b, 0, 2.6, "", 0.4 * S); }
+    { const [a, b] = A(20.6, 30.8); hl(8, a, b, 2.9); }
+    add(`</g>`);
+    term(8, M(33)); tg((m0 + m1) / 2, 8, 57, -4.5);
+    FIRE_PLANTS.push({ k: 8, tank: [M(7), 3.2], outlets: [[M(18.2), 1.4], [M(25.7), 2.9]] });
+  }
 
   // Decks 09 and 10: quarters at the outer ends; logistics stores; Deck 11: recycling beside the waste plant.
   // Pod muster station beside the Deck 09 pods: benches, emergency suit and ration lockers, the pod status board.
@@ -1216,6 +1229,102 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // The left riser runs behind the two-storey hold, which hides it: dashed, as for anything deeper in the hull.
   for (const e of [-0.23, 0.23]) add(`<line class="duct-behind" x1="${f(mx(RIS[0] + e))}" y1="${dy(9)}" x2="${f(mx(RIS[0] + e))}" y2="${dy(11)}"/>`);
 }
+// Fire suppression: one red network (mist for crewed rooms, inert gas for electronics, by zone). Each Deck 08 plant
+// feeds a main along every deck's room ceilings via a riser beside its lift; Deck 12's main ties the halves together.
+{
+  // Lower on Deck 06, between the conduits and the tram; on Deck 07, below the halls' secondary loop; on Deck 09,
+  // clear of the locked hatches in the ready rooms' low ceilings.
+  const RY = (k) => dy(k) + ({ 6: 5.7, 7: 4.0, 9: 4.1 }[k] ?? 3.6) * S, WY = (k) => dy(k) + 3.2 * S, Yk = (k, h) => dy(k + 1) - FL - h * S;
+  const RIS = [130.75, 268.95], HR = 1.0;
+  // Every other line's straight runs, so red can hop wherever it crosses one without joining.
+  const segs = [];
+  const seg = (a, b, c, d) => { if (a === c || b === d) segs.push([Math.min(a, c), Math.min(b, d), Math.max(a, c), Math.max(b, d)]); };
+  const collect = (s) => {
+    const cls = (s.match(/^<(?:path|polyline|line) class="([^"]+)"/) || [])[1];
+    if (!cls || !/^(grid-power|power|water|data|duct duct-o|duct-behind|tap)\b/.test(cls) || /data-core/.test(cls)) return;
+    if (s.startsWith("<line")) return seg(...["x1", "y1", "x2", "y2"].map((a) => +s.match(new RegExp(` ${a}="([-0-9.]+)"`))[1]));
+    if (s.startsWith("<polyline")) {
+      const p = s.match(/points="([^"]+)"/)[1].trim().split(/\s+/).map((q) => q.split(",").map(Number));
+      for (let i = 1; i < p.length; i++) seg(...p[i - 1], ...p[i]);
+      return;
+    }
+    const t = s.match(/ d="([^"]+)"/)[1].match(/[MHVLA]|-?[\d.]+/g);
+    let x = 0, y = 0;
+    for (let i = 0; i < t.length;) {
+      const c = t[i++];
+      if (c === "M") { x = +t[i++]; y = +t[i++]; }
+      else if (c === "H") { const n = +t[i++]; seg(x, y, n, y); x = n; }
+      else if (c === "V") { const n = +t[i++]; seg(x, y, x, n); y = n; }
+      else if (c === "L") { const nx = +t[i++], ny = +t[i++]; seg(x, y, nx, ny); x = nx; y = ny; }
+      else if (c === "A") { i += 5; x = +t[i++]; y = +t[i++]; }
+    }
+  };
+  [...svg, ...EARLY, ...GOLD, ...CRAWL].forEach(collect);
+  // Crossings along a run, merged into one wider hop where they bunch together.
+  const hops = (pos) => {
+    const g = [];
+    for (const p of [...new Set(pos)].sort((a, b) => a - b)) {
+      if (g.length && p - g[g.length - 1][1] < 2 * HR + 0.4) g[g.length - 1][1] = p; else g.push([p, p]);
+    }
+    return g;
+  };
+  // Mains hop down, since the water branches run just above them; risers hop outward, away from the air ducts.
+  const hRun = (x0, x1, y, up = false) => {
+    const xs = segs.filter(([a, b, c, d]) => a === c && b < y - 0.3 && d > y + 0.3 && a > x0 + HR && a < x1 - HR).map((s) => s[0]);
+    let d = `M ${f(x0)} ${f(y)}`;
+    for (const [lo, hi] of hops(xs)) d += ` H ${f(lo - HR)} A ${f((hi - lo) / 2 + HR)} ${HR} 0 0 ${up ? 1 : 0} ${f(hi + HR)} ${f(y)}`;
+    return { d: d + ` H ${f(x1)}`, xs };
+  };
+  const vRun = (x, y0, y1, right) => {
+    const ys = segs.filter(([a, b, c, d]) => b === d && a < x - 0.3 && c > x + 0.3 && b > y0 + HR && b < y1 - HR).map((s) => s[1]);
+    let d = `M ${f(x)} ${f(y0)}`;
+    for (const [lo, hi] of hops(ys)) d += ` V ${f(lo - HR)} A ${HR} ${f((hi - lo) / 2 + HR)} 0 0 ${right ? 1 : 0} ${f(x)} ${f(hi + HR)}`;
+    return d + ` V ${f(y1)}`;
+  };
+  const X = (m) => mx(m), red = [];
+  // Mist tanks top up from the water supply: the left riser, and the right one where it passes Deck 08.
+  for (const { k, tank: [m, h] } of FIRE_PLANTS) {
+    const from = m < 200 ? 136.4 : LIFTS[1] + LW / 2 + 4.5;
+    const { d } = hRun(Math.min(X(from), X(m)), Math.max(X(from), X(m)), WY(k), true);
+    const w = `<path class="water" d="${d}"/><path class="water" d="M ${f(X(m))} ${f(WY(k))} V ${f(Yk(k, h))}"/>`;
+    GOLD.push(w); collect(`<path class="water" d="${d}"/>`); collect(`<path class="water" d="M ${f(X(m))} ${f(WY(k))} V ${f(Yk(k, h))}"/>`);
+  }
+  // Mains stop where the air ducts do in the middle. Deck 03's main covers the two-storey hydroponics below it;
+  // pod rooms are skipped, since the pods fill them and carry their own suppression.
+  const mid = (k) => (k <= 4 ? [197.5, 202.5] : k <= 7 ? [186, 214] : k <= 11 ? [BAY[0], BAY[1]] : null);
+  const SKIP = { 4: [[0, 133], [267, 400]], 9: [[0, 43], [357, 400]] };
+  const mains = [];
+  for (let k = 1; k <= 12; k++) {
+    const lo = Math.min(SPAN[k][0] + 1.5, RIS[0]), hi = Math.max(SPAN[k][1] - 1.5, RIS[1]), c = mid(k);
+    let spans = c ? [[lo, c[0]], [c[1], hi]] : [[lo, hi]];
+    for (const [s0, s1] of SKIP[k] || []) spans = spans.flatMap(([u, v]) => [[u, Math.min(v, s0)], [Math.max(u, s1), v]].filter(([p, q]) => q - p > 0.5));
+    for (const [u, v] of spans) mains.push([k, u, v]);
+  }
+  for (const m of RIS) red.push(vRun(X(m), RY(1), RY(12), m > 200));
+  for (const { k, outlets } of FIRE_PLANTS) for (const [m, h] of outlets) red.push(`M ${f(X(m))} ${f(Yk(k, h))} V ${f(RY(k))}`);
+  // Room walls and ladders at ceiling height, so nozzles land clear of them.
+  const all = svg.join("");
+  const walls = [...all.matchAll(/<rect class="room" x="([-0-9.]+)" y="([-0-9.]+)" width="([0-9.]+)" height="([0-9.]+)"/g)].map((r) => r.slice(1).map(Number));
+  const ladders = [...all.matchAll(/<line class="ladder" x1="([-0-9.]+)" y1="([-0-9.]+)" x2="[-0-9.]+" y2="([-0-9.]+)"/g)].map((r) => r.slice(1).map(Number));
+  const nozzles = [];
+  for (const [k, u, v] of mains) {
+    const { d, xs } = hRun(X(u), X(v), RY(k));
+    red.push(d);
+    const y = RY(k), edges = walls.filter(([, ry, , rh]) => ry < y && ry + rh > y).flatMap(([rx, , rw]) => [rx, rx + rw]);
+    const avoid = [...xs, ...RIS.map(X), ...edges, ...ladders.filter(([, a, b]) => Math.min(a, b) < y + 2 && Math.max(a, b) > y - 1).map((l) => l[0]), ...LIFTS.flatMap((L) => [X(L - LW / 2), X(L), X(L + LW / 2)])];
+    const inHold = (x) => (k === 9 || k === 10) && x > X(105) && x < X(LIFTS[0] - LW / 2);
+    for (let m = u + 4; m < v - 1; m += 8) {
+      const x = X(m);
+      if (!inHold(x) && avoid.every((a) => Math.abs(a - x) > 1.8)) nozzles.push(`M ${f(x)} ${f(y)} V ${f(y + 0.9)} M ${f(x - 0.6)} ${f(y + 1.5)} L ${f(x + 0.6)} ${f(y + 1.5)} L ${f(x)} ${f(y + 0.8)} Z`);
+    }
+  }
+  for (const d of red) GOLD.push(`<path class="fire" d="${d}"/>`);
+  for (const d of nozzles) GOLD.push(`<path class="fire-nozzle" d="${d}"/>`);
+  // Behind the two-storey hold, which hides them: dashed, as for anything deeper in the hull.
+  add(`<g clip-path="url(#hold-clip)">`);
+  for (const d of red) add(`<path class="fire fire-behind" d="${d}"/>`);
+  add(`</g>`);
+}
 svg.splice(goldAt, 0, ...EARLY, ...GOLD, ...CRAWL);
 // Centre each room tag side to side in the smallest room outline that holds it. Full-height rooms put it in one row
 // per deck, near the top, clear of the kit; low rooms keep theirs centred.
@@ -1266,18 +1375,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0; --fire: #ff2626;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f; --fire: #e8000b;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f; --fire: #e8000b;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -1304,6 +1413,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   #hull.hide-power :is(.power, .grid-power, .power-node),
   #hull.hide-data :is(.data, .data-node),
   #hull.hide-air :is(.duct, .duct-behind),
+  #hull.hide-fire :is(.fire, .fire-nozzle),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
   #hull.hide-doors :is(.door, .airlock),
@@ -1334,6 +1444,9 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .data-core { stroke-width: 0.7; }
   .data-node { fill: var(--data); }
   .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire { fill: none; stroke: var(--fire); stroke-width: 0.5; stroke-linejoin: round; }
+  .fire-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire-nozzle { fill: var(--fire); stroke: var(--fire); stroke-width: 0.3; stroke-linejoin: round; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }
   .duct-i { stroke: var(--bg); stroke-width: 0.4; }
@@ -1464,6 +1577,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <label><input type="checkbox" value="water" checked>Water</label>
       <label><input type="checkbox" value="air" checked>Air</label>
       <label><input type="checkbox" value="data" checked>SIGMA network</label>
+      <label><input type="checkbox" value="fire" checked>Fire suppression</label>
       <label><input type="checkbox" value="access" checked>Maintenance access</label>
       <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
       <label><input type="checkbox" value="equipment" checked>Equipment</label>
@@ -1521,6 +1635,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">44</text></g></svg>Maintenance shops, Deck 07</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">45</text></g></svg>Security: office, armoury, holding cell, Deck 08</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">46</text></g></svg>Fire and emergency stores, Deck 08</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">57</text></g></svg>Fire suppression plant, Deck 08, one at each end: mist tank and pumps, inert gas cylinders</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">47</text></g></svg>Gym, Deck 08</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">48</text></g></svg>Logistics stores, Deck 10</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">49</text></g></svg>Recycling and sorting, Deck 11</li>
@@ -1556,6 +1671,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="duct duct-o" d="M 3 6 H 25"/><path class="duct duct-i" d="M 3 6 H 25"/></svg>Air duct, supply and return in one casing; dashed behind the hold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="data" d="M 3 6 H 25"/></svg>SIGMA network, from the core to every terminal</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="fire" d="M 3 3 H 25"/><path class="fire-nozzle" d="M 14 3 V 5.5 M 12.3 7.2 L 15.7 7.2 L 14 5.2 Z"/></svg>Fire suppression main along each ceiling, a nozzle in every room; dashed behind the hold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
@@ -1595,12 +1711,6 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><b>Docking ring:</b> the clamps inside the bay that hold the ship.</li>
         <li><b>Airlock B</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical. <b>Airlock A</b> faces it across the bay, its own umbilical pulled back.</li>
         <li><b>Maintenance access:</b> a trunk beside each lift core, Deck 12 to Deck 01, with a landing and hatch at every deck. Deck 12&apos;s crawlway joins them under the bay and drops into every fuel room; Deck 05&apos;s leads into engineering&apos;s shafts through locked hatches.</li>
-      </ul>
-    </section>
-    <section>
-      <h2><span class="tag open">NOT PLACED YET</span></h2>
-      <ul>
-        <li><b>Air ducts</b> and <b>fire suppression</b> lines.</li>
       </ul>
     </section>
   </div>

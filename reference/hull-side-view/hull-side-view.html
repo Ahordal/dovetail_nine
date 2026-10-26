@@ -7,18 +7,18 @@
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0; --fire: #ff2626;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f; --fire: #e8000b;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f; --fire: #e8000b;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -45,6 +45,7 @@
   #hull.hide-power :is(.power, .grid-power, .power-node),
   #hull.hide-data :is(.data, .data-node),
   #hull.hide-air :is(.duct, .duct-behind),
+  #hull.hide-fire :is(.fire, .fire-nozzle),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
   #hull.hide-doors :is(.door, .airlock),
@@ -75,6 +76,9 @@
   .data-core { stroke-width: 0.7; }
   .data-node { fill: var(--data); }
   .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire { fill: none; stroke: var(--fire); stroke-width: 0.5; stroke-linejoin: round; }
+  .fire-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire-nozzle { fill: var(--fire); stroke: var(--fire); stroke-width: 0.3; stroke-linejoin: round; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }
   .duct-i { stroke: var(--bg); stroke-width: 0.4; }
@@ -373,7 +377,7 @@
       <path class="data" d="M 151.7 233.7 H 456.2"/>
       <path class="data" d="M 154.6 252.9 H 412.6"/>
       <path class="data" d="M 208.8 272.1 H 431.6"/>
-      <path class="data" d="M 315.6 291.3 H 431.6"/>
+      <path class="data" d="M 223.2 291.3 H 431.6"/>
       <path class="data" d="M 300 310.5 H 431.6"/>
       <path class="data" d="M 364.8 329.7 H 431.6"/>
       <path class="data" d="M 508.8 156.9 V 164.6"/>
@@ -388,6 +392,7 @@
       <path class="data" d="M 208.8 272.1 V 279.8"/>
       <path class="data" d="M 315.6 291.3 V 299"/>
       <path class="data" d="M 397.9 291.3 V 299"/>
+      <path class="data" d="M 223.2 291.3 V 299"/>
       <path class="data" d="M 300 310.5 V 318.2"/>
       <path class="data" d="M 364.8 329.7 V 337.4"/>
       <path class="data" d="M 606 156.9 H 686.4"/>
@@ -396,6 +401,7 @@
       <path class="data" d="M 743.8 233.7 H 941.3"/>
       <path class="data" d="M 787.4 252.9 H 1045.4"/>
       <path class="data" d="M 767 272.1 H 988.8"/>
+      <path class="data" d="M 767 291.3 H 981.6"/>
       <path class="data" d="M 767 348.9 H 913.9"/>
       <path class="data" d="M 624.5 156.9 V 164.6"/>
       <path class="data" d="M 686.4 156.9 V 164.6"/>
@@ -408,6 +414,7 @@
       <path class="data" d="M 1045.4 252.9 V 260.6"/>
       <path class="data" d="M 773.8 272.1 V 279.8"/>
       <path class="data" d="M 988.8 272.1 V 279.8"/>
+      <path class="data" d="M 981.6 291.3 V 299"/>
       <path class="data" d="M 913.9 348.9 V 356.6"/>
       <path class="duct duct-o" d="M 435.6 151.9 H 594"/>
       <path class="duct duct-o" d="M 606 151.9 H 764.4"/>
@@ -473,6 +480,333 @@
       <path class="duct duct-i" d="M 396 267.1 V 274.3"/>
       <path class="duct duct-i" d="M 804 267.1 V 274.3"/>
       <path class="duct duct-i" d="M 828 267.1 V 274.3"/>
+      <path class="water" d="M 160.8 292.1 H 222.2 A 1 1 0 0 1 224.2 292.1 H 314.6 A 1 1 0 0 1 316.6 292.1 H 347 A 1 1 0 0 1 349 292.1 H 396.9 A 1 1 0 0 1 398.9 292.1 H 430.6 A 1 1 0 0 1 432.6 292.1 H 434.8 A 1 1 0 0 1 436.8 292.1 H 439.6 A 1 1 0 0 1 441.6 292.1 H 447.4"/><path class="water" d="M 160.8 292.1 V 295.4"/>
+      <path class="water" d="M 771.6 292.1 H 980.6 A 1 1 0 0 1 982.6 292.1 H 1044"/><path class="water" d="M 1044 292.1 V 295.4"/>
+      <path class="fire" d="M 433.8 158.6 V 170.1 A 1 1 0 0 0 433.8 172.1 V 175.9 A 1 1 0 0 0 433.8 177.9 V 188.8 A 1 2 0 0 0 433.8 192.8 V 194.3 A 1 1 0 0 0 433.8 196.3 V 210 A 1 1 0 0 0 433.8 212 V 227.7 A 1 1.8 0 0 0 433.8 231.2 V 232.7 A 1 1 0 0 0 433.8 234.7 V 246.9 A 1 1.8 0 0 0 433.8 250.4 V 266.1 A 1 1.8 0 0 0 433.8 269.6 V 271.9 A 1 1 0 0 0 433.8 273.9 V 285.3 A 1 1.8 0 0 0 433.8 288.8 V 291.1 A 1 1 0 0 0 433.8 293.1 V 304.5 A 1 1 0 0 0 433.8 306.5 V 325.2 A 1 1 0 0 0 433.8 327.2 V 342.9 A 1 1 0 0 0 433.8 344.9 V 347.7 A 1 1 0 0 0 433.8 349.7 V 358.3 A 1 1 0 0 0 433.8 360.3 V 362.1 A 1 1.8 0 0 0 433.8 365.6 V 369.8"/>
+      <path class="fire" d="M 765.5 158.6 V 170.1 A 1 1.8 0 0 1 765.5 173.6 V 175.9 A 1 1 0 0 1 765.5 177.9 V 189.3 A 1 1.8 0 0 1 765.5 192.8 V 194.3 A 1 1 0 0 1 765.5 196.3 V 210 A 1 1 0 0 1 765.5 212 V 227.7 A 1 1.8 0 0 1 765.5 231.2 V 232.7 A 1 1 0 0 1 765.5 234.7 V 246.9 A 1 1.8 0 0 1 765.5 250.4 V 266.1 A 1 1.8 0 0 1 765.5 269.6 V 285.3 A 1 1 0 0 1 765.5 287.3 V 304.5 A 1 1 0 0 1 765.5 306.5 V 323.7 A 1 1 0 0 1 765.5 325.7 V 342.9 A 1 3.4 0 0 1 765.5 349.7 V 362.1 A 1 1.8 0 0 1 765.5 365.6 V 369.8"/>
+      <path class="fire" d="M 187.7 299.7 V 293"/>
+      <path class="fire" d="M 205.7 296.1 V 293"/>
+      <path class="fire" d="M 1017.1 299.7 V 293"/>
+      <path class="fire" d="M 999.1 296.1 V 293"/>
+      <path class="fire" d="M 433.8 158.6 H 434.8 A 1 1 0 0 0 436.8 158.6 H 439.6 A 1 1 0 0 0 441.6 158.6 H 446.4 A 1 1 0 0 0 448.4 158.6 H 452.1 A 1 1 0 0 0 454.1 158.6 H 462.4 A 1 1 0 0 0 464.4 158.6 H 493.4 A 1 1 0 0 0 495.4 158.6 H 507.8 A 1 1 0 0 0 509.8 158.6 H 564.2 A 1 1 0 0 0 566.2 158.6 H 574.5 A 1 1 0 0 0 576.5 158.6 H 594"/>
+      <path class="fire" d="M 606 158.6 H 623.5 A 1 1 0 0 0 625.5 158.6 H 633.8 A 1 1 0 0 0 635.8 158.6 H 685.4 A 1 1 0 0 0 687.4 158.6 H 735.6 A 1 1 0 0 0 737.6 158.6 H 745.9 A 1 1 0 0 0 747.9 158.6 H 758.4 A 1 1 0 0 0 760.4 158.6 H 762.7 A 1 1 0 0 0 764.7 158.6 H 765.5"/>
+      <path class="fire" d="M 351.6 177.8 H 390.4 A 1 1 0 0 0 392.4 177.8 H 404 A 1 1 0 0 0 406 177.8 H 417.6 A 1 1 0 0 0 419.6 177.8 H 434.8 A 1 1 0 0 0 436.8 177.8 H 439.6 A 1 1 0 0 0 441.6 177.8 H 446.4 A 1 1 0 0 0 448.4 177.8 H 452.1 A 1 1 0 0 0 454.1 177.8 H 462.2 A 1 1 0 0 0 464.2 177.8 H 469.4 A 1 1 0 0 0 471.4 177.8 H 589.4 A 1 1 0 0 0 591.4 177.8 H 594"/>
+      <path class="fire" d="M 606 177.8 H 745.9 A 1 1 0 0 0 747.9 177.8 H 758.4 A 1 1 0 0 0 760.4 177.8 H 762.7 A 1 1 0 0 0 764.7 177.8 H 770.6 A 1 1 0 0 0 772.6 177.8 H 791.7 A 1 1 0 0 0 793.7 177.8 H 848.4"/>
+      <path class="fire" d="M 267.6 197 H 359 A 1 1 0 0 0 361 197 H 428.1 A 1 1 0 0 0 430.1 197 H 433.6 A 1.6 1 0 0 0 436.8 197 H 439.6 A 1 1 0 0 0 441.6 197 H 446.4 A 1 1 0 0 0 448.4 197 H 452.1 A 1 1 0 0 0 454.1 197 H 455.4 A 1 1 0 0 0 457.4 197 H 460.5 A 1 1 0 0 0 462.5 197 H 511.6 A 1 1 0 0 0 513.6 197 H 534.7 A 1 1 0 0 0 536.7 197 H 594"/>
+      <path class="fire" d="M 606 197 H 620.8 A 1 1 0 0 0 622.8 197 H 648.2 A 1 1 0 0 0 650.2 197 H 679.2 A 1 1 0 0 0 681.2 197 H 702.7 A 1 1 0 0 0 704.7 197 H 745.9 A 1 1 0 0 0 747.9 197 H 758.4 A 1 1 0 0 0 760.4 197 H 762.7 A 1 1 0 0 0 764.7 197 H 769.9 A 1.4 1 0 0 0 772.6 197 H 839 A 1 1 0 0 0 841 197 H 932.4"/>
+      <path class="fire" d="M 439.2 216.2 H 439.6 A 1 1 0 0 0 441.6 216.2 H 446.4 A 1 1 0 0 0 448.4 216.2 H 452.1 A 1 1 0 0 0 454.1 216.2 H 455.2 A 1 1 0 0 0 457.2 216.2 H 460.5 A 1 1 0 0 0 462.5 216.2 H 480.9 A 1 1 0 0 0 482.9 216.2 H 594"/>
+      <path class="fire" d="M 606 216.2 H 742.8 A 1 1 0 0 0 744.8 216.2 H 745.9 A 1 1 0 0 0 747.9 216.2 H 751.6 A 1 1 0 0 0 753.6 216.2 H 758.4 A 1 1 0 0 0 760.4 216.2 H 760.8"/>
+      <path class="fire" d="M 123.6 235.4 H 150.7 A 1 1 0 0 0 152.7 235.4 H 325.9 A 1 1 0 0 0 327.9 235.4 H 335 A 1 1 0 0 0 337 235.4 H 411.6 A 1 1 0 0 0 413.6 235.4 H 434.8 A 1 1 0 0 0 436.8 235.4 H 439.6 A 1 1 0 0 0 441.6 235.4 H 446.4 A 1 1 0 0 0 448.4 235.4 H 452.1 A 1 1 0 0 0 454.1 235.4 H 566.4"/>
+      <path class="fire" d="M 633.6 235.4 H 668.6 A 1 1 0 0 0 670.6 235.4 H 695.2 A 1 1 0 0 0 697.2 235.4 H 745.9 A 1 1 0 0 0 747.9 235.4 H 751.6 A 1 1 0 0 0 753.6 235.4 H 758.4 A 1 1 0 0 0 760.4 235.4 H 762.7 A 1 1 0 0 0 764.7 235.4 H 770.6 A 1 1 0 0 0 772.6 235.4 H 786.4 A 1 1 0 0 0 788.4 235.4 H 876.9 A 1 1 0 0 0 878.9 235.4 H 940.3 A 1 1 0 0 0 942.3 235.4 H 1076.4"/>
+      <path class="fire" d="M 123.6 259.7 H 153.6 A 1 1 0 0 0 155.6 259.7 H 411.6 A 1 1 0 0 0 413.6 259.7 H 434.8 A 1 1 0 0 0 436.8 259.7 H 439.6 A 1 1 0 0 0 441.6 259.7 H 446.4 A 1 1 0 0 0 448.4 259.7 H 452.1 A 1 1 0 0 0 454.1 259.7 H 542.6 A 1 1 0 0 0 544.6 259.7 H 566.4"/>
+      <path class="fire" d="M 633.6 259.7 H 655.4 A 1 1 0 0 0 657.4 259.7 H 745.9 A 1 1 0 0 0 747.9 259.7 H 751.6 A 1 1 0 0 0 753.6 259.7 H 758.4 A 1 1 0 0 0 760.4 259.7 H 762.7 A 1 1 0 0 0 764.7 259.7 H 770.6 A 1 1 0 0 0 772.6 259.7 H 786.4 A 1 1 0 0 0 788.4 259.7 H 1044.4 A 1 1 0 0 0 1046.4 259.7 H 1076.4"/>
+      <path class="fire" d="M 123.6 274.8 H 207.8 A 1 1 0 0 0 209.8 274.8 H 311 A 1 1 0 0 0 313 274.8 H 416.6 A 1 1 0 0 0 418.6 274.8 H 425.2 A 1 1 0 0 0 427.2 274.8 H 430.6 A 1 1 0 0 0 432.6 274.8 H 434.8 A 1 1 0 0 0 436.8 274.8 H 439.6 A 1 1 0 0 0 441.6 274.8 H 446.4 A 1 1 0 0 0 448.4 274.8 H 452.1 A 1 1 0 0 0 454.1 274.8 H 489.8 A 1 1 0 0 0 491.8 274.8 H 529.4 A 1 1 0 0 0 531.4 274.8 H 566.4"/>
+      <path class="fire" d="M 633.6 274.8 H 668.6 A 1 1 0 0 0 670.6 274.8 H 708.2 A 1 1 0 0 0 710.2 274.8 H 745.9 A 1 1 0 0 0 747.9 274.8 H 751.6 A 1 1 0 0 0 753.6 274.8 H 758.4 A 1 1 0 0 0 760.4 274.8 H 762.7 A 1 1 0 0 0 764.7 274.8 H 766 A 1 1 0 0 0 768 274.8 H 770.6 A 2.1 1 0 0 0 774.8 274.8 H 781.4 A 1 1 0 0 0 783.4 274.8 H 887 A 1 1 0 0 0 889 274.8 H 987.8 A 1 1 0 0 0 989.8 274.8 H 1076.4"/>
+      <path class="fire" d="M 123.6 293 H 159.8 A 1 1 0 0 0 161.8 293 H 222.2 A 1 1 0 0 0 224.2 293 H 314.6 A 1 1 0 0 0 316.6 293 H 347 A 1 1 0 0 0 349 293 H 396.9 A 1 1 0 0 0 398.9 293 H 430.6 A 1 1 0 0 0 432.6 293 H 434.8 A 1 1 0 0 0 436.8 293 H 439.6 A 1 1 0 0 0 441.6 293 H 446.4 A 1 1 0 0 0 448.4 293 H 452.1 A 1 1 0 0 0 454.1 293 H 474.1 A 1 1 0 0 0 476.1 293 H 482.4"/>
+      <path class="fire" d="M 717.6 293 H 723.9 A 1 1 0 0 0 725.9 293 H 745.9 A 1 1 0 0 0 747.9 293 H 751.6 A 1 1 0 0 0 753.6 293 H 758.4 A 1 1 0 0 0 760.4 293 H 762.7 A 1 1 0 0 0 764.7 293 H 766 A 1 1 0 0 0 768 293 H 770.6 A 1 1 0 0 0 772.6 293 H 791.7 A 1 1 0 0 0 793.7 293 H 980.6 A 1 1 0 0 0 982.6 293 H 1043 A 1 1 0 0 0 1045 293 H 1076.4"/>
+      <path class="fire" d="M 223.2 313.4 H 299 A 1 1 0 0 0 301 313.4 H 430.6 A 1 1 0 0 0 432.6 313.4 H 434.3 A 1.5 1 0 0 0 437.4 313.4 H 439.6 A 1 1 0 0 0 441.6 313.4 H 446.4 A 1 1 0 0 0 448.4 313.4 H 452.1 A 1 1 0 0 0 454.1 313.4 H 482.4"/>
+      <path class="fire" d="M 717.6 313.4 H 745.9 A 1 1 0 0 0 747.9 313.4 H 751.6 A 1 1 0 0 0 753.6 313.4 H 758.4 A 1 1 0 0 0 760.4 313.4 H 762.7 A 1 1 0 0 0 764.7 313.4 H 766 A 1 1 0 0 0 768 313.4 H 770.6 A 1 1 0 0 0 772.6 313.4 H 791.7 A 1 1 0 0 0 793.7 313.4 H 976.8"/>
+      <path class="fire" d="M 183.6 331.4 H 299 A 1 1 0 0 0 301 331.4 H 363.8 A 1 1 0 0 0 365.8 331.4 H 387.8 A 1 1 0 0 0 389.8 331.4 H 434.3 A 1.5 1 0 0 0 437.4 331.4 H 439.6 A 1 1 0 0 0 441.6 331.4 H 446.4 A 1 1 0 0 0 448.4 331.4 H 452.1 A 1 1 0 0 0 454.1 331.4 H 482.4"/>
+      <path class="fire" d="M 717.6 331.4 H 743 A 1 1 0 0 0 745 331.4 H 745.9 A 1 1 0 0 0 747.9 331.4 H 751.6 A 1 1 0 0 0 753.6 331.4 H 758.4 A 1 1 0 0 0 760.4 331.4 H 762.7 A 1 1 0 0 0 764.7 331.4 H 766 A 1 1 0 0 0 768 331.4 H 791.7 A 1 1 0 0 0 793.7 331.4 H 1016.4"/>
+      <path class="fire" d="M 231.6 350.6 H 256.3 A 1 1 0 0 0 258.3 350.6 H 299 A 1 1 0 0 0 301 350.6 H 387.8 A 1 1 0 0 0 389.8 350.6 H 434.8 A 1 1 0 0 0 436.8 350.6 H 446.4 A 1 1 0 0 0 448.4 350.6 H 452.1 A 1 1 0 0 0 454.1 350.6 H 482.4"/>
+      <path class="fire" d="M 717.6 350.6 H 734.1 A 1 1 0 0 0 736.1 350.6 H 745.9 A 1 1 0 0 0 747.9 350.6 H 762.7 A 1 1 0 0 0 764.7 350.6 H 806.4 A 1 1 0 0 0 808.4 350.6 H 841.4 A 1 1 0 0 0 843.4 350.6 H 912.9 A 1 1 0 0 0 914.9 350.6 H 968.4"/>
+      <path class="fire" d="M 363.6 369.8 H 432.2 A 1 1 0 0 0 434.2 369.8 H 559.9 A 1 1 0 0 0 561.9 369.8 H 638.1 A 1 1 0 0 0 640.1 369.8 H 819.6 A 1 1 0 0 0 821.6 369.8 H 836.4"/>
+      <path class="fire-nozzle" d="M 481.8 158.6 V 159.5 M 481.2 160.1 L 482.4 160.1 L 481.8 159.4 Z"/>
+      <path class="fire-nozzle" d="M 501 158.6 V 159.5 M 500.4 160.1 L 501.6 160.1 L 501 159.4 Z"/>
+      <path class="fire-nozzle" d="M 520.2 158.6 V 159.5 M 519.6 160.1 L 520.8 160.1 L 520.2 159.4 Z"/>
+      <path class="fire-nozzle" d="M 558.6 158.6 V 159.5 M 558 160.1 L 559.2 160.1 L 558.6 159.4 Z"/>
+      <path class="fire-nozzle" d="M 577.8 158.6 V 159.5 M 577.2 160.1 L 578.4 160.1 L 577.8 159.4 Z"/>
+      <path class="fire-nozzle" d="M 615.6 158.6 V 159.5 M 615 160.1 L 616.2 160.1 L 615.6 159.4 Z"/>
+      <path class="fire-nozzle" d="M 654 158.6 V 159.5 M 653.4 160.1 L 654.6 160.1 L 654 159.4 Z"/>
+      <path class="fire-nozzle" d="M 673.2 158.6 V 159.5 M 672.6 160.1 L 673.8 160.1 L 673.2 159.4 Z"/>
+      <path class="fire-nozzle" d="M 692.4 158.6 V 159.5 M 691.8 160.1 L 693 160.1 L 692.4 159.4 Z"/>
+      <path class="fire-nozzle" d="M 711.6 158.6 V 159.5 M 711 160.1 L 712.2 160.1 L 711.6 159.4 Z"/>
+      <path class="fire-nozzle" d="M 361.2 177.8 V 178.7 M 360.6 179.3 L 361.8 179.3 L 361.2 178.6 Z"/>
+      <path class="fire-nozzle" d="M 399.6 177.8 V 178.7 M 399 179.3 L 400.2 179.3 L 399.6 178.6 Z"/>
+      <path class="fire-nozzle" d="M 476.4 177.8 V 178.7 M 475.8 179.3 L 477 179.3 L 476.4 178.6 Z"/>
+      <path class="fire-nozzle" d="M 495.6 177.8 V 178.7 M 495 179.3 L 496.2 179.3 L 495.6 178.6 Z"/>
+      <path class="fire-nozzle" d="M 514.8 177.8 V 178.7 M 514.2 179.3 L 515.4 179.3 L 514.8 178.6 Z"/>
+      <path class="fire-nozzle" d="M 534 177.8 V 178.7 M 533.4 179.3 L 534.6 179.3 L 534 178.6 Z"/>
+      <path class="fire-nozzle" d="M 553.2 177.8 V 178.7 M 552.6 179.3 L 553.8 179.3 L 553.2 178.6 Z"/>
+      <path class="fire-nozzle" d="M 572.4 177.8 V 178.7 M 571.8 179.3 L 573 179.3 L 572.4 178.6 Z"/>
+      <path class="fire-nozzle" d="M 615.6 177.8 V 178.7 M 615 179.3 L 616.2 179.3 L 615.6 178.6 Z"/>
+      <path class="fire-nozzle" d="M 634.8 177.8 V 178.7 M 634.2 179.3 L 635.4 179.3 L 634.8 178.6 Z"/>
+      <path class="fire-nozzle" d="M 654 177.8 V 178.7 M 653.4 179.3 L 654.6 179.3 L 654 178.6 Z"/>
+      <path class="fire-nozzle" d="M 673.2 177.8 V 178.7 M 672.6 179.3 L 673.8 179.3 L 673.2 178.6 Z"/>
+      <path class="fire-nozzle" d="M 692.4 177.8 V 178.7 M 691.8 179.3 L 693 179.3 L 692.4 178.6 Z"/>
+      <path class="fire-nozzle" d="M 711.6 177.8 V 178.7 M 711 179.3 L 712.2 179.3 L 711.6 178.6 Z"/>
+      <path class="fire-nozzle" d="M 730.8 177.8 V 178.7 M 730.2 179.3 L 731.4 179.3 L 730.8 178.6 Z"/>
+      <path class="fire-nozzle" d="M 769.2 177.8 V 178.7 M 768.6 179.3 L 769.8 179.3 L 769.2 178.6 Z"/>
+      <path class="fire-nozzle" d="M 788.4 177.8 V 178.7 M 787.8 179.3 L 789 179.3 L 788.4 178.6 Z"/>
+      <path class="fire-nozzle" d="M 807.6 177.8 V 178.7 M 807 179.3 L 808.2 179.3 L 807.6 178.6 Z"/>
+      <path class="fire-nozzle" d="M 826.8 177.8 V 178.7 M 826.2 179.3 L 827.4 179.3 L 826.8 178.6 Z"/>
+      <path class="fire-nozzle" d="M 277.2 197 V 197.9 M 276.6 198.5 L 277.8 198.5 L 277.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 296.4 197 V 197.9 M 295.8 198.5 L 297 198.5 L 296.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 315.6 197 V 197.9 M 315 198.5 L 316.2 198.5 L 315.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 334.8 197 V 197.9 M 334.2 198.5 L 335.4 198.5 L 334.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 354 197 V 197.9 M 353.4 198.5 L 354.6 198.5 L 354 197.8 Z"/>
+      <path class="fire-nozzle" d="M 373.2 197 V 197.9 M 372.6 198.5 L 373.8 198.5 L 373.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 392.4 197 V 197.9 M 391.8 198.5 L 393 198.5 L 392.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 411.6 197 V 197.9 M 411 198.5 L 412.2 198.5 L 411.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 469.2 197 V 197.9 M 468.6 198.5 L 469.8 198.5 L 469.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 488.4 197 V 197.9 M 487.8 198.5 L 489 198.5 L 488.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 507.6 197 V 197.9 M 507 198.5 L 508.2 198.5 L 507.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 526.8 197 V 197.9 M 526.2 198.5 L 527.4 198.5 L 526.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 546 197 V 197.9 M 545.4 198.5 L 546.6 198.5 L 546 197.8 Z"/>
+      <path class="fire-nozzle" d="M 565.2 197 V 197.9 M 564.6 198.5 L 565.8 198.5 L 565.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 584.4 197 V 197.9 M 583.8 198.5 L 585 198.5 L 584.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 615.6 197 V 197.9 M 615 198.5 L 616.2 198.5 L 615.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 634.8 197 V 197.9 M 634.2 198.5 L 635.4 198.5 L 634.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 654 197 V 197.9 M 653.4 198.5 L 654.6 198.5 L 654 197.8 Z"/>
+      <path class="fire-nozzle" d="M 673.2 197 V 197.9 M 672.6 198.5 L 673.8 198.5 L 673.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 692.4 197 V 197.9 M 691.8 198.5 L 693 198.5 L 692.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 711.6 197 V 197.9 M 711 198.5 L 712.2 198.5 L 711.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 730.8 197 V 197.9 M 730.2 198.5 L 731.4 198.5 L 730.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 788.4 197 V 197.9 M 787.8 198.5 L 789 198.5 L 788.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 807.6 197 V 197.9 M 807 198.5 L 808.2 198.5 L 807.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 826.8 197 V 197.9 M 826.2 198.5 L 827.4 198.5 L 826.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 846 197 V 197.9 M 845.4 198.5 L 846.6 198.5 L 846 197.8 Z"/>
+      <path class="fire-nozzle" d="M 865.2 197 V 197.9 M 864.6 198.5 L 865.8 198.5 L 865.2 197.8 Z"/>
+      <path class="fire-nozzle" d="M 884.4 197 V 197.9 M 883.8 198.5 L 885 198.5 L 884.4 197.8 Z"/>
+      <path class="fire-nozzle" d="M 903.6 197 V 197.9 M 903 198.5 L 904.2 198.5 L 903.6 197.8 Z"/>
+      <path class="fire-nozzle" d="M 922.8 197 V 197.9 M 922.2 198.5 L 923.4 198.5 L 922.8 197.8 Z"/>
+      <path class="fire-nozzle" d="M 468 216.2 V 217.1 M 467.4 217.7 L 468.6 217.7 L 468 217 Z"/>
+      <path class="fire-nozzle" d="M 487.2 216.2 V 217.1 M 486.6 217.7 L 487.8 217.7 L 487.2 217 Z"/>
+      <path class="fire-nozzle" d="M 506.4 216.2 V 217.1 M 505.8 217.7 L 507 217.7 L 506.4 217 Z"/>
+      <path class="fire-nozzle" d="M 583.2 216.2 V 217.1 M 582.6 217.7 L 583.8 217.7 L 583.2 217 Z"/>
+      <path class="fire-nozzle" d="M 615.6 216.2 V 217.1 M 615 217.7 L 616.2 217.7 L 615.6 217 Z"/>
+      <path class="fire-nozzle" d="M 634.8 216.2 V 217.1 M 634.2 217.7 L 635.4 217.7 L 634.8 217 Z"/>
+      <path class="fire-nozzle" d="M 654 216.2 V 217.1 M 653.4 217.7 L 654.6 217.7 L 654 217 Z"/>
+      <path class="fire-nozzle" d="M 673.2 216.2 V 217.1 M 672.6 217.7 L 673.8 217.7 L 673.2 217 Z"/>
+      <path class="fire-nozzle" d="M 692.4 216.2 V 217.1 M 691.8 217.7 L 693 217.7 L 692.4 217 Z"/>
+      <path class="fire-nozzle" d="M 711.6 216.2 V 217.1 M 711 217.7 L 712.2 217.7 L 711.6 217 Z"/>
+      <path class="fire-nozzle" d="M 730.8 216.2 V 217.1 M 730.2 217.7 L 731.4 217.7 L 730.8 217 Z"/>
+      <path class="fire-nozzle" d="M 133.2 235.4 V 236.3 M 132.6 236.9 L 133.8 236.9 L 133.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 171.6 235.4 V 236.3 M 171 236.9 L 172.2 236.9 L 171.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 190.8 235.4 V 236.3 M 190.2 236.9 L 191.4 236.9 L 190.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 210 235.4 V 236.3 M 209.4 236.9 L 210.6 236.9 L 210 236.2 Z"/>
+      <path class="fire-nozzle" d="M 229.2 235.4 V 236.3 M 228.6 236.9 L 229.8 236.9 L 229.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 248.4 235.4 V 236.3 M 247.8 236.9 L 249 236.9 L 248.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 267.6 235.4 V 236.3 M 267 236.9 L 268.2 236.9 L 267.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 286.8 235.4 V 236.3 M 286.2 236.9 L 287.4 236.9 L 286.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 306 235.4 V 236.3 M 305.4 236.9 L 306.6 236.9 L 306 236.2 Z"/>
+      <path class="fire-nozzle" d="M 344.4 235.4 V 236.3 M 343.8 236.9 L 345 236.9 L 344.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 363.6 235.4 V 236.3 M 363 236.9 L 364.2 236.9 L 363.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 382.8 235.4 V 236.3 M 382.2 236.9 L 383.4 236.9 L 382.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 402 235.4 V 236.3 M 401.4 236.9 L 402.6 236.9 L 402 236.2 Z"/>
+      <path class="fire-nozzle" d="M 421.2 235.4 V 236.3 M 420.6 236.9 L 421.8 236.9 L 421.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 459.6 235.4 V 236.3 M 459 236.9 L 460.2 236.9 L 459.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 498 235.4 V 236.3 M 497.4 236.9 L 498.6 236.9 L 498 236.2 Z"/>
+      <path class="fire-nozzle" d="M 536.4 235.4 V 236.3 M 535.8 236.9 L 537 236.9 L 536.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 555.6 235.4 V 236.3 M 555 236.9 L 556.2 236.9 L 555.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 643.2 235.4 V 236.3 M 642.6 236.9 L 643.8 236.9 L 643.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 662.4 235.4 V 236.3 M 661.8 236.9 L 663 236.9 L 662.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 700.8 235.4 V 236.3 M 700.2 236.9 L 701.4 236.9 L 700.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 720 235.4 V 236.3 M 719.4 236.9 L 720.6 236.9 L 720 236.2 Z"/>
+      <path class="fire-nozzle" d="M 739.2 235.4 V 236.3 M 738.6 236.9 L 739.8 236.9 L 739.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 777.6 235.4 V 236.3 M 777 236.9 L 778.2 236.9 L 777.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 796.8 235.4 V 236.3 M 796.2 236.9 L 797.4 236.9 L 796.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 816 235.4 V 236.3 M 815.4 236.9 L 816.6 236.9 L 816 236.2 Z"/>
+      <path class="fire-nozzle" d="M 835.2 235.4 V 236.3 M 834.6 236.9 L 835.8 236.9 L 835.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 854.4 235.4 V 236.3 M 853.8 236.9 L 855 236.9 L 854.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 873.6 235.4 V 236.3 M 873 236.9 L 874.2 236.9 L 873.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 892.8 235.4 V 236.3 M 892.2 236.9 L 893.4 236.9 L 892.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 912 235.4 V 236.3 M 911.4 236.9 L 912.6 236.9 L 912 236.2 Z"/>
+      <path class="fire-nozzle" d="M 931.2 235.4 V 236.3 M 930.6 236.9 L 931.8 236.9 L 931.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 950.4 235.4 V 236.3 M 949.8 236.9 L 951 236.9 L 950.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 969.6 235.4 V 236.3 M 969 236.9 L 970.2 236.9 L 969.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 988.8 235.4 V 236.3 M 988.2 236.9 L 989.4 236.9 L 988.8 236.2 Z"/>
+      <path class="fire-nozzle" d="M 1008 235.4 V 236.3 M 1007.4 236.9 L 1008.6 236.9 L 1008 236.2 Z"/>
+      <path class="fire-nozzle" d="M 1027.2 235.4 V 236.3 M 1026.6 236.9 L 1027.8 236.9 L 1027.2 236.2 Z"/>
+      <path class="fire-nozzle" d="M 1046.4 235.4 V 236.3 M 1045.8 236.9 L 1047 236.9 L 1046.4 236.2 Z"/>
+      <path class="fire-nozzle" d="M 1065.6 235.4 V 236.3 M 1065 236.9 L 1066.2 236.9 L 1065.6 236.2 Z"/>
+      <path class="fire-nozzle" d="M 133.2 259.7 V 260.6 M 132.6 261.2 L 133.8 261.2 L 133.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 152.4 259.7 V 260.6 M 151.8 261.2 L 153 261.2 L 152.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 171.6 259.7 V 260.6 M 171 261.2 L 172.2 261.2 L 171.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 190.8 259.7 V 260.6 M 190.2 261.2 L 191.4 261.2 L 190.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 210 259.7 V 260.6 M 209.4 261.2 L 210.6 261.2 L 210 260.5 Z"/>
+      <path class="fire-nozzle" d="M 229.2 259.7 V 260.6 M 228.6 261.2 L 229.8 261.2 L 229.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 248.4 259.7 V 260.6 M 247.8 261.2 L 249 261.2 L 248.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 267.6 259.7 V 260.6 M 267 261.2 L 268.2 261.2 L 267.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 286.8 259.7 V 260.6 M 286.2 261.2 L 287.4 261.2 L 286.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 306 259.7 V 260.6 M 305.4 261.2 L 306.6 261.2 L 306 260.5 Z"/>
+      <path class="fire-nozzle" d="M 325.2 259.7 V 260.6 M 324.6 261.2 L 325.8 261.2 L 325.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 344.4 259.7 V 260.6 M 343.8 261.2 L 345 261.2 L 344.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 363.6 259.7 V 260.6 M 363 261.2 L 364.2 261.2 L 363.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 382.8 259.7 V 260.6 M 382.2 261.2 L 383.4 261.2 L 382.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 402 259.7 V 260.6 M 401.4 261.2 L 402.6 261.2 L 402 260.5 Z"/>
+      <path class="fire-nozzle" d="M 421.2 259.7 V 260.6 M 420.6 261.2 L 421.8 261.2 L 421.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 459.6 259.7 V 260.6 M 459 261.2 L 460.2 261.2 L 459.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 478.8 259.7 V 260.6 M 478.2 261.2 L 479.4 261.2 L 478.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 498 259.7 V 260.6 M 497.4 261.2 L 498.6 261.2 L 498 260.5 Z"/>
+      <path class="fire-nozzle" d="M 536.4 259.7 V 260.6 M 535.8 261.2 L 537 261.2 L 536.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 555.6 259.7 V 260.6 M 555 261.2 L 556.2 261.2 L 555.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 643.2 259.7 V 260.6 M 642.6 261.2 L 643.8 261.2 L 643.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 662.4 259.7 V 260.6 M 661.8 261.2 L 663 261.2 L 662.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 700.8 259.7 V 260.6 M 700.2 261.2 L 701.4 261.2 L 700.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 720 259.7 V 260.6 M 719.4 261.2 L 720.6 261.2 L 720 260.5 Z"/>
+      <path class="fire-nozzle" d="M 739.2 259.7 V 260.6 M 738.6 261.2 L 739.8 261.2 L 739.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 777.6 259.7 V 260.6 M 777 261.2 L 778.2 261.2 L 777.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 796.8 259.7 V 260.6 M 796.2 261.2 L 797.4 261.2 L 796.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 816 259.7 V 260.6 M 815.4 261.2 L 816.6 261.2 L 816 260.5 Z"/>
+      <path class="fire-nozzle" d="M 835.2 259.7 V 260.6 M 834.6 261.2 L 835.8 261.2 L 835.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 854.4 259.7 V 260.6 M 853.8 261.2 L 855 261.2 L 854.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 873.6 259.7 V 260.6 M 873 261.2 L 874.2 261.2 L 873.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 892.8 259.7 V 260.6 M 892.2 261.2 L 893.4 261.2 L 892.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 912 259.7 V 260.6 M 911.4 261.2 L 912.6 261.2 L 912 260.5 Z"/>
+      <path class="fire-nozzle" d="M 931.2 259.7 V 260.6 M 930.6 261.2 L 931.8 261.2 L 931.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 950.4 259.7 V 260.6 M 949.8 261.2 L 951 261.2 L 950.4 260.5 Z"/>
+      <path class="fire-nozzle" d="M 969.6 259.7 V 260.6 M 969 261.2 L 970.2 261.2 L 969.6 260.5 Z"/>
+      <path class="fire-nozzle" d="M 988.8 259.7 V 260.6 M 988.2 261.2 L 989.4 261.2 L 988.8 260.5 Z"/>
+      <path class="fire-nozzle" d="M 1008 259.7 V 260.6 M 1007.4 261.2 L 1008.6 261.2 L 1008 260.5 Z"/>
+      <path class="fire-nozzle" d="M 1027.2 259.7 V 260.6 M 1026.6 261.2 L 1027.8 261.2 L 1027.2 260.5 Z"/>
+      <path class="fire-nozzle" d="M 152.4 274.8 V 275.7 M 151.8 276.3 L 153 276.3 L 152.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 171.6 274.8 V 275.7 M 171 276.3 L 172.2 276.3 L 171.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 190.8 274.8 V 275.7 M 190.2 276.3 L 191.4 276.3 L 190.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 229.2 274.8 V 275.7 M 228.6 276.3 L 229.8 276.3 L 229.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 248.4 274.8 V 275.7 M 247.8 276.3 L 249 276.3 L 248.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 267.6 274.8 V 275.7 M 267 276.3 L 268.2 276.3 L 267.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 306 274.8 V 275.7 M 305.4 276.3 L 306.6 276.3 L 306 275.6 Z"/>
+      <path class="fire-nozzle" d="M 325.2 274.8 V 275.7 M 324.6 276.3 L 325.8 276.3 L 325.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 344.4 274.8 V 275.7 M 343.8 276.3 L 345 276.3 L 344.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 363.6 274.8 V 275.7 M 363 276.3 L 364.2 276.3 L 363.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 382.8 274.8 V 275.7 M 382.2 276.3 L 383.4 276.3 L 382.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 402 274.8 V 275.7 M 401.4 276.3 L 402.6 276.3 L 402 275.6 Z"/>
+      <path class="fire-nozzle" d="M 421.2 274.8 V 275.7 M 420.6 276.3 L 421.8 276.3 L 421.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 459.6 274.8 V 275.7 M 459 276.3 L 460.2 276.3 L 459.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 478.8 274.8 V 275.7 M 478.2 276.3 L 479.4 276.3 L 478.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 498 274.8 V 275.7 M 497.4 276.3 L 498.6 276.3 L 498 275.6 Z"/>
+      <path class="fire-nozzle" d="M 536.4 274.8 V 275.7 M 535.8 276.3 L 537 276.3 L 536.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 555.6 274.8 V 275.7 M 555 276.3 L 556.2 276.3 L 555.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 643.2 274.8 V 275.7 M 642.6 276.3 L 643.8 276.3 L 643.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 662.4 274.8 V 275.7 M 661.8 276.3 L 663 276.3 L 662.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 700.8 274.8 V 275.7 M 700.2 276.3 L 701.4 276.3 L 700.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 720 274.8 V 275.7 M 719.4 276.3 L 720.6 276.3 L 720 275.6 Z"/>
+      <path class="fire-nozzle" d="M 739.2 274.8 V 275.7 M 738.6 276.3 L 739.8 276.3 L 739.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 777.6 274.8 V 275.7 M 777 276.3 L 778.2 276.3 L 777.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 796.8 274.8 V 275.7 M 796.2 276.3 L 797.4 276.3 L 796.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 816 274.8 V 275.7 M 815.4 276.3 L 816.6 276.3 L 816 275.6 Z"/>
+      <path class="fire-nozzle" d="M 835.2 274.8 V 275.7 M 834.6 276.3 L 835.8 276.3 L 835.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 854.4 274.8 V 275.7 M 853.8 276.3 L 855 276.3 L 854.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 873.6 274.8 V 275.7 M 873 276.3 L 874.2 276.3 L 873.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 892.8 274.8 V 275.7 M 892.2 276.3 L 893.4 276.3 L 892.8 275.6 Z"/>
+      <path class="fire-nozzle" d="M 931.2 274.8 V 275.7 M 930.6 276.3 L 931.8 276.3 L 931.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 950.4 274.8 V 275.7 M 949.8 276.3 L 951 276.3 L 950.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 969.6 274.8 V 275.7 M 969 276.3 L 970.2 276.3 L 969.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 1008 274.8 V 275.7 M 1007.4 276.3 L 1008.6 276.3 L 1008 275.6 Z"/>
+      <path class="fire-nozzle" d="M 1027.2 274.8 V 275.7 M 1026.6 276.3 L 1027.8 276.3 L 1027.2 275.6 Z"/>
+      <path class="fire-nozzle" d="M 1046.4 274.8 V 275.7 M 1045.8 276.3 L 1047 276.3 L 1046.4 275.6 Z"/>
+      <path class="fire-nozzle" d="M 1065.6 274.8 V 275.7 M 1065 276.3 L 1066.2 276.3 L 1065.6 275.6 Z"/>
+      <path class="fire-nozzle" d="M 133.2 293 V 293.9 M 132.6 294.5 L 133.8 294.5 L 133.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 152.4 293 V 293.9 M 151.8 294.5 L 153 294.5 L 152.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 171.6 293 V 293.9 M 171 294.5 L 172.2 294.5 L 171.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 190.8 293 V 293.9 M 190.2 294.5 L 191.4 294.5 L 190.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 210 293 V 293.9 M 209.4 294.5 L 210.6 294.5 L 210 293.8 Z"/>
+      <path class="fire-nozzle" d="M 248.4 293 V 293.9 M 247.8 294.5 L 249 294.5 L 248.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 267.6 293 V 293.9 M 267 294.5 L 268.2 294.5 L 267.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 286.8 293 V 293.9 M 286.2 294.5 L 287.4 294.5 L 286.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 306 293 V 293.9 M 305.4 294.5 L 306.6 294.5 L 306 293.8 Z"/>
+      <path class="fire-nozzle" d="M 344.4 293 V 293.9 M 343.8 294.5 L 345 294.5 L 344.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 363.6 293 V 293.9 M 363 294.5 L 364.2 294.5 L 363.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 382.8 293 V 293.9 M 382.2 294.5 L 383.4 294.5 L 382.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 421.2 293 V 293.9 M 420.6 294.5 L 421.8 294.5 L 421.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 459.6 293 V 293.9 M 459 294.5 L 460.2 294.5 L 459.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 478.8 293 V 293.9 M 478.2 294.5 L 479.4 294.5 L 478.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 727.2 293 V 293.9 M 726.6 294.5 L 727.8 294.5 L 727.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 784.8 293 V 293.9 M 784.2 294.5 L 785.4 294.5 L 784.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 804 293 V 293.9 M 803.4 294.5 L 804.6 294.5 L 804 293.8 Z"/>
+      <path class="fire-nozzle" d="M 823.2 293 V 293.9 M 822.6 294.5 L 823.8 294.5 L 823.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 842.4 293 V 293.9 M 841.8 294.5 L 843 294.5 L 842.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 861.6 293 V 293.9 M 861 294.5 L 862.2 294.5 L 861.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 880.8 293 V 293.9 M 880.2 294.5 L 881.4 294.5 L 880.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 900 293 V 293.9 M 899.4 294.5 L 900.6 294.5 L 900 293.8 Z"/>
+      <path class="fire-nozzle" d="M 919.2 293 V 293.9 M 918.6 294.5 L 919.8 294.5 L 919.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 938.4 293 V 293.9 M 937.8 294.5 L 939 294.5 L 938.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 957.6 293 V 293.9 M 957 294.5 L 958.2 294.5 L 957.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 976.8 293 V 293.9 M 976.2 294.5 L 977.4 294.5 L 976.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 996 293 V 293.9 M 995.4 294.5 L 996.6 294.5 L 996 293.8 Z"/>
+      <path class="fire-nozzle" d="M 1015.2 293 V 293.9 M 1014.6 294.5 L 1015.8 294.5 L 1015.2 293.8 Z"/>
+      <path class="fire-nozzle" d="M 1034.4 293 V 293.9 M 1033.8 294.5 L 1035 294.5 L 1034.4 293.8 Z"/>
+      <path class="fire-nozzle" d="M 1053.6 293 V 293.9 M 1053 294.5 L 1054.2 294.5 L 1053.6 293.8 Z"/>
+      <path class="fire-nozzle" d="M 1072.8 293 V 293.9 M 1072.2 294.5 L 1073.4 294.5 L 1072.8 293.8 Z"/>
+      <path class="fire-nozzle" d="M 232.8 313.4 V 314.3 M 232.2 314.9 L 233.4 314.9 L 232.8 314.2 Z"/>
+      <path class="fire-nozzle" d="M 252 313.4 V 314.3 M 251.4 314.9 L 252.6 314.9 L 252 314.2 Z"/>
+      <path class="fire-nozzle" d="M 271.2 313.4 V 314.3 M 270.6 314.9 L 271.8 314.9 L 271.2 314.2 Z"/>
+      <path class="fire-nozzle" d="M 290.4 313.4 V 314.3 M 289.8 314.9 L 291 314.9 L 290.4 314.2 Z"/>
+      <path class="fire-nozzle" d="M 309.6 313.4 V 314.3 M 309 314.9 L 310.2 314.9 L 309.6 314.2 Z"/>
+      <path class="fire-nozzle" d="M 328.8 313.4 V 314.3 M 328.2 314.9 L 329.4 314.9 L 328.8 314.2 Z"/>
+      <path class="fire-nozzle" d="M 348 313.4 V 314.3 M 347.4 314.9 L 348.6 314.9 L 348 314.2 Z"/>
+      <path class="fire-nozzle" d="M 367.2 313.4 V 314.3 M 366.6 314.9 L 367.8 314.9 L 367.2 314.2 Z"/>
+      <path class="fire-nozzle" d="M 727.2 313.4 V 314.3 M 726.6 314.9 L 727.8 314.9 L 727.2 314.2 Z"/>
+      <path class="fire-nozzle" d="M 784.8 313.4 V 314.3 M 784.2 314.9 L 785.4 314.9 L 784.8 314.2 Z"/>
+      <path class="fire-nozzle" d="M 804 313.4 V 314.3 M 803.4 314.9 L 804.6 314.9 L 804 314.2 Z"/>
+      <path class="fire-nozzle" d="M 823.2 313.4 V 314.3 M 822.6 314.9 L 823.8 314.9 L 823.2 314.2 Z"/>
+      <path class="fire-nozzle" d="M 842.4 313.4 V 314.3 M 841.8 314.9 L 843 314.9 L 842.4 314.2 Z"/>
+      <path class="fire-nozzle" d="M 861.6 313.4 V 314.3 M 861 314.9 L 862.2 314.9 L 861.6 314.2 Z"/>
+      <path class="fire-nozzle" d="M 880.8 313.4 V 314.3 M 880.2 314.9 L 881.4 314.9 L 880.8 314.2 Z"/>
+      <path class="fire-nozzle" d="M 900 313.4 V 314.3 M 899.4 314.9 L 900.6 314.9 L 900 314.2 Z"/>
+      <path class="fire-nozzle" d="M 919.2 313.4 V 314.3 M 918.6 314.9 L 919.8 314.9 L 919.2 314.2 Z"/>
+      <path class="fire-nozzle" d="M 938.4 313.4 V 314.3 M 937.8 314.9 L 939 314.9 L 938.4 314.2 Z"/>
+      <path class="fire-nozzle" d="M 957.6 313.4 V 314.3 M 957 314.9 L 958.2 314.9 L 957.6 314.2 Z"/>
+      <path class="fire-nozzle" d="M 193.2 331.4 V 332.3 M 192.6 332.9 L 193.8 332.9 L 193.2 332.2 Z"/>
+      <path class="fire-nozzle" d="M 212.4 331.4 V 332.3 M 211.8 332.9 L 213 332.9 L 212.4 332.2 Z"/>
+      <path class="fire-nozzle" d="M 231.6 331.4 V 332.3 M 231 332.9 L 232.2 332.9 L 231.6 332.2 Z"/>
+      <path class="fire-nozzle" d="M 270 331.4 V 332.3 M 269.4 332.9 L 270.6 332.9 L 270 332.2 Z"/>
+      <path class="fire-nozzle" d="M 289.2 331.4 V 332.3 M 288.6 332.9 L 289.8 332.9 L 289.2 332.2 Z"/>
+      <path class="fire-nozzle" d="M 308.4 331.4 V 332.3 M 307.8 332.9 L 309 332.9 L 308.4 332.2 Z"/>
+      <path class="fire-nozzle" d="M 327.6 331.4 V 332.3 M 327 332.9 L 328.2 332.9 L 327.6 332.2 Z"/>
+      <path class="fire-nozzle" d="M 346.8 331.4 V 332.3 M 346.2 332.9 L 347.4 332.9 L 346.8 332.2 Z"/>
+      <path class="fire-nozzle" d="M 727.2 331.4 V 332.3 M 726.6 332.9 L 727.8 332.9 L 727.2 332.2 Z"/>
+      <path class="fire-nozzle" d="M 784.8 331.4 V 332.3 M 784.2 332.9 L 785.4 332.9 L 784.8 332.2 Z"/>
+      <path class="fire-nozzle" d="M 804 331.4 V 332.3 M 803.4 332.9 L 804.6 332.9 L 804 332.2 Z"/>
+      <path class="fire-nozzle" d="M 823.2 331.4 V 332.3 M 822.6 332.9 L 823.8 332.9 L 823.2 332.2 Z"/>
+      <path class="fire-nozzle" d="M 842.4 331.4 V 332.3 M 841.8 332.9 L 843 332.9 L 842.4 332.2 Z"/>
+      <path class="fire-nozzle" d="M 861.6 331.4 V 332.3 M 861 332.9 L 862.2 332.9 L 861.6 332.2 Z"/>
+      <path class="fire-nozzle" d="M 880.8 331.4 V 332.3 M 880.2 332.9 L 881.4 332.9 L 880.8 332.2 Z"/>
+      <path class="fire-nozzle" d="M 900 331.4 V 332.3 M 899.4 332.9 L 900.6 332.9 L 900 332.2 Z"/>
+      <path class="fire-nozzle" d="M 919.2 331.4 V 332.3 M 918.6 332.9 L 919.8 332.9 L 919.2 332.2 Z"/>
+      <path class="fire-nozzle" d="M 938.4 331.4 V 332.3 M 937.8 332.9 L 939 332.9 L 938.4 332.2 Z"/>
+      <path class="fire-nozzle" d="M 957.6 331.4 V 332.3 M 957 332.9 L 958.2 332.9 L 957.6 332.2 Z"/>
+      <path class="fire-nozzle" d="M 976.8 331.4 V 332.3 M 976.2 332.9 L 977.4 332.9 L 976.8 332.2 Z"/>
+      <path class="fire-nozzle" d="M 996 331.4 V 332.3 M 995.4 332.9 L 996.6 332.9 L 996 332.2 Z"/>
+      <path class="fire-nozzle" d="M 241.2 350.6 V 351.5 M 240.6 352.1 L 241.8 352.1 L 241.2 351.4 Z"/>
+      <path class="fire-nozzle" d="M 260.4 350.6 V 351.5 M 259.8 352.1 L 261 352.1 L 260.4 351.4 Z"/>
+      <path class="fire-nozzle" d="M 279.6 350.6 V 351.5 M 279 352.1 L 280.2 352.1 L 279.6 351.4 Z"/>
+      <path class="fire-nozzle" d="M 318 350.6 V 351.5 M 317.4 352.1 L 318.6 352.1 L 318 351.4 Z"/>
+      <path class="fire-nozzle" d="M 337.2 350.6 V 351.5 M 336.6 352.1 L 337.8 352.1 L 337.2 351.4 Z"/>
+      <path class="fire-nozzle" d="M 356.4 350.6 V 351.5 M 355.8 352.1 L 357 352.1 L 356.4 351.4 Z"/>
+      <path class="fire-nozzle" d="M 375.6 350.6 V 351.5 M 375 352.1 L 376.2 352.1 L 375.6 351.4 Z"/>
+      <path class="fire-nozzle" d="M 394.8 350.6 V 351.5 M 394.2 352.1 L 395.4 352.1 L 394.8 351.4 Z"/>
+      <path class="fire-nozzle" d="M 414 350.6 V 351.5 M 413.4 352.1 L 414.6 352.1 L 414 351.4 Z"/>
+      <path class="fire-nozzle" d="M 471.6 350.6 V 351.5 M 471 352.1 L 472.2 352.1 L 471.6 351.4 Z"/>
+      <path class="fire-nozzle" d="M 727.2 350.6 V 351.5 M 726.6 352.1 L 727.8 352.1 L 727.2 351.4 Z"/>
+      <path class="fire-nozzle" d="M 784.8 350.6 V 351.5 M 784.2 352.1 L 785.4 352.1 L 784.8 351.4 Z"/>
+      <path class="fire-nozzle" d="M 804 350.6 V 351.5 M 803.4 352.1 L 804.6 352.1 L 804 351.4 Z"/>
+      <path class="fire-nozzle" d="M 823.2 350.6 V 351.5 M 822.6 352.1 L 823.8 352.1 L 823.2 351.4 Z"/>
+      <path class="fire-nozzle" d="M 861.6 350.6 V 351.5 M 861 352.1 L 862.2 352.1 L 861.6 351.4 Z"/>
+      <path class="fire-nozzle" d="M 880.8 350.6 V 351.5 M 880.2 352.1 L 881.4 352.1 L 880.8 351.4 Z"/>
+      <path class="fire-nozzle" d="M 900 350.6 V 351.5 M 899.4 352.1 L 900.6 352.1 L 900 351.4 Z"/>
+      <path class="fire-nozzle" d="M 919.2 350.6 V 351.5 M 918.6 352.1 L 919.8 352.1 L 919.2 351.4 Z"/>
+      <path class="fire-nozzle" d="M 938.4 350.6 V 351.5 M 937.8 352.1 L 939 352.1 L 938.4 351.4 Z"/>
+      <path class="fire-nozzle" d="M 957.6 350.6 V 351.5 M 957 352.1 L 958.2 352.1 L 957.6 351.4 Z"/>
+      <path class="fire-nozzle" d="M 373.2 369.8 V 370.7 M 372.6 371.3 L 373.8 371.3 L 373.2 370.6 Z"/>
+      <path class="fire-nozzle" d="M 392.4 369.8 V 370.7 M 391.8 371.3 L 393 371.3 L 392.4 370.6 Z"/>
+      <path class="fire-nozzle" d="M 411.6 369.8 V 370.7 M 411 371.3 L 412.2 371.3 L 411.6 370.6 Z"/>
+      <path class="fire-nozzle" d="M 430.8 369.8 V 370.7 M 430.2 371.3 L 431.4 371.3 L 430.8 370.6 Z"/>
+      <path class="fire-nozzle" d="M 469.2 369.8 V 370.7 M 468.6 371.3 L 469.8 371.3 L 469.2 370.6 Z"/>
+      <path class="fire-nozzle" d="M 488.4 369.8 V 370.7 M 487.8 371.3 L 489 371.3 L 488.4 370.6 Z"/>
+      <path class="fire-nozzle" d="M 507.6 369.8 V 370.7 M 507 371.3 L 508.2 371.3 L 507.6 370.6 Z"/>
+      <path class="fire-nozzle" d="M 526.8 369.8 V 370.7 M 526.2 371.3 L 527.4 371.3 L 526.8 370.6 Z"/>
+      <path class="fire-nozzle" d="M 584.4 369.8 V 370.7 M 583.8 371.3 L 585 371.3 L 584.4 370.6 Z"/>
+      <path class="fire-nozzle" d="M 603.6 369.8 V 370.7 M 603 371.3 L 604.2 371.3 L 603.6 370.6 Z"/>
+      <path class="fire-nozzle" d="M 622.8 369.8 V 370.7 M 622.2 371.3 L 623.4 371.3 L 622.8 370.6 Z"/>
+      <path class="fire-nozzle" d="M 642 369.8 V 370.7 M 641.4 371.3 L 642.6 371.3 L 642 370.6 Z"/>
+      <path class="fire-nozzle" d="M 661.2 369.8 V 370.7 M 660.6 371.3 L 661.8 371.3 L 661.2 370.6 Z"/>
+      <path class="fire-nozzle" d="M 680.4 369.8 V 370.7 M 679.8 371.3 L 681 371.3 L 680.4 370.6 Z"/>
+      <path class="fire-nozzle" d="M 699.6 369.8 V 370.7 M 699 371.3 L 700.2 371.3 L 699.6 370.6 Z"/>
+      <path class="fire-nozzle" d="M 738 369.8 V 370.7 M 737.4 371.3 L 738.6 371.3 L 738 370.6 Z"/>
+      <path class="fire-nozzle" d="M 795.6 369.8 V 370.7 M 795 371.3 L 796.2 371.3 L 795.6 370.6 Z"/>
+      <path class="fire-nozzle" d="M 814.8 369.8 V 370.7 M 814.2 371.3 L 815.4 371.3 L 814.8 370.6 Z"/>
       <rect class="crawl" x="428.4" y="365.5" width="350.2" height="2.2"/>
       <rect class="crawl" x="411.6" y="269.5" width="19" height="2.2"/>
       <rect class="crawl" x="411.6" y="231.1" width="45.6" height="2.2"/>
@@ -2914,6 +3248,46 @@
       <rect class="kit" x="943.2" y="301.7" width="12" height="1.4"/>
       <rect class="kit" x="945.6" y="298.8" width="1" height="2.9"/>
       </g>
+      <g class="plant">
+      <rect x="148.8" y="295.4" width="24" height="7.7" rx="2.4"/>
+      <line class="flange" x1="149.8" y1="299.3" x2="171.8" y2="299.3"/>
+      <rect x="177.6" y="299.7" width="5.8" height="3.4"/>
+      <circle cx="180.5" cy="301.4" r="1.1"/>
+      <rect x="184.8" y="299.7" width="5.8" height="3.4"/>
+      <circle cx="187.7" cy="301.4" r="1.1"/>
+      <rect x="194.4" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="197.3" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="200.2" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="203" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="205.9" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="208.8" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="211.7" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="214.6" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="217.4" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <line class="flange" x1="193.4" y1="296.1" x2="217.9" y2="296.1"/>
+      </g>
+      <rect class="term" x="223" y="300.5" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="222.1" y="299" width="2.2" height="1.4"/>
+      <g class="plant">
+      <rect x="1032" y="295.4" width="24" height="7.7" rx="2.4"/>
+      <line class="flange" x1="1033" y1="299.3" x2="1055" y2="299.3"/>
+      <rect x="1021.4" y="299.7" width="5.8" height="3.4"/>
+      <circle cx="1024.3" cy="301.4" r="1.1"/>
+      <rect x="1014.2" y="299.7" width="5.8" height="3.4"/>
+      <circle cx="1017.1" cy="301.4" r="1.1"/>
+      <rect x="1008.5" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="1005.6" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="1002.7" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="999.8" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="997" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="994.1" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="991.2" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="988.3" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <rect x="985.4" y="296.9" width="1.9" height="6.2" rx="1"/>
+      <line class="flange" x1="986.9" y1="296.1" x2="1011.4" y2="296.1"/>
+      </g>
+      <rect class="term" x="981.4" y="300.5" width="0.4" height="2.6"/>
+      <rect class="term-screen" x="980.5" y="299" width="2.2" height="1.4"/>
       <rect class="room" x="223.2" y="303.6" width="79.2" height="19.2"/>
       <rect class="room" x="302.4" y="303.6" width="69.6" height="19.2"/>
       <g class="racks">
@@ -3774,7 +4148,7 @@
       <path class="data data-behind" d="M 151.7 233.7 H 456.2"/>
       <path class="data data-behind" d="M 154.6 252.9 H 412.6"/>
       <path class="data data-behind" d="M 208.8 272.1 H 431.6"/>
-      <path class="data data-behind" d="M 315.6 291.3 H 431.6"/>
+      <path class="data data-behind" d="M 223.2 291.3 H 431.6"/>
       <path class="data data-behind" d="M 300 310.5 H 431.6"/>
       <path class="data data-behind" d="M 364.8 329.7 H 431.6"/>
       <path class="data data-behind" d="M 508.8 156.9 V 164.6"/>
@@ -3789,6 +4163,7 @@
       <path class="data data-behind" d="M 208.8 272.1 V 279.8"/>
       <path class="data data-behind" d="M 315.6 291.3 V 299"/>
       <path class="data data-behind" d="M 397.9 291.3 V 299"/>
+      <path class="data data-behind" d="M 223.2 291.3 V 299"/>
       <path class="data data-behind" d="M 300 310.5 V 318.2"/>
       <path class="data data-behind" d="M 364.8 329.7 V 337.4"/>
       <path class="data data-behind" d="M 606 156.9 H 686.4"/>
@@ -3797,6 +4172,7 @@
       <path class="data data-behind" d="M 743.8 233.7 H 941.3"/>
       <path class="data data-behind" d="M 787.4 252.9 H 1045.4"/>
       <path class="data data-behind" d="M 767 272.1 H 988.8"/>
+      <path class="data data-behind" d="M 767 291.3 H 981.6"/>
       <path class="data data-behind" d="M 767 348.9 H 913.9"/>
       <path class="data data-behind" d="M 624.5 156.9 V 164.6"/>
       <path class="data data-behind" d="M 686.4 156.9 V 164.6"/>
@@ -3809,6 +4185,7 @@
       <path class="data data-behind" d="M 1045.4 252.9 V 260.6"/>
       <path class="data data-behind" d="M 773.8 272.1 V 279.8"/>
       <path class="data data-behind" d="M 988.8 272.1 V 279.8"/>
+      <path class="data data-behind" d="M 981.6 291.3 V 299"/>
       <path class="data data-behind" d="M 913.9 348.9 V 356.6"/>
       <path class="data data-behind" d="M 456.2 214.5 V 233.7"/>
       <path class="data data-behind" d="M 412.6 233.7 V 272.1"/>
@@ -3875,6 +4252,37 @@
       <rect class="door door-open" x="688.3" y="279.6" width="1" height="4.3"/>
       <line class="duct-behind" x1="435.3" y1="303.6" x2="435.3" y2="342"/>
       <line class="duct-behind" x1="436.4" y1="303.6" x2="436.4" y2="342"/>
+      <g clip-path="url(#hold-clip)">
+      <path class="fire fire-behind" d="M 433.8 158.6 V 170.1 A 1 1 0 0 0 433.8 172.1 V 175.9 A 1 1 0 0 0 433.8 177.9 V 188.8 A 1 2 0 0 0 433.8 192.8 V 194.3 A 1 1 0 0 0 433.8 196.3 V 210 A 1 1 0 0 0 433.8 212 V 227.7 A 1 1.8 0 0 0 433.8 231.2 V 232.7 A 1 1 0 0 0 433.8 234.7 V 246.9 A 1 1.8 0 0 0 433.8 250.4 V 266.1 A 1 1.8 0 0 0 433.8 269.6 V 271.9 A 1 1 0 0 0 433.8 273.9 V 285.3 A 1 1.8 0 0 0 433.8 288.8 V 291.1 A 1 1 0 0 0 433.8 293.1 V 304.5 A 1 1 0 0 0 433.8 306.5 V 325.2 A 1 1 0 0 0 433.8 327.2 V 342.9 A 1 1 0 0 0 433.8 344.9 V 347.7 A 1 1 0 0 0 433.8 349.7 V 358.3 A 1 1 0 0 0 433.8 360.3 V 362.1 A 1 1.8 0 0 0 433.8 365.6 V 369.8"/>
+      <path class="fire fire-behind" d="M 765.5 158.6 V 170.1 A 1 1.8 0 0 1 765.5 173.6 V 175.9 A 1 1 0 0 1 765.5 177.9 V 189.3 A 1 1.8 0 0 1 765.5 192.8 V 194.3 A 1 1 0 0 1 765.5 196.3 V 210 A 1 1 0 0 1 765.5 212 V 227.7 A 1 1.8 0 0 1 765.5 231.2 V 232.7 A 1 1 0 0 1 765.5 234.7 V 246.9 A 1 1.8 0 0 1 765.5 250.4 V 266.1 A 1 1.8 0 0 1 765.5 269.6 V 285.3 A 1 1 0 0 1 765.5 287.3 V 304.5 A 1 1 0 0 1 765.5 306.5 V 323.7 A 1 1 0 0 1 765.5 325.7 V 342.9 A 1 3.4 0 0 1 765.5 349.7 V 362.1 A 1 1.8 0 0 1 765.5 365.6 V 369.8"/>
+      <path class="fire fire-behind" d="M 187.7 299.7 V 293"/>
+      <path class="fire fire-behind" d="M 205.7 296.1 V 293"/>
+      <path class="fire fire-behind" d="M 1017.1 299.7 V 293"/>
+      <path class="fire fire-behind" d="M 999.1 296.1 V 293"/>
+      <path class="fire fire-behind" d="M 433.8 158.6 H 434.8 A 1 1 0 0 0 436.8 158.6 H 439.6 A 1 1 0 0 0 441.6 158.6 H 446.4 A 1 1 0 0 0 448.4 158.6 H 452.1 A 1 1 0 0 0 454.1 158.6 H 462.4 A 1 1 0 0 0 464.4 158.6 H 493.4 A 1 1 0 0 0 495.4 158.6 H 507.8 A 1 1 0 0 0 509.8 158.6 H 564.2 A 1 1 0 0 0 566.2 158.6 H 574.5 A 1 1 0 0 0 576.5 158.6 H 594"/>
+      <path class="fire fire-behind" d="M 606 158.6 H 623.5 A 1 1 0 0 0 625.5 158.6 H 633.8 A 1 1 0 0 0 635.8 158.6 H 685.4 A 1 1 0 0 0 687.4 158.6 H 735.6 A 1 1 0 0 0 737.6 158.6 H 745.9 A 1 1 0 0 0 747.9 158.6 H 758.4 A 1 1 0 0 0 760.4 158.6 H 762.7 A 1 1 0 0 0 764.7 158.6 H 765.5"/>
+      <path class="fire fire-behind" d="M 351.6 177.8 H 390.4 A 1 1 0 0 0 392.4 177.8 H 404 A 1 1 0 0 0 406 177.8 H 417.6 A 1 1 0 0 0 419.6 177.8 H 434.8 A 1 1 0 0 0 436.8 177.8 H 439.6 A 1 1 0 0 0 441.6 177.8 H 446.4 A 1 1 0 0 0 448.4 177.8 H 452.1 A 1 1 0 0 0 454.1 177.8 H 462.2 A 1 1 0 0 0 464.2 177.8 H 469.4 A 1 1 0 0 0 471.4 177.8 H 589.4 A 1 1 0 0 0 591.4 177.8 H 594"/>
+      <path class="fire fire-behind" d="M 606 177.8 H 745.9 A 1 1 0 0 0 747.9 177.8 H 758.4 A 1 1 0 0 0 760.4 177.8 H 762.7 A 1 1 0 0 0 764.7 177.8 H 770.6 A 1 1 0 0 0 772.6 177.8 H 791.7 A 1 1 0 0 0 793.7 177.8 H 848.4"/>
+      <path class="fire fire-behind" d="M 267.6 197 H 359 A 1 1 0 0 0 361 197 H 428.1 A 1 1 0 0 0 430.1 197 H 433.6 A 1.6 1 0 0 0 436.8 197 H 439.6 A 1 1 0 0 0 441.6 197 H 446.4 A 1 1 0 0 0 448.4 197 H 452.1 A 1 1 0 0 0 454.1 197 H 455.4 A 1 1 0 0 0 457.4 197 H 460.5 A 1 1 0 0 0 462.5 197 H 511.6 A 1 1 0 0 0 513.6 197 H 534.7 A 1 1 0 0 0 536.7 197 H 594"/>
+      <path class="fire fire-behind" d="M 606 197 H 620.8 A 1 1 0 0 0 622.8 197 H 648.2 A 1 1 0 0 0 650.2 197 H 679.2 A 1 1 0 0 0 681.2 197 H 702.7 A 1 1 0 0 0 704.7 197 H 745.9 A 1 1 0 0 0 747.9 197 H 758.4 A 1 1 0 0 0 760.4 197 H 762.7 A 1 1 0 0 0 764.7 197 H 769.9 A 1.4 1 0 0 0 772.6 197 H 839 A 1 1 0 0 0 841 197 H 932.4"/>
+      <path class="fire fire-behind" d="M 439.2 216.2 H 439.6 A 1 1 0 0 0 441.6 216.2 H 446.4 A 1 1 0 0 0 448.4 216.2 H 452.1 A 1 1 0 0 0 454.1 216.2 H 455.2 A 1 1 0 0 0 457.2 216.2 H 460.5 A 1 1 0 0 0 462.5 216.2 H 480.9 A 1 1 0 0 0 482.9 216.2 H 594"/>
+      <path class="fire fire-behind" d="M 606 216.2 H 742.8 A 1 1 0 0 0 744.8 216.2 H 745.9 A 1 1 0 0 0 747.9 216.2 H 751.6 A 1 1 0 0 0 753.6 216.2 H 758.4 A 1 1 0 0 0 760.4 216.2 H 760.8"/>
+      <path class="fire fire-behind" d="M 123.6 235.4 H 150.7 A 1 1 0 0 0 152.7 235.4 H 325.9 A 1 1 0 0 0 327.9 235.4 H 335 A 1 1 0 0 0 337 235.4 H 411.6 A 1 1 0 0 0 413.6 235.4 H 434.8 A 1 1 0 0 0 436.8 235.4 H 439.6 A 1 1 0 0 0 441.6 235.4 H 446.4 A 1 1 0 0 0 448.4 235.4 H 452.1 A 1 1 0 0 0 454.1 235.4 H 566.4"/>
+      <path class="fire fire-behind" d="M 633.6 235.4 H 668.6 A 1 1 0 0 0 670.6 235.4 H 695.2 A 1 1 0 0 0 697.2 235.4 H 745.9 A 1 1 0 0 0 747.9 235.4 H 751.6 A 1 1 0 0 0 753.6 235.4 H 758.4 A 1 1 0 0 0 760.4 235.4 H 762.7 A 1 1 0 0 0 764.7 235.4 H 770.6 A 1 1 0 0 0 772.6 235.4 H 786.4 A 1 1 0 0 0 788.4 235.4 H 876.9 A 1 1 0 0 0 878.9 235.4 H 940.3 A 1 1 0 0 0 942.3 235.4 H 1076.4"/>
+      <path class="fire fire-behind" d="M 123.6 259.7 H 153.6 A 1 1 0 0 0 155.6 259.7 H 411.6 A 1 1 0 0 0 413.6 259.7 H 434.8 A 1 1 0 0 0 436.8 259.7 H 439.6 A 1 1 0 0 0 441.6 259.7 H 446.4 A 1 1 0 0 0 448.4 259.7 H 452.1 A 1 1 0 0 0 454.1 259.7 H 542.6 A 1 1 0 0 0 544.6 259.7 H 566.4"/>
+      <path class="fire fire-behind" d="M 633.6 259.7 H 655.4 A 1 1 0 0 0 657.4 259.7 H 745.9 A 1 1 0 0 0 747.9 259.7 H 751.6 A 1 1 0 0 0 753.6 259.7 H 758.4 A 1 1 0 0 0 760.4 259.7 H 762.7 A 1 1 0 0 0 764.7 259.7 H 770.6 A 1 1 0 0 0 772.6 259.7 H 786.4 A 1 1 0 0 0 788.4 259.7 H 1044.4 A 1 1 0 0 0 1046.4 259.7 H 1076.4"/>
+      <path class="fire fire-behind" d="M 123.6 274.8 H 207.8 A 1 1 0 0 0 209.8 274.8 H 311 A 1 1 0 0 0 313 274.8 H 416.6 A 1 1 0 0 0 418.6 274.8 H 425.2 A 1 1 0 0 0 427.2 274.8 H 430.6 A 1 1 0 0 0 432.6 274.8 H 434.8 A 1 1 0 0 0 436.8 274.8 H 439.6 A 1 1 0 0 0 441.6 274.8 H 446.4 A 1 1 0 0 0 448.4 274.8 H 452.1 A 1 1 0 0 0 454.1 274.8 H 489.8 A 1 1 0 0 0 491.8 274.8 H 529.4 A 1 1 0 0 0 531.4 274.8 H 566.4"/>
+      <path class="fire fire-behind" d="M 633.6 274.8 H 668.6 A 1 1 0 0 0 670.6 274.8 H 708.2 A 1 1 0 0 0 710.2 274.8 H 745.9 A 1 1 0 0 0 747.9 274.8 H 751.6 A 1 1 0 0 0 753.6 274.8 H 758.4 A 1 1 0 0 0 760.4 274.8 H 762.7 A 1 1 0 0 0 764.7 274.8 H 766 A 1 1 0 0 0 768 274.8 H 770.6 A 2.1 1 0 0 0 774.8 274.8 H 781.4 A 1 1 0 0 0 783.4 274.8 H 887 A 1 1 0 0 0 889 274.8 H 987.8 A 1 1 0 0 0 989.8 274.8 H 1076.4"/>
+      <path class="fire fire-behind" d="M 123.6 293 H 159.8 A 1 1 0 0 0 161.8 293 H 222.2 A 1 1 0 0 0 224.2 293 H 314.6 A 1 1 0 0 0 316.6 293 H 347 A 1 1 0 0 0 349 293 H 396.9 A 1 1 0 0 0 398.9 293 H 430.6 A 1 1 0 0 0 432.6 293 H 434.8 A 1 1 0 0 0 436.8 293 H 439.6 A 1 1 0 0 0 441.6 293 H 446.4 A 1 1 0 0 0 448.4 293 H 452.1 A 1 1 0 0 0 454.1 293 H 474.1 A 1 1 0 0 0 476.1 293 H 482.4"/>
+      <path class="fire fire-behind" d="M 717.6 293 H 723.9 A 1 1 0 0 0 725.9 293 H 745.9 A 1 1 0 0 0 747.9 293 H 751.6 A 1 1 0 0 0 753.6 293 H 758.4 A 1 1 0 0 0 760.4 293 H 762.7 A 1 1 0 0 0 764.7 293 H 766 A 1 1 0 0 0 768 293 H 770.6 A 1 1 0 0 0 772.6 293 H 791.7 A 1 1 0 0 0 793.7 293 H 980.6 A 1 1 0 0 0 982.6 293 H 1043 A 1 1 0 0 0 1045 293 H 1076.4"/>
+      <path class="fire fire-behind" d="M 223.2 313.4 H 299 A 1 1 0 0 0 301 313.4 H 430.6 A 1 1 0 0 0 432.6 313.4 H 434.3 A 1.5 1 0 0 0 437.4 313.4 H 439.6 A 1 1 0 0 0 441.6 313.4 H 446.4 A 1 1 0 0 0 448.4 313.4 H 452.1 A 1 1 0 0 0 454.1 313.4 H 482.4"/>
+      <path class="fire fire-behind" d="M 717.6 313.4 H 745.9 A 1 1 0 0 0 747.9 313.4 H 751.6 A 1 1 0 0 0 753.6 313.4 H 758.4 A 1 1 0 0 0 760.4 313.4 H 762.7 A 1 1 0 0 0 764.7 313.4 H 766 A 1 1 0 0 0 768 313.4 H 770.6 A 1 1 0 0 0 772.6 313.4 H 791.7 A 1 1 0 0 0 793.7 313.4 H 976.8"/>
+      <path class="fire fire-behind" d="M 183.6 331.4 H 299 A 1 1 0 0 0 301 331.4 H 363.8 A 1 1 0 0 0 365.8 331.4 H 387.8 A 1 1 0 0 0 389.8 331.4 H 434.3 A 1.5 1 0 0 0 437.4 331.4 H 439.6 A 1 1 0 0 0 441.6 331.4 H 446.4 A 1 1 0 0 0 448.4 331.4 H 452.1 A 1 1 0 0 0 454.1 331.4 H 482.4"/>
+      <path class="fire fire-behind" d="M 717.6 331.4 H 743 A 1 1 0 0 0 745 331.4 H 745.9 A 1 1 0 0 0 747.9 331.4 H 751.6 A 1 1 0 0 0 753.6 331.4 H 758.4 A 1 1 0 0 0 760.4 331.4 H 762.7 A 1 1 0 0 0 764.7 331.4 H 766 A 1 1 0 0 0 768 331.4 H 791.7 A 1 1 0 0 0 793.7 331.4 H 1016.4"/>
+      <path class="fire fire-behind" d="M 231.6 350.6 H 256.3 A 1 1 0 0 0 258.3 350.6 H 299 A 1 1 0 0 0 301 350.6 H 387.8 A 1 1 0 0 0 389.8 350.6 H 434.8 A 1 1 0 0 0 436.8 350.6 H 446.4 A 1 1 0 0 0 448.4 350.6 H 452.1 A 1 1 0 0 0 454.1 350.6 H 482.4"/>
+      <path class="fire fire-behind" d="M 717.6 350.6 H 734.1 A 1 1 0 0 0 736.1 350.6 H 745.9 A 1 1 0 0 0 747.9 350.6 H 762.7 A 1 1 0 0 0 764.7 350.6 H 806.4 A 1 1 0 0 0 808.4 350.6 H 841.4 A 1 1 0 0 0 843.4 350.6 H 912.9 A 1 1 0 0 0 914.9 350.6 H 968.4"/>
+      <path class="fire fire-behind" d="M 363.6 369.8 H 432.2 A 1 1 0 0 0 434.2 369.8 H 559.9 A 1 1 0 0 0 561.9 369.8 H 638.1 A 1 1 0 0 0 640.1 369.8 H 819.6 A 1 1 0 0 0 821.6 369.8 H 836.4"/>
+      </g>
       <g class="tag sm"><circle cx="427.2" cy="251.1" r="4.8"/><text x="427.2" y="252.8" text-anchor="middle">4</text></g>
       <g class="tag sm"><circle cx="772.8" cy="251.1" r="4.8"/><text x="772.8" y="252.8" text-anchor="middle">4</text></g>
       <g class="tag sm"><circle cx="464.4" cy="231.9" r="4.8"/><text x="464.4" y="233.7" text-anchor="middle">2</text></g>
@@ -3948,6 +4356,8 @@
       <g class="tag sm"><circle cx="800.4" cy="289.5" r="4.8"/><text x="800.4" y="291.3" text-anchor="middle">55</text></g>
       <g class="tag sm keep"><circle cx="849.6" cy="289.5" r="4.8"/><text x="849.6" y="291.3" text-anchor="middle">39</text></g>
       <g class="tag sm"><circle cx="928.8" cy="289.5" r="4.8"/><text x="928.8" y="291.3" text-anchor="middle">47</text></g>
+      <g class="tag sm"><circle cx="186" cy="289.5" r="4.8"/><text x="186" y="291.3" text-anchor="middle">57</text></g>
+      <g class="tag sm"><circle cx="1012.8" cy="289.5" r="4.8"/><text x="1012.8" y="291.3" text-anchor="middle">57</text></g>
       <g class="tag sm"><circle cx="262.8" cy="308.7" r="4.8"/><text x="262.8" y="310.5" text-anchor="middle">56</text></g>
       <g class="tag sm"><circle cx="788.4" cy="308.7" r="4.8"/><text x="788.4" y="310.5" text-anchor="middle">54</text></g>
       <g class="tag sm"><circle cx="800.4" cy="308.7" r="4.8"/><text x="800.4" y="310.5" text-anchor="middle">55</text></g>
@@ -3993,6 +4403,7 @@
       <label><input type="checkbox" value="water" checked>Water</label>
       <label><input type="checkbox" value="air" checked>Air</label>
       <label><input type="checkbox" value="data" checked>SIGMA network</label>
+      <label><input type="checkbox" value="fire" checked>Fire suppression</label>
       <label><input type="checkbox" value="access" checked>Maintenance access</label>
       <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
       <label><input type="checkbox" value="equipment" checked>Equipment</label>
@@ -4050,6 +4461,7 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">44</text></g></svg>Maintenance shops, Deck 07</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">45</text></g></svg>Security: office, armoury, holding cell, Deck 08</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">46</text></g></svg>Fire and emergency stores, Deck 08</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">57</text></g></svg>Fire suppression plant, Deck 08, one at each end: mist tank and pumps, inert gas cylinders</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">47</text></g></svg>Gym, Deck 08</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">48</text></g></svg>Logistics stores, Deck 10</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="5"/><text x="14" y="8.3" text-anchor="middle">49</text></g></svg>Recycling and sorting, Deck 11</li>
@@ -4085,6 +4497,7 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="duct duct-o" d="M 3 6 H 25"/><path class="duct duct-i" d="M 3 6 H 25"/></svg>Air duct, supply and return in one casing; dashed behind the hold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="data" d="M 3 6 H 25"/></svg>SIGMA network, from the core to every terminal</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="fire" d="M 3 3 H 25"/><path class="fire-nozzle" d="M 14 3 V 5.5 M 12.3 7.2 L 15.7 7.2 L 14 5.2 Z"/></svg>Fire suppression main along each ceiling, a nozzle in every room; dashed behind the hold</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
@@ -4124,12 +4537,6 @@
         <li><b>Docking ring:</b> the clamps inside the bay that hold the ship.</li>
         <li><b>Airlock B</b> on Deck 09 in the bay wall, joined to the ship by a boarding umbilical. <b>Airlock A</b> faces it across the bay, its own umbilical pulled back.</li>
         <li><b>Maintenance access:</b> a trunk beside each lift core, Deck 12 to Deck 01, with a landing and hatch at every deck. Deck 12&apos;s crawlway joins them under the bay and drops into every fuel room; Deck 05&apos;s leads into engineering&apos;s shafts through locked hatches.</li>
-      </ul>
-    </section>
-    <section>
-      <h2><span class="tag open">NOT PLACED YET</span></h2>
-      <ul>
-        <li><b>Air ducts</b> and <b>fire suppression</b> lines.</li>
       </ul>
     </section>
   </div>
