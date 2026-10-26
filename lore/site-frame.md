@@ -38,6 +38,7 @@ Quell moves between **places**, not terminals. A terminal is one thing he can us
   - door lock states: at the door itself, from its panel;
   - everything else (bodies, damage, frost, failed lights): only by going there.
 - **[proposed] The map shows only what Quell has seen or downloaded.** At first, only the room he is standing in. Rooms he has been in stay drawn. Accessing a terminal reveals its part of the station: its deck.
+  - **[proposed] Amber plan, coloured once visited.** A downloaded deck draws in the slate's own amber, as a plan with no state shown (door locks, damage). A room Quell has been in draws in full colour. Unmapped space stays black. Tried out in `reference/slate-map-trial`.
 - **[proposed] Radiation is never on the map by default.** It appears only from:
   - the **slate's Geiger counter**, for the room Quell is in, as he moves; or
   - a **station radiation survey** run from command on Deck 01 (the crew's "bridge"), using the station's own sensors, whose results download to the slate's map: the hot spots along the conduit duct appear all at once.
