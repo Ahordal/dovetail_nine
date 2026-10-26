@@ -1254,7 +1254,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .power-node { fill: var(--gold); }
   .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
-  .rung { stroke: var(--muted); stroke-width: 0.6; }
+  .rung { stroke: var(--muted); stroke-width: 0.3; }
   .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
   .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; }
   .behind { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
@@ -1271,7 +1271,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .gantry polyline { fill: none; stroke: var(--muted); stroke-width: 1.4; }
   .platform { fill: var(--muted); }
   .dock-leg { stroke: var(--muted); stroke-width: 1; }
-  .ladder { fill: none; stroke: var(--muted); stroke-width: 0.7; }
+  .ladder { fill: none; stroke: var(--muted); stroke-width: 0.35; }
   .room-wall { stroke: var(--muted); stroke-width: 1; }
   .crawl { fill: var(--panel); stroke: var(--muted); stroke-width: 0.7; }
   .junction { fill: var(--panel); stroke: var(--fg); stroke-width: 0.5; }
