@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Slate Station Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+
+  /* Layout: one wide to-scale drawing, the station's own amber-on-black, with the record of decisions below. */
+  #map {
+    --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
+    --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0; --fire: #ff2626;
+    --display: "Chakra Petch", "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+    color-scheme: dark;
+  }
+  
+  
+  .wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+  header { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.16em; color: var(--muted); }
+  h1 { margin: 0; font: 600 30px/1.15 var(--display); letter-spacing: 0.04em; text-wrap: balance; }
+  .lede { margin: 0; max-width: 68ch; color: var(--muted); }
+  .sheet { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+  .sheet svg { display: block; width: 100%; height: auto; }
+  .viewport svg#hull { width: 100%; height: 100%; }
+  .viewport { position: relative; height: clamp(360px, 72vh, 820px); overflow: hidden; touch-action: none; cursor: grab; outline-offset: -2px; }
+  .viewport.dragging { cursor: grabbing; }
+  .zoom { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; align-items: center; z-index: 1; }
+  .zoom button { min-width: 30px; height: 30px; padding: 0 8px; font: 500 14px var(--mono); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; }
+  .zoom button:hover { border-color: var(--muted); }
+  .zoom output { min-width: 44px; text-align: right; font: 400 11px var(--mono); color: var(--muted); }
+  .zoom-hint { margin: 0; padding: 6px 14px 0; font-size: 11px; color: var(--muted); }
+  .layers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 0; padding: 8px 14px 0; border: 0; font-size: 12px; color: var(--muted); }
+  .layers legend { float: left; margin-right: 4px; padding: 0; font-size: 11px; letter-spacing: 0.12em; }
+  .layers label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .layers input { margin: 0; accent-color: var(--accent); }
+  /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
+  #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-data :is(.data, .data-node),
+  #hull.hide-air :is(.duct, .duct-behind),
+  #hull.hide-fire :is(.fire, .fire-nozzle),
+  #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
+  #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
+  #hull.hide-doors :is(.door, .airlock),
+  #hull.hide-equipment :is(.plant, .racks, .term, .term-screen, .clock, .gantry, .clamp, .trap, .shell, .emitter, .radiator, .radline, .busbar, .frost, .plant-leaf) { display: none; }
+  .hull-fill { fill: var(--bg); }
+  .hull-edge { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+  .service { fill: var(--service); }
+  .deck-line { stroke: var(--deck); stroke-width: 1; }
+  .grid { stroke: var(--deck); stroke-width: 0.6; stroke-dasharray: 2 3; }
+  .truss line, .truss polyline { stroke: var(--muted); stroke-width: 0.9; fill: none; }
+  .mast { stroke: var(--deck); stroke-width: 1.4; fill: none; }
+  .mast-thin { stroke: var(--deck); stroke-width: 0.8; fill: none; }
+  .spire-block { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .dish { fill: var(--bg); stroke: var(--deck); stroke-width: 0.9; }
+  .mast-light { fill: #ff3b30; filter: drop-shadow(0 0 2px #ff3b30) drop-shadow(0 0 6px rgba(255, 59, 48, 0.7)); animation: beacon 3.2s ease-in-out infinite; }
+  .ring { fill: var(--bg); stroke: var(--muted); stroke-width: 1.2; }
+  .truss-light { fill: var(--accent); filter: drop-shadow(0 0 2px var(--accent)) drop-shadow(0 0 5px var(--accent)); animation: marker 1.3s ease-in-out infinite; }
+  @keyframes marker { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  @keyframes beacon { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  @media (prefers-reduced-motion: reduce) { .mast-light, .truss-light { animation: none; } }
+  .tram { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 9 4; }
+  .power, .grid-power { fill: none; stroke: var(--gold); stroke-width: 0.6; stroke-linejoin: round; }
+  .power-node { fill: var(--gold); }
+  .power.tram-behind { stroke-opacity: 0.45; }
+  .tram-behind { stroke-opacity: 0.3; }
+  .rung { stroke: var(--muted); stroke-width: 0.3; }
+  .data { fill: none; stroke: var(--data); stroke-width: 0.5; }
+  .data-core { stroke-width: 0.7; }
+  .data-node { fill: var(--data); }
+  .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire { fill: none; stroke: var(--fire); stroke-width: 0.5; stroke-linejoin: round; }
+  .fire-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
+  .fire-nozzle { fill: var(--fire); stroke: var(--fire); stroke-width: 0.3; stroke-linejoin: round; }
+  .duct { fill: none; stroke-linecap: square; }
+  .duct-o { stroke: var(--air); stroke-width: 1.1; }
+  .duct-i { stroke: var(--bg); stroke-width: 0.4; }
+  .duct-behind { stroke: var(--air); stroke-width: 0.35; stroke-dasharray: 1.2 0.9; }
+  .shaft { fill: var(--bg); stroke: var(--deck); stroke-width: 1; }
+  .lift { fill: none; stroke: var(--muted); stroke-width: 0.9; }
+  .behind { fill: none; stroke: var(--muted); stroke-width: 0.9; stroke-dasharray: 3 2; }
+  .stop { fill: var(--muted); }
+  .room { fill: none; stroke: var(--muted); stroke-width: 1; }
+  .section { fill: none; stroke: var(--muted); stroke-width: 1; }
+  .conduit { stroke: var(--muted); stroke-width: 1.4; }
+  .core { fill: var(--bg); stroke: var(--fg); stroke-width: 1; stroke-dasharray: 4 3; }
+  .singularity { fill: var(--fg); }
+  .bay { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .ship rect, .ship path { fill: var(--panel); stroke: var(--ship); stroke-width: 1; }
+  .gantry rect { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .gantry line { stroke: var(--muted); stroke-width: 0.8; }
+  .gantry polyline { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  .platform { fill: var(--muted); }
+  .dock-leg { stroke: var(--muted); stroke-width: 1; }
+  .ladder { fill: none; stroke: var(--muted); stroke-width: 0.35; }
+  .room-wall { stroke: var(--muted); stroke-width: 1; }
+  .crawl { fill: var(--panel); stroke: var(--muted); stroke-width: 0.7; }
+  .junction { fill: var(--panel); stroke: var(--fg); stroke-width: 0.5; }
+  .term { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
+  .clock rect { fill: var(--panel); stroke: var(--fg); stroke-width: 0.4; }
+  .clock circle { fill: var(--accent); }
+  .tap { stroke: var(--muted); stroke-width: 0.9; }
+  .term-screen { fill: var(--accent); stroke: var(--fg); stroke-width: 0.4; }
+  .plant-leaf { fill: var(--leaf); stroke: none; }
+  .water, .water-waste, .water-hidden { fill: none; stroke: var(--open); stroke-width: 0.6; stroke-linejoin: round; }
+  .tank-potable { fill: var(--panel); stroke: var(--open); stroke-width: 0.6; }
+  .tank-waste { fill: var(--panel); stroke: var(--muted); stroke-width: 0.6; }
+  .shell { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 2 2; }
+  .trap { fill: var(--panel); stroke: var(--fg); stroke-width: 0.6; }
+  .busbar { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  .emitter { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .radiator { fill: none; stroke: var(--muted); stroke-width: 0.5; }
+  .radline { fill: none; stroke: var(--muted); stroke-width: 0.6; stroke-dasharray: 4 1 1 1; }
+  .frost { fill: none; stroke: var(--open); stroke-width: 0.4; }
+  .hot circle { fill: var(--accent); }
+  .hot .hot-hub { fill: var(--bg); }
+  .hold-floor { stroke: var(--muted); stroke-width: 1; }
+  .hold { fill: none; stroke: var(--muted); stroke-width: 1; }
+  .hold-mask { fill: var(--bg); }
+  .racks .upright { stroke: var(--muted); stroke-width: 0.9; }
+  .racks .shelf { stroke: var(--muted); stroke-width: 0.9; }
+  .racks .chord { stroke: var(--muted); stroke-width: 0.5; }
+  .racks .web { fill: none; stroke: var(--muted); stroke-width: 0.4; }
+  .racks .brace { stroke: var(--muted); stroke-width: 0.4; stroke-opacity: 0.7; }
+  .racks .crate { fill: var(--line); stroke: var(--muted); stroke-width: 0.5; }
+  .racks .kit { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .racks .reel { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .plant rect, .plant circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.5; }
+  .plant line { stroke: var(--muted); stroke-width: 0.5; }
+  .plant .flange { stroke-width: 0.35; }
+  .plant .pipe { stroke-width: 0.45; }
+  .plant .hidden { stroke-dasharray: 1.2 0.9; }
+  .plant .pipe-o { fill: none; stroke: var(--muted); stroke-width: 1.65; }
+  .plant .pipe-i { fill: none; stroke: var(--panel); stroke-width: 0.75; }
+  .clamp rect, .clamp circle { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .umbilical { fill: none; stroke: var(--ship); stroke-width: 0.9; stroke-dasharray: 3 2; }
+  .airlock, .door { fill: var(--ship); }
+  .door-open { fill: var(--unlocked); }
+  .door-locked { fill: var(--locked); }
+  .window { fill: var(--bg); stroke: var(--ship); stroke-width: 0.4; }
+  .ruler { stroke: var(--muted); stroke-width: 0.9; }
+  .arrow { fill: none; }
+  .t-array { font-size: 6.8px; }
+  .t-deck { font: 500 8px var(--mono); fill: var(--muted); letter-spacing: 0.06em; }
+  .t-label { font: 600 9.5px var(--display); fill: var(--fg); letter-spacing: 0.12em; }
+  .t-accent { fill: var(--accent); }
+  .t-note { font: 400 7.5px var(--mono); fill: var(--muted); }
+  .t-ship { fill: var(--ship); }
+  .t-strong { fill: var(--fg); }
+  .t-watermark { font: 600 16px var(--display); fill: var(--fg); fill-opacity: 0.14; pointer-events: none; }
+  .t-deck-num { font-size: 13px; }
+  .t-room { font-size: 11px; letter-spacing: 0.12em; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; paint-order: stroke; }
+  .t-scale { font: 400 8px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .tag circle { fill: var(--panel); stroke: var(--muted); stroke-width: 0.9; }
+  .sl-bg { fill: var(--bg); }
+  .sl-ring { fill: none; stroke: var(--fg); stroke-width: 0.9; }
+  .sl-red { fill: none; stroke: #c81c19; stroke-width: 0.9; }
+  .sl-sigma { fill: none; stroke: var(--fg); stroke-width: 1.1; stroke-linejoin: miter; }
+  .tag text { font: 600 6.5px var(--mono); fill: var(--fg); }
+  .tag.sm text { font-size: 5px; letter-spacing: 0; }   /* inherited spacing pushes text-anchor off centre */
+  .tag.sm circle { stroke-width: 0.7; }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; padding: 10px 14px; border-top: 1px solid var(--line); }
+  .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .sheet .swatch { display: inline-block; width: 28px; min-width: 0; height: 12px; flex: none; overflow: visible; }
+  .here-ring { fill: none; stroke: #9fc7c2; stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: here-ping 2.4s ease-out infinite; }
+  @keyframes here-ping { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .here-ring { animation: none; opacity: 0.35; } }
+  .sigma-core { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+  .caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+  .record { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .record section { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .record h2 { margin: 0; display: flex; align-items: center; gap: 10px; font: 600 13px var(--display); letter-spacing: 0.14em; }
+  .tag { font: 500 10px var(--mono); letter-spacing: 0.08em; padding: 1px 7px; border-radius: 3px; border: 1px solid currentColor; }
+  .settled { color: var(--fg); } .proposed { color: var(--accent); } .open { color: var(--open); }
+  .record ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .record li { padding-left: 14px; border-left: 2px solid var(--line); font-size: 13px; }
+  .record li b { font-weight: 500; color: var(--fg); }
+  .record li { color: var(--muted); }
+
+  /* Layout: Quell's Blackline slate, full width, the map app open; the station drawing under fog of war. */
+  :root {
+    --void: #050403; --bezel: #1b1813; --edge: #3b342a; --screen: #0e0c08; --rule: #2a241a;
+    --amber: #e8a33d; --amber-dim: #9b7a45; --amber-line: #5a4a2a; --teal: #9fc7c2;
+    --display: "Chakra Petch", "Segoe UI", sans-serif; --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+    color-scheme: dark;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { background: var(--void); color: var(--amber); font: 13px/1.5 var(--mono);
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px; box-sizing: border-box; }
+  .slate { position: relative; max-width: 1280px; height: 100%; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column; padding: 14px;
+    background: var(--bezel); border: 1px solid var(--edge); border-radius: 22px; box-shadow: 0 18px 48px rgba(0,0,0,.65), inset 0 0 0 2px #0d0c09; }
+  .screw { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--edge); box-shadow: inset 0 0 0 1px #0d0c09; }
+  .screen { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; background: var(--screen); border: 1px solid var(--edge); border-radius: 10px; overflow: hidden; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding: 10px 14px; border-bottom: 1px solid var(--edge); font-size: 11px; letter-spacing: .12em; color: var(--amber-dim); }
+  .brand { font: 700 13px var(--display); letter-spacing: .2em; color: var(--amber); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--edge); }
+  button { font: 600 11px var(--display); letter-spacing: .14em; color: var(--amber); background: none; border: 1px solid var(--amber-line); border-radius: 6px; min-height: 34px; padding: 0 12px; cursor: pointer; }
+  button:hover { background: #211b10; }
+  button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  button[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: var(--screen); }
+  button:disabled { opacity: .35; cursor: default; background: none; }
+  .app { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px 14px 14px; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; font-size: 11px; letter-spacing: .12em; color: var(--amber-dim); }
+  .bar b { color: var(--amber); font-weight: 500; }
+  .key { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .key span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; border: 1px solid var(--amber-line); }
+  .sw.seen { background: linear-gradient(90deg, #d6b44c 0 33%, #9fc7c2 33% 66%, #e070d0 66%); border-color: transparent; }
+  .sw.plan { background: #5a4a2a; }
+  .sw.fog { background: var(--void); }
+  .view { position: relative; flex: 1 1 auto; min-height: 260px; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; touch-action: none; cursor: grab; background: var(--void); }
+  .view.dragging { cursor: grabbing; }
+  .view svg { display: block; width: 100%; height: 100%; }
+  .zoom { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; }
+  .zoom button { min-width: 34px; padding: 0 8px; background: var(--screen); }
+  .prompt { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 10px 12px;
+    background: var(--screen); border: 1px solid var(--amber); border-radius: 6px; }
+  .prompt p { margin: 0; min-width: 0; }
+  .prompt div { display: flex; gap: 6px; }
+  .trial { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 10px; border-top: 1px dashed var(--amber-line); }
+  .trial .lab { font-size: 10px; letter-spacing: .14em; color: var(--amber-dim); margin-right: 4px; }
+  .trial button { min-height: 30px; padding: 0 9px; font-size: 10.5px; }
+  .note { color: var(--amber-dim); }
+  .placeholder { margin: auto; text-align: center; color: var(--amber-dim); letter-spacing: .12em; font-size: 11px; }
+  /* Fog: hot spots only after a survey; the hit areas only for rooms Quell knows exist. */
+  #map:not(.survey) .hot { display: none; }
+  .hit { fill: transparent; cursor: pointer; }
+  .hit:hover { fill: rgba(232, 163, 61, .10); }
+  .hullline { fill: none; stroke: var(--amber-line); stroke-width: 1; stroke-dasharray: 3 3; }
+  .you circle { fill: none; stroke: var(--amber); stroke-width: 1.2; }
+  .you .ping { transform-box: fill-box; transform-origin: center; animation: ping 2.4s ease-out infinite; }
+  @keyframes ping { from { transform: scale(.6); opacity: .9; } to { transform: scale(2); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .you .ping { animation: none; opacity: .4; } }
+  @media (max-width: 560px) { body { padding-block: 10px; } .slate { padding: 8px; border-radius: 16px; } .top .link { display: none; } }
+  #map { --bg: #050403; --panel: #0e0c08; }
+</style>
+<div class="slate">
+  <span class="screw" style="top:6px;left:6px"></span><span class="screw" style="top:6px;right:6px"></span>
+  <span class="screw" style="bottom:6px;left:6px"></span><span class="screw" style="bottom:6px;right:6px"></span>
+  <div class="screen">
+    <div class="top"><span><span class="brand">BLACKLINE</span> · BLDS-X</span><span class="link">LINK · MISTRAL · PWR 98%</span></div>
+    <div class="tabs" role="group" aria-label="Slate apps">
+      <button type="button" data-app="timer" aria-pressed="false">TIMER</button>
+      <button type="button" data-app="logs" aria-pressed="false">LOGS</button>
+      <button type="button" data-app="dose" aria-pressed="false">DOSE</button>
+      <button type="button" data-app="map" aria-pressed="true">MAP</button>
+      <button type="button" data-app="mistral" aria-pressed="false">MISTRAL</button>
+      <button type="button" data-app="tools" aria-pressed="false">TOOLS</button>
+    </div>
+    <div class="app" id="app-map">
+      <div class="bar">
+        <span>DOVETAIL-9 · HULL SECTION · <b id="where">AIRLOCK B · DECK 09</b></span>
+        <span class="key"><span><i class="sw seen"></i>SEEN</span><span><i class="sw plan"></i>PLAN ONLY · STATE UNKNOWN</span><span><i class="sw fog"></i>UNMAPPED</span></span>
+      </div>
+      <div class="view" id="view">
+        <svg id="map" viewBox="0 0 1240 428.4" role="img" aria-label="Quell's map of Dovetail-9: only rooms he has seen or downloaded are drawn.">
+          <defs>
+            <g id="dt9"></g>
+            <filter id="planfx" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.3 0.3 0.3 0 0.05  0.24 0.24 0.24 0 0.03  0.12 0.12 0.12 0 0  0 0 0 1 0"/></filter>
+            <mask id="m-plan" maskUnits="userSpaceOnUse" x="0" y="0" width="1240" height="428.4"><rect width="1240" height="428.4" fill="#000"/><g id="plan-holes" fill="#fff"></g></mask>
+            <mask id="m-seen" maskUnits="userSpaceOnUse" x="0" y="0" width="1240" height="428.4"><rect width="1240" height="428.4" fill="#000"/><g id="seen-holes" fill="#fff"></g></mask>
+          </defs>
+          <polygon class="hullline" points="768,150 768,169.2 852,169.2 852,188.4 936,188.4 936,207.6 1020,207.6 1020,226.8 1080,226.8 1080,246 1080,246 1080,265.2 1080,265.2 1080,284.4 1080,284.4 1080,303.6 1056,303.6 1056,322.8 1020,322.8 1020,342 972,342 972,361.2 840,361.2 840,380.4 360,380.4 360,361.2 228,361.2 228,342 180,342 180,322.8 144,322.8 144,303.6 120,303.6 120,284.4 120,284.4 120,265.2 120,265.2 120,246 120,246 120,226.8 180,226.8 180,207.6 264,207.6 264,188.4 348,188.4 348,169.2 432,169.2 432,150"/>
+          <use href="#dt9" mask="url(#m-plan)" filter="url(#planfx)"/>
+          <use href="#dt9" mask="url(#m-seen)"/>
+          <g id="hits"></g>
+          <g class="you" id="you"><circle class="ping" r="6"/><circle r="2.2"/></g>
+        </svg>
+        <div class="zoom"><button type="button" data-z="in" aria-label="Zoom in">+</button><button type="button" data-z="out" aria-label="Zoom out">−</button><button type="button" data-z="fit">FIT</button></div>
+        <div class="prompt" id="prompt" hidden><p id="prompt-text"></p><div><button type="button" id="go">GO</button><button type="button" id="cancel">CANCEL</button></div></div>
+      </div>
+      <div class="trial">
+        <span class="lab">TRY-OUT · LINK TERMINAL ON DECK</span>
+        <span id="decks"></span>
+        <button type="button" id="survey" aria-pressed="false">RADIATION SURVEY</button>
+        <button type="button" id="reset">RESET MAP</button>
+      </div>
+      <p class="note" style="margin:0;font-size:11px">Tap a mapped room to travel there. Linking a terminal downloads its deck as a plan: rooms and routes, but door states and damage stay unknown (greyed) until Quell goes there. Radiation shows only after a survey.</p>
+    </div>
+    <div class="app" id="app-other" hidden><p class="placeholder">NOT PART OF THIS TRY-OUT</p></div>
+  </div>
+</div>
+<script>
+// The station drawing is the hull side view's own file, loaded into both views of the map. The slate draws its own marker.
+fetch('../drawing.svg').then(function (r) { return r.text(); }).then(function (t) {
+  var g = document.getElementById('dt9'), src = new DOMParser().parseFromString(t, 'image/svg+xml').documentElement;
+  Array.from(src.childNodes).forEach(function (n) { g.appendChild(document.importNode(n, true)); });
+  var here = g.querySelector('.here'); if (here) here.remove();
+});
+(function () {
+  var U = [[406.8,246,32.4,19.2,6,0],[760.8,246,32.4,19.2,6,0],[448.8,226.8,31.2,19.2,5,0],[480,226.8,31.2,19.2,5,0],[606,207.6,21.6,19.2,4,0],[518.4,265.2,50.4,19.2,7,0],[631.2,265.2,50.4,19.2,7,0],[482.4,284.4,235.2,76.8,8,0],[717.6,312,15.6,10.8,9,0],[466.8,312,15.6,10.8,9,0],[733.2,312,18,10.8,9,0],[448.8,312,18,10.8,9,0],[463.2,322.8,19.2,19.2,10,0],[448.8,322.8,14.4,19.2,10,0],[717.6,322.8,33.6,19.2,10,0],[717.6,342,33.6,19.2,11,0],[360,361.2,79.2,19.2,12,0],[448.8,361.2,98.4,19.2,12,0],[547.2,361.2,105.6,19.2,12,0],[652.8,361.2,98.4,19.2,12,0],[760.8,361.2,79.2,19.2,12,0],[228,342,84,19.2,11,0],[312,342,127.2,19.2,11,0],[760.8,342,91.2,19.2,11,0],[518.4,226.8,50.4,19.2,5,0],[631.2,226.8,50.4,19.2,5,0],[688.8,226.8,62.4,19.2,5,0],[518.4,246,50.4,19.2,6,0],[631.2,246,50.4,19.2,6,0],[448.8,265.2,62.4,19.2,7,0],[688.8,265.2,62.4,19.2,7,0],[448.8,246,62.4,19.2,6,0],[688.8,246,62.4,19.2,6,0],[448.8,150,19.2,19.2,1,0],[732,150,19.2,19.2,1,0],[468,150,72,19.2,1,0],[540,150,120,19.2,1,0],[660,150,72,19.2,1,0],[429.6,169.2,9.6,19.2,2,0],[348,169.2,21.6,19.2,2,0],[420,169.2,9.6,19.2,2,0],[369.6,169.2,9.6,19.2,2,0],[379.2,169.2,13.6,19.2,2,0],[392.8,169.2,13.6,19.2,2,0],[406.4,169.2,13.6,19.2,2,0],[448.8,169.2,50.4,19.2,2,0],[499.2,169.2,94.8,19.2,2,0],[606,169.2,73.2,19.2,2,0],[679.2,169.2,72,19.2,2,0],[760.8,169.2,91.2,19.2,2,0],[264,188.4,175.2,38.4,3,0],[760.8,188.4,175.2,38.4,3,0],[448.8,188.4,105.6,19.2,3,0],[554.4,188.4,39.6,19.2,3,0],[606,188.4,70.8,19.2,3,0],[676.8,188.4,24,19.2,3,0],[700.8,188.4,50.4,19.2,3,0],[448.8,207.6,13.2,19.2,4,0],[462,207.6,9.6,19.2,4,0],[471.6,207.6,12,19.2,4,0],[483.6,207.6,12,19.2,4,0],[495.6,207.6,7.2,19.2,4,0],[502.8,207.6,7.2,19.2,4,0],[510,207.6,7.2,19.2,4,0],[517.2,207.6,7.2,19.2,4,0],[524.4,207.6,9.6,19.2,4,0],[534,207.6,9.6,19.2,4,0],[543.6,207.6,9.6,19.2,4,0],[553.2,207.6,9.6,19.2,4,0],[562.8,207.6,9.6,19.2,4,0],[572.4,207.6,21.6,19.2,4,0],[627.6,207.6,110.4,19.2,4,0],[738,207.6,13.2,19.2,4,0],[180,207.6,79.2,19.2,4,0],[940.8,207.6,79.2,19.2,4,0],[148.8,303.6,74.4,19.2,9,0],[976.8,303.6,74.4,19.2,9,0],[148.8,226.8,86.4,19.2,5,0],[235.2,226.8,88.8,19.2,5,0],[324,226.8,115.2,19.2,5,0],[760.8,226.8,123.6,19.2,5,0],[884.4,226.8,54,19.2,5,0],[938.4,226.8,112.8,19.2,5,0],[120,246,48,19.2,6,0],[120,253.9,15.6,10.8,6,0],[1032,246,48,19.2,6,0],[1064.4,253.9,15.6,10.8,6,0],[288,265.2,151.2,19.2,7,0],[760.8,265.2,151.2,19.2,7,0],[132,265.2,156,19.2,7,0],[912,265.2,156,19.2,7,0],[144,284.4,84,19.2,8,0],[228,284.4,96,19.2,8,0],[324,284.4,115.2,19.2,8,0],[400.3,292.3,26.4,10.8,8,0],[760.8,284.4,12,19.2,8,0],[772.8,284.4,9.6,19.2,8,0],[782.4,284.4,12,19.2,8,0],[794.4,284.4,12,19.2,8,0],[806.4,284.4,7.2,19.2,8,0],[813.6,284.4,7.2,19.2,8,0],[820.8,284.4,7.2,19.2,8,0],[828,284.4,7.2,19.2,8,0],[835.2,284.4,9.6,19.2,8,0],[844.8,284.4,9.6,19.2,8,0],[854.4,284.4,9.6,19.2,8,0],[864,284.4,9.6,19.2,8,0],[873.6,284.4,9.6,19.2,8,0],[883.2,284.4,9.6,19.2,8,0],[892.8,284.4,72,19.2,8,0],[964.8,284.4,96,19.2,8,0],[223.2,303.6,79.2,19.2,9,0],[302.4,303.6,69.6,19.2,9,0],[760.8,303.6,12,19.2,9,0],[772.8,303.6,9.6,19.2,9,0],[782.4,303.6,12,19.2,9,0],[794.4,303.6,12,19.2,9,0],[806.4,303.6,7.2,19.2,9,0],[813.6,303.6,7.2,19.2,9,0],[820.8,303.6,7.2,19.2,9,0],[828,303.6,7.2,19.2,9,0],[835.2,303.6,9.6,19.2,9,0],[844.8,303.6,9.6,19.2,9,0],[854.4,303.6,9.6,19.2,9,0],[864,303.6,9.6,19.2,9,0],[873.6,303.6,9.6,19.2,9,0],[883.2,303.6,9.6,19.2,9,0],[892.8,303.6,84,19.2,9,0],[180,322.8,72,19.2,10,0],[252,322.8,120,19.2,10,0],[760.8,322.8,12,19.2,10,0],[772.8,322.8,9.6,19.2,10,0],[782.4,322.8,12,19.2,10,0],[794.4,322.8,12,19.2,10,0],[806.4,322.8,7.2,19.2,10,0],[813.6,322.8,7.2,19.2,10,0],[820.8,322.8,7.2,19.2,10,0],[828,322.8,7.2,19.2,10,0],[835.2,322.8,9.6,19.2,10,0],[844.8,322.8,9.6,19.2,10,0],[854.4,322.8,9.6,19.2,10,0],[864,322.8,9.6,19.2,10,0],[873.6,322.8,9.6,19.2,10,0],[883.2,322.8,9.6,19.2,10,0],[892.8,322.8,127.2,19.2,10,0],[852,342,64.8,19.2,11,0],[916.8,342,55.2,19.2,11,0],[372,303.6,67.2,38.4,9,0],[426,150,34.8,19.2,1,1],[739.2,150,34.8,19.2,1,1],[426,169.2,34.8,19.2,2,1],[739.2,169.2,34.8,19.2,2,1],[426,188.4,34.8,19.2,3,1],[739.2,188.4,34.8,19.2,3,1],[426,207.6,34.8,19.2,4,1],[739.2,207.6,34.8,19.2,4,1],[426,226.8,34.8,19.2,5,1],[739.2,226.8,34.8,19.2,5,1],[426,246,34.8,19.2,6,1],[739.2,246,34.8,19.2,6,1],[426,265.2,34.8,19.2,7,1],[739.2,265.2,34.8,19.2,7,1],[426,284.4,34.8,19.2,8,1],[739.2,284.4,34.8,19.2,8,1],[426,303.6,34.8,19.2,9,1],[739.2,303.6,34.8,19.2,9,1],[426,322.8,34.8,19.2,10,1],[739.2,322.8,34.8,19.2,10,1],[426,342,34.8,19.2,11,1],[739.2,342,34.8,19.2,11,1],[426,361.2,34.8,19.2,12,1],[739.2,361.2,34.8,19.2,12,1]];
+  var W = 1240, H = 428.4, NS = 'http://www.w3.org/2000/svg';
+  var START = { seen: [], plan: [], at: null, survey: false };
+  // Quell comes aboard at Airlock B: that room and its ready room are all he has seen.
+  U.forEach(function (u, i) { if (u[4] === 9 && u[1] > 300 && u[0] > 715 && u[0] < 752 && !u[5]) START.seen.push(i); });
+  START.at = START.seen[0];
+  var KEY = 'slate-map-trial', st;
+  try { st = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  if (!st || !st.seen) st = JSON.parse(JSON.stringify(START));
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+  function has(a, i) { return a.indexOf(i) >= 0; }
+  function deckName(k) { return 'DECK ' + (k < 10 ? '0' : '') + k; }
+  function where(i) { var u = U[i]; return deckName(u[4]) + ' · ' + Math.round((u[0] - 120) / 2.4) + ' TO ' + Math.round((u[0] + u[2] - 120) / 2.4) + ' M'; }
+  // Seeing a room also shows its deck's lift core: Quell came through it.
+  function coreOf(k) { return U.map(function (u, i) { return u[5] && u[4] === k ? i : -1; }).filter(function (i) { return i >= 0; }); }
+  function rect(g, u, cls) { var r = document.createElementNS(NS, 'rect'); r.setAttribute('x', u[0]); r.setAttribute('y', u[1]); r.setAttribute('width', u[2]); r.setAttribute('height', u[3]); if (cls) r.setAttribute('class', cls); g.appendChild(r); return r; }
+  var map = document.getElementById('map'), seenG = document.getElementById('seen-holes'), planG = document.getElementById('plan-holes'), hits = document.getElementById('hits');
+  function draw() {
+    var seen = st.seen.slice();
+    st.seen.forEach(function (i) { coreOf(U[i][4]).forEach(function (c) { if (!has(seen, c)) seen.push(c); }); });
+    var plan = []; st.plan.forEach(function (k) { U.forEach(function (u, i) { if (u[4] === k) plan.push(i); }); });
+    seenG.textContent = ''; planG.textContent = ''; hits.textContent = '';
+    plan.forEach(function (i) { rect(planG, U[i]); });
+    seen.forEach(function (i) { rect(seenG, U[i]); });
+    U.forEach(function (u, i) {
+      if (u[5] || !(has(seen, i) || has(plan, i)) || i === st.at) return;
+      var r = rect(hits, u, 'hit'); r.addEventListener('click', function () { if (!moved) ask(i); });
+    });
+    var a = U[st.at]; var you = document.getElementById('you');
+    you.setAttribute('transform', 'translate(' + (a[0] + a[2] / 2) + ' ' + (a[1] + a[3] - 6) + ')');
+    document.getElementById('where').textContent = where(st.at);
+    map.classList.toggle('survey', st.survey);
+    document.getElementById('survey').setAttribute('aria-pressed', st.survey);
+    document.querySelectorAll('#decks button').forEach(function (b) { b.setAttribute('aria-pressed', has(st.plan, +b.dataset.k)); });
+    save();
+  }
+  var pending = null;
+  function ask(i) { pending = i; document.getElementById('prompt-text').textContent = 'Go to ' + where(i) + '?'; document.getElementById('prompt').hidden = false; document.getElementById('go').focus(); }
+  function closePrompt() { pending = null; document.getElementById('prompt').hidden = true; }
+  document.getElementById('go').onclick = function () { if (pending === null) return; if (!has(st.seen, pending)) st.seen.push(pending); st.at = pending; closePrompt(); draw(); };
+  document.getElementById('cancel').onclick = closePrompt;
+  var decks = document.getElementById('decks');
+  for (var k = 1; k <= 12; k++) { var b = document.createElement('button'); b.type = 'button'; b.dataset.k = k; b.textContent = (k < 10 ? '0' : '') + k; b.style.marginRight = '4px';
+    b.onclick = function () { var k = +this.dataset.k, p = st.plan.indexOf(k); if (p < 0) st.plan.push(k); else st.plan.splice(p, 1); draw(); }; decks.appendChild(b); }
+  document.getElementById('survey').onclick = function () { st.survey = !st.survey; draw(); };
+  document.getElementById('reset').onclick = function () { st = JSON.parse(JSON.stringify(START)); closePrompt(); draw(); focusYou(); };
+  document.querySelectorAll('.tabs button').forEach(function (t) { t.onclick = function () {
+    document.querySelectorAll('.tabs button').forEach(function (o) { o.setAttribute('aria-pressed', o === t); });
+    document.getElementById('app-map').hidden = t.dataset.app !== 'map'; document.getElementById('app-other').hidden = t.dataset.app === 'map'; }; });
+
+  // Zoom and pan by rewriting the viewBox, matched to the window's shape.
+  var vp = document.getElementById('view'), A = 1, fitW = W, v = { x: 0, y: 0, w: W, h: H }, moved = false;
+  function measure() { var r = vp.getBoundingClientRect(); A = r.width ? r.height / r.width : H / W; fitW = Math.max(W, H / A); }
+  function clamp() { v.w = Math.min(fitW, Math.max(fitW / 20, v.w)); v.h = v.w * A;
+    v.x = v.w >= W ? (W - v.w) / 2 : Math.min(W - v.w, Math.max(0, v.x)); v.y = v.h >= H ? (H - v.h) / 2 : Math.min(H - v.h, Math.max(0, v.y)); }
+  function apply() { map.setAttribute('viewBox', v.x + ' ' + v.y + ' ' + v.w + ' ' + v.h); }
+  function zoomAt(f, px, py) { var nw = Math.min(fitW, Math.max(fitW / 20, v.w / f)), q = nw / v.w; v.x = px - (px - v.x) * q; v.y = py - (py - v.y) * q; v.w = nw; clamp(); apply(); }
+  function toSvg(cx, cy) { var r = map.getBoundingClientRect(); return { x: v.x + (cx - r.left) / r.width * v.w, y: v.y + (cy - r.top) / r.height * v.h }; }
+  function focusYou() { var a = U[st.at]; v.w = fitW / 4; v.h = v.w * A; v.x = a[0] + a[2] / 2 - v.w / 2; v.y = a[1] + a[3] / 2 - v.h / 2; clamp(); apply(); }
+  measure(); focusYou();
+  window.addEventListener('resize', function () { var z = fitW / v.w, cx = v.x + v.w / 2, cy = v.y + v.h / 2; measure(); v.w = fitW / z; v.h = v.w * A; v.x = cx - v.w / 2; v.y = cy - v.h / 2; clamp(); apply(); });
+  vp.addEventListener('wheel', function (e) { e.preventDefault(); var p = toSvg(e.clientX, e.clientY); zoomAt(Math.exp(-e.deltaY * 0.0015), p.x, p.y); }, { passive: false });
+  var pts = new Map(), pinch = null, travel = 0;
+  vp.addEventListener('pointerdown', function (e) { if (e.target.closest('button')) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); travel = 0; moved = false; });
+  vp.addEventListener('pointermove', function (e) {
+    var prev = pts.get(e.pointerId); if (!prev) return; var cur = { x: e.clientX, y: e.clientY }; pts.set(e.pointerId, cur);
+    travel += Math.abs(cur.x - prev.x) + Math.abs(cur.y - prev.y); if (travel > 6 && !moved) { moved = true; vp.setPointerCapture(e.pointerId); vp.classList.add('dragging'); }
+    if (pts.size === 1 && moved) { var r = map.getBoundingClientRect(); v.x -= (cur.x - prev.x) / r.width * v.w; v.y -= (cur.y - prev.y) / r.height * v.h; clamp(); apply(); }
+    else if (pts.size === 2) { var a = Array.from(pts.values()), d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), m = toSvg((a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2); if (pinch) zoomAt(d / pinch, m.x, m.y); pinch = d; moved = true; }
+  });
+  function end(e) { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; if (!pts.size) vp.classList.remove('dragging'); }
+  vp.addEventListener('pointerup', end); vp.addEventListener('pointercancel', end);
+  document.querySelector('.zoom').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.z === 'fit') { v.w = fitW; clamp(); apply(); } else zoomAt(b.dataset.z === 'in' ? 1.5 : 1 / 1.5, v.x + v.w / 2, v.y + v.h / 2); });
+  draw();
+})();
+</script>

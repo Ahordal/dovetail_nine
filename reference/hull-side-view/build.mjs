@@ -1,6 +1,6 @@
-// Builds hull-side-view.html: a to-scale side elevation of Dovetail-9's hull.
-// Each system lives in its own module; this file sets the draw order, then finishes the drawing and writes the page.
-import { writeFileSync } from 'node:fs';
+// Builds the hull side view: a to-scale side elevation of Dovetail-9's hull, as a drawing and a page in ../../site/.
+// Each system lives in its own module; this file sets the draw order, then finishes the drawing and writes both files.
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { X0, Y1, X1, Y0, DH, L, mx, f, svg, add, GOLD, EARLY, CRAWL, tags } from './frame.mjs';
 import { goldAt, hullMid, hereMarker } from './hull.mjs';   // draws the hull, the decks and the bay
 import { T, drawRooms } from './rooms.mjs';
@@ -65,5 +65,9 @@ add(`<text class="t-scale" x="${hx + 8}" y="${f(hullMid + 3)}">~96 m</text>`);
 
 const W = hx + 50, H = f(ry + 26);
 
-writeFileSync(new URL('./hull-side-view.html', import.meta.url), page(W, H, svg));
+// The drawing is its own file, which this page and the slate map both load.
+const SITE = new URL('../../site/', import.meta.url);
+mkdirSync(new URL('hull-side-view/', SITE), { recursive: true });
+writeFileSync(new URL('drawing.svg', SITE), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">\n${svg.join('\n')}\n</svg>\n`);
+writeFileSync(new URL('hull-side-view/index.html', SITE), page(W, H));
 console.log('ok', W, H);

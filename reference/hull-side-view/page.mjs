@@ -2,8 +2,12 @@
 import { sigmaLogo } from './frame.mjs';
 import { css } from './style.mjs';
 
-export const page = (W, H, svg) => `<title>Dovetail-9 Hull Section</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+export const page = (W, H) => `<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Dovetail-9 Hull Section</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -23,7 +27,6 @@ ${css}</style>
       <output id="hull-zoom-level" aria-live="polite">100%</output>
     </div>
     <svg id="hull" viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view of the Dovetail-9 hull: twelve decks stacked, numbered from the top. A tram runs the full length of Deck 06, beside the conduits and keel. The Core Chamber, a dashed sphere, sits at the middle of the hull across Decks 05 to 07 inside the engineering section. The docking bay is an open space across Decks 08 to 11, centred along the hull under the stepped superstructure, holding the Mistral, seen from astern, with a boarding umbilical to Airlock B on Deck 09. Two jagged comms spires on top, a taller one left of centre and a shorter twin-tipped one to its right, with smaller masts and dishes around them, and the Anchor Core array continuing from both ends.">
-      ${svg.join('\n      ')}
     </svg>
     </div>
     <fieldset class="layers" id="hull-layers">
@@ -172,6 +175,12 @@ ${css}</style>
 </div>
 
 <script>
+// The drawing is its own file, shared with the slate map. It loads into the page so the styles and layer toggles reach it.
+fetch('../drawing.svg').then(function (r) { return r.text(); }).then(function (t) {
+  var svg = document.getElementById('hull'), src = new DOMParser().parseFromString(t, 'image/svg+xml').documentElement;
+  Array.from(src.childNodes).forEach(function (n) { svg.appendChild(document.importNode(n, true)); });
+});
+
 // Zoom and pan by rewriting the drawing's viewBox, so line work stays crisp at any scale.
 // The viewBox always matches the window's shape, so the maths maps pointer to drawing 1:1.
 (function () {

@@ -1,32 +1,34 @@
 // Builds slate-map.html: a try-out of the station map as an app on Quell's slate, under fog of war.
-// Reuses the hull side view's drawing, so run ../hull-side-view/build.mjs first.
-import { readFileSync, writeFileSync } from 'node:fs';
+// Loads the hull side view's drawing (../../site/drawing.svg), so run ../hull-side-view/build.mjs first.
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { S, X0, Y0, DH, outline as hull } from '../hull-side-view/frame.mjs';
+import { css as hullCss } from '../hull-side-view/style.mjs';
 
-const src = readFileSync(new URL('../hull-side-view/hull-side-view.html', import.meta.url), 'utf8');
-const open = src.match(/<svg id="hull" viewBox="0 0 ([\d.]+) ([\d.]+)"[^>]*>/);
-const [W, H] = [+open[1], +open[2]];
-let body = src.slice(src.indexOf(open[0]) + open[0].length, src.indexOf('</svg>', src.indexOf(open[0])));
-body = body.replace(/<g class="here">.*?<\/g>/, '');   // the slate draws its own marker
+const SITE = new URL('../../site/', import.meta.url);
+const drawing = readFileSync(new URL('drawing.svg', SITE), 'utf8');
+const [W, H] = drawing.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/).slice(1).map(Number);
 
 // The hull page's drawing styles, minus its page layout and light theme; colours re-pointed at the slate.
-let css = src.slice(src.indexOf('<style>') + 7, src.indexOf('</style>'));
-css = css.replace(/@media \(prefers-color-scheme: light\)[\s\S]*?color-scheme: light; \} \}/, '')
+const css = '\n' + hullCss.replace(/@media \(prefers-color-scheme: light\)[\s\S]*?color-scheme: light; \} \}/, '')
   .replace(/:root\[data-theme="light"\] \{[\s\S]*?color-scheme: light; \}/, '')
   .replace(/:root \{/, '#map {')
   .replace(/\n  body \{[\s\S]*?\}\n/, '\n');
 
 // Reveal units: every room outline, the hold and bay, and a core cell per lift per deck (shaft, trunk, risers).
-const S = 2.4, X0 = 120, Y0 = 150, DH = 19.2, dy = (k) => Y0 + (k - 1) * DH, mx = (m) => X0 + m * S;
+const dy = (k) => Y0 + (k - 1) * DH, mx = (m) => X0 + m * S;
 const deckOf = (y) => Math.min(12, Math.max(1, Math.floor((y - Y0 + 0.5) / DH) + 1));
-const units = [...body.matchAll(/<rect class="(room|bay)" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/g)]
+const units = [...drawing.matchAll(/<rect class="(room|bay)" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/g)]
   .map((r) => r.slice(2).map(Number)).filter(([, , w, h]) => w > 2 && h > 2);
 units.push([mx(105), dy(9), (133 - 105) * S, 2 * DH]);   // cargo hold, two storeys
 for (let k = 1; k <= 12; k++) for (const [a, b] of [[127.5, 142], [258, 272.5]]) units.push([mx(a), dy(k), (b - a) * S, DH]);
 const U = units.map(([x, y, w, h], i) => ({ i, x, y, w, h, k: deckOf(y), core: i >= units.length - 24 }));
-const hull = src.match(/<polygon class="hull-edge" points="([^"]+)"/)[1];
 
-const html = `<title>Slate Station Map</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+const html = `<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Slate Station Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -110,7 +112,7 @@ ${css}
       <div class="view" id="view">
         <svg id="map" viewBox="0 0 ${W} ${H}" role="img" aria-label="Quell's map of Dovetail-9: only rooms he has seen or downloaded are drawn.">
           <defs>
-            <g id="dt9">${body}</g>
+            <g id="dt9"></g>
             <filter id="planfx" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.3 0.3 0.3 0 0.05  0.24 0.24 0.24 0 0.03  0.12 0.12 0.12 0 0  0 0 0 1 0"/></filter>
             <mask id="m-plan" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#000"/><g id="plan-holes" fill="#fff"></g></mask>
             <mask id="m-seen" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#000"/><g id="seen-holes" fill="#fff"></g></mask>
@@ -136,6 +138,12 @@ ${css}
   </div>
 </div>
 <script>
+// The station drawing is the hull side view's own file, loaded into both views of the map. The slate draws its own marker.
+fetch('../drawing.svg').then(function (r) { return r.text(); }).then(function (t) {
+  var g = document.getElementById('dt9'), src = new DOMParser().parseFromString(t, 'image/svg+xml').documentElement;
+  Array.from(src.childNodes).forEach(function (n) { g.appendChild(document.importNode(n, true)); });
+  var here = g.querySelector('.here'); if (here) here.remove();
+});
 (function () {
   var U = ${JSON.stringify(U.map((u) => [+u.x.toFixed(1), +u.y.toFixed(1), +u.w.toFixed(1), +u.h.toFixed(1), u.k, u.core ? 1 : 0]))};
   var W = ${W}, H = ${H}, NS = 'http://www.w3.org/2000/svg';
@@ -214,5 +222,6 @@ ${css}
   draw();
 })();
 </script>`;
-writeFileSync(new URL('./slate-map.html', import.meta.url), html);
+mkdirSync(new URL('slate-map/', SITE), { recursive: true });
+writeFileSync(new URL('slate-map/index.html', SITE), html);
 console.log('ok', U.length, 'reveal units');
