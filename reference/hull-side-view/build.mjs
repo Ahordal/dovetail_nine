@@ -202,9 +202,9 @@ add(`<rect class="platform" x="${bx}" y="${f(dy(11) - FL)}" width="${f(10 * S)}"
 for (const m of [3, 9]) add(`<line class="dock-leg" x1="${f(mx(BAY[0] + m))}" y1="${f(dy(11) + FL)}" x2="${f(mx(BAY[0] + m))}" y2="${dy(12)}"/>`);
 // Open ladder from the dock down to the bay floor, in the gap by the wall; grab rails rise above the deck.
 {
-  const l0 = mx(BAY[0] + 1), l1 = mx(BAY[0] + 2), top = dy(11) - FL - 1 * S, bot = dy(12);
+  const l0 = mx(BAY[0] + 1.25), l1 = mx(BAY[0] + 1.75), top = dy(11) - FL - 1 * S, bot = dy(12);
   add(`<path class="ladder" d="M ${l0} ${bot} V ${f(top)} H ${l1} V ${bot}"/>`);
-  for (let y = dy(11) + FL + S; y < bot - 0.5; y += S) add(`<line class="rung" x1="${l0}" y1="${f(y)}" x2="${l1}" y2="${f(y)}"/>`);
+  for (let y = dy(11) + FL + 0.5 * S; y < bot - 0.3 * S; y += 0.5 * S) add(`<line class="rung" x1="${l0}" y1="${f(y)}" x2="${l1}" y2="${f(y)}"/>`);
 }
 tags.push(tag(BAY[0] + 5, 10, 9));
 // Docking clamps 1 to 4: two arms down from the bay ceiling, two up from the floor, each ending in a pad on the hull.
@@ -660,8 +660,8 @@ add(`<text class="t-note t-ship" x="${f((sx + sw + wall) / 2)}" y="${f(door9Mid 
     const [c0, c1] = a(1, 24); box(c0, c1, 7, 3.4, 3.6);
     // Ladder from the floor up to the catwalk.
     const lx = M(23);
-    for (const e of [lx - 0.4, lx + 0.4]) add(`<line class="ladder" x1="${X(e)}" y1="${Yk(7, 3.4)}" x2="${X(e)}" y2="${Yk(7, 0)}"/>`);
-    for (let h = 0.4; h < 3.3; h += 0.5) add(`<line class="rung" x1="${X(lx - 0.4)}" y1="${Yk(7, h)}" x2="${X(lx + 0.4)}" y2="${Yk(7, h)}"/>`);
+    for (const e of [lx - 0.25, lx + 0.25]) add(`<line class="ladder" x1="${X(e)}" y1="${Yk(7, 3.4)}" x2="${X(e)}" y2="${Yk(7, 0)}"/>`);
+    for (let h = 0.4; h < 3.3; h += 0.5) add(`<line class="rung" x1="${X(lx - 0.25)}" y1="${Yk(7, h)}" x2="${X(lx + 0.25)}" y2="${Yk(7, h)}"/>`);
     runs.push(`M ${X(M(8.5))} ${Yk(7, 2.6)} V ${Yk(7, 4.6)}`);
   }
   // Clean secondary loop from the dome's heat exchangers to both halls, behind the capacitor halls on the way.
@@ -1464,7 +1464,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
-        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="11" y1="0" x2="11" y2="12"/><line class="ladder" x1="17" y1="0" x2="17" y2="12"/><line class="rung" x1="11" y1="4" x2="17" y2="4"/><line class="rung" x1="11" y1="8" x2="17" y2="8"/></svg>Open ladder, cargo dock to bay floor</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="ladder" x1="13" y1="0" x2="13" y2="12"/><line class="ladder" x1="15" y1="0" x2="15" y2="12"/><line class="rung" x1="13" y1="3" x2="15" y2="3"/><line class="rung" x1="13" y1="6" x2="15" y2="6"/><line class="rung" x1="13" y1="9" x2="15" y2="9"/></svg>Open ladder, cargo dock to bay floor</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="clamp"><rect x="11" y="0" width="2.4" height="8.5"/><circle cx="12.2" cy="4" r="1.6"/><rect x="8.5" y="8.5" width="7.4" height="2.2"/></g></svg>Docking clamp, four in all</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="gantry"><rect x="2" y="0.5" width="24" height="2"/><rect x="10" y="2.5" width="6" height="2.5"/><line x1="13" y1="5" x2="13" y2="9"/><polyline points="10,11.5 10,9 16,9 16,11.5"/></g></svg>Gantry crane on its ceiling rail</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><g class="tag"><circle cx="14" cy="6" r="4"/></g><g class="here"><circle class="here-ring" cx="14" cy="6" r="5"/></g></svg>You are here</li>
