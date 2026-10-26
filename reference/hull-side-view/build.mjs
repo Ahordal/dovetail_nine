@@ -1133,14 +1133,14 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     const COL = [197.5, 202.5];
     const run = (k) => (k >= 7 ? 0 : k >= 5 ? 1 : 2);
     const inTrunk = (t, i) => TRUNKS[t][i][0] - DOOR_SIDE[t][i] * 0.42;   // the trunk wall away from its doors
-    const lines = [], risers = [];
+    const lines = [], risers = [], colDecks = new Set();
     for (const t of [0, 1]) {
       const side = TERMS.filter(([, m]) => (t ? m > 200 : m < 200))
         .map(([k, m]) => [k === 4 && (m < LIFTS[0] || m > LIFTS[1]) ? 3 : k, m, k]);   // hydroponics drops from Deck 03
       const low = Math.max(...side.map(([kl]) => kl));
       for (let k = 1; k <= low; k++) {
         const ms = side.filter(([kl]) => kl === k).map(([, m]) => m);
-        if (k <= 4) { if (k === 4) ms.push(inTrunk(t, 2)); if (ms.length) ms.push(COL[t]); }
+        if (k <= 4) { if (k === 4) ms.push(inTrunk(t, 2)); if (ms.length) { ms.push(COL[t]); colDecks.add(k); } }
         else if (ms.length || k === 5 || k === 7) ms.push(inTrunk(t, run(k)));
         if (k === 5) ms.push(inTrunk(t, 2));
         if (k === 7) ms.push(inTrunk(t, 1));
@@ -1154,6 +1154,10 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
     }
     for (const d of lines) GOLD.push(`<path class="data" d="${d}"/>`);
     for (const d of risers) add(`<path class="data" d="${d}"/>`);
+    // Inside the column: a spine down its axis that every deck's line runs into, so they read as coming from SIGMA.
+    const ks = [...colDecks];
+    add(`<path class="data data-core" d="M ${f(X(200))} ${f(DB(Math.min(...ks)))} V ${f(DB(Math.max(...ks)))}${ks.map((k) => ` M ${f(X(COL[0]))} ${f(DB(k))} H ${f(X(COL[1]))}`).join("")}"/>`);
+    for (const k of ks) add(`<circle class="data-node" cx="${f(X(200))}" cy="${f(DB(k))}" r="0.7"/>`);
     // Behind the two-storey hold, which hides them: dashed, as for anything deeper in the hull.
     add(`<clipPath id="hold-clip"><rect x="${f(X(105))}" y="${dy(9)}" width="${f((LIFTS[0] - LW / 2 - 105) * S)}" height="${f(dy(11) - dy(9))}"/></clipPath><g clip-path="url(#hold-clip)">`);
     for (const d of lines.concat(risers)) add(`<path class="data data-behind" d="${d}"/>`);
@@ -1298,7 +1302,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .layers input { margin: 0; accent-color: var(--accent); }
   /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
   #hull.hide-power :is(.power, .grid-power, .power-node),
-  #hull.hide-data .data,
+  #hull.hide-data :is(.data, .data-node),
   #hull.hide-air :is(.duct, .duct-behind),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
@@ -1327,6 +1331,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.3; }
   .data { fill: none; stroke: var(--data); stroke-width: 0.5; }
+  .data-core { stroke-width: 0.7; }
+  .data-node { fill: var(--data); }
   .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }

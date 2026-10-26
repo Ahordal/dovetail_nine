@@ -43,7 +43,7 @@
   .layers input { margin: 0; accent-color: var(--accent); }
   /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
   #hull.hide-power :is(.power, .grid-power, .power-node),
-  #hull.hide-data .data,
+  #hull.hide-data :is(.data, .data-node),
   #hull.hide-air :is(.duct, .duct-behind),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
@@ -72,6 +72,8 @@
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.3; }
   .data { fill: none; stroke: var(--data); stroke-width: 0.5; }
+  .data-core { stroke-width: 0.7; }
+  .data-node { fill: var(--data); }
   .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }
@@ -3759,6 +3761,11 @@
       <path class="data" d="M 743.8 214.5 V 233.7"/>
       <path class="data" d="M 787.4 233.7 V 272.1"/>
       <path class="data" d="M 767 272.1 V 348.9"/>
+      <path class="data data-core" d="M 600 156.9 V 214.5 M 594 156.9 H 606 M 594 176.1 H 606 M 594 195.3 H 606 M 594 214.5 H 606"/>
+      <circle class="data-node" cx="600" cy="156.9" r="0.7"/>
+      <circle class="data-node" cx="600" cy="176.1" r="0.7"/>
+      <circle class="data-node" cx="600" cy="195.3" r="0.7"/>
+      <circle class="data-node" cx="600" cy="214.5" r="0.7"/>
       <clipPath id="hold-clip"><rect x="372" y="303.6" width="67.2" height="38.4"/></clipPath><g clip-path="url(#hold-clip)">
       <path class="data data-behind" d="M 508.8 156.9 H 594"/>
       <path class="data data-behind" d="M 590.4 176.1 H 594"/>
