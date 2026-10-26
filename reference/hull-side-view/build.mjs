@@ -389,7 +389,7 @@ tags.push(tag((CR + CA) / 2, 10, 7));
   const ladder = (m, top, bot, hatchY) => {
     for (const e of [m - 0.25, m + 0.25]) add(`<line class="ladder" x1="${f(mx(e))}" y1="${f(top)}" x2="${f(mx(e))}" y2="${f(bot)}"/>`);
     for (let y = bot - 0.5 * S; y > top + 0.3 * S; y -= 0.5 * S) add(`<line class="rung" x1="${f(mx(m - 0.25))}" y1="${f(y)}" x2="${f(mx(m + 0.25))}" y2="${f(y)}"/>`);
-    add(`<rect class="door door-locked" x="${f(mx(m - 0.6))}" y="${f(hatchY - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
+    add(`<rect class="door door-locked hatch" x="${f(mx(m - 0.6))}" y="${f(hatchY - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
   };
   // Crew plants: up through the ready room ceiling and the service space to Deck 08's floor.
   for (const m of [LIFTS[0] + LW / 2 + 6.6, BAY[1] + 7.4]) ladder(m, dy(9) + FL, doorBot(9), ceil9);
@@ -1110,7 +1110,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   // Junction boxes where ways meet crawlways or each other, each with its hatch. Ways closer than a box's width share one.
   const junction = (k, m0, m1, locked) => {
     add(`<rect class="junction" x="${f(X(m0 - 1.0))}" y="${f(CY(k) - 0.75 * S)}" width="${f((m1 - m0 + 2.0) * S)}" height="${f(1.5 * S)}"/>`);
-    for (const m of new Set([m0, m1])) add(`<rect class="door ${locked ? "door-locked" : "door-open"}" x="${f(X(m - 0.45))}" y="${f(CY(k) - 0.35 * S)}" width="${f(0.9 * S)}" height="${f(0.7 * S)}"/>`);
+    for (const m of new Set([m0, m1])) add(`<rect class="door hatch ${locked ? "door-locked" : "door-open"}" x="${f(X(m - 0.45))}" y="${f(CY(k) - 0.35 * S)}" width="${f(0.9 * S)}" height="${f(0.7 * S)}"/>`);
   };
   junctions.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   for (let i = 0; i < junctions.length; i++) {
@@ -1121,7 +1121,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   }
   for (const m of SHAFTS) junction(5, m, m, true);
   // Deck 01: the top run's hatch opens straight up through the floor of lift machinery.
-  for (const runs of TRUNKS) add(`<rect class="door door-open" x="${f(X(runs[2][0] - 0.6))}" y="${f(dy(2) - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
+  for (const runs of TRUNKS) add(`<rect class="door door-open hatch" x="${f(X(runs[2][0] - 0.6))}" y="${f(dy(2) - DW / 2)}" width="${f(1.2 * S)}" height="${DW}"/>`);
   // Time Standards' reference clocks, one per deck, on the left trunk opposite its doors, since their fibre runs up it.
   const clock = (k, m, h = 2.2) => add(`<g class="clock"><rect x="${f(X(m - 0.3))}" y="${f(Yk(k, h + 0.6))}" width="${f(0.6 * S)}" height="${f(0.6 * S)}"/><circle cx="${f(X(m))}" cy="${f(Yk(k, h + 0.3))}" r="${f(0.12 * S)}"/></g>`);
   TRUNKS[0].forEach(([m, k0, k1], i) => { for (let k = k1; k <= k0; k++) clock(k, m - DOOR_SIDE[0][i] * (TW / 2 + 0.5)); });
@@ -1233,6 +1233,16 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .zoom button:hover { border-color: var(--muted); }
   .zoom output { min-width: 44px; text-align: right; font: 400 11px var(--mono); color: var(--muted); }
   .zoom-hint { margin: 0; padding: 6px 14px 0; font-size: 11px; color: var(--muted); }
+  .layers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 0; padding: 8px 14px 0; border: 0; font-size: 12px; color: var(--muted); }
+  .layers legend { float: left; margin-right: 4px; padding: 0; font-size: 11px; letter-spacing: 0.12em; }
+  .layers label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .layers input { margin: 0; accent-color: var(--accent); }
+  /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
+  #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
+  #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
+  #hull.hide-doors :is(.door, .airlock),
+  #hull.hide-equipment :is(.plant, .racks, .term, .term-screen, .clock, .gantry, .clamp, .trap, .shell, .emitter, .radiator, .radline, .busbar, .frost, .plant-leaf) { display: none; }
   .hull-fill { fill: var(--bg); }
   .hull-edge { fill: none; stroke: var(--muted); stroke-width: 1.2; }
   .service { fill: var(--service); }
@@ -1375,6 +1385,14 @@ const html = `<title>Dovetail-9 Hull Section</title>
       ${svg.join('\n      ')}
     </svg>
     </div>
+    <fieldset class="layers" id="hull-layers">
+      <legend>LAYERS</legend>
+      <label><input type="checkbox" value="power" checked>Power</label>
+      <label><input type="checkbox" value="water" checked>Water</label>
+      <label><input type="checkbox" value="access" checked>Maintenance access</label>
+      <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
+      <label><input type="checkbox" value="equipment" checked>Equipment</label>
+    </fieldset>
     <p class="zoom-hint">Scroll or pinch to zoom, drag to pan.</p>
 <div class="legend">
       <ul aria-label="Room key">
@@ -1626,6 +1644,25 @@ const html = `<title>Dovetail-9 Hull Section</title>
     else if (e.key === 'ArrowDown') pan(0, -step);
     else return;
     e.preventDefault();
+  });
+})();
+// Layer toggles; each viewer's choice is remembered where storage allows.
+(function () {
+  var svg = document.getElementById('hull');
+  var box = document.getElementById('hull-layers');
+  if (!svg || !box) return;
+  var KEY = 'hull-layers-hidden', hidden = [];
+  try { hidden = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
+  box.querySelectorAll('input').forEach(function (input) {
+    function sync() { svg.classList.toggle('hide-' + input.value, !input.checked); }
+    input.checked = hidden.indexOf(input.value) < 0;
+    sync();
+    input.addEventListener('change', function () {
+      sync();
+      var off = [];
+      box.querySelectorAll('input').forEach(function (i) { if (!i.checked) off.push(i.value); });
+      try { localStorage.setItem(KEY, JSON.stringify(off)); } catch (e) {}
+    });
   });
 })();
 </script>

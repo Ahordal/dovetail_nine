@@ -37,6 +37,16 @@
   .zoom button:hover { border-color: var(--muted); }
   .zoom output { min-width: 44px; text-align: right; font: 400 11px var(--mono); color: var(--muted); }
   .zoom-hint { margin: 0; padding: 6px 14px 0; font-size: 11px; color: var(--muted); }
+  .layers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 0; padding: 8px 14px 0; border: 0; font-size: 12px; color: var(--muted); }
+  .layers legend { float: left; margin-right: 4px; padding: 0; font-size: 11px; letter-spacing: 0.12em; }
+  .layers label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .layers input { margin: 0; accent-color: var(--accent); }
+  /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
+  #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
+  #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
+  #hull.hide-doors :is(.door, .airlock),
+  #hull.hide-equipment :is(.plant, .racks, .term, .term-screen, .clock, .gantry, .clamp, .trap, .shell, .emitter, .radiator, .radline, .busbar, .frost, .plant-leaf) { display: none; }
   .hull-fill { fill: var(--bg); }
   .hull-edge { fill: none; stroke: var(--muted); stroke-width: 1.2; }
   .service { fill: var(--service); }
@@ -699,7 +709,7 @@
       <line class="rung" x1="464" y1="307.9" x2="465.2" y2="307.9"/>
       <line class="rung" x1="464" y1="306.7" x2="465.2" y2="306.7"/>
       <line class="rung" x1="464" y1="305.5" x2="465.2" y2="305.5"/>
-      <rect class="door door-locked" x="463.2" y="311.5" width="2.9" height="1"/>
+      <rect class="door door-locked hatch" x="463.2" y="311.5" width="2.9" height="1"/>
       <line class="ladder" x1="734.8" y1="304.1" x2="734.8" y2="322.3"/>
       <line class="ladder" x1="736" y1="304.1" x2="736" y2="322.3"/>
       <line class="rung" x1="734.8" y1="321.1" x2="736" y2="321.1"/>
@@ -716,7 +726,7 @@
       <line class="rung" x1="734.8" y1="307.9" x2="736" y2="307.9"/>
       <line class="rung" x1="734.8" y1="306.7" x2="736" y2="306.7"/>
       <line class="rung" x1="734.8" y1="305.5" x2="736" y2="305.5"/>
-      <rect class="door door-locked" x="733.9" y="311.5" width="2.9" height="1"/>
+      <rect class="door door-locked hatch" x="733.9" y="311.5" width="2.9" height="1"/>
       <line class="ladder" x1="453.7" y1="342.5" x2="453.7" y2="360.7"/>
       <line class="ladder" x1="454.9" y1="342.5" x2="454.9" y2="360.7"/>
       <line class="rung" x1="453.7" y1="359.5" x2="454.9" y2="359.5"/>
@@ -733,7 +743,7 @@
       <line class="rung" x1="453.7" y1="346.3" x2="454.9" y2="346.3"/>
       <line class="rung" x1="453.7" y1="345.1" x2="454.9" y2="345.1"/>
       <line class="rung" x1="453.7" y1="343.9" x2="454.9" y2="343.9"/>
-      <rect class="door door-locked" x="452.9" y="341.5" width="2.9" height="1"/>
+      <rect class="door door-locked hatch" x="452.9" y="341.5" width="2.9" height="1"/>
       <line class="hold-floor" x1="448.8" y1="361.2" x2="482.4" y2="361.2"/>
       <rect class="room" x="717.6" y="322.8" width="33.6" height="19.2"/>
       <rect class="window" x="717.1" y="324.2" width="1" height="16.3"/>
@@ -3548,74 +3558,74 @@
       <line class="rung" x1="778" y1="369.6" x2="779.2" y2="369.6"/>
       <line class="rung" x1="778" y1="368.4" x2="779.2" y2="368.4"/>
       <rect class="junction" x="454.8" y="172.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="456.1" y="173.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="456.1" y="173.8" width="2.2" height="1.7"/>
       <rect class="junction" x="740.4" y="172.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="741.7" y="173.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="741.7" y="173.8" width="2.2" height="1.7"/>
       <rect class="junction" x="454.8" y="192" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="456.1" y="193" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="456.1" y="193" width="2.2" height="1.7"/>
       <rect class="junction" x="740.4" y="192" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="741.7" y="193" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="741.7" y="193" width="2.2" height="1.7"/>
       <rect class="junction" x="454.8" y="211.2" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="456.1" y="212.2" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="456.1" y="212.2" width="2.2" height="1.7"/>
       <rect class="junction" x="740.4" y="211.2" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="741.7" y="212.2" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="741.7" y="212.2" width="2.2" height="1.7"/>
       <rect class="junction" x="409.2" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="410.5" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="410.5" y="231.4" width="2.2" height="1.7"/>
       <rect class="junction" x="454.8" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="456.1" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="456.1" y="231.4" width="2.2" height="1.7"/>
       <rect class="junction" x="740.4" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="741.7" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="741.7" y="231.4" width="2.2" height="1.7"/>
       <rect class="junction" x="786" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="787.3" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="787.3" y="231.4" width="2.2" height="1.7"/>
       <rect class="junction" x="409.2" y="249.6" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="410.5" y="250.6" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="410.5" y="250.6" width="2.2" height="1.7"/>
       <rect class="junction" x="786" y="249.6" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="787.3" y="250.6" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="787.3" y="250.6" width="2.2" height="1.7"/>
       <rect class="junction" x="409.2" y="268.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="410.5" y="269.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="410.5" y="269.8" width="2.2" height="1.7"/>
       <rect class="junction" x="428.2" y="268.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="429.5" y="269.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="429.5" y="269.8" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="268.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="269.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="269.8" width="2.2" height="1.7"/>
       <rect class="junction" x="786" y="268.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="787.3" y="269.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="787.3" y="269.8" width="2.2" height="1.7"/>
       <rect class="junction" x="428.2" y="288" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="429.5" y="289" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="429.5" y="289" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="288" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="289" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="289" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="307.2" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="308.2" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="308.2" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="326.4" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="327.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="327.4" width="2.2" height="1.7"/>
       <rect class="junction" x="428.2" y="345.6" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="429.5" y="346.6" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="429.5" y="346.6" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="345.6" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="346.6" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="346.6" width="2.2" height="1.7"/>
       <rect class="junction" x="426" y="364.8" width="7" height="3.6"/>
-      <rect class="door door-open" x="427.3" y="365.8" width="2.2" height="1.7"/>
-      <rect class="door door-open" x="429.5" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="427.3" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="429.5" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="479.4" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="480.7" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="480.7" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="510.6" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="511.9" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="511.9" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="564.2" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="565.6" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="565.6" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="631" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="632.3" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="632.3" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="684.6" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="685.9" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="685.9" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="715.8" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="717.1" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="717.1" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="765.6" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="766.9" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="766.9" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="776.2" y="364.8" width="4.8" height="3.6"/>
-      <rect class="door door-open" x="777.5" y="365.8" width="2.2" height="1.7"/>
+      <rect class="door hatch door-open" x="777.5" y="365.8" width="2.2" height="1.7"/>
       <rect class="junction" x="512.4" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-locked" x="513.7" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door hatch door-locked" x="513.7" y="231.4" width="2.2" height="1.7"/>
       <rect class="junction" x="682.8" y="230.4" width="4.8" height="3.6"/>
-      <rect class="door door-locked" x="684.1" y="231.4" width="2.2" height="1.7"/>
-      <rect class="door door-open" x="455.8" y="168.7" width="2.9" height="1"/>
-      <rect class="door door-open" x="741.4" y="168.7" width="2.9" height="1"/>
+      <rect class="door hatch door-locked" x="684.1" y="231.4" width="2.2" height="1.7"/>
+      <rect class="door door-open hatch" x="455.8" y="168.7" width="2.9" height="1"/>
+      <rect class="door door-open hatch" x="741.4" y="168.7" width="2.9" height="1"/>
       <g class="clock"><rect x="432.5" y="277.2" width="1.4" height="1.4"/><circle cx="433.2" cy="277.9" r="0.3"/></g>
       <g class="clock"><rect x="432.5" y="296.4" width="1.4" height="1.4"/><circle cx="433.2" cy="297.1" r="0.3"/></g>
       <g class="clock"><rect x="432.5" y="315.6" width="1.4" height="1.4"/><circle cx="433.2" cy="316.3" r="0.3"/></g>
@@ -3796,6 +3806,14 @@
       <text class="t-scale" x="1198" y="268.2">~96 m</text>
     </svg>
     </div>
+    <fieldset class="layers" id="hull-layers">
+      <legend>LAYERS</legend>
+      <label><input type="checkbox" value="power" checked>Power</label>
+      <label><input type="checkbox" value="water" checked>Water</label>
+      <label><input type="checkbox" value="access" checked>Maintenance access</label>
+      <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
+      <label><input type="checkbox" value="equipment" checked>Equipment</label>
+    </fieldset>
     <p class="zoom-hint">Scroll or pinch to zoom, drag to pan.</p>
 <div class="legend">
       <ul aria-label="Room key">
@@ -4047,6 +4065,25 @@
     else if (e.key === 'ArrowDown') pan(0, -step);
     else return;
     e.preventDefault();
+  });
+})();
+// Layer toggles; each viewer's choice is remembered where storage allows.
+(function () {
+  var svg = document.getElementById('hull');
+  var box = document.getElementById('hull-layers');
+  if (!svg || !box) return;
+  var KEY = 'hull-layers-hidden', hidden = [];
+  try { hidden = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
+  box.querySelectorAll('input').forEach(function (input) {
+    function sync() { svg.classList.toggle('hide-' + input.value, !input.checked); }
+    input.checked = hidden.indexOf(input.value) < 0;
+    sync();
+    input.addEventListener('change', function () {
+      sync();
+      var off = [];
+      box.querySelectorAll('input').forEach(function (i) { if (!i.checked) off.push(i.value); });
+      try { localStorage.setItem(KEY, JSON.stringify(off)); } catch (e) {}
+    });
   });
 })();
 </script>
