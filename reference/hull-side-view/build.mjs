@@ -114,8 +114,9 @@ for (const L of LIFTS) {
   for (let k = 1; k <= 12; k++) add(`<circle class="stop" cx="${mx(L)}" cy="${f(k === 9 ? dy(10) - RC * S / 2 : dy(k) + DH / 2)}" r="1.8"/>`);
   add(`<text class="t-note" x="${mx(L)}" y="${Y0 - 4}" text-anchor="middle">LIFT</text>`);
 }
-// Lift lobbies on Deck 06: where the lifts meet the tram, its two main stops.
-for (const [m0, m1] of [[123, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 277]]) {
+// Lift lobbies on Deck 06: where the lifts meet the tram, its two main stops. Each reaches out past its access
+// trunk, so the trunk opens into the lobby rather than onto the track.
+for (const [m0, m1] of [[119.5, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 280.5]]) {
   add(`<rect class="room" x="${f(mx(m0))}" y="${dy(6)}" width="${f((m1 - m0) * S)}" height="${f(DH)}"/>`);
   tags.push(tag((m0 + m1) / 2, 6, 4));
 }
@@ -123,7 +124,7 @@ for (const [m0, m1] of [[123, LIFTS[0] - LW / 2], [LIFTS[1] + LW / 2, 277]]) {
 // Tram along Deck 06.
 const tramY = f(dy(7) - 1.6);
 // Faded wherever it runs through a room or section on Deck 06 (the lobbies, engineering, the lifts between).
-const TRAM_FADE = [123, 277];
+const TRAM_FADE = [119.5, 280.5];
 // The tram stops at the array-access airlocks at both ends.
 add(`<line class="tram" x1="${mx(6.5)}" y1="${tramY}" x2="${mx(TRAM_FADE[0])}" y2="${tramY}"/>`);
 add(`<line class="tram tram-behind" x1="${mx(TRAM_FADE[0])}" y1="${tramY}" x2="${mx(TRAM_FADE[1])}" y2="${tramY}"/>`);
