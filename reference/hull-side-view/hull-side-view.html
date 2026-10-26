@@ -7,18 +7,18 @@
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -43,6 +43,7 @@
   .layers input { margin: 0; accent-color: var(--accent); }
   /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
   #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-data .data,
   #hull.hide-air :is(.duct, .duct-behind),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
@@ -70,6 +71,8 @@
   .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.3; }
+  .data { fill: none; stroke: var(--data); stroke-width: 0.5; }
+  .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }
   .duct-i { stroke: var(--bg); stroke-width: 0.4; }
@@ -361,6 +364,49 @@
       <path class="water" d="M 405 189.8 V 188.4"/>
       <path class="water" d="M 418.6 189.8 V 188.4"/>
       <path class="water" d="M 461.5 225.6 V 189.8"/>
+      <path class="data" d="M 508.8 156.9 H 594"/>
+      <path class="data" d="M 590.4 176.1 H 594"/>
+      <path class="data" d="M 429.1 195.3 H 594"/>
+      <path class="data" d="M 456.2 214.5 H 594"/>
+      <path class="data" d="M 151.7 233.7 H 456.2"/>
+      <path class="data" d="M 154.6 252.9 H 412.6"/>
+      <path class="data" d="M 208.8 272.1 H 431.6"/>
+      <path class="data" d="M 315.6 291.3 H 431.6"/>
+      <path class="data" d="M 300 310.5 H 431.6"/>
+      <path class="data" d="M 364.8 329.7 H 431.6"/>
+      <path class="data" d="M 508.8 156.9 V 164.6"/>
+      <path class="data" d="M 575.5 156.9 V 164.6"/>
+      <path class="data" d="M 590.4 176.1 V 183.8"/>
+      <path class="data" d="M 429.1 195.3 V 222.2"/>
+      <path class="data" d="M 535.7 195.3 V 203"/>
+      <path class="data" d="M 151.7 233.7 V 241.4"/>
+      <path class="data" d="M 326.9 233.7 V 241.4"/>
+      <path class="data" d="M 154.6 252.9 V 260.6"/>
+      <path class="data" d="M 426.2 272.1 V 279.8"/>
+      <path class="data" d="M 208.8 272.1 V 279.8"/>
+      <path class="data" d="M 315.6 291.3 V 299"/>
+      <path class="data" d="M 397.9 291.3 V 299"/>
+      <path class="data" d="M 300 310.5 V 318.2"/>
+      <path class="data" d="M 364.8 329.7 V 337.4"/>
+      <path class="data" d="M 606 156.9 H 686.4"/>
+      <path class="data" d="M 606 195.3 H 770.9"/>
+      <path class="data" d="M 606 214.5 H 743.8"/>
+      <path class="data" d="M 743.8 233.7 H 941.3"/>
+      <path class="data" d="M 787.4 252.9 H 1045.4"/>
+      <path class="data" d="M 767 272.1 H 988.8"/>
+      <path class="data" d="M 767 348.9 H 913.9"/>
+      <path class="data" d="M 624.5 156.9 V 164.6"/>
+      <path class="data" d="M 686.4 156.9 V 164.6"/>
+      <path class="data" d="M 770.9 195.3 V 222.2"/>
+      <path class="data" d="M 621.8 195.3 V 203"/>
+      <path class="data" d="M 680.2 195.3 V 203"/>
+      <path class="data" d="M 703.7 195.3 V 203"/>
+      <path class="data" d="M 763.7 233.7 V 241.4"/>
+      <path class="data" d="M 941.3 233.7 V 241.4"/>
+      <path class="data" d="M 1045.4 252.9 V 260.6"/>
+      <path class="data" d="M 773.8 272.1 V 279.8"/>
+      <path class="data" d="M 988.8 272.1 V 279.8"/>
+      <path class="data" d="M 913.9 348.9 V 356.6"/>
       <path class="duct duct-o" d="M 435.6 151.9 H 594"/>
       <path class="duct duct-o" d="M 606 151.9 H 764.4"/>
       <path class="duct duct-o" d="M 351.6 171.1 H 594"/>
@@ -3707,6 +3753,63 @@
       <g class="clock"><rect x="453.8" y="219.6" width="1.4" height="1.4"/><circle cx="454.6" cy="220.3" r="0.3"/></g>
       <g class="clock"><rect x="451.2" y="160.5" width="1.4" height="1.4"/><circle cx="451.9" cy="161.3" r="0.3"/></g>
       <g class="clock"><rect x="424.1" y="371.3" width="1.4" height="1.4"/><circle cx="424.8" cy="372" r="0.3"/></g>
+      <path class="data" d="M 456.2 214.5 V 233.7"/>
+      <path class="data" d="M 412.6 233.7 V 272.1"/>
+      <path class="data" d="M 431.6 272.1 V 329.7"/>
+      <path class="data" d="M 743.8 214.5 V 233.7"/>
+      <path class="data" d="M 787.4 233.7 V 272.1"/>
+      <path class="data" d="M 767 272.1 V 348.9"/>
+      <clipPath id="hold-clip"><rect x="372" y="303.6" width="67.2" height="38.4"/></clipPath><g clip-path="url(#hold-clip)">
+      <path class="data data-behind" d="M 508.8 156.9 H 594"/>
+      <path class="data data-behind" d="M 590.4 176.1 H 594"/>
+      <path class="data data-behind" d="M 429.1 195.3 H 594"/>
+      <path class="data data-behind" d="M 456.2 214.5 H 594"/>
+      <path class="data data-behind" d="M 151.7 233.7 H 456.2"/>
+      <path class="data data-behind" d="M 154.6 252.9 H 412.6"/>
+      <path class="data data-behind" d="M 208.8 272.1 H 431.6"/>
+      <path class="data data-behind" d="M 315.6 291.3 H 431.6"/>
+      <path class="data data-behind" d="M 300 310.5 H 431.6"/>
+      <path class="data data-behind" d="M 364.8 329.7 H 431.6"/>
+      <path class="data data-behind" d="M 508.8 156.9 V 164.6"/>
+      <path class="data data-behind" d="M 575.5 156.9 V 164.6"/>
+      <path class="data data-behind" d="M 590.4 176.1 V 183.8"/>
+      <path class="data data-behind" d="M 429.1 195.3 V 222.2"/>
+      <path class="data data-behind" d="M 535.7 195.3 V 203"/>
+      <path class="data data-behind" d="M 151.7 233.7 V 241.4"/>
+      <path class="data data-behind" d="M 326.9 233.7 V 241.4"/>
+      <path class="data data-behind" d="M 154.6 252.9 V 260.6"/>
+      <path class="data data-behind" d="M 426.2 272.1 V 279.8"/>
+      <path class="data data-behind" d="M 208.8 272.1 V 279.8"/>
+      <path class="data data-behind" d="M 315.6 291.3 V 299"/>
+      <path class="data data-behind" d="M 397.9 291.3 V 299"/>
+      <path class="data data-behind" d="M 300 310.5 V 318.2"/>
+      <path class="data data-behind" d="M 364.8 329.7 V 337.4"/>
+      <path class="data data-behind" d="M 606 156.9 H 686.4"/>
+      <path class="data data-behind" d="M 606 195.3 H 770.9"/>
+      <path class="data data-behind" d="M 606 214.5 H 743.8"/>
+      <path class="data data-behind" d="M 743.8 233.7 H 941.3"/>
+      <path class="data data-behind" d="M 787.4 252.9 H 1045.4"/>
+      <path class="data data-behind" d="M 767 272.1 H 988.8"/>
+      <path class="data data-behind" d="M 767 348.9 H 913.9"/>
+      <path class="data data-behind" d="M 624.5 156.9 V 164.6"/>
+      <path class="data data-behind" d="M 686.4 156.9 V 164.6"/>
+      <path class="data data-behind" d="M 770.9 195.3 V 222.2"/>
+      <path class="data data-behind" d="M 621.8 195.3 V 203"/>
+      <path class="data data-behind" d="M 680.2 195.3 V 203"/>
+      <path class="data data-behind" d="M 703.7 195.3 V 203"/>
+      <path class="data data-behind" d="M 763.7 233.7 V 241.4"/>
+      <path class="data data-behind" d="M 941.3 233.7 V 241.4"/>
+      <path class="data data-behind" d="M 1045.4 252.9 V 260.6"/>
+      <path class="data data-behind" d="M 773.8 272.1 V 279.8"/>
+      <path class="data data-behind" d="M 988.8 272.1 V 279.8"/>
+      <path class="data data-behind" d="M 913.9 348.9 V 356.6"/>
+      <path class="data data-behind" d="M 456.2 214.5 V 233.7"/>
+      <path class="data data-behind" d="M 412.6 233.7 V 272.1"/>
+      <path class="data data-behind" d="M 431.6 272.1 V 329.7"/>
+      <path class="data data-behind" d="M 743.8 214.5 V 233.7"/>
+      <path class="data data-behind" d="M 787.4 233.7 V 272.1"/>
+      <path class="data data-behind" d="M 767 272.1 V 348.9"/>
+      </g>
       <rect class="airlock door-locked" x="481.9" y="323.3" width="1" height="18.2"/>
       <rect class="airlock door-open" x="462.7" y="323.3" width="1" height="18.2"/>
       <rect class="door door-open" x="466.3" y="315.1" width="1" height="7.2"/>
@@ -3882,6 +3985,7 @@
       <label><input type="checkbox" value="power" checked>Power</label>
       <label><input type="checkbox" value="water" checked>Water</label>
       <label><input type="checkbox" value="air" checked>Air</label>
+      <label><input type="checkbox" value="data" checked>SIGMA network</label>
       <label><input type="checkbox" value="access" checked>Maintenance access</label>
       <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
       <label><input type="checkbox" value="equipment" checked>Equipment</label>
@@ -3973,6 +4077,7 @@
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tap" x1="14" y1="0" x2="14" y2="12"/></svg>Branch up from the conduits: R&amp;D&apos;s tap, the receivers&apos; feed</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="duct duct-o" d="M 3 6 H 25"/><path class="duct duct-i" d="M 3 6 H 25"/></svg>Air duct, supply and return in one casing; dashed behind the hold</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="data" d="M 3 6 H 25"/></svg>SIGMA network, from the core to every terminal</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>

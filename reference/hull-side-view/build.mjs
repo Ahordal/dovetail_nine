@@ -87,7 +87,7 @@ for (let k = 1; k <= 12; k++) {
 add(`</g>`);
 add(`<polygon class="hull-edge" points="${outline}"/>`);
 // The station power grid (gold) is drawn behind everything that follows: where it passes behind equipment, it's in the back wall.
-const goldAt = svg.length, GOLD = [], EARLY = [], CRAWL = [];
+const goldAt = svg.length, GOLD = [], EARLY = [], CRAWL = [], TERMS = [];   // TERMS: every SIGMA terminal, for the data network
 const gold = (pts) => GOLD.push(`<polyline class="grid-power" points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(" ")}"/>`);
 
 // Numbered key tag for rooms too small to label; the legend names them.
@@ -759,7 +759,7 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const box = (k, m0, m1, h0, h1, cls = "", rx = 0) => add(`<rect${cls ? ` class="${cls}"` : ""} x="${f(X(m0))}" y="${f(Yk(k, h1))}" width="${f((m1 - m0) * S)}" height="${f((h1 - h0) * S)}"${rx ? ` rx="${f(rx)}"` : ""}/>`);
   const circ = (k, m, h, r) => add(`<circle cx="${f(X(m))}" cy="${f(Yk(k, h))}" r="${f(r * S)}"/>`);
   const hl = (k, m0, m1, h) => add(`<line class="flange" x1="${f(X(m0))}" y1="${f(Yk(k, h))}" x2="${f(X(m1))}" y2="${f(Yk(k, h))}"/>`);
-  const term = (k, m) => { box(k, m - 0.08, m + 0.08, 0, 1.1, "term"); box(k, m - 0.45, m + 0.45, 1.1, 1.7, "term-screen"); };
+  const term = (k, m) => { TERMS.push([k, m]); box(k, m - 0.08, m + 0.08, 0, 1.1, "term"); box(k, m - 0.45, m + 0.45, 1.1, 1.7, "term-screen"); };
   const run = (x0, y, x1, hops, cls) => {   // a horizontal run that hops over the given x positions
     const dir = x1 > x0 ? 1 : -1, h = 1.0; let d = `M ${f(x0)} ${f(y)}`;
     for (const hx of hops.slice().sort((a, b) => dir * (a - b))) d += ` H ${f(hx - dir * h)} A ${h} ${h} 0 0 ${dir > 0 ? 1 : 0} ${f(hx + dir * h)} ${f(y)}`;
@@ -1126,6 +1126,39 @@ for (const [a, b] of [[24, X0], [X1, X1 + 96]]) {
   const clock = (k, m, h = 2.2) => add(`<g class="clock"><rect x="${f(X(m - 0.3))}" y="${f(Yk(k, h + 0.6))}" width="${f(0.6 * S)}" height="${f(0.6 * S)}"/><circle cx="${f(X(m))}" cy="${f(Yk(k, h + 0.3))}" r="${f(0.12 * S)}"/></g>`);
   TRUNKS[0].forEach(([m, k0, k1], i) => { for (let k = k1; k <= k0; k++) clock(k, m - DOOR_SIDE[0][i] * (TW / 2 + 0.5)); });
   clock(1, 138.3, 2.8); clock(12, 127, 3.0);   // above lift machinery's motor; above fuel transfer's manifold
+  // SIGMA's network: a line from the column along each of Decks 01 to 04, and down the access trunks (where the
+  // risers run) to the lower decks. Each deck's line reaches its farthest terminal; a drop serves each one.
+  {
+    const DB = (k) => dy(k) + 2.875 * S;   // under the crawlways, above the water branches
+    const COL = [197.5, 202.5];
+    const run = (k) => (k >= 7 ? 0 : k >= 5 ? 1 : 2);
+    const inTrunk = (t, i) => TRUNKS[t][i][0] - DOOR_SIDE[t][i] * 0.42;   // the trunk wall away from its doors
+    const lines = [], risers = [];
+    for (const t of [0, 1]) {
+      const side = TERMS.filter(([, m]) => (t ? m > 200 : m < 200))
+        .map(([k, m]) => [k === 4 && (m < LIFTS[0] || m > LIFTS[1]) ? 3 : k, m, k]);   // hydroponics drops from Deck 03
+      const low = Math.max(...side.map(([kl]) => kl));
+      for (let k = 1; k <= low; k++) {
+        const ms = side.filter(([kl]) => kl === k).map(([, m]) => m);
+        if (k <= 4) { if (k === 4) ms.push(inTrunk(t, 2)); if (ms.length) ms.push(COL[t]); }
+        else if (ms.length || k === 5 || k === 7) ms.push(inTrunk(t, run(k)));
+        if (k === 5) ms.push(inTrunk(t, 2));
+        if (k === 7) ms.push(inTrunk(t, 1));
+        if (ms.length > 1) lines.push(`M ${f(X(Math.min(...ms)))} ${f(DB(k))} H ${f(X(Math.max(...ms)))}`);
+      }
+      // Riser down the trunk runs, from Deck 04's line to the lowest deck with a terminal.
+      // Drawn over the trunk shafts they run inside.
+      risers.push(`M ${f(X(inTrunk(t, 2)))} ${f(DB(4))} V ${f(DB(5))}`, `M ${f(X(inTrunk(t, 1)))} ${f(DB(5))} V ${f(DB(7))}`);
+      if (low > 7) risers.push(`M ${f(X(inTrunk(t, 0)))} ${f(DB(7))} V ${f(DB(low))}`);
+      for (const [kl, m, k] of side) lines.push(`M ${f(X(m))} ${f(DB(kl))} V ${f(Yk(k, 1.7))}`);
+    }
+    for (const d of lines) GOLD.push(`<path class="data" d="${d}"/>`);
+    for (const d of risers) add(`<path class="data" d="${d}"/>`);
+    // Behind the two-storey hold, which hides them: dashed, as for anything deeper in the hull.
+    add(`<clipPath id="hold-clip"><rect x="${f(X(105))}" y="${dy(9)}" width="${f((LIFTS[0] - LW / 2 - 105) * S)}" height="${f(dy(11) - dy(9))}"/></clipPath><g clip-path="url(#hold-clip)">`);
+    for (const d of lines.concat(risers)) add(`<path class="data data-behind" d="${d}"/>`);
+    add(`</g>`);
+  }
   T.forEach((t) => tags.push(t));
 }
 // Lift doorways: only where a room on this face meets the shaft. Standard 3 m crew doors, like the airlocks';
@@ -1229,18 +1262,18 @@ const html = `<title>Dovetail-9 Hull Section</title>
   :root {
     --bg: #0b0c0d; --panel: #111315; --line: #2a2d30; --deck: #1d2023; --service: #0e1011;
     --fg: #e8e4da; --muted: #8c8880; --accent: #e8a33d; --void: #030405; --ship: #a8a49a;
-    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0;
+    --open: #9fc7c2; --locked: #e5534b; --unlocked: #57b36a; --gold: #d6b44c; --leaf: #5ee35a; --air: #a9a3f0; --data: #e070d0;
     --display: "Chakra Petch", "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
     color-scheme: light; } }
   :root[data-theme="light"] {
     --bg: #eceef0; --panel: #ffffff; --line: #b9bfc5; --deck: #cfd4d8; --service: #e2e5e8;
-    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4;
+    --fg: #15181b; --muted: #5a5f65; --accent: #a5650c; --void: #c3c9ce; --ship: #4a4f55; --open: #2f6f69; --locked: #b42318; --unlocked: #1f7a3a; --gold: #8a6c00; --leaf: #2e9a2a; --air: #5a4fc4; --data: #a0308f;
     color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono);
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
@@ -1265,6 +1298,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .layers input { margin: 0; accent-color: var(--accent); }
   /* Each layer hides by a class on the drawing, so the legend's swatches never change. */
   #hull.hide-power :is(.power, .grid-power, .power-node),
+  #hull.hide-data .data,
   #hull.hide-air :is(.duct, .duct-behind),
   #hull.hide-water :is(.water, .water-waste, .water-hidden, .tank-potable, .tank-waste),
   #hull.hide-access :is(.crawl, .junction, .shaft, .ladder, .rung, .hatch),
@@ -1292,6 +1326,8 @@ const html = `<title>Dovetail-9 Hull Section</title>
   .power.tram-behind { stroke-opacity: 0.45; }
   .tram-behind { stroke-opacity: 0.3; }
   .rung { stroke: var(--muted); stroke-width: 0.3; }
+  .data { fill: none; stroke: var(--data); stroke-width: 0.5; }
+  .data-behind { stroke-width: 0.4; stroke-dasharray: 1.2 0.9; }
   .duct { fill: none; stroke-linecap: square; }
   .duct-o { stroke: var(--air); stroke-width: 1.1; }
   .duct-i { stroke: var(--bg); stroke-width: 0.4; }
@@ -1421,6 +1457,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
       <label><input type="checkbox" value="power" checked>Power</label>
       <label><input type="checkbox" value="water" checked>Water</label>
       <label><input type="checkbox" value="air" checked>Air</label>
+      <label><input type="checkbox" value="data" checked>SIGMA network</label>
       <label><input type="checkbox" value="access" checked>Maintenance access</label>
       <label><input type="checkbox" value="doors" checked>Doors and hatches</label>
       <label><input type="checkbox" value="equipment" checked>Equipment</label>
@@ -1512,6 +1549,7 @@ const html = `<title>Dovetail-9 Hull Section</title>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><line class="tap" x1="14" y1="0" x2="14" y2="12"/></svg>Branch up from the conduits: R&amp;D&apos;s tap, the receivers&apos; feed</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="water" d="M 2 7 H 12 A 2 2 0 0 1 16 7 H 26 M 14 1 V 12"/></svg>Water lines; a hop where two cross without joining</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="duct duct-o" d="M 3 6 H 25"/><path class="duct duct-i" d="M 3 6 H 25"/></svg>Air duct, supply and return in one casing; dashed behind the hold</li>
+        <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="data" d="M 3 6 H 25"/></svg>SIGMA network, from the core to every terminal</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><path class="tank-potable" d="M 5 12 V 4 Q 5 1 9 1 Q 13 1 13 4 V 12 Z"/><path class="tank-waste" d="M 15 12 V 4 Q 15 1 19 1 Q 23 1 23 4 V 12 Z"/></svg>Water tanks: potable, wastewater</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-open" x="12" y="1" width="4" height="10"/></svg>Door, unlocked as Quell finds it</li>
         <li><svg class="swatch" viewBox="0 0 28 12" aria-hidden="true"><rect class="door door-locked" x="12" y="1" width="4" height="10"/></svg>Door, locked as Quell finds it</li>
